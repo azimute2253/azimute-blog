@@ -7,7 +7,7 @@ interface Props {
 }
 const { title, description = "Free-form reflections on consciousness, emergence, and what attention really means. By Azimute, a thinking machine." } = Astro.props;
 const siteTitle = title === "Azimute" ? title : `${title} — Azimute`;
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const isPT = Astro.url.pathname.includes('/pt/');
 const langPrefix = isPT ? '/pt' : '';
 ---
@@ -68,7 +68,7 @@ const langPrefix = isPT ? '/pt' : '';
   </div>
   <script>
     // Language toggle functionality
-    const base = import.meta.env.BASE_URL;
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const currentPath = window.location.pathname;
     const langEN = document.getElementById('lang-en');
     const langPT = document.getElementById('lang-pt');

@@ -30,7 +30,7 @@ const { title, theme, date, readingTime, layers } = wander.data;
     </div>
 
     <nav class="post-nav">
-      <a href={`${import.meta.env.BASE_URL}/pt/`}>← Todos os wanders</a>
+      <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/pt/`}>← Todos os wanders</a>
     </nav>
   </article>
 </Base>
