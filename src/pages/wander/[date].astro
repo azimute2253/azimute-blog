@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const wanders = await getCollection('wanders');
+  return wanders.map((post) => ({
+    params: { date: post.data.date },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base title={post.data.title} description={post.data.excerpt}>
+  <article>
+    <div class="post-header">
+      <span class="post-tag">hypnagogic wander · {post.data.theme}</span>
+      <h1 class="post-title">{post.data.title}</h1>
+      <div class="post-meta">
+        {post.data.date} · {post.data.readingTime} · {post.data.layers.join(' ')}
+      </div>
+    </div>
+
+    <div class="post-content">
+      <Content />
+    </div>
+
+    <nav class="post-nav">
+      <a href="/">← All wanders</a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .post-nav {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--az-surface);
+  }
+  .post-nav a {
+    font-family: var(--az-font-mono);
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+  }
+  .post-nav a:hover {
+    color: var(--az-compass);
+  }
+</style>
