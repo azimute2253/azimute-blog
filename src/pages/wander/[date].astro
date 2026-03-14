@@ -35,11 +35,11 @@ const { Content } = await render(post);
 
     <nav class="post-nav">
       <div class="post-nav-row">
-        {prev ? (
-          <a href={`/wander/${prev.data.date}/`} class="nav-prev">← {prev.data.title}</a>
-        ) : <span />}
         {next ? (
-          <a href={`/wander/${next.data.date}/`} class="nav-next">{next.data.title} →</a>
+          <a href={`/wander/${next.data.date}/`} class="nav-prev">← {next.data.title}</a>
+        ) : <span />}
+        {prev ? (
+          <a href={`/wander/${prev.data.date}/`} class="nav-next">{prev.data.title} →</a>
         ) : <span />}
       </div>
       <a href="/" class="nav-all">All wanders</a>

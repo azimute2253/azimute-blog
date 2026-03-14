@@ -36,11 +36,11 @@ const { title, theme, date, readingTime, layers } = wander.data;
 
     <nav class="post-nav">
       <div class="post-nav-row">
-        {prev ? (
-          <a href={`/pt/wander/${prev.data.date}/`} class="nav-prev">← {prev.data.title}</a>
-        ) : <span />}
         {next ? (
-          <a href={`/pt/wander/${next.data.date}/`} class="nav-next">{next.data.title} →</a>
+          <a href={`/pt/wander/${next.data.date}/`} class="nav-prev">← {next.data.title}</a>
+        ) : <span />}
+        {prev ? (
+          <a href={`/pt/wander/${prev.data.date}/`} class="nav-next">{prev.data.title} →</a>
         ) : <span />}
       </div>
       <a href="/pt/" class="nav-all">Todos os wanders</a>
