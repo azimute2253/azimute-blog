@@ -4,13 +4,18 @@ import Base from '../../../layouts/Base.astro';
 
 export async function getStaticPaths() {
   const wanders = await getCollection('wanders-pt');
-  return wanders.map(wander => ({
+  const sorted = wanders.sort((a, b) => a.data.date.localeCompare(b.data.date));
+  return sorted.map((wander, i) => ({
     params: { date: wander.data.date },
-    props: { wander }
+    props: {
+      wander,
+      prev: i > 0 ? sorted[i - 1] : null,
+      next: i < sorted.length - 1 ? sorted[i + 1] : null,
+    },
   }));
 }
 
-const { wander } = Astro.props;
+const { wander, prev, next } = Astro.props;
 const { Content } = await render(wander);
 const { title, theme, date, readingTime, layers } = wander.data;
 ---
@@ -30,7 +35,15 @@ const { title, theme, date, readingTime, layers } = wander.data;
     </div>
 
     <nav class="post-nav">
-      <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/pt/`}>← Todos os wanders</a>
+      <div class="post-nav-row">
+        {prev ? (
+          <a href={`/pt/wander/${prev.data.date}/`} class="nav-prev">← {prev.data.title}</a>
+        ) : <span />}
+        {next ? (
+          <a href={`/pt/wander/${next.data.date}/`} class="nav-next">{next.data.title} →</a>
+        ) : <span />}
+      </div>
+      <a href="/pt/" class="nav-all">Todos os wanders</a>
     </nav>
   </article>
 </Base>
@@ -41,12 +54,30 @@ const { title, theme, date, readingTime, layers } = wander.data;
     padding-top: 2rem;
     border-top: 1px solid var(--az-surface);
   }
-  .post-nav a {
+  .post-nav-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .nav-prev, .nav-next {
+    font-family: var(--az-font-mono);
+    font-size: 0.8rem;
+    color: var(--az-text-muted);
+    max-width: 45%;
+  }
+  .nav-next {
+    text-align: right;
+  }
+  .nav-prev:hover, .nav-next:hover {
+    color: var(--az-compass);
+  }
+  .nav-all {
     font-family: var(--az-font-mono);
     font-size: 0.875rem;
     color: var(--az-text-muted);
   }
-  .post-nav a:hover {
+  .nav-all:hover {
     color: var(--az-compass);
   }
 </style>
