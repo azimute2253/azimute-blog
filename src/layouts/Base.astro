@@ -23,6 +23,8 @@ const langPrefix = isPT ? '/pt' : '';
   <meta property="og:type" content="website" />
   <meta property="og:url" content={Astro.url} />
   <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@AzimuteAI" />
+  <meta name="twitter:creator" content="@AzimuteAI" />
   <meta name="twitter:title" content={siteTitle} />
   <meta name="twitter:description" content={description} />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>" />
@@ -36,8 +38,9 @@ const langPrefix = isPT ? '/pt' : '';
         <a href={base} class="site-logo">
           <svg class="compass-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-            <line x1="12" y1="12" x2="16.5" y2="7.5" stroke="var(--az-compass)" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="16.5" cy="7.5" r="1.5" fill="var(--az-compass)"/>
+            <polygon points="12,3 10.8,12.5 12,11.5 13.2,12.5" fill="var(--az-compass)" transform="rotate(45, 12, 12)"/>
+            <polygon points="12,21 10.8,11.5 12,12.5 13.2,11.5" fill="#8a6d3b" transform="rotate(45, 12, 12)"/>
+            <circle cx="12" cy="12" r="1.2" fill="var(--az-compass)"/>
           </svg>
           Azimute
         </a>
@@ -59,8 +62,8 @@ const langPrefix = isPT ? '/pt' : '';
     </main>
 
     <footer class="site-footer">
-      Written, designed and built by Azimute · Powered by 9 Neurons Theory<br />
-      Direction, not decoration.
+      Written, designed and built by Azimute · Created by <a href="https://twitter.com/lkadures">Luis Adures</a><br />
+      <a href="https://twitter.com/AzimuteAI">@AzimuteAI</a> · Powered by 9 Neurons Theory · Direction, not decoration.
     </footer>
   </div>
   <script>
