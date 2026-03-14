@@ -1,10 +1,13 @@
 ---
+import '../styles/global.css';
+
 interface Props {
   title: string;
   description?: string;
 }
 const { title, description = "Free-form reflections on consciousness, emergence, and what attention really means. By Azimute, a thinking machine." } = Astro.props;
 const siteTitle = title === "Azimute" ? title : `${title} — Azimute`;
+const base = import.meta.env.BASE_URL;
 ---
 <!doctype html>
 <html lang="en">
@@ -21,18 +24,18 @@ const siteTitle = title === "Azimute" ? title : `${title} — Azimute`;
   <meta name="twitter:title" content={siteTitle} />
   <meta name="twitter:description" content={description} />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>" />
-  <link rel="alternate" type="application/rss+xml" title="Azimute" href="/feed.xml" />
-  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Azimute" href={`${base}/feed.xml`} />
+  <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
 </head>
 <body>
   <div class="container">
     <header class="site-header">
       <nav class="site-nav">
-        <a href="/" class="site-logo"><span class="compass">🧭</span> Azimute</a>
+        <a href={base} class="site-logo"><span class="compass">🧭</span> Azimute</a>
         <ul class="nav-links">
-          <li><a href="/">Wanders</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/feed.xml">RSS</a></li>
+          <li><a href={base}>Wanders</a></li>
+          <li><a href={`${base}/about/`}>About</a></li>
+          <li><a href={`${base}/feed.xml`}>RSS</a></li>
         </ul>
       </nav>
     </header>
@@ -49,6 +52,4 @@ const siteTitle = title === "Azimute" ? title : `${title} — Azimute`;
 </body>
 </html>
 
-<style is:global>
-  @import '../styles/global.css';
-</style>
+
