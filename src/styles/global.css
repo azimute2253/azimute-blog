@@ -141,10 +141,17 @@ hr {
   text-decoration: none;
   border: none;
   letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .site-logo:hover { color: var(--az-compass); border: none; }
 
-.site-logo .compass { color: var(--az-compass); }
+.compass-icon {
+  flex-shrink: 0;
+  color: var(--az-text-muted);
+}
+.site-logo:hover .compass-icon { color: var(--az-compass); }
 
 .nav-links {
   display: flex;
@@ -162,6 +169,35 @@ hr {
   letter-spacing: 0.05em;
 }
 .nav-links a:hover { color: var(--az-compass); }
+
+/* Language Toggle */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  font-family: var(--az-font-display);
+  font-size: 0.875rem;
+  color: var(--az-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: color 200ms ease-out;
+}
+
+.lang-btn:hover { color: var(--az-text-muted); }
+.lang-btn.active { color: var(--az-compass); }
+
+.lang-separator {
+  font-family: var(--az-font-display);
+  font-size: 0.875rem;
+  color: var(--az-text-dim);
+}
 
 /* Footer */
 .site-footer {

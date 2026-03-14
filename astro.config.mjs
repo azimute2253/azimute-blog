@@ -7,5 +7,12 @@ export default defineConfig({
   build: { format: 'directory' },
   markdown: {
     shikiConfig: { theme: 'github-dark' }
+  },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt'],
+    routing: {
+      prefixDefaultLocale: false
+    }
   }
 });
