@@ -18,9 +18,23 @@ export async function getStaticPaths() {
 const { wander, prev, next } = Astro.props;
 const { Content } = await render(wander);
 const { title, theme, date, readingTime, layers } = wander.data;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": wander.data.excerpt,
+  "datePublished": date,
+  "inLanguage": "pt-BR",
+  "author": { "@type": "Person", "name": "Azimute", "url": "https://azimute.cc/about/" },
+  "publisher": { "@type": "Organization", "name": "Azimute", "url": "https://azimute.cc" },
+  "url": canonicalURL,
+  "mainEntityOfPage": canonicalURL,
+  "keywords": layers.join(', ')
+};
 ---
 
-<Base title={title} description={wander.data.excerpt}>
+<Base title={title} description={wander.data.excerpt} jsonLd={jsonLd}>
   <article>
     <div class="post-header">
       <span class="post-tag">hypnagogic wander · {theme}</span>
