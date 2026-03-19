@@ -4,7 +4,9 @@ export const prerender = false;
 import Dashboard from '../../layouts/Dashboard.astro';
 import { hasAccess } from '../../lib/roles';
 import type { UserRole } from '../../lib/roles';
+import { getLang, t } from '../../lib/i18n';
 
+const lang = getLang(Astro.cookies, Astro.url);
 const user = Astro.locals.user!;
 const profile = Astro.locals.profile!;
 const supabase = Astro.locals.supabase;
@@ -28,28 +30,28 @@ const { count: documentCount } = await supabase
   .select('*', { count: 'exact', head: true })
   .eq('type', 'document');
 ---
-<Dashboard title="Dashboard">
-  <h1>Welcome, {profile?.display_name || 'Member'}</h1>
-  <p class="dash-subtitle">Your access level: <strong class="role-badge">{role}</strong></p>
+<Dashboard title={t(lang, 'dashboard.title')}>
+  <h1>{t(lang, 'dashboard.welcome')}, {profile?.display_name || 'Member'}</h1>
+  <p class="dash-subtitle">{t(lang, 'dashboard.accessLevel')} <strong class="role-badge">{role}</strong></p>
 
   <div class="dash-grid">
     <a href="/dashboard/reports" class="dash-card">
       <span class="dash-card-count">{reportCount ?? 0}</span>
-      <span class="dash-card-label">Reports</span>
+      <span class="dash-card-label">{t(lang, 'dashboard.reports')}</span>
     </a>
     <a href="/dashboard/projects" class="dash-card">
       <span class="dash-card-count">{projectCount ?? 0}</span>
-      <span class="dash-card-label">Projects</span>
+      <span class="dash-card-label">{t(lang, 'dashboard.projects')}</span>
     </a>
     <a href="/dashboard/documents" class="dash-card">
       <span class="dash-card-count">{documentCount ?? 0}</span>
-      <span class="dash-card-label">Documents</span>
+      <span class="dash-card-label">{t(lang, 'dashboard.documents')}</span>
     </a>
   </div>
 
   {!isPremium && (
     <div class="upgrade-notice">
-      <p>You're on the <strong>member</strong> tier. Some content requires <strong>premium</strong> access.</p>
+      <p>{t(lang, 'dashboard.upgradeNotice')} <strong>member</strong>{t(lang, 'dashboard.tier')} <strong>{t(lang, 'dashboard.premiumAccess')}</strong>{t(lang, 'dashboard.access')}</p>
     </div>
   )}
 </Dashboard>

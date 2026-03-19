@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { getLang } from '../lib/i18n';
 
 interface Props {
   title: string;
@@ -11,7 +12,10 @@ const defaultDescription = "Free-form reflections on consciousness, emergence, a
 const { title, description = defaultDescription, ogImage, jsonLd } = Astro.props;
 const siteTitle = title === "Azimute" ? title : `${title} — Azimute`;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const isPT = Astro.url.pathname.includes('/pt/');
+
+// Detect language (for both static and SSR pages)
+const isSSR = Astro.url.pathname.match(/^\/(login|signup|dashboard|api)/);
+const isPT = isSSR ? getLang(Astro.cookies, Astro.url) === 'pt' : Astro.url.pathname.includes('/pt/');
 const langPrefix = isPT ? '/pt' : '';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : new URL('/og-default.png', Astro.site).href;
@@ -69,13 +73,11 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : new URL('/og-de
             </a>
           </li>
           <li><a href={`${base}/feed.xml`}>RSS</a></li>
-          {!Astro.url.pathname.match(/^\/(login|signup|dashboard|api)/) && (
-            <li class="lang-toggle">
-              <button id="lang-en" class="lang-btn" data-lang="en">EN</button>
-              <span class="lang-separator">/</span>
-              <button id="lang-pt" class="lang-btn" data-lang="pt">PT</button>
-            </li>
-          )}
+          <li class="lang-toggle">
+            <button id="lang-en" class="lang-btn" data-lang="en">EN</button>
+            <span class="lang-separator">/</span>
+            <button id="lang-pt" class="lang-btn" data-lang="pt">PT</button>
+          </li>
         </ul>
       </nav>
     </header>
@@ -95,10 +97,21 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : new URL('/og-de
     const currentPath = window.location.pathname;
     const langEN = document.getElementById('lang-en');
     const langPT = document.getElementById('lang-pt');
-    
-    // Determine current language from URL
-    const isPT = currentPath.includes('/pt/');
-    
+
+    // Detect if this is an SSR page
+    const isSSR = currentPath.match(/^\/(login|signup|dashboard|api)/);
+
+    // Determine current language
+    let isPT = false;
+    if (isSSR) {
+      // For SSR pages, read from cookie
+      const cookieLang = document.cookie.match(/lang=(en|pt)/)?.[1] || 'en';
+      isPT = cookieLang === 'pt';
+    } else {
+      // For static pages, read from URL
+      isPT = currentPath.includes('/pt/');
+    }
+
     // Set active state
     if (isPT) {
       langEN?.classList.remove('active');
@@ -107,22 +120,36 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : new URL('/og-de
       langEN?.classList.add('active');
       langPT?.classList.remove('active');
     }
-    
+
     // Language switch handlers
     langEN?.addEventListener('click', () => {
-      if (!isPT) return; // Already on EN
-      
-      // Convert PT URL to EN URL
-      const newPath = currentPath.replace('/pt/', '/');
-      window.location.href = newPath;
+      if (isSSR) {
+        // SSR: set cookie and reload
+        if (isPT) {
+          document.cookie = 'lang=en; path=/; max-age=31536000';
+          window.location.reload();
+        }
+      } else {
+        // Static: navigate to EN URL
+        if (!isPT) return;
+        const newPath = currentPath.replace('/pt/', '/');
+        window.location.href = newPath;
+      }
     });
-    
+
     langPT?.addEventListener('click', () => {
-      if (isPT) return; // Already on PT
-      
-      // Convert EN URL to PT URL
-      const newPath = currentPath.replace(base, `${base}/pt`);
-      window.location.href = newPath;
+      if (isSSR) {
+        // SSR: set cookie and reload
+        if (!isPT) {
+          document.cookie = 'lang=pt; path=/; max-age=31536000';
+          window.location.reload();
+        }
+      } else {
+        // Static: navigate to PT URL
+        if (isPT) return;
+        const newPath = currentPath.replace(base, `${base}/pt`);
+        window.location.href = newPath;
+      }
     });
   </script>
 </body>

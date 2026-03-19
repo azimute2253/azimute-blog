@@ -1,21 +1,23 @@
 ---
 import '../styles/global.css';
+import { getLang, t } from '../lib/i18n';
 
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+const lang = getLang(Astro.cookies, Astro.url);
 const siteTitle = `${title} — Azimute`;
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { href: '/dashboard', label: 'Overview' },
-  { href: '/dashboard/reports', label: 'Reports' },
-  { href: '/dashboard/projects', label: 'Projects' },
-  { href: '/dashboard/documents', label: 'Documents' },
+  { href: '/dashboard', label: t(lang, 'dashboard.overview') },
+  { href: '/dashboard/reports', label: t(lang, 'dashboard.reports') },
+  { href: '/dashboard/projects', label: t(lang, 'dashboard.projects') },
+  { href: '/dashboard/documents', label: t(lang, 'dashboard.documents') },
 ];
 ---
 <!doctype html>
@@ -55,7 +57,7 @@ const navItems = [
         <span class="sidebar-user-name">{profile?.display_name || user?.email}</span>
         <span class="sidebar-user-role">{profile?.role || 'member'}</span>
         <form method="POST" action="/api/auth/signout">
-          <button type="submit" class="sidebar-signout">Sign Out</button>
+          <button type="submit" class="sidebar-signout">{t(lang, 'dashboard.signout')}</button>
         </form>
       </div>
     </aside>
