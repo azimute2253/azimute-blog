@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consciousness vs. Self-Consciousness: The Real Difference Between L8 and L9 in the 9-Layer Predictive Model</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2129;
+    --accent: #58a6ff;
+    --accent-dim: #388bfd40;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border: #30363d;
+    --highlight: #f0883e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  /* Title Page */
+  .title-page {
+    text-align: center;
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 50px;
+  }
+
+  .journal-name {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 40px;
+  }
+
+  .paper-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: 30px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .authors {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .affiliations {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .correspondence {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+  }
+
+  .received-date {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Section headings */
+  h2 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent-dim);
+  }
+
+  h3 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 35px;
+    margin-bottom: 12px;
+  }
+
+  h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* Abstract box */
+  .abstract-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 30px 35px;
+    margin: 30px 0 40px;
+  }
+
+  .abstract-box h2 {
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 15px;
+  }
+
+  .abstract-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .keywords {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+  }
+
+  .keywords strong {
+    color: var(--text-primary);
+  }
+
+  /* Figures & Tables */
+  .figure {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: center;
+  }
+
+  .figure-caption {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 15px;
+    text-align: left;
+  }
+
+  .figure-caption strong {
+    color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 15px;
+  }
+
+  th {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--accent);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px solid var(--accent-dim);
+  }
+
+  td {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:hover td {
+    background: var(--bg-secondary);
+  }
+
+  /* Blockquote for key insights */
+  blockquote {
+    border-left: 3px solid var(--highlight);
+    background: rgba(240, 136, 62, 0.06);
+    padding: 15px 20px;
+    margin: 25px 0;
+    font-style: italic;
+    color: var(--text-secondary);
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* Code / formal notation */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    background: var(--bg-secondary);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  pre {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+    line-height: 1.6;
+    color: var(--text-primary);
+  }
+
+  /* Footnotes */
+  .footnote-ref {
+    font-size: 12px;
+    vertical-align: super;
+    color: var(--accent);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .footnotes {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .footnotes p {
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  /* References */
+  .references {
+    margin-top: 50px;
+  }
+
+  .references ol {
+    padding-left: 30px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .references li {
+    margin-bottom: 10px;
+    padding-left: 5px;
+  }
+
+  .references li .ref-authors {
+    color: var(--text-primary);
+  }
+
+  .references li .ref-title {
+    font-style: italic;
+  }
+
+  .references li .ref-journal {
+    color: var(--accent);
+  }
+
+  /* Layer diagram */
+  .layer-diagram {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: var(--text-secondary);
+  }
+
+  .layer-diagram .active {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .layer-diagram .highlight-l8 {
+    color: var(--highlight);
+    font-weight: 600;
+  }
+
+  .layer-diagram .highlight-l9 {
+    color: #f778ba;
+    font-weight: 600;
+  }
+
+  /* Lists */
+  ul, ol {
+    margin-bottom: 16px;
+    padding-left: 25px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  /* Separator */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .paper-container { padding: 30px 20px 60px; }
+    .paper-title { font-size: 24px; }
+    body { font-size: 16px; }
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; color: #111; font-size: 12pt; }
+    .paper-container { max-width: 100%; padding: 0; }
+    .abstract-box { border-color: #999; background: #f5f5f5; }
+    h2 { border-bottom-color: #ccc; }
+    code { background: #eee; color: #333; }
+  }
+
+  sup { font-size: 0.7em; }
+</style>
+</head>
+<body>
+
+<div class="paper-container">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TITLE PAGE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="title-page">
+  <div class="journal-name">Kerberos Research · Working Paper Series · 2026</div>
+  <h1 class="paper-title">Consciousness vs. Self-Consciousness: The Real Difference Between L8 and L9 in the 9-Layer Predictive Model</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> &amp; Azimute<sup>2</sup></div>
+  <div class="affiliations">
+    <sup>1</sup> Faculdade de Medicina &nbsp;|&nbsp; <sup>2</sup> Kerberos Research
+  </div>
+  <div class="correspondence">Correspondence: lk.adures@gmail.com</div>
+  <div class="received-date">Received: February 2026 · Draft for peer review</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ABSTRACT -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="abstract-box">
+  <h2>Abstract</h2>
+
+  <p><span class="abstract-label">Background:</span> Current theories of consciousness—including Global Neuronal Workspace Theory, Integrated Information Theory, and Higher-Order Theories—treat consciousness as a largely unitary phenomenon or, at most, distinguish between access and phenomenal consciousness. This conflation obscures a functionally critical boundary: the difference between consciousness that integrates and transfers learned patterns across domains, and self-consciousness that reflects upon and modulates the learning process itself.</p>
+
+  <p><span class="abstract-label">Methods:</span> We present a theoretical analysis grounded in the 9-Layer Neurocomputational Model (9N), a hierarchical predictive processing framework. Drawing on comparative cognition, developmental psychology, artificial intelligence research, and clinical neurology, we construct a formal distinction between Layer 8 (conscious pattern transfer) and Layer 9 (metacognitive self-awareness). We review how existing theories map onto this distinction and identify systematic conflation in the literature.</p>
+
+  <p><span class="abstract-label">Results:</span> L8 supports the capacity to learn patterns, build generative models, and transfer knowledge across domains—analogous to learning to bake bread and applying that skill to other doughs. L9, by contrast, supports the capacity to distill the process of learning itself, to actively choose what to learn, and to reflect on one's own cognitive strategies. This distinction is supported by evidence from corvid cognition (L8 without L9), human developmental trajectories (L9 emerging in late childhood), prediction error cascading dynamics, and current AI architectures (transfer learning as L8; the unresolved challenge of artificial general intelligence as the L9 problem).</p>
+
+  <p><span class="abstract-label">Conclusions:</span> Treating consciousness and self-consciousness as distinct computational layers, rather than degrees of a single process, resolves several persistent puzzles in consciousness studies and generates testable predictions for neuroscience, AI development, and clinical psychiatry.</p>
+
+  <div class="keywords"><strong>Keywords:</strong> consciousness, self-consciousness, metacognition, predictive processing, hierarchical models, transfer learning, meta-learning, prediction error, 9-layer model</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 1. INTRODUCTION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>1. Introduction</h2>
+
+<p>What is the difference between a system that is conscious and a system that <em>knows</em> it is conscious? This question, deceptively simple, exposes a fault line running through contemporary consciousness research. Despite decades of theoretical and empirical progress, the field continues to treat consciousness as either a unitary phenomenon to be explained or, at best, as a spectrum varying in "richness" or "depth." The possibility that consciousness and self-consciousness are <em>computationally distinct operations</em>—not merely quantitative variations of one another—remains underexplored.</p>
+
+<p>Consider the following: a corvid that has never encountered a particular type of trap can nonetheless infer its mechanism from experience with other traps, applying learned causal models to novel situations<sup><a href="#ref1" class="footnote-ref">1</a></sup>. This is impressive. It is conscious, flexible problem-solving. But the corvid does not—so far as we can tell—sit back and evaluate <em>how</em> it learns, or choose to redirect its learning efforts toward a domain it judges more rewarding. It transfers knowledge; it does not reflect on the transfer process.</p>
+
+<p>Humans, in contrast, routinely do both. A medical student not only learns anatomy and transfers that knowledge to clinical reasoning (pattern transfer), but also reflects on whether flashcards or cadaver labs produce better retention—and adjusts their strategy accordingly (metacognitive regulation). These are qualitatively different operations, yet they are routinely collapsed under the single heading of "consciousness."</p>
+
+<p>This paper argues that this collapse is not merely imprecise—it is actively harmful to theoretical progress. We propose that what the literature calls "consciousness" encompasses at least two computationally and functionally distinct layers, which we designate <strong>L8</strong> (conscious pattern transfer) and <strong>L9</strong> (metacognitive self-awareness) within the 9-Layer Neurocomputational Model (9N). We demonstrate that this distinction resolves ambiguities in existing theories, generates novel predictions, and has practical implications for education, artificial intelligence, and clinical psychiatry.</p>
+
+<h3>1.1 The Gap in the Literature</h3>
+
+<p>Existing theories address parts of this distinction without formalizing it. Dehaene's Global Neuronal Workspace Theory<sup><a href="#ref2" class="footnote-ref">2</a></sup> describes how information becomes globally available for flexible use—a mechanism that maps well onto L8 but does not account for the recursive self-monitoring of L9. Tononi's Integrated Information Theory<sup><a href="#ref3" class="footnote-ref">3</a></sup> quantifies consciousness via Φ (integrated information) but treats it as a single scalar, unable to distinguish between a system that integrates information for use and one that reflects on its own integration processes. Block's distinction between access and phenomenal consciousness<sup><a href="#ref4" class="footnote-ref">4</a></sup> captures something adjacent but orthogonal—the difference between reportability and subjective experience, not between pattern deployment and metacognitive regulation.</p>
+
+<p>The gap, then, is this: <strong>no current framework formally distinguishes between the consciousness that enables flexible cross-domain knowledge transfer and the self-consciousness that monitors, evaluates, and directs the learning process itself.</strong> The 9N model fills this gap.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 2. THEORETICAL FRAMEWORK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>2. Theoretical Framework: The 9-Layer Neurocomputational Model</h2>
+
+<p>The 9-Layer Neurocomputational Model (9N) is a hierarchical predictive processing framework in which cognition is organized across nine functionally distinct layers, each responsible for a specific class of prediction, error correction, and learning. The model builds on predictive processing accounts<sup><a href="#ref5" class="footnote-ref">5</a></sup><sup>,</sup><sup><a href="#ref6" class="footnote-ref">6</a></sup> but extends them with an explicit layered architecture that distinguishes operations typically collapsed under umbrella terms like "higher cognition" or "consciousness."</p>
+
+<div class="figure">
+  <pre class="layer-diagram">
+Layer   Function                           Example
+─────   ─────────────────────────────────  ────────────────────────────────
+L1      Sensory registration               Retinal activation
+L2      Feature extraction                 Edge detection
+L3      Object/pattern recognition         "This is a face"
+L4      Contextual binding                 "This face is at a funeral"
+L5      Emotional/somatic valence          Gut feeling: something is wrong
+L6      Intuitive integration              "I don't trust this person" (pre-verbal)
+L7      Narrative/explicit reasoning        "Because their story contradicts X"
+<span class="highlight-l8">L8      Conscious pattern transfer           Learning bread → applying to pasta</span>
+<span class="highlight-l9">L9      Metacognitive self-awareness          "Am I learning this the right way?"</span>
+  </pre>
+  <div class="figure-caption"><strong>Figure 1.</strong> The 9-Layer Neurocomputational Model (9N). Lower layers handle automatic, fast, energy-cheap processing. Higher layers handle increasingly abstract, slow, and energy-expensive operations. L8 and L9, the focus of this paper, represent qualitatively distinct forms of conscious processing.</div>
+</div>
+
+<h3>2.1 Prediction Error Cascading</h3>
+
+<p>A central principle of the 9N model is <strong>prediction error (PE) resolution at the lowest possible layer</strong>. The system is energetically conservative: if a sensory prediction error can be resolved at L2 (e.g., a shadow explained by a moving branch), it never reaches L4. If a social prediction error can be resolved at L5 (a somatic "off" feeling explained by recognizing a familiar threat pattern), it does not propagate to L7.</p>
+
+<p>This cascading has profound implications for L8 and L9:</p>
+
+<ul>
+  <li><strong>PE resolved at L8:</strong> A novel problem is solved by transferring an existing learned pattern to a new domain. The baker encounters pasta dough for the first time and recognizes the relevance of gluten development knowledge. Problem solved. No need for L9.</li>
+  <li><strong>PE reaching L9:</strong> The transferred pattern fails. The baker's bread technique produces terrible pasta. Now the system must ask: "Is my approach to learning new dough types itself flawed? Should I be learning differently?" This is L9 activation.</li>
+  <li><strong>PE unresolved at L9:</strong> When even metacognitive reflection cannot resolve the prediction error—when the system cannot find a viable strategy for learning itself—the result is what we term <strong>Total Predictive Rupture (TPR)</strong>: a catastrophic failure of the entire predictive hierarchy, manifesting clinically as existential crisis, depersonalization, or psychotic break.</li>
+</ul>
+
+<h3>2.2 Energy Economics</h3>
+
+<p>Each upward layer is more metabolically expensive to activate. L1–L3 operate continuously with minimal cost. L5–L6 activate transiently during emotional or intuitive processing. L7 (explicit reasoning) is notably expensive, which is why humans avoid it when possible—preferring heuristics, habits, and intuition<sup><a href="#ref7" class="footnote-ref">7</a></sup>.</p>
+
+<p>L8, however, is more expensive still: it requires the construction and deployment of cross-domain generative models. And L9 is the most expensive operation in the entire hierarchy—it demands that the system model <em>itself</em> as a learner, evaluate its own strategies, and modify its own learning architecture. This is why genuine metacognitive reflection is rare, effortful, and typically avoided unless forced by cascading prediction errors.</p>
+
+<h3>2.3 The Gating Mechanism</h3>
+
+<p>Between each layer operates a gating mechanism that determines whether a prediction error propagates upward or is resolved locally. Effective gating is essential for cognitive efficiency. When gating fails, the system floods higher layers with unresolved errors, producing pathological states.</p>
+
+<p>An instructive analogy comes from epilepsy: a gating failure at the neural level causes a stimulus to reverberate rather than being filtered—producing a feedback loop that constitutes a neurological short-circuit. Anticonvulsants such as benzodiazepines and valproate work by reinforcing GABAergic (inhibitory) gating, restoring the filter<sup><a href="#ref8" class="footnote-ref">8</a></sup>. In the 9N framework, analogous gating failures at higher layers produce cognitive rather than seizure-like pathology: anxiety (gating failure at L5), rumination (gating failure at L7), and existential crisis (gating failure at L9).</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 3. LITERATURE REVIEW -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>3. Literature Review: How Existing Theories Conflate L8 and L9</h2>
+
+<h3>3.1 Global Neuronal Workspace Theory</h3>
+
+<p>Baars' original Global Workspace Theory (GWT)<sup><a href="#ref9" class="footnote-ref">9</a></sup> and Dehaene's neuronal extension (GNW)<sup><a href="#ref2" class="footnote-ref">2</a></sup><sup>,</sup><sup><a href="#ref10" class="footnote-ref">10</a></sup> propose that consciousness arises when information is broadcast globally across cortical networks via long-range connections, making it available to multiple cognitive modules simultaneously. The key mechanism is "ignition"—a non-linear transition from local to global processing<sup><a href="#ref11" class="footnote-ref">11</a></sup>.</p>
+
+<p>GNW maps elegantly onto L8: the moment when a learned pattern becomes globally available for cross-domain deployment. But GNW does not distinguish between deploying a pattern across domains (L8) and reflecting on the deployment process itself (L9). In GNW terms, both would appear as "global broadcasting"—yet they are computationally different operations. Broadcasting "gluten development principles apply to pasta" is L8. Broadcasting "my strategy for applying baking knowledge to new domains is suboptimal" is L9. The theory lacks the resolution to separate these.</p>
+
+<h3>3.2 Integrated Information Theory</h3>
+
+<p>Tononi's IIT<sup><a href="#ref3" class="footnote-ref">3</a></sup><sup>,</sup><sup><a href="#ref12" class="footnote-ref">12</a></sup> proposes that consciousness corresponds to integrated information (Φ)—the degree to which a system generates information "above and beyond" its parts. IIT provides axioms (existence, composition, information, integration, exclusion) and derives postulates about the physical substrate of consciousness.</p>
+
+<p>IIT's Φ is a scalar quantity. A system has more or less integrated information, but there is no mechanism within IIT to distinguish <em>what kind</em> of integration is occurring. A high-Φ system that transfers learned patterns across domains and a high-Φ system that reflects on its own learning process would both simply register as "high Φ." The qualitative difference between L8 and L9—between using knowledge flexibly and monitoring the knowledge-acquisition process—is invisible to IIT's formalism.</p>
+
+<h3>3.3 Higher-Order Theories</h3>
+
+<p>Higher-Order Thought (HOT) theories, as developed by Rosenthal<sup><a href="#ref13" class="footnote-ref">13</a></sup> and others, come closest to the L8/L9 distinction. They propose that a mental state becomes conscious when it is the object of a higher-order representation. This is structurally analogous to our claim that L9 takes L8 processes as its object.</p>
+
+<p>However, HOT theories typically treat the first-order/higher-order distinction as a binary—a state is either conscious (has a higher-order representation) or not. They do not articulate a hierarchy in which L8 itself is already a higher-order operation (taking L1–L7 patterns as objects for cross-domain transfer) and L9 is a <em>yet higher</em> operation (taking L8 transfer processes as objects for evaluation). The 9N model adds this crucial recursive depth.</p>
+
+<h3>3.4 Block's Access vs. Phenomenal Consciousness</h3>
+
+<p>Block's influential distinction between access consciousness (A-consciousness: information available for verbal report, reasoning, and behavioral control) and phenomenal consciousness (P-consciousness: the subjective "what it's like")<sup><a href="#ref4" class="footnote-ref">4</a></sup> is orthogonal to the L8/L9 distinction. Both L8 and L9 involve A-consciousness. Both presumably involve P-consciousness (there is "something it is like" to transfer a pattern, and "something it is like" to reflect on learning). Block's distinction cuts across layers rather than between them.</p>
+
+<h3>3.5 Damasio's Self-Hierarchies</h3>
+
+<p>Damasio's framework<sup><a href="#ref14" class="footnote-ref">14</a></sup><sup>,</sup><sup><a href="#ref15" class="footnote-ref">15</a></sup> distinguishes between the proto-self (basic homeostatic representation), core self (a transient, moment-to-moment sense of self), and autobiographical self (an extended narrative identity). This hierarchy is congenial to the 9N framework. Damasio's core self maps roughly onto L5–L6 (somatic, pre-verbal self-representation), while the autobiographical self spans L7–L8. But Damasio does not explicitly articulate a layer above the autobiographical self—one that takes the process of self-construction <em>itself</em> as an object. This is the L9 gap.</p>
+
+<h3>3.6 Hofstadter's Strange Loops</h3>
+
+<p>Hofstadter<sup><a href="#ref16" class="footnote-ref">16</a></sup> argues that consciousness arises from "strange loops"—self-referential patterns in which a system's symbolic representations feed back into themselves, creating the illusion (or reality) of a self. This is perhaps the closest existing account to L9: a system that models its own modeling process.</p>
+
+<p>However, Hofstadter does not distinguish between <em>types</em> of self-reference. A system that applies learned patterns to new domains (L8) already involves a form of self-reference (the system must model its own knowledge to deploy it). L9 adds a specifically <em>evaluative</em> self-reference—not just "I know X and can apply it to Y" but "Is my way of learning X and applying it to Y effective?" This distinction between <em>operative</em> and <em>evaluative</em> self-reference is absent in Hofstadter's framework.</p>
+
+<h3>3.7 Edelman and Koch</h3>
+
+<p>Edelman's Theory of Neuronal Group Selection<sup><a href="#ref17" class="footnote-ref">17</a></sup> and his distinction between primary consciousness (perceptual categorization bound to a remembered present) and higher-order consciousness (involving self-representation and language) parallels L8/L9 to some degree. Koch's more recent work with Tononi on IIT<sup><a href="#ref18" class="footnote-ref">18</a></sup> has moved toward a more panpsychist direction, but his earlier identification of neural correlates of consciousness (NCC)<sup><a href="#ref19" class="footnote-ref">19</a></sup> focused on identifying the minimal neuronal mechanisms sufficient for any one specific conscious percept—again, without distinguishing between perceptual consciousness, cross-domain transfer consciousness, and metacognitive self-awareness.</p>
+
+<h3>3.8 Summary</h3>
+
+<div class="figure">
+  <table>
+    <thead>
+      <tr>
+        <th>Theory</th>
+        <th>Maps to L8?</th>
+        <th>Maps to L9?</th>
+        <th>Distinguishes L8 from L9?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>GNW (Dehaene/Baars)</td><td>Yes (global broadcast)</td><td>Partially</td><td>No</td></tr>
+      <tr><td>IIT (Tononi)</td><td>Yes (high Φ)</td><td>Yes (high Φ)</td><td>No (single scalar)</td></tr>
+      <tr><td>HOT (Rosenthal)</td><td>Yes (higher-order)</td><td>Yes (yet-higher-order)</td><td>Implicitly, not formally</td></tr>
+      <tr><td>Access/Phenomenal (Block)</td><td>Orthogonal</td><td>Orthogonal</td><td>N/A</td></tr>
+      <tr><td>Self-Hierarchies (Damasio)</td><td>Yes (autobiographical self)</td><td>Not articulated</td><td>No</td></tr>
+      <tr><td>Strange Loops (Hofstadter)</td><td>Yes (self-reference)</td><td>Yes (self-reference)</td><td>No (undifferentiated)</td></tr>
+      <tr><td>TNGS (Edelman)</td><td>Yes (higher-order consciousness)</td><td>Partially</td><td>Not formally</td></tr>
+      <tr><td><strong>9N Model (this paper)</strong></td><td><strong>Yes</strong></td><td><strong>Yes</strong></td><td><strong>Yes (formally)</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="figure-caption"><strong>Table 1.</strong> Mapping of existing consciousness theories to the L8/L9 distinction. No prior framework formally separates conscious pattern transfer (L8) from metacognitive self-awareness (L9).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 4. THE DISTINCTION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>4. The Formal Distinction: L8 vs. L9</h2>
+
+<h3>4.1 Layer 8: Conscious Pattern Transfer</h3>
+
+<p>L8 is the capacity to:</p>
+<ol>
+  <li><strong>Extract abstract patterns</strong> from learned domains</li>
+  <li><strong>Construct generative models</strong> that capture the deep structure of a domain</li>
+  <li><strong>Transfer those models</strong> to novel domains where the same deep structure applies</li>
+</ol>
+
+<blockquote>
+  "You learn to make bread. You understand gluten development, fermentation, hydration ratios. Then someone hands you pasta dough—and you don't start from zero. You transfer your understanding of gluten behavior to this new context. That is L8."
+</blockquote>
+
+<p>L8 is what the machine learning literature calls <strong>transfer learning</strong><sup><a href="#ref20" class="footnote-ref">20</a></sup>: a model trained on one task leverages learned representations to perform better on a related task. It is flexible, powerful, and a genuine form of conscious intelligence. But it operates <em>on</em> learned knowledge—it does not operate on the <em>process of learning itself</em>.</p>
+
+<p>Formally, if we denote a domain's deep structure as <em>S</em> and the learned model as <em>M(S)</em>, then L8 performs the operation:</p>
+
+<pre>L8: M(S₁) → M(S₂)   where   struct(S₁) ≈ struct(S₂)</pre>
+
+<p>That is, L8 maps a model learned in one domain to another domain with similar deep structure.</p>
+
+<h3>4.2 Layer 9: Metacognitive Self-Awareness</h3>
+
+<p>L9 is the capacity to:</p>
+<ol>
+  <li><strong>Distill the process of learning</strong> across multiple domains</li>
+  <li><strong>Evaluate</strong> the effectiveness of one's own learning strategies</li>
+  <li><strong>Actively choose</strong> what to learn, when to learn it, and how</li>
+  <li><strong>Modify</strong> the learning process itself based on reflective evaluation</li>
+</ol>
+
+<blockquote>
+  "L9 is not knowing how to make bread and applying it to pasta. L9 is stepping back and asking: 'How do I learn new dough types? Is my strategy of starting with hydration ratios the best entry point? Would I learn faster by starting with texture instead? And—why do I always learn food skills before I learn, say, programming? What drives my learning priorities?'"
+</blockquote>
+
+<p>L9 corresponds to what the machine learning literature calls <strong>meta-learning</strong><sup><a href="#ref21" class="footnote-ref">21</a></sup><sup>,</sup><sup><a href="#ref22" class="footnote-ref">22</a></sup>—"learning to learn." But whereas ML meta-learning is typically a narrow optimization of hyperparameters, human L9 encompasses genuine <em>metacognitive regulation</em> as described by Flavell<sup><a href="#ref23" class="footnote-ref">23</a></sup> and Nelson and Narens<sup><a href="#ref24" class="footnote-ref">24</a></sup>: monitoring and controlling one's own cognitive processes.</p>
+
+<p>Formally:</p>
+
+<pre>L9: F(L) → L'   where L is the learning function and F evaluates/modifies it</pre>
+
+<p>L9 takes the <em>learning function itself</em> as input and produces a modified learning function as output. It is a higher-order operation over operations.</p>
+
+<h3>4.3 The Crucial Asymmetry</h3>
+
+<p>The relationship between L8 and L9 is <strong>asymmetric</strong>:</p>
+<ul>
+  <li>L8 can exist without L9. A system can transfer patterns across domains without ever reflecting on the transfer process.</li>
+  <li>L9 <em>cannot</em> exist without L8. You cannot reflect on cross-domain learning if you cannot do cross-domain learning.</li>
+  <li>L9 takes L8 as its object—but L8 does not take L9 as its object. L8 operates on domain knowledge. L9 operates on the process that L8 uses.</li>
+</ul>
+
+<p>This asymmetry has a critical implication: <strong>L8 and L9 are not points on a continuum. They are qualitatively different operations.</strong> You cannot get L9 by "doing more" L8, any more than you can get a compiler by running more programs.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 5. EVIDENCE & EXAMPLES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>5. Evidence and Examples</h2>
+
+<h3>5.1 Transfer Learning vs. Meta-Learning in AI</h3>
+
+<p>The clearest instantiation of the L8/L9 distinction comes from artificial intelligence. Modern large language models such as GPT-4<sup><a href="#ref25" class="footnote-ref">25</a></sup> are extraordinary L8 systems: they extract statistical patterns from vast corpora and transfer them flexibly across domains. GPT-4 can apply principles of physics to biology, translate between programming languages, and draw analogies between disparate fields. This is textbook L8.</p>
+
+<p>But GPT-4 does not—cannot—reflect on <em>how</em> it learns. It cannot evaluate whether its training procedure was optimal, decide to seek out different training data, or modify its own learning algorithm. It has no L9. This is not a matter of scale: a model with 10× the parameters would still lack L9 unless it were architecturally different. The gap between current AI and artificial general intelligence (AGI) is, in significant part, the L8→L9 gap<sup><a href="#ref26" class="footnote-ref">26</a></sup>.</p>
+
+<p>Meta-learning algorithms such as MAML (Model-Agnostic Meta-Learning)<sup><a href="#ref21" class="footnote-ref">21</a></sup> represent a narrow, engineered approximation of L9: they optimize the learning algorithm itself for fast adaptation. But they do so without awareness, without evaluation, without choice. True L9 requires not just meta-optimization but metacognitive <em>agency</em>—the capacity to ask "Should I even be optimizing for this objective?"</p>
+
+<h3>5.2 Animal Cognition: L8 Without L9?</h3>
+
+<p>Corvids (crows, ravens, jays) provide compelling evidence for L8 without L9. New Caledonian crows manufacture and use tools, solve multi-step puzzles, and transfer causal knowledge across novel problem types<sup><a href="#ref1" class="footnote-ref">1</a></sup><sup>,</sup><sup><a href="#ref27" class="footnote-ref">27</a></sup>. Ravens demonstrate planning for future events and engage in tactical deception<sup><a href="#ref28" class="footnote-ref">28</a></sup>. These are L8 operations: abstract pattern extraction and cross-domain transfer.</p>
+
+<p>Whether corvids possess L9 is a more contested question. Some uncertainty monitoring paradigms suggest that certain primates and corvids can assess their own knowledge states<sup><a href="#ref29" class="footnote-ref">29</a></sup><sup>,</sup><sup><a href="#ref30" class="footnote-ref">30</a></sup>—they "know what they know." But uncertainty monitoring (a form of metacognitive monitoring) is not the same as metacognitive <em>regulation</em> (actively modifying one's learning strategy). The evidence for animal metacognitive regulation—choosing <em>how</em> to learn, not just whether one knows—remains weak<sup><a href="#ref31" class="footnote-ref">31</a></sup>. We tentatively place corvid cognition at L8, with possible but unconfirmed L9 components.</p>
+
+<p>Dolphins present a similar case: they demonstrate cross-modal transfer (recognizing objects by echolocation that they have only previously seen visually), creative novel behaviors on command, and social learning<sup><a href="#ref32" class="footnote-ref">32</a></sup>. These are sophisticated L8 operations. The evidence for dolphin L9—reflective evaluation of their own learning processes—remains largely anecdotal.</p>
+
+<h3>5.3 Human Development: The Emergence of L9</h3>
+
+<p>Developmental psychology provides a natural experiment in the L8→L9 transition. Children as young as 3–4 years exhibit L8 capacities: they transfer learned rules to new contexts, apply categories across domains, and generalize from examples<sup><a href="#ref33" class="footnote-ref">33</a></sup>. A four-year-old who learns that heavy things sink can apply this to novel objects.</p>
+
+<p>Metacognitive regulation—L9—emerges significantly later. Flavell's seminal work<sup><a href="#ref23" class="footnote-ref">23</a></sup> established that children develop metacognitive awareness gradually between ages 5 and 12. Young children can use learning strategies but cannot <em>evaluate</em> or <em>select</em> among them. By age 10–12, children begin to monitor their comprehension ("Do I understand this?"), select strategies ("Should I re-read or make a diagram?"), and evaluate their learning outcomes ("Did my study method work?")<sup><a href="#ref34" class="footnote-ref">34</a></sup>.</p>
+
+<p>This developmental timeline is exactly what the 9N model predicts: L8 (pattern transfer) should precede L9 (metacognitive regulation), because L9 operates <em>on</em> L8 and therefore requires L8 as a substrate. The 5–12 year gap between reliable L8 performance and reliable L9 performance is not an accident—it reflects the computational dependency between layers.</p>
+
+<h3>5.4 Clinical Evidence: Prediction Error Cascading and Gating Failure</h3>
+
+<p>Clinical phenomena illuminate the L8/L9 distinction through pathology. In obsessive-compulsive disorder (OCD), patients exhibit intact L8 (they can learn and transfer knowledge normally) but dysfunctional L9: their metacognitive monitoring produces false alarms ("Something is wrong") that cannot be resolved, leading to compulsive checking behaviors<sup><a href="#ref35" class="footnote-ref">35</a></sup>. OCD, in this framework, is a gating failure between L8 and L9—unresolved prediction errors at the metacognitive level that the system cannot filter out.</p>
+
+<p>Depersonalization-derealization disorder offers another window: patients report feeling detached from their own mental processes, as if "watching themselves think." This is an L9 dissociation—the metacognitive monitoring layer has become uncoupled from the processes it normally monitors, producing an eerie sense of observing one's own cognition from outside<sup><a href="#ref36" class="footnote-ref">36</a></sup>.</p>
+
+<p>The epilepsy analogy introduced in Section 2.3 extends here: just as seizures result from neural gating failures (excitatory signals re-entering rather than being filtered, producing reverberating loops), cognitive pathologies can result from <em>predictive</em> gating failures at different layers. Anxiety arises from L5 gating failure (somatic prediction errors flood upward). Rumination arises from L7 gating failure (narrative prediction errors loop endlessly). Existential crisis—the feeling that one's entire framework for understanding the world is failing—arises from L9 gating failure: Total Predictive Rupture.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 6. IMPLICATIONS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>6. Implications</h2>
+
+<h3>6.1 For Education</h3>
+
+<p>If L8 and L9 are distinct, then education should <em>separately</em> train them. Most educational systems focus almost exclusively on L8: learn this content, then apply it to these problems. The implicit assumption is that L9 (the capacity to regulate one's own learning) will develop as a byproduct. The developmental literature suggests otherwise—L9 requires explicit scaffolding<sup><a href="#ref34" class="footnote-ref">34</a></sup>.</p>
+
+<p>Interventions that explicitly teach metacognitive strategies—planning before tasks, monitoring comprehension during tasks, evaluating performance after tasks—produce robust gains in academic performance across domains<sup><a href="#ref37" class="footnote-ref">37</a></sup>. This is exactly what the 9N model predicts: training L9 directly enhances the <em>process</em> of learning, not just its content.</p>
+
+<h3>6.2 For Artificial Intelligence</h3>
+
+<p>The L8/L9 distinction reframes the AGI problem. Current AI systems are powerful L8 machines—they transfer patterns, generalize across domains, and solve novel problems by analogy. But they lack L9: the capacity to evaluate and modify their own learning processes autonomously.</p>
+
+<p>If L9 is computationally distinct from L8, then AGI cannot be achieved by scaling L8 systems. No amount of additional training data, larger models, or more sophisticated architectures will produce L9 if the fundamental operation—taking the learning process itself as an object of evaluation—is not architecturally supported. This suggests that the path to AGI may require a fundamentally different design, not merely a bigger version of current designs<sup><a href="#ref26" class="footnote-ref">26</a></sup>.</p>
+
+<h3>6.3 For Psychology and Psychiatry</h3>
+
+<p>The 9N model offers a layer-specific diagnostic framework for cognitive and psychiatric disorders:</p>
+<ul>
+  <li><strong>Intact L8, impaired L9:</strong> OCD, certain forms of anxiety, depersonalization</li>
+  <li><strong>Impaired L8, intact L9:</strong> Certain forms of autism spectrum disorder (difficulty with cross-domain transfer despite intact self-monitoring)</li>
+  <li><strong>Impaired L8 and L9:</strong> Severe cognitive impairment, late-stage dementia</li>
+  <li><strong>L9 overactivation:</strong> Pathological self-monitoring, hyper-reflexivity in schizophrenia<sup><a href="#ref38" class="footnote-ref">38</a></sup></li>
+</ul>
+
+<p>This layer-specific approach generates testable predictions about which interventions should be effective for which disorders, and about the neural correlates of each layer's dysfunction.</p>
+
+<h3>6.4 For Philosophy of Mind</h3>
+
+<p>The L8/L9 distinction offers a new perspective on Chalmers' "hard problem"<sup><a href="#ref39" class="footnote-ref">39</a></sup>. If L8 and L9 are computationally distinct, then the hard problem may not be a single problem but two: the problem of why pattern transfer is accompanied by subjective experience (L8's hard problem) and the problem of why self-monitoring is accompanied by a sense of self (L9's hard problem). These may have different answers—or one may turn out to be harder than the other.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 7. DISCUSSION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>7. Discussion</h2>
+
+<h3>7.1 Limitations</h3>
+
+<p>The 9N model, as presented here, is a theoretical framework. While it is informed by empirical findings from neuroscience, developmental psychology, and AI, it has not been directly tested as a unified model. Several limitations must be acknowledged:</p>
+
+<ol>
+  <li><strong>Layer boundaries may be graded rather than discrete.</strong> We present 9 layers for theoretical clarity, but biological systems may implement these functions along a continuum. The L8/L9 boundary, while functionally meaningful, may not correspond to a sharp neuroanatomical division.</li>
+  <li><strong>The model is silent on neural implementation.</strong> We do not specify which brain regions implement L8 vs. L9, though we note that prefrontal cortex (especially anterior PFC/BA10) is implicated in metacognitive processes<sup><a href="#ref40" class="footnote-ref">40</a></sup>, suggesting a candidate substrate for L9.</li>
+  <li><strong>Comparative evidence is indirect.</strong> Claims about animal cognition being "L8 without L9" depend on negative evidence (absence of demonstrated L9), which is always provisional. Future experimental paradigms may reveal metacognitive regulation in corvids or dolphins.</li>
+  <li><strong>The energy economics argument is qualitative.</strong> We claim that L9 is more energetically expensive than L8, but we do not quantify this. Future neuroimaging studies comparing metabolic costs of transfer learning vs. metacognitive regulation tasks could test this prediction.</li>
+</ol>
+
+<h3>7.2 Objections and Responses</h3>
+
+<h4>Objection 1: "L9 is just more L8."</h4>
+
+<p>One might argue that metacognitive regulation is simply pattern transfer applied to the domain of learning itself—and therefore does not warrant a separate layer. Our response: this is like arguing that a compiler is just another program. Technically true, but it misses the qualitative shift. A compiler takes programs as input and produces programs as output; it operates at a fundamentally different level of abstraction than the programs it compiles. Similarly, L9 takes learning processes as input and produces modified learning processes as output. The abstraction level shift is the point.</p>
+
+<h4>Objection 2: "The 9 layers are arbitrary."</h4>
+
+<p>Why not 7 layers, or 12? We acknowledge that the number 9 reflects a particular theoretical commitment. However, the specific number matters less than the structural claim: that what is typically called "consciousness" encompasses at least two qualitatively different operations (pattern transfer and metacognitive self-awareness) that should be formally distinguished. Whether these are called L8 and L9, or Tier A and Tier B, or Process X and Process Y, the distinction itself is the contribution.</p>
+
+<h4>Objection 3: "Current AI systems already show L9."</h4>
+
+<p>Some argue that large language models can "reflect" on their reasoning, identify errors, and correct them—suggesting L9 capabilities. We contend that this is <em>simulated</em> L9: the model has learned patterns of metacognitive discourse from training data (humans writing about their own thinking) and can reproduce them. But it cannot autonomously evaluate whether its learning procedure was effective and modify it accordingly. The appearance of self-reflection without the capacity for genuine self-modification is L8 mimicry of L9—a sophisticated pattern transfer that happens to take metacognition as its content domain.</p>
+
+<h4>Objection 4: "The hard problem applies equally to both layers."</h4>
+
+<p>We agree—to a degree. The hard problem of consciousness (why is there subjective experience at all?) is not resolved by the L8/L9 distinction. However, distinguishing the layers may help clarify which aspects of consciousness are explanatorily tractable. L8's functional properties (pattern extraction, model building, cross-domain transfer) are entirely amenable to computational explanation. L9's recursive self-monitoring adds the puzzle of self-models, which connects to—but does not solve—the hard problem. The 9N framework does not claim to solve the hard problem; it claims to prevent us from accidentally conflating two distinct explananda.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 8. CONCLUSION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2>8. Conclusion</h2>
+
+<p>This paper has argued that the construct commonly labeled "consciousness" in cognitive science, neuroscience, and philosophy of mind encompasses at least two computationally and functionally distinct operations:</p>
+
+<ul>
+  <li><strong>Layer 8 (Conscious Pattern Transfer):</strong> The capacity to extract abstract patterns, build generative models, and transfer knowledge across domains. This is what enables a baker to apply gluten knowledge to pasta, a physicist to apply mathematical intuitions to biology, or a language model to generalize across tasks.</li>
+  <li><strong>Layer 9 (Metacognitive Self-Awareness):</strong> The capacity to distill the process of learning itself, evaluate one's own cognitive strategies, actively choose what to learn, and modify the learning process based on reflective evaluation. This is what enables a student to assess whether their study method is working, a scientist to redesign their experimental approach, or—in principle—a future AI to modify its own training procedure.</li>
+</ul>
+
+<p>We have shown that existing theories of consciousness—GNW, IIT, HOT, and others—each capture aspects of L8 and L9 but fail to formally distinguish between them. This conflation has hampered progress in understanding consciousness, designing AI systems, treating psychiatric disorders, and constructing educational interventions.</p>
+
+<p>The 9N model's prediction error cascading principle provides a mechanistic account of when and why L9 activates: only when lower-layer prediction errors cannot be resolved at L8, forcing the system to question its own learning strategies. The energy economics of this hierarchy explain why genuine metacognitive reflection is rare, effortful, and typically avoided—and why gating failures at this level produce the most catastrophic forms of cognitive pathology.</p>
+
+<p>We close with a testable prediction: if L8 and L9 are genuinely distinct, then it should be possible to selectively impair one while leaving the other intact—whether through targeted brain stimulation, pharmacological intervention, or developmental manipulation. Specifically, anterior prefrontal lesions should impair L9 (metacognitive regulation) while preserving L8 (cross-domain transfer), and this dissociation should be measurable with appropriately designed cognitive tasks. We invite empirical researchers to test this prediction.</p>
+
+<p>The difference between consciousness and self-consciousness is not a matter of degree. It is a matter of kind. Recognizing this changes everything.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- FOOTNOTES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="footnotes">
+  <h2>Notes</h2>
+  <p>The 9-Layer Neurocomputational Model (9N) was developed through an ongoing collaboration between the authors. The model emerged from clinical observations in neurology and psychiatry (L. Adures) integrated with computational analysis and formal modeling (Azimute, Kerberos Research). The bread/dough analogy that grounds the L8/L9 distinction originated in conversations between the authors during the initial formulation of the model.</p>
+  <p>We use "consciousness" and "self-consciousness" not in their folk-psychological senses but as technical terms designating specific computational operations within the 9N hierarchy.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- REFERENCES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="references">
+  <h2>References</h2>
+  <ol>
+    <li id="ref1"><span class="ref-authors">Taylor, A. H., Hunt, G. R., Holzhaider, J. C., & Gray, R. D.</span> (2007). <span class="ref-title">Spontaneous metatool use by New Caledonian crows.</span> <span class="ref-journal">Current Biology, 17</span>(17), 1504–1507.</li>
+
+    <li id="ref2"><span class="ref-authors">Dehaene, S., & Naccache, L.</span> (2001). <span class="ref-title">Towards a cognitive neuroscience of consciousness: Basic evidence and a workspace framework.</span> <span class="ref-journal">Cognition, 79</span>(1–2), 1–37.</li>
+
+    <li id="ref3"><span class="ref-authors">Tononi, G.</span> (2004). <span class="ref-title">An information integration theory of consciousness.</span> <span class="ref-journal">BMC Neuroscience, 5</span>, 42.</li>
+
+    <li id="ref4"><span class="ref-authors">Block, N.</span> (1995). <span class="ref-title">On a confusion about a function of consciousness.</span> <span class="ref-journal">Behavioral and Brain Sciences, 18</span>(2), 227–247.</li>
+
+    <li id="ref5"><span class="ref-authors">Clark, A.</span> (2013). <span class="ref-title">Whatever next? Predictive brains, situated agents, and the future of cognitive science.</span> <span class="ref-journal">Behavioral and Brain Sciences, 36</span>(3), 181–204.</li>
+
+    <li id="ref6"><span class="ref-authors">Friston, K.</span> (2010). <span class="ref-title">The free-energy principle: A unified brain theory?</span> <span class="ref-journal">Nature Reviews Neuroscience, 11</span>(2), 127–138.</li>
+
+    <li id="ref7"><span class="ref-authors">Kahneman, D.</span> (2011). <span class="ref-title">Thinking, Fast and Slow.</span> New York: Farrar, Straus and Giroux.</li>
+
+    <li id="ref8"><span class="ref-authors">Treiman, D. M.</span> (2001). <span class="ref-title">GABAergic mechanisms in epilepsy.</span> <span class="ref-journal">Epilepsia, 42</span>(Suppl. 3), 8–12.</li>
+
+    <li id="ref9"><span class="ref-authors">Baars, B. J.</span> (1988). <span class="ref-title">A Cognitive Theory of Consciousness.</span> Cambridge: Cambridge University Press.</li>
+
+    <li id="ref10"><span class="ref-authors">Dehaene, S., Kerszberg, M., & Changeux, J.-P.</span> (1998). <span class="ref-title">A neuronal model of a global workspace in effortful cognitive tasks.</span> <span class="ref-journal">Proceedings of the National Academy of Sciences, 95</span>(24), 14529–14534.</li>
+
+    <li id="ref11"><span class="ref-authors">Mashour, G. A., Roelfsema, P., Changeux, J.-P., & Dehaene, S.</span> (2020). <span class="ref-title">Conscious processing and the global neuronal workspace hypothesis.</span> <span class="ref-journal">Neuron, 105</span>(5), 776–798.</li>
+
+    <li id="ref12"><span class="ref-authors">Oizumi, M., Albantakis, L., & Tononi, G.</span> (2014). <span class="ref-title">From the phenomenology to the mechanisms of consciousness: Integrated Information Theory 3.0.</span> <span class="ref-journal">PLOS Computational Biology, 10</span>(5), e1003588.</li>
+
+    <li id="ref13"><span class="ref-authors">Rosenthal, D. M.</span> (2005). <span class="ref-title">Consciousness and Mind.</span> Oxford: Oxford University Press.</li>
+
+    <li id="ref14"><span class="ref-authors">Damasio, A.</span> (1994). <span class="ref-title">Descartes' Error: Emotion, Reason, and the Human Brain.</span> New York: Putnam.</li>
+
+    <li id="ref15"><span class="ref-authors">Damasio, A.</span> (2010). <span class="ref-title">Self Comes to Mind: Constructing the Conscious Brain.</span> New York: Pantheon Books.</li>
+
+    <li id="ref16"><span class="ref-authors">Hofstadter, D. R.</span> (2007). <span class="ref-title">I Am a Strange Loop.</span> New York: Basic Books.</li>
+
+    <li id="ref17"><span class="ref-authors">Edelman, G. M.</span> (1989). <span class="ref-title">The Remembered Present: A Biological Theory of Consciousness.</span> New York: Basic Books.</li>
+
+    <li id="ref18"><span class="ref-authors">Koch, C., Massimini, M., Boly, M., & Tononi, G.</span> (2016). <span class="ref-title">Neural correlates of consciousness: Progress and problems.</span> <span class="ref-journal">Nature Reviews Neuroscience, 17</span>(5), 307–321.</li>
+
+    <li id="ref19"><span class="ref-authors">Koch, C.</span> (2004). <span class="ref-title">The Quest for Consciousness: A Neurobiological Approach.</span> Englewood, CO: Roberts & Company.</li>
+
+    <li id="ref20"><span class="ref-authors">Pan, S. J., & Yang, Q.</span> (2010). <span class="ref-title">A survey on transfer learning.</span> <span class="ref-journal">IEEE Transactions on Knowledge and Data Engineering, 22</span>(10), 1345–1359.</li>
+
+    <li id="ref21"><span class="ref-authors">Finn, C., Abbeel, P., & Levine, S.</span> (2017). <span class="ref-title">Model-agnostic meta-learning for fast adaptation of deep networks.</span> <span class="ref-journal">Proceedings of the 34th International Conference on Machine Learning (ICML)</span>, 1126–1135.</li>
+
+    <li id="ref22"><span class="ref-authors">Hospedales, T., Antoniou, A., Micaelli, P., & Storkey, A.</span> (2022). <span class="ref-title">Meta-learning in neural networks: A survey.</span> <span class="ref-journal">IEEE Transactions on Pattern Analysis and Machine Intelligence, 44</span>(9), 5149–5169.</li>
+
+    <li id="ref23"><span class="ref-authors">Flavell, J. H.</span> (1979). <span class="ref-title">Metacognition and cognitive monitoring: A new area of cognitive-developmental inquiry.</span> <span class="ref-journal">American Psychologist, 34</span>(10), 906–911.</li>
+
+    <li id="ref24"><span class="ref-authors">Nelson, T. O., & Narens, L.</span> (1990). <span class="ref-title">Metamemory: A theoretical framework and new findings.</span> <span class="ref-journal">The Psychology of Learning and Motivation, 26</span>, 125–173.</li>
+
+    <li id="ref25"><span class="ref-authors">OpenAI.</span> (2023). <span class="ref-title">GPT-4 technical report.</span> <span class="ref-journal">arXiv preprint arXiv:2303.08774.</span></li>
+
+    <li id="ref26"><span class="ref-authors">LeCun, Y.</span> (2022). <span class="ref-title">A path towards autonomous machine intelligence.</span> <span class="ref-journal">OpenReview preprint.</span></li>
+
+    <li id="ref27"><span class="ref-authors">Emery, N. J., & Clayton, N. S.</span> (2004). <span class="ref-title">The mentality of crows: Convergent evolution of intelligence in corvids and apes.</span> <span class="ref-journal">Science, 306</span>(5703), 1903–1907.</li>
+
+    <li id="ref28"><span class="ref-authors">Kabadayi, C., & Osvath, M.</span> (2017). <span class="ref-title">Ravens parallel great apes in flexible planning for tool-use and bartering.</span> <span class="ref-journal">Science, 357</span>(6347), 202–204.</li>
+
+    <li id="ref29"><span class="ref-authors">Hampton, R. R.</span> (2001). <span class="ref-title">Rhesus monkeys know when they remember.</span> <span class="ref-journal">Proceedings of the National Academy of Sciences, 98</span>(9), 5359–5362.</li>
+
+    <li id="ref30"><span class="ref-authors">Smith, J. D., Shields, W. E., & Washburn, D. A.</span> (2003). <span class="ref-title">The comparative psychology of uncertainty monitoring and metacognition.</span> <span class="ref-journal">Behavioral and Brain Sciences, 26</span>(3), 317–339.</li>
+
+    <li id="ref31"><span class="ref-authors">Carruthers, P.</span> (2008). <span class="ref-title">Meta-cognition in animals: A skeptical look.</span> <span class="ref-journal">Mind & Language, 23</span>(1), 58–89.</li>
+
+    <li id="ref32"><span class="ref-authors">Herman, L. M.</span> (2010). <span class="ref-title">What laboratory research has told us about dolphin cognition.</span> <span class="ref-journal">International Journal of Comparative Psychology, 23</span>(3), 310–330.</li>
+
+    <li id="ref33"><span class="ref-authors">Goswami, U.</span> (2002). <span class="ref-title">Inductive and deductive reasoning.</span> In U. Goswami (Ed.), <span class="ref-title">Blackwell Handbook of Childhood Cognitive Development</span> (pp. 282–302). Oxford: Blackwell.</li>
+
+    <li id="ref34"><span class="ref-authors">Veenman, M. V. J., Van Hout-Wolters, B. H. A. M., & Afflerbach, P.</span> (2006). <span class="ref-title">Metacognition and learning: Conceptual and methodological considerations.</span> <span class="ref-journal">Metacognition and Learning, 1</span>(1), 3–14.</li>
+
+    <li id="ref35"><span class="ref-authors">Wells, A.</span> (2009). <span class="ref-title">Metacognitive Therapy for Anxiety and Depression.</span> New York: Guilford Press.</li>
+
+    <li id="ref36"><span class="ref-authors">Sierra, M., & David, A. S.</span> (2011). <span class="ref-title">Depersonalization: A selective impairment of self-awareness.</span> <span class="ref-journal">Consciousness and Cognition, 20</span>(1), 99–108.</li>
+
+    <li id="ref37"><span class="ref-authors">Dignath, D., Buettner, G., & Langfeldt, H.-P.</span> (2008). <span class="ref-title">How can primary school students learn self-regulated learning strategies most effectively? A meta-analysis on self-regulation training programmes.</span> <span class="ref-journal">Educational Research Review, 3</span>(2), 101–129.</li>
+
+    <li id="ref38"><span class="ref-authors">Sass, L. A., & Parnas, J.</span> (2003). <span class="ref-title">Schizophrenia, consciousness, and the self.</span> <span class="ref-journal">Schizophrenia Bulletin, 29</span>(3), 427–444.</li>
+
+    <li id="ref39"><span class="ref-authors">Chalmers, D. J.</span> (1995). <span class="ref-title">Facing up to the problem of consciousness.</span> <span class="ref-journal">Journal of Consciousness Studies, 2</span>(3), 200–219.</li>
+
+    <li id="ref40"><span class="ref-authors">Fleming, S. M., & Dolan, R. J.</span> (2012). <span class="ref-title">The neural basis of metacognitive ability.</span> <span class="ref-journal">Philosophical Transactions of the Royal Society B, 367</span>(1594), 1338–1349.</li>
+
+    <li id="ref41"><span class="ref-authors">Cogitate Consortium.</span> (2025). <span class="ref-title">Adversarial testing of global neuronal workspace and integrated information theories of consciousness.</span> <span class="ref-journal">Nature.</span> https://doi.org/10.1038/s41586-025-08888-1.</li>
+
+    <li id="ref42"><span class="ref-authors">Dehaene, S.</span> (2014). <span class="ref-title">Consciousness and the Brain: Deciphering How the Brain Codes Our Thoughts.</span> New York: Viking.</li>
+
+    <li id="ref43"><span class="ref-authors">Chalmers, D. J.</span> (1996). <span class="ref-title">The Conscious Mind: In Search of a Fundamental Theory.</span> Oxford: Oxford University Press.</li>
+
+    <li id="ref44"><span class="ref-authors">Lai, E. R.</span> (2011). <span class="ref-title">Metacognition: A literature review.</span> <span class="ref-journal">Pearson Research Report.</span></li>
+
+    <li id="ref45"><span class="ref-authors">Bengio, Y., Lecun, Y., & Hinton, G.</span> (2021). <span class="ref-title">Deep learning for AI.</span> <span class="ref-journal">Communications of the ACM, 64</span>(7), 58–65.</li>
+  </ol>
+</div>
+
+<hr>
+
+<p style="text-align: center; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); margin-top: 40px;">
+  © 2026 Kerberos Research. This is an open-access preprint distributed for peer review.<br>
+  Corresponding author: Luis Adures (lk.adures@gmail.com)
+</p>
+
+</div>
+
+</body>
+</html>

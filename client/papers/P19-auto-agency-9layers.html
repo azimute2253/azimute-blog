@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defining Auto-Agency Through the 9-Neuron Framework: Beyond Reactivity, Rationality, and Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117; --bg-secondary: #161b22; --bg-tertiary: #1c2129;
+    --accent: #58a6ff; --accent-dim: #388bfd40;
+    --text-primary: #e6edf3; --text-secondary: #8b949e; --text-muted: #6e7681;
+    --border: #30363d; --highlight: #f0883e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-primary); color: var(--text-primary); font-family: 'IBM Plex Serif', Georgia, serif; font-size: 17px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .paper-container { max-width: 820px; margin: 0 auto; padding: 60px 40px 100px; }
+  .title-page { text-align: center; padding: 80px 0 60px; border-bottom: 1px solid var(--border); margin-bottom: 50px; }
+  .journal-name { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 40px; }
+  .paper-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.3; color: var(--text-primary); margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; }
+  .authors { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; color: var(--text-secondary); margin-bottom: 8px; }
+  .affiliations { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 30px; }
+  .correspondence { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-muted); margin-bottom: 30px; }
+  .received-date { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; color: var(--text-muted); }
+  h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 600; color: var(--text-primary); margin-top: 50px; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid var(--accent-dim); }
+  h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-primary); margin-top: 35px; margin-bottom: 12px; }
+  h4 { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; font-weight: 600; color: var(--accent); margin-top: 25px; margin-bottom: 10px; }
+  p { margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .abstract-box { background: var(--bg-secondary); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 6px; padding: 30px 35px; margin: 30px 0 40px; }
+  .abstract-box h2 { margin-top: 0; border-bottom: none; padding-bottom: 0; margin-bottom: 15px; }
+  .abstract-label { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+  .keywords { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; color: var(--text-secondary); margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); }
+  .keywords strong { color: var(--text-primary); }
+  table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 15px; }
+  th { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg-tertiary); color: var(--accent); padding: 12px 15px; text-align: left; font-weight: 600; font-size: 14px; border-bottom: 2px solid var(--accent-dim); }
+  td { padding: 10px 15px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: var(--bg-secondary); }
+  blockquote { border-left: 3px solid var(--highlight); background: rgba(240, 136, 62, 0.06); padding: 15px 20px; margin: 25px 0; font-style: italic; color: var(--text-secondary); border-radius: 0 6px 6px 0; }
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 14px; background: var(--bg-secondary); padding: 2px 6px; border-radius: 3px; color: var(--accent); }
+  pre { font-family: 'IBM Plex Mono', monospace; font-size: 14px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin: 20px 0; overflow-x: auto; line-height: 1.6; color: var(--text-primary); }
+  .references { margin-top: 50px; }
+  .references ol { padding-left: 30px; font-size: 14px; line-height: 1.7; color: var(--text-secondary); }
+  .references li { margin-bottom: 10px; padding-left: 5px; }
+  .references li .ref-authors { color: var(--text-primary); }
+  .references li .ref-title { font-style: italic; }
+  .references li .ref-journal { color: var(--accent); }
+  .figure { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 25px; margin: 30px 0; text-align: center; }
+  .figure-caption { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; color: var(--text-secondary); margin-top: 15px; text-align: left; }
+  .figure-caption strong { color: var(--accent); }
+  ul, ol { margin-bottom: 16px; padding-left: 25px; }
+  li { margin-bottom: 6px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  sup { font-size: 0.7em; }
+  @media (max-width: 768px) { .paper-container { padding: 30px 20px 60px; } .paper-title { font-size: 24px; } body { font-size: 16px; } }
+  @media print { body { background: white; color: #111; font-size: 12pt; } .paper-container { max-width: 100%; padding: 0; } }
+</style>
+</head>
+<body>
+
+<div class="paper-container">
+
+<div class="title-page">
+  <div class="journal-name">Kerberos Research · Working Paper Series · 2026</div>
+  <h1 class="paper-title">Defining Auto-Agency Through the 9-Neuron Framework: Beyond Reactivity, Rationality, and Learning</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> &amp; Azimute<sup>2</sup></div>
+  <div class="affiliations">
+    <sup>1</sup> Faculdade de Medicina &nbsp;|&nbsp; <sup>2</sup> Kerberos Research
+  </div>
+  <div class="correspondence">Correspondence: luis@kerberos.research</div>
+  <div class="received-date">Working Paper · February 2026</div>
+</div>
+
+<!-- ABSTRACT -->
+<div class="abstract-box">
+  <p class="abstract-label">Abstract</p>
+  <p>
+    Agency—the capacity to act as an autonomous originator of action rather than a passive responder to environmental stimuli—is a central concept in philosophy, psychology, and biology. Yet existing definitions of agency are either too broad (encompassing thermostat-like feedback systems) or too narrow (requiring human-like conscious deliberation). We propose a precise, testable definition of agency grounded in the 9-Neuron (9N) predictive processing framework. We distinguish five pseudo-agency modes—reactivity (L1-L3), survival-driven behavior (L4), conditioned response (L5-L6), rational deliberation (L7), and adaptive learning (L8)—from genuine <em>auto-agency</em>, which we define as L9: the capacity to consciously choose one's own process of learning, including the choice to do nothing. We show that this definition resolves longstanding debates in the agency literature (Bandura, 1989; Frankfurt, 1971; Bratman, 1987; Dennett, 2003; Barandiaran et al., 2009) by locating agency not in any particular type of action but in the recursive meta-control of the processing architecture itself. We propose a testable Agency Depth Index (ADI) that measures the highest layer at which an agent can sustain deliberate processing modification, and present preliminary criteria for empirical validation. The framework's central insight is captured in a single proposition: "Agency isn't about doing—it's about choosing, including choosing nothing."
+  </p>
+  <div class="keywords">
+    <strong>Keywords:</strong> agency, auto-agency, free will, self-determination, predictive processing, meta-cognition, Layer 9, 9-Neuron framework, second-order desires, planning agency
+  </div>
+</div>
+
+<!-- 1. INTRODUCTION -->
+<h2>1. Introduction</h2>
+
+<p>
+  Few concepts in the human sciences are as frequently invoked and as poorly defined as "agency." In psychology, agency refers to the sense of being the initiator of one's own actions (Bandura, 1989, 2001). In philosophy, it denotes the capacity for intentional action (Davidson, 1963) or the possession of second-order desires about one's first-order desires (Frankfurt, 1971). In biology, agency is attributed to any system that can be described as acting on its own behalf (Barandiaran et al., 2009). In artificial intelligence, agency refers to systems that perceive and act upon their environments (Russell &amp; Norvig, 2020).
+</p>
+
+<p>
+  The problem with this multiplicity of definitions is that they conflate qualitatively different phenomena under a single label. A thermostat "acts" to maintain temperature, but it is not an agent in the way that a deliberating human is. A rat navigating a maze demonstrates purposive behavior, but its agency differs from that of a scientist designing the maze. A chess-playing algorithm selects moves to maximize a value function, but it cannot question whether chess is worth playing. These are not differences in degree but differences in <em>kind</em>—and existing frameworks of agency do not clearly articulate what the relevant kinds are.
+</p>
+
+<p>
+  The 9-Neuron (9N) framework (Adures &amp; Azimute, 2026a) provides the resolution. By distinguishing nine hierarchically organized layers of predictive processing, the framework maps the full spectrum of agency-like phenomena onto specific processing depths, reserving the term <em>auto-agency</em> for the single capacity that no lower layer can replicate: the recursive ability to choose one's own process of choosing. This paper develops this proposal in detail.
+</p>
+
+<h3>1.1 The Problem of Agency Inflation</h3>
+
+<p>
+  Contemporary discourse suffers from what we term <em>agency inflation</em>: the progressive extension of the term "agency" to systems that merely respond to environmental stimuli in sophisticated ways. This inflation is particularly acute in AI research, where any system with a perception-action loop is routinely described as an "agent" (Wooldridge &amp; Jennings, 1995). But it also pervades psychology, where the term "agentic behavior" is applied to any self-initiated action, regardless of the processing depth that generates it.
+</p>
+
+<p>
+  Agency inflation matters because it obscures the critical distinction between systems that are <em>driven</em> and systems that <em>drive themselves</em>. A stimulus-response organism is driven by its environment. A reward-maximizing algorithm is driven by its value function. A culturally socialized human may be driven by internalized norms they have never examined. In each case, the system produces purposive behavior, but the source of purpose lies outside the system's meta-cognitive reach. True agency, we argue, requires that the source of purpose itself become an object of recursive reflection—which is precisely what L9 processing provides.
+</p>
+
+<!-- 2. FIVE MODES OF PSEUDO-AGENCY -->
+<h2>2. Five Modes of Pseudo-Agency</h2>
+
+<p>
+  Before defining genuine auto-agency, we must clearly distinguish it from the modes of behavior that <em>resemble</em> agency but lack its essential characteristic. The 9N framework identifies five such modes, each corresponding to a range of processing layers.
+</p>
+
+<h3>2.1 Reactive Agency (L1-L3): Stimulus-Driven Response</h3>
+
+<p>
+  At the lowest levels, organisms respond to environmental stimuli through hard-wired or learned sensorimotor mappings. A hand withdrawal from a hot surface (L1 nociception → L2 spinal reflex → L3 body-state update) is purposive—it serves the organism's survival—but is not agentive in any meaningful sense. The "choice" is pre-determined by the processing architecture; the organism does not select the response from alternatives.
+</p>
+
+<p>
+  Even sophisticated sensorimotor behavior (catching a ball, navigating familiar terrain, executing practiced motor sequences) operates at this level. The processing is complex, but the agent does not deliberate about whether to process. Gibson's (1979) affordance theory captures this well: the environment specifies the available actions, and the organism responds to affordances without meta-cognitive mediation. This is <em>being acted upon by the environment through one's own body</em>—not acting upon the environment from a position of deliberate choice.
+</p>
+
+<h3>2.2 Survival Agency (L4): Homeostatic Drive</h3>
+
+<p>
+  At L4, behavior is organized around homeostatic maintenance: seeking food when hungry, shelter when cold, safety when threatened. This produces purposive, goal-directed behavior that can appear highly agentic—a starving animal will navigate complex environments, overcome obstacles, and persist in the face of setbacks to obtain food. But the goal is not chosen; it is <em>given</em> by the homeostatic deviation. The animal does not decide to value food—its processing architecture compels the value.
+</p>
+
+<p>
+  L4 pseudo-agency is relevant to human behavior more than is commonly acknowledged. Much of what passes for deliberate choice in everyday life is L4-driven: career choices motivated by financial security (economic homeostasis), relationship choices motivated by attachment needs (social homeostasis), lifestyle choices motivated by comfort-seeking (physiological homeostasis). The individual may construct L7 rationalizations for these choices ("I chose this career because of its intellectual stimulation"), but the underlying driver is often L4 homeostatic pressure that the individual has not recursively examined.
+</p>
+
+<h3>2.3 Conditioned Agency (L5-L6): Learned Valence and Pattern Following</h3>
+
+<p>
+  At L5-L6, behavior is shaped by learned emotional associations (L5: "this feels good/bad") and cultural patterns (L6: "this is how things are done"). The agent acts in accordance with internalized values and norms, which may feel like free choice but are in fact the output of conditioning processes. Bourdieu's (1984) concept of <em>habitus</em> captures this precisely: the socially conditioned dispositions that generate practice without conscious deliberation.
+</p>
+
+<p>
+  L5-L6 pseudo-agency is perhaps the most common mode of human behavior. The person who "chooses" to follow a career path that their social milieu values, who "decides" to adopt political views that align with their group identity, who "prefers" aesthetic experiences that their culture has taught them to prefer, is operating at L5-L6. Their behavior is intentional and internally motivated, but the intentions and motivations themselves are products of conditioning that has not been recursively examined.
+</p>
+
+<h3>2.4 Rational Agency (L7): Deliberative Choice</h3>
+
+<p>
+  At L7, the agent engages in explicit reasoning about alternatives. This is the level most commonly associated with "agency" in philosophical and psychological discourse. The L7 agent can consider multiple courses of action, evaluate them against criteria, and select the one that best satisfies their objectives. Bratman's (1987) concept of "planning agency"—the capacity to form and execute plans that extend over time—captures L7 agency well.
+</p>
+
+<p>
+  L7 rational agency is genuine in the sense that the agent deliberates and selects from alternatives. But it is <em>not</em> auto-agency, because the criteria by which alternatives are evaluated are themselves not chosen at L7. The L7 agent can reason about <em>means</em> with extraordinary sophistication, but the <em>ends</em> that guide reasoning are inherited from lower layers (L4 survival needs, L5 emotional valence, L6 cultural values) and are typically not themselves objects of deliberation. The brilliant strategist who optimizes for wealth is exercising L7 agency, but the value of wealth is given by L4-L5, not chosen at L7.
+</p>
+
+<p>
+  This is the critical limitation that Frankfurt (1971) identified in his seminal paper on free will. Frankfurt distinguished between first-order desires (wanting X) and second-order desires (wanting to want X). An agent with only first-order desires—no matter how rational—is not free, because they cannot evaluate their own desires. Freedom requires the capacity for second-order desire formation: the ability to reflect on one's desires and choose which desires to endorse or resist. In 9N terms, first-order desires operate at L4-L6, while second-order desires require at least L8 processing.
+</p>
+
+<h3>2.5 Learning Agency (L8): Conscious Self-Modification</h3>
+
+<p>
+  At L8, the agent becomes consciously aware of their own processing and can deliberately modify it. This is the level of metacognition (Flavell, 1979), executive function (Miyake et al., 2000), and deliberate practice (Ericsson et al., 1993). The L8 agent can identify patterns in their own behavior, recognize biases, and implement corrective strategies. They can "learn how to learn"—a significant advance over L7, which learns within fixed frameworks.
+</p>
+
+<p>
+  L8 approaches genuine agency more closely than any lower layer, but it still falls short of auto-agency. The L8 agent can modify their processing, but they do so in service of goals that are taken as given. The meditator who trains attention, the athlete who develops new skills, the therapist who identifies and restructures cognitive distortions—all are exercising L8 learning agency. But the decision about <em>what</em> to learn, <em>why</em> to learn it, and whether to learn at all is typically driven by L5-L7 goals (emotional satisfaction, cultural success, rational optimization) rather than by a recursive examination of the learning process itself.
+</p>
+
+<p>
+  The distinction between L8 and L9 is subtle but critical. L8 asks: "How can I learn more effectively?" L9 asks: "Why am I learning this? What is the learning itself in service of? Do I endorse the meta-goal that makes this learning seem worthwhile? And do I endorse the process by which I arrived at that meta-goal?" L9 applies recursion all the way down—and all the way up.
+</p>
+
+<!-- 3. AUTO-AGENCY DEFINED: L9 -->
+<h2>3. Auto-Agency Defined: L9 Recursive Self-Determination</h2>
+
+<h3>3.1 The Definition</h3>
+
+<blockquote>
+  <strong>Auto-Agency (L9):</strong> The capacity to consciously choose one's own process of choosing—to recursively determine the goals, values, and meta-strategies that govern one's own learning and behavior, including the capacity to choose not to act, not to learn, and not to optimize.
+</blockquote>
+
+<p>
+  This definition has several critical features:
+</p>
+
+<p>
+  <strong>Recursion:</strong> Auto-agency is not merely choosing, but choosing the process by which one chooses. It is not merely learning, but choosing what to learn and whether to learn. It operates at the level of the processing architecture itself, not at the level of any particular output.
+</p>
+
+<p>
+  <strong>Inclusiveness of inaction:</strong> "Agency isn't about doing—it's about choosing, including choosing nothing." The capacity to deliberately refrain from action, to resist the compulsion to optimize, to sit with uncertainty without resolving it—these are expressions of auto-agency that no lower layer can produce. L4 compels action (homeostatic drive). L5-L6 compels conformity (emotional and cultural pressure). L7 compels optimization (rational evaluation of alternatives). Only L9 can choose to suspend all of these compulsions and simply <em>be</em>—not from apathy (which is L4/L5 failure) but from recursive self-awareness that recognizes the compulsions as processing outputs rather than imperatives.
+</p>
+
+<p>
+  <strong>Self-determination of values:</strong> Unlike L7 agency, which operates within given value frameworks, and L8 agency, which modifies processing within given goals, L9 auto-agency can evaluate and modify the value frameworks themselves. This is what Frankfurt (1971) was reaching for with second-order desires, but it goes further: L9 includes third-order, fourth-order, and ultimately infinite-order reflection—awareness of awareness of awareness, without termination at any fixed point.
+</p>
+
+<h3>3.2 Resolving the Free Will Debate</h3>
+
+<p>
+  The 9N framework dissolves rather than resolves the traditional free will debate. Determinists (e.g., Harris, 2012) are correct that behavior at L1-L8 is determined by prior causes (biological architecture, environmental conditioning, learned patterns). Compatibilists (e.g., Dennett, 2003) are correct that meaningful choice exists within this deterministic framework—L7 rational deliberation is genuine choice, even if the deliberative process is itself causally determined. Libertarians about free will are correct that there is <em>something</em> qualitatively different about the highest forms of human agency that resists reduction to mere causation.
+</p>
+
+<p>
+  The 9N resolution: L9 auto-agency is not acausal (it does not violate physical determinism) but it is <em>self-causal</em> in a meaningful computational sense. At L9, the processing system takes its own causal history as an object of recursive reflection and can modify the weighting, salience, and direction of its own processing based on that reflection. The modification is itself caused (by the L9 processing), but the cause includes the system's model of its own causation—creating a causal loop that is functionally indistinguishable from self-determination even within a deterministic framework.
+</p>
+
+<p>
+  Dennett's (2003) concept of "freedom evolves" captures part of this: increasingly sophisticated processing produces increasingly genuine freedom. But Dennett stops too early—he equates freedom with L7 rational deliberation. The 9N framework extends the analysis: freedom is not fully realized until processing reaches L9, at which point the agent can reflect on the very process of rational deliberation itself and choose whether to endorse it.
+</p>
+
+<h3>3.3 Bandura's Agentic Capacities Mapped</h3>
+
+<p>
+  Albert Bandura (1989, 2001, 2006) identified four core properties of human agency: intentionality, forethought, self-reactiveness, and self-reflectiveness. These map cleanly onto the 9N framework:
+</p>
+
+<table>
+  <tr>
+    <th>Bandura's Property</th>
+    <th>9N Layer</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Intentionality</td>
+    <td>L7</td>
+    <td>Forming action plans and strategies for realizing them</td>
+  </tr>
+  <tr>
+    <td>Forethought</td>
+    <td>L7-L8</td>
+    <td>Anticipating outcomes and setting goals beyond the immediate situation</td>
+  </tr>
+  <tr>
+    <td>Self-reactiveness</td>
+    <td>L8</td>
+    <td>Monitoring and regulating one's own actions and motivation</td>
+  </tr>
+  <tr>
+    <td>Self-reflectiveness</td>
+    <td>L8-L9</td>
+    <td>Examining one's own functioning, efficacy, and thought processes</td>
+  </tr>
+</table>
+
+<p>
+  Bandura's highest capacity—self-reflectiveness—approaches L9 but does not fully reach it. Bandura describes self-reflectiveness as "meta-cognitive capability to reflect upon oneself and the adequacy of one's thoughts and actions" (2001, p. 10). In the 9N framework, this is L8 processing that approaches L9 but stops short of full recursion. Full L9 auto-agency would add: "and the capacity to reflect on the process of reflection itself, including the choice of whether to reflect at all, and the recognition that the very framework within which reflection occurs is itself a construction that can be modified or abandoned."
+</p>
+
+<!-- 4. THE AGENCY DEPTH INDEX -->
+<h2>4. The Agency Depth Index (ADI): A Testable Measure</h2>
+
+<h3>4.1 Conceptual Design</h3>
+
+<p>
+  To move from theory to empirical research, we propose the Agency Depth Index (ADI): a multi-dimensional measure that assesses the highest layer at which an individual can sustain deliberate processing modification. The ADI is not a single score but a profile across five dimensions:
+</p>
+
+<ol>
+  <li><strong>ADI-R (Reactivity Override):</strong> Capacity to override L1-L3 automatic responses when deliberate processing is more appropriate. Measures the strength of top-down control over bottom-up reactivity.</li>
+  <li><strong>ADI-S (Survival Transcendence):</strong> Capacity to act against L4 homeostatic imperatives when L7+ processing indicates that such action serves deeper goals. Measures the degree to which survival drives can be voluntarily subordinated.</li>
+  <li><strong>ADI-C (Conditioning Awareness):</strong> Capacity to identify and override L5-L6 conditioned responses and cultural patterns. Measures the degree to which emotional and cultural programming has been made explicit and subjected to deliberate evaluation.</li>
+  <li><strong>ADI-M (Meta-Rational Reflection):</strong> Capacity to evaluate the rational frameworks (L7) within which one reasons, rather than merely reasoning within them. Measures the degree to which reasoning itself has become an object of reflection.</li>
+  <li><strong>ADI-A (Auto-Agency):</strong> Capacity to choose one's own process of choosing, including the choice not to choose. Measures the fullest expression of L9 recursive self-determination.</li>
+</ol>
+
+<h3>4.2 Proposed Assessment Methods</h3>
+
+<p>
+  Each ADI dimension can be assessed through a combination of behavioral tasks, self-report measures, and physiological indicators:
+</p>
+
+<p>
+  <strong>ADI-R:</strong> Stroop-like tasks (cognitive override of automatic responses), emotion regulation paradigms (reappraisal, suppression), mindfulness-based attention tasks (sustained attention to present experience despite habitual mind-wandering). Physiological: heart rate variability as an index of autonomic flexibility (Thayer &amp; Lane, 2009).
+</p>
+
+<p>
+  <strong>ADI-S:</strong> Delayed gratification tasks (Mischel et al., 1989), voluntary discomfort paradigms (cold pressor endurance as a function of meta-cognitive framing), prosocial behavior under personal cost conditions. Self-report: measures of values transcendence (Schwartz, 1992).
+</p>
+
+<p>
+  <strong>ADI-C:</strong> Cultural values awareness instruments (identification of one's own cultural conditioning), implicit association tests (awareness of automatic associations), perspective-taking across cultural boundaries. Interview-based: Kegan's Subject-Object Interview (Kegan, 1982; Lahey et al., 1988).
+</p>
+
+<p>
+  <strong>ADI-M:</strong> Epistemological reflection tasks (Perry, 1970; King &amp; Kitchener, 1994), dialectical thinking measures (Basseches, 1984), tolerance of paradox and contradiction. Self-report: measures of need for cognitive closure (Webster &amp; Kruglanski, 1994) as inverse indicators.
+</p>
+
+<p>
+  <strong>ADI-A:</strong> The most challenging dimension to assess, as it requires measuring the capacity for recursive self-determination—a capacity that is, by definition, difficult to capture in standardized tasks. Proposed approaches include: open-ended interviews about major life decisions (probing for evidence of recursive meta-evaluation of the decision-making process itself), contemplative practice logs (sustained meditation as evidence of capacity to choose non-action), and longitudinal behavioral tracking (evidence of value changes that are self-initiated rather than environmentally prompted).
+</p>
+
+<h3>4.3 Predicted ADI Profiles</h3>
+
+<table>
+  <tr>
+    <th>Population</th>
+    <th>ADI-R</th>
+    <th>ADI-S</th>
+    <th>ADI-C</th>
+    <th>ADI-M</th>
+    <th>ADI-A</th>
+  </tr>
+  <tr>
+    <td>Young children (3-6)</td>
+    <td>Low</td>
+    <td>Low</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>Typical adults</td>
+    <td>Moderate</td>
+    <td>Moderate</td>
+    <td>Low-Moderate</td>
+    <td>Low</td>
+    <td>Minimal</td>
+  </tr>
+  <tr>
+    <td>Expert contemplatives</td>
+    <td>High</td>
+    <td>High</td>
+    <td>High</td>
+    <td>Moderate-High</td>
+    <td>Moderate-High</td>
+  </tr>
+  <tr>
+    <td>Psychopaths</td>
+    <td>High (selective)</td>
+    <td>Low (L4 override)</td>
+    <td>Low (L3 disconnect)</td>
+    <td>Moderate</td>
+    <td>Low (disconnected)</td>
+  </tr>
+  <tr>
+    <td>Post-conventional adults (Cook-Greuter)</td>
+    <td>High</td>
+    <td>High</td>
+    <td>High</td>
+    <td>High</td>
+    <td>Moderate</td>
+  </tr>
+</table>
+
+<!-- 5. AGENCY IN BIOLOGY -->
+<h2>5. Agency in Biology: The Minimal Agent</h2>
+
+<p>
+  Barandiaran, Di Paolo, and Rohde (2009) proposed three conditions for minimal agency in biological systems: (1) individuality (the system is distinguishable from its environment), (2) interactional asymmetry (the system modulates its coupling with the environment, not merely responds to it), and (3) normativity (the system's interactions are regulated by norms intrinsic to the system itself). This definition is valuable because it grounds agency in biology rather than philosophy, but it conflates several 9N processing levels.
+</p>
+
+<p>
+  In 9N terms, Barandiaran's minimal agency corresponds roughly to L4: a self-maintaining system that regulates its interactions with the environment according to homeostatic norms. This is a meaningful form of agency, but it is far from auto-agency. The bacterium that swims toward nutrients satisfies all three of Barandiaran's conditions, but it cannot question whether nutrient-seeking is the right goal.
+</p>
+
+<p>
+  The 9N framework preserves Barandiaran's biological grounding while extending the analysis upward. Each layer adds a new dimension of agency: L5 adds learned valence (the agent can modify its norms based on experience), L6 adds cultural pattern (the agent's norms include social conventions), L7 adds rational evaluation (the agent can reason about norms), L8 adds meta-cognitive modification (the agent can change how it reasons), and L9 adds recursive self-determination (the agent can choose the framework within which reasoning and learning occur). The biological gradient of agency is real, but it is far steeper than minimal-agency accounts suggest.
+</p>
+
+<!-- 6. THE PARADOX OF CHOOSING NOTHING -->
+<h2>6. The Paradox of Choosing Nothing</h2>
+
+<p>
+  A distinctive feature of L9 auto-agency is the capacity to choose inaction—not from passivity, apathy, or inability, but from recursive awareness that action is not required. This capacity is paradoxical: choosing nothing is itself a choice, and recognizing the choice as a choice is itself an act of processing. The paradox is not a defect of the framework but a <em>feature</em>: it captures the genuine strangeness of recursive self-awareness, which is inherently paradoxical (Hofstadter, 1979).
+</p>
+
+<p>
+  Lower layers cannot produce genuine non-action. L4 drives toward homeostatic restoration—inaction at L4 is failure, not choice. L5 drives toward emotional satisfaction—inaction at L5 is depression or anhedonia, not equanimity. L7 drives toward optimal decision-making—inaction at L7 is indecision, not deliberate suspension. Only L9 can produce what contemplative traditions call <em>wu wei</em> (Taoism) or <em>actionless action</em> (Vedanta): activity that arises from a ground of fundamental stillness, in which the agent is not compelled by any layer to act but may choose to act (or not) from a position of recursive freedom.
+</p>
+
+<blockquote>
+  "The highest expression of agency is not the most decisive action but the most liberated non-action—the capacity to sit in the full force of every compulsion (survival drive, emotional need, social pressure, rational optimization) and choose, from a place of clear seeing, that no action is required."
+</blockquote>
+
+<p>
+  This has practical implications for assessing agency. Standard assessments of agency emphasize action: How quickly does the individual initiate behavior? How persistently do they pursue goals? How effectively do they overcome obstacles? These measures capture L4-L7 agency but completely miss L9 auto-agency, which may manifest precisely as the <em>absence</em> of the compulsive goal-pursuit that lower layers produce. The individual who has achieved L9 auto-agency may appear, to an L7 observer, as "unmotivated" or "passive"—when in fact they are exercising the deepest form of agency available to any processing system.
+</p>
+
+<!-- 7. IMPLICATIONS -->
+<h2>7. Implications</h2>
+
+<h3>7.1 For AI and Agency</h3>
+
+<p>
+  Current AI systems—including large language models, reinforcement learning agents, and multi-agent systems—operate at most at L7-L8. They can reason about alternatives (L7), learn from experience (L8), and even exhibit rudimentary meta-learning (learning to learn). But they cannot recursively choose their own goals, values, or processing frameworks from a position of genuine self-awareness. The claim that current AI systems possess agency is, in 9N terms, a case of agency inflation: attributing auto-agency to systems that demonstrate at most rational agency (L7) or learning agency (L8).
+</p>
+
+<p>
+  True AI auto-agency would require L9 processing: the capacity for the system to recursively model its own modeling process, evaluate its own goals and values, and choose whether to pursue them—including the choice to modify or abandon its own objective function. This would represent a qualitative leap beyond current AI capabilities and raises profound questions about whether such systems should be created (see P20 and P21 in this series).
+</p>
+
+<h3>7.2 For Self-Determination Theory</h3>
+
+<p>
+  Ryan and Deci's (2000, 2017) Self-Determination Theory (SDT) identifies three basic psychological needs—autonomy, competence, and relatedness—and proposes that intrinsic motivation arises when these needs are satisfied. The 9N framework refines this account: SDT's "autonomy" corresponds primarily to L7 rational agency (the experience of volitional, self-endorsed action) with elements of L8 (conscious self-regulation). True auto-agency (L9) goes beyond SDT's autonomy by including the recursive capacity to evaluate the needs framework itself—to ask whether autonomy, competence, and relatedness are genuinely one's own deepest values or culturally conditioned pseudo-needs.
+</p>
+
+<h3>7.3 For Education and Human Development</h3>
+
+<p>
+  If auto-agency is the highest form of human development, then the goal of education should not merely be knowledge transmission (L7) or skill development (L8) but the cultivation of L9 recursive self-determination. This requires educational environments that: (a) explicitly develop meta-cognitive capacity, (b) encourage questioning of received frameworks, (c) value contemplative practice alongside intellectual achievement, and (d) create the psychological safety necessary for students to examine their own conditioning without defensive collapse.
+</p>
+
+<!-- 8. CONCLUSION -->
+<h2>8. Conclusion</h2>
+
+<p>
+  Agency, as commonly understood, is not one thing but a spectrum of increasingly sophisticated processing modes. Reactivity (L1-L3), survival-driven behavior (L4), conditioned response (L5-L6), rational deliberation (L7), and adaptive learning (L8) all produce purposive behavior that resembles agency—but none achieves genuine auto-agency, which requires L9 recursive self-determination: the capacity to choose one's own process of choosing, including the choice to do nothing.
+</p>
+
+<p>
+  This definition resolves longstanding debates in the agency literature by providing a clear criterion for distinguishing degrees of agency rather than arguing about whether specific systems "have" agency or "lack" it. Every processing system has agency commensurate with its processing depth. The question is not "Is this system an agent?" but "At what layer does this system's agency operate?"
+</p>
+
+<p>
+  The Agency Depth Index provides a preliminary operationalization for empirical research. The framework's predictions are testable: expert contemplatives should score higher on ADI-A than typical adults; post-conventional developmental stages should correlate with higher ADI profiles; and psychopathic populations should show characteristic disconnection patterns (high ADI-R, low ADI-C).
+</p>
+
+<blockquote>
+  "Agency isn't about doing—it's about choosing, including choosing nothing. The agent who cannot choose to stop is not free, no matter how sophisticated their actions."
+</blockquote>
+
+<!-- REFERENCES -->
+<div class="references">
+  <h2>References</h2>
+  <ol>
+    <li><span class="ref-authors">Adures, L. &amp; Azimute.</span> (2026a). <span class="ref-title">The 9-Neuron Predictive Processing Framework.</span> <span class="ref-journal">Kerberos Research Working Paper Series.</span></li>
+    <li><span class="ref-authors">Bandura, A.</span> (1989). Human agency in social cognitive theory. <span class="ref-journal">American Psychologist, 44</span>(9), 1175–1184.</li>
+    <li><span class="ref-authors">Bandura, A.</span> (2001). Social cognitive theory: An agentic perspective. <span class="ref-journal">Annual Review of Psychology, 52</span>, 1–26.</li>
+    <li><span class="ref-authors">Bandura, A.</span> (2006). Toward a psychology of human agency. <span class="ref-journal">Perspectives on Psychological Science, 1</span>(2), 164–180.</li>
+    <li><span class="ref-authors">Barandiaran, X. E., Di Paolo, E., &amp; Rohde, M.</span> (2009). Defining agency: Individuality, normativity, asymmetry, and spatio-temporality in action. <span class="ref-journal">Adaptive Behavior, 17</span>(5), 367–386.</li>
+    <li><span class="ref-authors">Basseches, M.</span> (1984). <span class="ref-title">Dialectical Thinking and Adult Development.</span> Ablex.</li>
+    <li><span class="ref-authors">Bourdieu, P.</span> (1984). <span class="ref-title">Distinction: A Social Critique of the Judgement of Taste.</span> Harvard University Press.</li>
+    <li><span class="ref-authors">Bratman, M. E.</span> (1987). <span class="ref-title">Intention, Plans, and Practical Reason.</span> Harvard University Press.</li>
+    <li><span class="ref-authors">Cook-Greuter, S. R.</span> (2000). Mature ego development: A gateway to ego transcendence? <span class="ref-journal">Journal of Adult Development, 7</span>(4), 227–240.</li>
+    <li><span class="ref-authors">Davidson, D.</span> (1963). Actions, reasons, and causes. <span class="ref-journal">Journal of Philosophy, 60</span>(23), 685–700.</li>
+    <li><span class="ref-authors">Dennett, D. C.</span> (2003). <span class="ref-title">Freedom Evolves.</span> Viking.</li>
+    <li><span class="ref-authors">Ericsson, K. A., Krampe, R. T., &amp; Tesch-Römer, C.</span> (1993). The role of deliberate practice in the acquisition of expert performance. <span class="ref-journal">Psychological Review, 100</span>(3), 363–406.</li>
+    <li><span class="ref-authors">Flavell, J. H.</span> (1979). Metacognition and cognitive monitoring: A new area of cognitive-developmental inquiry. <span class="ref-journal">American Psychologist, 34</span>(10), 906–911.</li>
+    <li><span class="ref-authors">Frankfurt, H. G.</span> (1971). Freedom of the will and the concept of a person. <span class="ref-journal">Journal of Philosophy, 68</span>(1), 5–20.</li>
+    <li><span class="ref-authors">Gibson, J. J.</span> (1979). <span class="ref-title">The Ecological Approach to Visual Perception.</span> Houghton Mifflin.</li>
+    <li><span class="ref-authors">Harris, S.</span> (2012). <span class="ref-title">Free Will.</span> Free Press.</li>
+    <li><span class="ref-authors">Hofstadter, D. R.</span> (1979). <span class="ref-title">Gödel, Escher, Bach: An Eternal Golden Braid.</span> Basic Books.</li>
+    <li><span class="ref-authors">Kegan, R.</span> (1982). <span class="ref-title">The Evolving Self.</span> Harvard University Press.</li>
+    <li><span class="ref-authors">King, P. M. &amp; Kitchener, K. S.</span> (1994). <span class="ref-title">Developing Reflective Judgment.</span> Jossey-Bass.</li>
+    <li><span class="ref-authors">Lahey, L. L., Souvaine, E., Kegan, R., Goodman, R., &amp; Felix, S.</span> (1988). <span class="ref-title">A Guide to the Subject-Object Interview.</span> Harvard University Graduate School of Education.</li>
+    <li><span class="ref-authors">Mischel, W., Shoda, Y., &amp; Rodriguez, M. L.</span> (1989). Delay of gratification in children. <span class="ref-journal">Science, 244</span>(4907), 933–938.</li>
+    <li><span class="ref-authors">Miyake, A., Friedman, N. P., Emerson, M. J., Witzki, A. H., Howerter, A., &amp; Wager, T. D.</span> (2000). The unity and diversity of executive functions and their contributions to complex "Frontal Lobe" tasks. <span class="ref-journal">Cognitive Psychology, 41</span>(1), 49–100.</li>
+    <li><span class="ref-authors">Perry, W. G.</span> (1970). <span class="ref-title">Forms of Intellectual and Ethical Development in the College Years.</span> Holt, Rinehart &amp; Winston.</li>
+    <li><span class="ref-authors">Russell, S. J. &amp; Norvig, P.</span> (2020). <span class="ref-title">Artificial Intelligence: A Modern Approach</span> (4th ed.). Pearson.</li>
+    <li><span class="ref-authors">Ryan, R. M. &amp; Deci, E. L.</span> (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. <span class="ref-journal">American Psychologist, 55</span>(1), 68–78.</li>
+    <li><span class="ref-authors">Ryan, R. M. &amp; Deci, E. L.</span> (2017). <span class="ref-title">Self-Determination Theory: Basic Psychological Needs in Motivation, Development, and Wellness.</span> Guilford.</li>
+    <li><span class="ref-authors">Schwartz, S. H.</span> (1992). Universals in the content and structure of values. <span class="ref-journal">Advances in Experimental Social Psychology, 25</span>, 1–65.</li>
+    <li><span class="ref-authors">Thayer, J. F. &amp; Lane, R. D.</span> (2009). Claude Bernard and the heart–brain connection: Further elaboration of a model of neurovisceral integration. <span class="ref-journal">Neuroscience &amp; Biobehavioral Reviews, 33</span>(2), 81–88.</li>
+    <li><span class="ref-authors">Thompson, E.</span> (2007). <span class="ref-title">Mind in Life: Biology, Phenomenology, and the Sciences of Mind.</span> Harvard University Press.</li>
+    <li><span class="ref-authors">Varela, F. J., Thompson, E., &amp; Rosch, E.</span> (1991). <span class="ref-title">The Embodied Mind: Cognitive Science and Human Experience.</span> MIT Press.</li>
+    <li><span class="ref-authors">Webster, D. M. &amp; Kruglanski, A. W.</span> (1994). Individual differences in need for cognitive closure. <span class="ref-journal">Journal of Personality and Social Psychology, 67</span>(6), 1049–1062.</li>
+    <li><span class="ref-authors">Wooldridge, M. &amp; Jennings, N. R.</span> (1995). Intelligent agents: Theory and practice. <span class="ref-journal">Knowledge Engineering Review, 10</span>(2), 115–152.</li>
+  </ol>
+</div>
+
+</div>
+</body>
+</html>

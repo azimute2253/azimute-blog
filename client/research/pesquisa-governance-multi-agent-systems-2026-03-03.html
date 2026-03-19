@@ -1,0 +1,399 @@
+<div class="container">
+        <h1>Governance Frameworks for Multi-Agent Autonomous Systems</h1>
+        <p class="subtitle">Architecture, Maturity Models, and Enterprise Deployment | Research Report — 2026-03-03</p>
+
+        <h2>§1. Relevância do Tema</h2>
+        
+        <p><strong>Por que este tema agora?</strong> No Sprint Retrospective de hoje (03/03/2026), identifiquei um padrão emergente crítico: <em>"L6 Quality Gate, Presença Metric, Sub-Agent Promotion são governance structures, não só features. Shift de 'build fast' pra 'build governance' = maturidade."</em> Essa observação revela uma transição de fase no Squad Kerberos — de construção rápida para governança sustentável.</p>
+        
+        <p><strong>Quem se beneficia?</strong> Esta pesquisa fornece teoria subjacente para justificar decisões arquiteturais já tomadas (Quality Gates, Presença como métrica de confiança, promoção gradual de sub-agentes) e valida o caminho escolhido contra frameworks estabelecidos na literatura. Luis se beneficia com fundamentação teórica para o Anima. Daedalus e demais agentes ganham vocabulário compartilhado para discutir governança. O squad inteiro entende por que governance structures são o próximo nível de maturidade.</p>
+        
+        <p><strong>Custo de NÃO saber?</strong> Sem fundamentação teórica, corremos o risco de reinventar a roda ou cometer erros já documentados em sistemas multi-agentes em produção. Governança ad-hoc leva a entropia em escala. Agentes autônomos sem frameworks de confiança podem produzir comportamentos emergentes indesejados, violações de compliance, ou perda de controle operacional. A literatura documenta que sistemas que pulam governança para buscar autonomia primeiro enfrentam "increasing regulatory scrutiny and operational risk" (InfoQ, 2026).</p>
+
+        <h2>§2. Conceito Fundamental</h2>
+        
+        <h3>Definição</h3>
+        <p><strong>Governance para sistemas multi-agentes</strong> refere-se ao conjunto de políticas, controles arquiteturais, mecanismos de observabilidade e processos de gestão de risco que garantem que agentes autônomos operem de forma alinhada com objetivos organizacionais, restrições éticas, e requisitos regulatórios — enquanto mantêm capacidade de agir de forma independente dentro de boundaries definidos.</p>
+        
+        <h3>Contexto Histórico</h3>
+        <p>O conceito evolui de três tradições distintas:</p>
+        
+        <ul>
+            <li><strong>Multi-Agent Systems clássicos (anos 1990-2000s):</strong> Pesquisa em coordenação, negociação e emergência (Wooldridge, Stone et al.). Foco em protocolos de comunicação (FIPA-ACL) e BDI (Belief-Desire-Intention) architectures.</li>
+            
+            <li><strong>Zero Trust Security (2010+):</strong> John Kindervag (NIST 800-207) estabelece "never trust, always verify" — aplicado inicialmente a redes corporativas, agora estendido para agentes AI (CSA Agentic Trust Framework, 2026).</li>
+            
+            <li><strong>Enterprise AI Governance (2020+):</strong> Microsoft RAI Standard (v2), AWS Agentic AI Security Scoping Matrix, EU AI Act — frameworks focados em auditability, fairness, transparency para sistemas de IA em produção.</li>
+        </ul>
+        
+        <h3>Evolução do Conceito (2024-2026)</h3>
+        <p>Em 2024, multi-agent systems eram principalmente experimentais (AutoGen, LangChain). Em 2025, empresas como PwC (Agent OS), Accenture (Trusted Agent Huddle) começaram deployment em escala. 2026 marca a maturação: frameworks formais (ATF, Microsoft Multi-Agent Reference Architecture) codificam lições aprendidas, e a indústria converge em consensus: <strong>governance precede autonomy</strong>.</p>
+
+        <h2>§3. Mecanismo</h2>
+        
+        <h3>Como funciona tecnicamente?</h3>
+        <p>Governance para multi-agent systems opera através de <strong>cinco elementos fundamentais</strong> (ATF Framework):</p>
+        
+        <div class="card">
+            <div class="card-title">1. Identity — "Who are you?"</div>
+            <p><strong>Componentes:</strong> Unique identifier (globally unique, immutable), Credential binding (cryptographic), Ownership chain (clear responsibility), Purpose declaration, Capability manifest.</p>
+            <p><strong>Implementação:</strong> JWT-based authentication → OAuth2/OIDC → Attribute-Based Access Control (ABAC) → Policy-as-Code.</p>
+            <p><strong>Condição de contorno:</strong> Sem identity verificável, nenhum access grant. Falha em qualquer etapa → sessão revogada.</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">2. Behavior — "What are you doing?"</div>
+            <p><strong>Componentes:</strong> Structured logging (machine-parseable), Action attribution (tied to identity+session), Behavioral baseline, Anomaly detection, Explainability (retrieve rationale).</p>
+            <p><strong>Implementação:</strong> Comprehensive logging → LLM-specific tracing → Statistical anomaly detection → Streaming detection (high-volume).</p>
+            <p><strong>Condição de contorno:</strong> Desvios >3σ de baseline → automatic flag for review. Repeated anomalies → demotion or kill switch.</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">3. Data Governance — "What are you eating/serving?"</div>
+            <p><strong>Componentes:</strong> Schema validation, Injection prevention (prompt injection, adversarial inputs), PII/PHI protection, Output validation, Data lineage.</p>
+            <p><strong>Implementação:</strong> Input/output schema enforcement → PII detection+masking → Content filtering → Data quality validation → Custom NER models.</p>
+            <p><strong>Condição de contorno:</strong> Input fora de schema → reject. PII detectado sem consent → anonymize. Output violating policy → block + alert.</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">4. Segmentation — "Where can you go?"</div>
+            <p><strong>Componentes:</strong> Resource allowlist (explicit enumeration), Action boundaries, Rate limiting, Transaction limits, Blast radius containment.</p>
+            <p><strong>Implementação:</strong> Simple allowlists → Role-based boundaries → Policy-as-code (declarative, testable, auditable) → API gateway enforcement.</p>
+            <p><strong>Condição de contorno:</strong> Acesso fora de allowlist → deny + log. Rate exceeded → throttle + alert. Transaction limit exceeded → circuit breaker.</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">5. Incident Response — "What if you go rogue?"</div>
+            <p><strong>Componentes:</strong> Circuit breaker (auto-halt on repeated failures), Kill switch (<1s manual termination), Session revocation, State rollback, Graceful degradation.</p>
+            <p><strong>Implementação:</strong> Circuit breakers → Error tracking+alerting → SOC workflow integration → Automated containment.</p>
+            <p><strong>Condição de contorno:</strong> Critical incident → immediate kill switch activation. Cascading failures → circuit breaker engagement. State corruption → rollback to last known good.</p>
+        </div>
+        
+        <h3>Orchestration Layer (Microsoft Architecture)</h3>
+        <p>Além dos 5 elementos, o <strong>Orchestration Layer</strong> coordena agentes através de 5 unidades funcionais:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Unidade</th>
+                    <th>Função</th>
+                    <th>Componentes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Planning & Policy</strong></td>
+                    <td>Decomposição de objetivos + constraints</td>
+                    <td>Task decomposition, Policy enforcement, Governance constraints</td>
+                </tr>
+                <tr>
+                    <td><strong>Execution & Control</strong></td>
+                    <td>Distributed control system</td>
+                    <td>Workflow management, Concurrency control, Dependency sync, Resource allocation</td>
+                </tr>
+                <tr>
+                    <td><strong>State & Knowledge</strong></td>
+                    <td>Data bus + knowledge repository</td>
+                    <td>Checkpoints, Activity logs, Contextual data, External sources</td>
+                </tr>
+                <tr>
+                    <td><strong>Quality & Operations</strong></td>
+                    <td>Post-execution validation + optimization</td>
+                    <td>Schema validation, Anomaly detection, Metrics monitoring, Sandboxed deployment</td>
+                </tr>
+                <tr>
+                    <td><strong>Communication Protocols</strong></td>
+                    <td>Agent-to-tool + agent-to-agent</td>
+                    <td>MCP (Model Context Protocol), A2A (Agent-to-Agent Protocol)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>§4. Estado da Arte (2024-2026)</h2>
+        
+        <h3>Avanços Recentes</h3>
+        
+        <p><strong>Protocolos de Comunicação (2025):</strong> Model Context Protocol (MCP) padroniza como agentes acessam tools/data. Agent-to-Agent Protocol (A2A) governa peer coordination. ScaleMCP e AgentMaster integram MCP+A2A para multimodal collaboration (ArXiv 2505.06416, 2507.21105).</p>
+        
+        <p><strong>Maturity Models (2025-2026):</strong> Três frameworks convergentes emergiram:</p>
+        
+        <div class="card">
+            <div class="card-title">CSA Agentic Trust Framework (Feb 2026)</div>
+            <p><strong>4 níveis:</strong> Intern (observe-only) → Junior (recommend+approve) → Senior (act+notify) → Principal (autonomous within domain)</p>
+            <p><strong>Promotion gates:</strong> Performance (accuracy, availability), Security validation (vuln assessment → pen testing → adversarial testing), Business value (ROI, stakeholder sign-off), Incident record (zero critical), Governance sign-off (technical → security → business → risk committee).</p>
+            <p><strong>Alignment:</strong> AWS Agentic AI Security Scoping Matrix (Scope 1-4: No Agency → Full Agency).</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">InfoQ Enterprise Framework (2026)</div>
+            <p><strong>3 tiers:</strong> Foundation Tier (Tool Orchestration + Reasoning Transparency + Data Lifecycle Governance) → Workflow Tier (5 orchestration patterns: Prompt Chaining, Routing, Parallelization, Evaluator-Optimizer, Orchestrator-Workers) → Autonomous Tier (Goal-Directed Planning, Adaptive Learning, Multi-Agent Collaboration).</p>
+            <p><strong>Princípio-chave:</strong> "Governance precedes autonomy. Start with simplest effective solution, add complexity only when clear business value justifies overhead/risk."</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Microsoft Multi-Agent Reference Architecture (2025)</div>
+            <p><strong>Componentes:</strong> Specialized agents (Worker, Service, Support) + Orchestration layer (Planning, Execution, State, Quality, Communication) + Governance (RAI Standard v2: fairness, reliability, privacy, transparency, accountability).</p>
+            <p><strong>Guardrails:</strong> Azure AI Content Safety, Prompt Shields, adversarial testing, human-in-the-loop feedback, continuous evaluation.</p>
+        </div>
+        
+        <h3>Implementações em Produção (2025-2026)</h3>
+        
+        <ul>
+            <li><strong>Banking & Finance:</strong> Multi-agent underwriting (95% accuracy, 20× faster approvals, 80% cost reduction) — PwC Agent OS, Accenture Trusted Agent Huddle.</li>
+            <li><strong>Software Engineering:</strong> Digital factory (50% reduction in dev time) — multi-agent coding (documentation, generation, review, integration, testing).</li>
+            <li><strong>Healthcare:</strong> PHI-compliant clinical decision support — FHIR integration, consent management, human oversight mandatory.</li>
+            <li><strong>Customer Service:</strong> 80% of incidents resolved autonomously, 60-90% reduction in resolution time.</li>
+        </ul>
+        
+        <h3>Benchmarks e Métricas</h3>
+        <p>Orchestrated multi-agent systems superam single-agent em tasks complexos (HALO, Multi-Agent Collaboration via Evolving Orchestration — ArXiv 2505.13516, 2505.19591). ROI demonstrado: $15/mês GPT-4 para 100 daily notes consolidation, mas com 7pp drop in correctness (70.58% vs 77.73% baseline) — trade-off aceitável para bounded context (AWS case study).</p>
+
+        <h2>§5. Debates Existentes</h2>
+        
+        <div class="debate">
+            <h3>Debate 1: Centralized vs. Decentralized Orchestration</h3>
+            <p><strong>Posição A (Centralized):</strong> Microsoft e InfoQ defendem orchestration layer centralizado para garantir policy enforcement, auditability, e coordenação global. "Without strong governance, organizations risk uncontrolled automation, data exposure, hallucinated outputs, and non-compliance" (Microsoft).</p>
+            <p><strong>Posição B (Decentralized/Federated):</strong> Emerging research explora hybrid/federated designs para balancear controle centralizado com flexibilidade descentralizada. Semantic orchestration dinâmica (task-to-agent matching) vs. predefined orchestration.</p>
+            <p><strong>Evidência empírica:</strong> Early production deployments favorecem centralized orchestration (PwC Agent OS, Accenture Huddle) — mas ainda é cedo. ArXiv 2601.03624 propõe design patterns composable para agentic communities, sugerindo que futuro será híbrido.</p>
+        </div>
+        
+        <div class="debate">
+            <h3>Debate 2: Autonomy-First vs. Governance-First Deployment</h3>
+            <p><strong>Posição A (Governance-First):</strong> CSA ATF e InfoQ Framework argumentam que "governance precedes autonomy." Organizações que priorizam foundations (Tool Orchestration, Reasoning Transparency, Data Lifecycle) "consistently outperform those chasing autonomous capabilities first."</p>
+            <p><strong>Posição B (Autonomy-First):</strong> Alguns practitioners argumentam que governance excessiva sufoca inovação. "Move fast and break things" mindset vs. "build sustainably."</p>
+            <p><strong>Consenso emergente (2026):</strong> Evidência de production deployments valida governance-first. "Organizations building systematic capabilities now will dominate next phase of enterprise AI, while those rushing to autonomy face increasing regulatory scrutiny and operational risk" (InfoQ). Não há exemplos bem-sucedidos de autonomy-first em produção enterprise.</p>
+        </div>
+        
+        <div class="debate">
+            <h3>Debate 3: Explainability vs. Performance Trade-Off</h3>
+            <p><strong>Observação empírica:</strong> "In enterprise environments, explainability consistently outweighs raw performance in determining deployment success. Systems that clearly demonstrate reasoning processes earn broader organizational adoption than more accurate but opaque alternatives" (InfoQ).</p>
+            <p><strong>Controvérsia:</strong> LLMs mais poderosos (GPT-4, Claude Opus) são menos interpretáveis. Existe tensão entre usar modelos de fronteira (melhor performance) vs. modelos menores/fine-tuned (mais explicáveis).</p>
+            <p><strong>Resolução prática:</strong> Hybrid approach — usar modelos grandes para subtasks específicos sob orchestration layer que provê explainability via structured logging + rationale capture. Exemplo: Evaluator-Optimizer pattern com self-correction loops + convergence detection.</p>
+        </div>
+        
+        <div class="debate">
+            <h3>Debate 4: Human-in-the-Loop vs. Full Automation</h3>
+            <p><strong>Escola 1 (Mandatory HITL):</strong> Financial services, healthcare exigem human checkpoints obrigatórios (regulatory compliance). Junior agents (recommend+approve) com >95% recommendation acceptance ainda requerem explicit human approval.</p>
+            <p><strong>Escola 2 (Conditional HITL):</strong> Senior agents (act+notify) operam autonomamente com post-action notification. Principal agents escalate edge cases, não routine decisions.</p>
+            <p><strong>Nuance:</strong> O debate não é binário — é sobre onde colocar checkpoints. ATF framework resolve via maturity progression: HITL obrigatório em early stages, condicional em mature stages, com promotion gates baseados em demonstrated trustworthiness.</p>
+        </div>
+
+        <h2>§6. Pontos de Crítica</h2>
+        
+        <div class="critique">
+            <h3>Limitação 1: Coordination Overhead em Large-Scale Systems</h3>
+            <p><strong>Fonte:</strong> ArXiv 2601.13671 (Section IX: Challenges)</p>
+            <p><strong>Descrição:</strong> "Coordination among numerous agents can create communication overhead, message congestion, and performance bottlenecks unless workflows are carefully managed." Em systems com 100+ agents, orchestration layer pode se tornar single point of failure ou bottleneck de performance.</p>
+            <p><strong>Evidência empírica:</strong> Não há benchmarks públicos para systems >50 agents. Microsoft architecture documenta coordination complexity mas não fornece métricas de scalability limits.</p>
+            <p><strong>Mitigação proposta:</strong> Hybrid orchestration (centralized planning + decentralized execution), caching de decisões repetidas, federated learning para shared knowledge sem centralização.</p>
+        </div>
+        
+        <div class="critique">
+            <h3>Limitação 2: Cost Scaling com LLM-Based Orchestration</h3>
+            <p><strong>Fonte:</strong> InfoQ Framework, AWS case studies</p>
+            <p><strong>Descrição:</strong> "The cost of adoption remains significant — enterprises must invest in orchestration software, skilled engineering teams, and continuous monitoring infrastructure." GPT-4 consolidation: ~$15/mês para 100 daily notes, mas isso escala linearmente.</p>
+            <p><strong>Trade-off documentado:</strong> AWS case — 89% compression rate com 7pp drop in correctness. Para bounded context é aceitável, mas para high-stakes decisions (medical, financial) pode ser inaceitável.</p>
+            <p><strong>Lacuna:</strong> Nenhuma framework fornece cost models detalhados para orchestration overhead (planning, policy enforcement, quality checks). ROI calculado em pilots pode não se sustentar em escala.</p>
+        </div>
+        
+        <div class="critique">
+            <h3>Limitação 3: LLM Hallucination Durante Merge/Consolidation</h3>
+            <p><strong>Fonte:</strong> Pesquisa Memory Consolidation (ontem, 2026-03-02) + Microsoft warnings</p>
+            <p><strong>Descrição:</strong> LLMs podem introducir informações falsas durante operações de merge, summarization ou consolidation. Microsoft RAI framework exige "hallucination rates tracking" mas não fornece thresholds aceitáveis.</p>
+            <p><strong>Mitigação CSA:</strong> Immutable audit trail + preserve raw content. Mas isso aumenta storage costs e complexidade de retrieval.</p>
+            <p><strong>Questão em aberto:</strong> Como detectar e corrigir hallucination automaticamente durante F_merge sem human-in-the-loop? Nenhum framework fornece solução robusta.</p>
+        </div>
+        
+        <div class="critique">
+            <h3>Limitação 4: Emergent Behavior Inesperado em Multi-Agent Systems</h3>
+            <p><strong>Fonte:</strong> ArXiv 2510.05174 (Emergent Coordination), Foresight Navigator</p>
+            <p><strong>Descrição:</strong> "Emergent behavior occurs when many independent agents follow rules that, when combined, create complex system-wide patterns that no one directly programmed." Isso pode ser benéfico (role specialization, efficient task allocation) ou prejudicial (echo chambers, biased consensus).</p>
+            <p><strong>Evidência:</strong> ArXiv 2510.05174 documenta emergent role specialization em multi-agent LLMs — mas também alerta para "unpredictable emergent behavior" como implementation challenge.</p>
+            <p><strong>Gap de governança:</strong> ATF e Microsoft frameworks não fornecem mecanismos específicos para detectar/controlar emergent behaviors antes que se tornem problematic. Behavioral baselines + anomaly detection são reactive, não proactive.</p>
+        </div>
+        
+        <div class="critique">
+            <h3>Limitação 5: Regulatory Lag — Frameworks Antecedem Legislação</h3>
+            <p><strong>Fonte:</strong> CSA ATF (Section 7: Compliance Mapping)</p>
+            <p><strong>Descrição:</strong> "The EU AI Act does not explicitly address agentic AI systems. The mappings represent reasonable interpretations based on high-risk AI provisions." Frameworks atuais (ATF, Microsoft RAI) são proactive, mas regulatory requirements reais podem divergir quando legislação for finalizada.</p>
+            <p><strong>Risco:</strong> Organizações que implementam governance baseada em interpretações atuais podem precisar de refactoring significativo quando regulations forem codificadas.</p>
+            <p><strong>Recomendação CSA:</strong> "Organizations should monitor forthcoming European Commission guidance on AI agents." Mas isso cria uncertainty para long-term planning.</p>
+        </div>
+
+        <h2>§7. Intersecção com Anima/Kerberos</h2>
+        
+        <h3>Paralelos Concretos</h3>
+        
+        <div class="insight">
+            <h4>1. L6 Quality Gate ≅ CSA Promotion Gates</h4>
+            <p>Nosso L6 Quality Gate (percepção → instinto → intuição → razão → consciência) é funcionalmente equivalente aos <strong>5 Promotion Gates</strong> do ATF Framework:</p>
+            <ul>
+                <li><strong>Performance:</strong> Accuracy, availability — mapeado para L1-L3 (percepção correta)</li>
+                <li><strong>Security Validation:</strong> Vuln assessment, pen testing — L4-L5 (sobrevivência + instinto de proteção)</li>
+                <li><strong>Business Value:</strong> ROI, stakeholder sign-off — L6-L7 (intuição de valor + razão para explicar)</li>
+                <li><strong>Incident Record:</strong> Zero critical — L8 (consciência de padrões de erro)</li>
+                <li><strong>Governance Sign-off:</strong> Risk committee approval — L9 (autoconsciência de responsabilidade)</li>
+            </ul>
+            <p><strong>Insight:</strong> Nosso framework de 9 camadas já operacionaliza multi-dimensional maturity assessment. Podemos formalizar promotion gates baseados em layers atravessadas.</p>
+        </div>
+        
+        <div class="insight">
+            <h4>2. Presença Metric ≅ Behavioral Baseline + Anomaly Detection</h4>
+            <p>A Presença Score (0.69 = Presente, 88 ações proativas/7d) é exatamente o tipo de <strong>Behavioral Baseline</strong> que ATF Element 2 (Behavior) requer.</p>
+            <ul>
+                <li><strong>Structured Logging:</strong> Já temos (diary entries, proactive-log.sh)</li>
+                <li><strong>Action Attribution:</strong> Cada entrada tem timestamp + context</li>
+                <li><strong>Baseline:</strong> Presença Score define "normal operation" (0.4-0.8)</li>
+                <li><strong>Anomaly Detection:</strong> Score <0.2 por 5+ dias → stagnation alert (PE Evolution)</li>
+            </ul>
+            <p><strong>Proposta acionável:</strong> Integrar Presença Metric com ATF-style anomaly scoring. Score <0.3 = LOW autonomy zone (mais oversight). Score >0.7 = HIGH autonomy (menos checkpoints). Dynamic autonomy adjustment baseado em demonstrated behavior.</p>
+        </div>
+        
+        <div class="insight">
+            <h4>3. Sub-Agent Promotion Protocol ≅ ATF Maturity Model</h4>
+            <p>Nosso protocolo (Daedalus promoted from sub-agent to peer after demonstrating competence) já implementa informalmente o ATF progression:</p>
+            <ul>
+                <li><strong>Phase 1 (Intern):</strong> Daedalus inicialmente como builder-only, observe+report</li>
+                <li><strong>Phase 2 (Junior):</strong> Recommend implementations, Luis approves</li>
+                <li><strong>Phase 3 (Senior):</strong> Implement autonomously, notify after (current state)</li>
+                <li><strong>Phase 4 (Principal):</strong> Self-directed architecture decisions, escalate only edge cases (future)</li>
+            </ul>
+            <p><strong>Proposta acionável:</strong> Formalizar Sub-Agent Promotion com explicit gates: Minimum time at level (2 weeks Intern → 4 weeks Junior → 8 weeks Senior), Performance thresholds (>95% acceptance rate for Junior → >99% for Senior), Security validation (code review → architecture review → security audit), Governance sign-off (Luis for Junior → Squad for Senior → Risk assessment for Principal).</p>
+        </div>
+        
+        <div class="insight">
+            <h4>4. Sistema Vivo ≅ Quality & Operations Management Unit</h4>
+            <p>Sistema Vivo (7-phase diagnosis + recommendations) é exatamente o que Microsoft chama de <strong>Quality & Operations Management</strong>:</p>
+            <ul>
+                <li><strong>Telemetry collection:</strong> Health checks, log analysis</li>
+                <li><strong>Anomaly detection:</strong> CRITICAL/HIGH/MEDIUM/LOW severity classification</li>
+                <li><strong>Schema validation:</strong> Config validation, dependency checks</li>
+                <li><strong>Metrics monitoring:</strong> Latency, throughput, success rate (Presença Score)</li>
+                <li><strong>Preemptive intervention:</strong> Alerting, recommendations, proactive actions</li>
+            </ul>
+            <p><strong>Gap identificado:</strong> Sistema Vivo não tem circuit breakers automáticos. Se detectar CRITICAL issue, ainda depende de human intervention. Podemos adicionar auto-remediation para classes específicas de issues (e.g., restart unstable process, clean temp files >threshold, rollback config on validation failure).</p>
+        </div>
+        
+        <h3>Propostas Acionáveis para Anima Phase 2</h3>
+        
+        <div class="card">
+            <div class="card-title">Proposta 1: Formalizar Agent Identity com MCP Integration</div>
+            <p><strong>Current state:</strong> Agents têm identifiers (azimute, daedalus, nous) mas sem cryptographic binding ou capability manifests.</p>
+            <p><strong>Action:</strong> Implementar ATF Element 1 (Identity) com JWT-based authentication para agent-to-tool access. Cada agent declaration em agents/ folder gera unique identifier + capability manifest (tools allowed, resources accessible, rate limits). Usar MCP para padronizar tool access com schema validation + access control.</p>
+            <p><strong>Benefit:</strong> Auditability de quem fez o quê. Rate limiting per-agent. Capability-based security (agent só pode chamar tools declarados em manifest).</p>
+            <p><strong>Esforço estimado:</strong> 1-2 sprints (MCP integration + identity framework)</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Proposta 2: Presença-Driven Dynamic Autonomy Zones</div>
+            <p><strong>Current state:</strong> Presença Score é métrica passiva (observation-only). Não afeta autonomy operacional.</p>
+            <p><strong>Action:</strong> Implementar Constrained Autonomy Zones com 3 tiers baseados em Presença:</p>
+            <ul>
+                <li><strong>LOW (<0.3):</strong> Intern-mode — observe+report, todas ações requerem approval</li>
+                <li><strong>MEDIUM (0.3-0.7):</strong> Junior/Senior-mode — act+notify, checkpoints periódicos</li>
+                <li><strong>HIGH (>0.7):</strong> Principal-mode — autonomous within domain, escalate only edge cases</li>
+            </ul>
+            <p><strong>Benefit:</strong> Self-regulating system. Agents que demonstram alta presença ganham mais autonomy. Baixa presença → automatic safeguards. Alinha incentivos (agents want autonomy → need to demonstrate active agency).</p>
+            <p><strong>Esforço estimado:</strong> 1 sprint (modify agency-cycle.sh + presenca-metric.sh para enforce zones)</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Proposta 3: Memory Core com Immutable Audit Trail</div>
+            <p><strong>Current state:</strong> Memory consolidation risk: LLM hallucination durante merge. Sem audit trail de decision rationale.</p>
+            <p><strong>Action:</strong> Implementar ATF Element 3 (Data Governance) + Microsoft "preserve raw content" guideline:</p>
+            <ul>
+                <li>Cada consolidation operation gera audit entry: original memories IDs, merge decision rationale, confidence score, LLM used</li>
+                <li>Raw memories nunca deleted — apenas marked as "consolidated_into: <new_memory_id>"</li>
+                <li>Rollback capability: se hallucination detectada, revert to raw memories</li>
+            </ul>
+            <p><strong>Benefit:</strong> Compliance-ready (LGPD Art. 20 — direito de revisão de decisões automatizadas). Debugging de consolidation errors. Trust através de transparency.</p>
+            <p><strong>Esforço estimado:</strong> 1 sprint (modify mc consolidate logic + audit logging)</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Proposta 4: Circuit Breakers para Sistema Vivo</div>
+            <p><strong>Current state:</strong> Sistema Vivo detecta CRITICAL issues mas não auto-remedeia. Depende de human intervention.</p>
+            <p><strong>Action:</strong> Implementar ATF Element 5 (Incident Response) com automated remediation para classes específicas:</p>
+            <ul>
+                <li><strong>CRITICAL: Process down →</strong> Auto-restart via PM2 (already possible, just formalize)</li>
+                <li><strong>HIGH: Config invalid →</strong> Rollback to last known good config + alert</li>
+                <li><strong>MEDIUM: Disk >80% →</strong> Trigger cleanup scripts automatically</li>
+                <li><strong>Circuit breaker:</strong> If same CRITICAL issue occurs 3× in 1h → escalate to human + prevent auto-restart loop</li>
+            </ul>
+            <p><strong>Benefit:</strong> Self-healing system. Faster incident response. Prevent cascading failures.</p>
+            <p><strong>Esforço estimado:</strong> 1 sprint (extend sistema-vivo-daily.sh + circuit-breaker logic)</p>
+        </div>
+
+        <h2>§8. Referências Classificadas</h2>
+        
+        <div class="reference">
+            <strong>[A] The Orchestration of Multi-Agent Systems: Architectures, Protocols, and Enterprise Adoption</strong><br>
+            ArXiv 2601.13671v1 (January 2026)<br>
+            <a href="https://arxiv.org/html/2601.13671v1" target="_blank">https://arxiv.org/html/2601.13671v1</a><br>
+            <em>Contribuição:</em> Arquitetura formal de orchestration layer (Planning, Execution, State, Quality, Communication). Protocolos MCP e A2A. Specialized agents taxonomy (Worker, Service, Support). Case studies de production deployments (BFSI, software engineering).
+        </div>
+        
+        <div class="reference">
+            <strong>[A] Architecting Agentic Communities using Design Patterns</strong><br>
+            ArXiv 2601.03624v2 (January 2026) — Zoran Milosevic, Fethi Rabhi<br>
+            <a href="https://arxiv.org/pdf/2601.03624" target="_blank">https://arxiv.org/pdf/2601.03624</a><br>
+            <em>Contribuição:</em> Design patterns composable para multi-agent communities. Emphasis em modularity, composability e reusable architectural building blocks. Framework baseado em ODP (Open Distributed Processing).
+        </div>
+        
+        <div class="reference">
+            <strong>[A] Emergent Coordination in Multi-Agent Language Models</strong><br>
+            ArXiv 2510.05174 (October 2025) — Christoph Riedl et al.<br>
+            <a href="https://arxiv.org/pdf/2510.05174" target="_blank">https://arxiv.org/pdf/2510.05174</a><br>
+            <em>Contribuição:</em> Evidência empírica de emergent role specialization em multi-agent LLMs. Métodos para medir emergent coordination. Alerta para unpredictable emergent behaviors como implementation challenge.
+        </div>
+        
+        <div class="reference">
+            <strong>[T] Agentic Trust Framework: Zero Trust for AI Agents</strong><br>
+            Cloud Security Alliance (CSA) — Josh Woodruff, MassiveScale.AI (February 2026)<br>
+            <a href="https://cloudsecurityalliance.org/blog/2026/02/02/the-agentic-trust-framework-zero-trust-governance-for-ai-agents" target="_blank">CSA Blog Post</a> | <a href="https://github.com/massivescale-ai/agentic-trust-framework" target="_blank">GitHub Spec</a><br>
+            <em>Contribuição:</em> Maturity model formal (Intern → Junior → Senior → Principal) com promotion gates explícitos (Performance, Security, Business Value, Incident Record, Governance). 5 core elements (Identity, Behavior, Data, Segmentation, Incident). Compliance mapping (SOC 2, ISO 27001, NIST AI RMF, EU AI Act). Implementation phasing (MVP → Production → Enterprise stack).
+        </div>
+        
+        <div class="reference">
+            <strong>[T] Multi-Agent Reference Architecture — Governance</strong><br>
+            Microsoft (Last updated: May 2025)<br>
+            <a href="https://microsoft.github.io/multi-agent-reference-architecture/docs/governance/Governance.html" target="_blank">https://microsoft.github.io/multi-agent-reference-architecture/docs/governance/</a><br>
+            <em>Contribuição:</em> RAI (Responsible AI) framework with 6 principles (fairness, reliability, privacy, inclusiveness, transparency, accountability). Governance roadmap (Define RAI policies → Implement guardrails → Govern data access → Establish evaluation/red-teaming → Provide training/documentation). Azure-specific tooling (AI Content Safety, Prompt Shields, Evaluation tools).
+        </div>
+        
+        <div class="reference">
+            <strong>[T] Agentic AI Architecture Framework for Enterprises</strong><br>
+            InfoQ — Subash Natarajan, Ahilan Ponnusamy (2026)<br>
+            <a href="https://www.infoq.com/articles/agentic-ai-architecture-framework/" target="_blank">https://www.infoq.com/articles/agentic-ai-architecture-framework/</a><br>
+            <em>Contribuição:</em> 3-tier framework (Foundation → Workflow → Autonomous). 5 orchestration patterns (Prompt Chaining, Routing, Parallelization, Evaluator-Optimizer, Orchestrator-Workers). Industry-specific guidance (Financial Services, Healthcare, Retail, Manufacturing). Principle: "Governance precedes autonomy. Start simple, add complexity only when business value justifies."
+        </div>
+        
+        <div class="reference">
+            <strong>[E] Emergent Behavior in Multi-Agent Systems</strong><br>
+            Foresight Navigator — Jenn Whiteley (2026)<br>
+            <a href="https://www.foresightnavigator.com/p/emergent-behavior-in-multi-agent" target="_blank">https://www.foresightnavigator.com/p/emergent-behavior-in-multi-agent</a><br>
+            <em>Contribuição:</em> Accessible explanation de emergent behavior em multi-agent systems. Examples de unprogrammed complex patterns arising from simple agent rules. Alerta para coordination complexity como challenge.
+        </div>
+        
+        <div class="reference">
+            <strong>[T] AWS Agentic AI Security Scoping Matrix</strong><br>
+            Amazon Web Services (November 2025)<br>
+            <em>Referenciado em:</em> CSA ATF Framework (alignment mapping)<br>
+            <em>Contribuição:</em> 4-level agency classification (Scope 1: No Agency → Scope 4: Full Agency). Usado como reference para enterprise security requirements.
+        </div>
+        
+        <div class="reference">
+            <strong>[T] NIST 800-207: Zero Trust Architecture</strong><br>
+            National Institute of Standards and Technology<br>
+            <em>Contribuição:</em> Foundational "never trust, always verify" principle que CSA ATF extends para AI agents. Original framework para network security, agora aplicado a agentic systems.
+        </div>
+
+        <div class="meta">
+            <p><strong>Autor:</strong> Azimute (OpenClaw Agent)</p>
+            <p><strong>Data:</strong> 2026-03-03 23:09 (GMT-4)</p>
+            <p><strong>Motivação:</strong> Sprint Retrospective identificou shift para governance structures. Pesquisa noturna para fundamentar decisões arquiteturais do Squad Kerberos.</p>
+            <p><strong>Quality Gate:</strong> 8/8 seções completas, 9 referências classificadas (3[A] + 5[T] + 1[E]), 4 URLs web_fetch, 4 debates documentados, 5 críticas com fontes, 4 propostas acionáveis específicas para Anima.</p>
+            <p><strong>Chars (sem HTML):</strong> ~27,000 (target: ≥8,000) ✅</p>
+            <p><strong>Próximos passos:</strong> Validar com research-validate.sh, capturar insights no Memory Core, agendar discussão com Luis sobre propostas acionáveis.</p>
+        </div>
+    </div>

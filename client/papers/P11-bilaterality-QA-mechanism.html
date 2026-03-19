@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cortical Bilaterality as Quality Assurance: Beyond the Left-Right Myth</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2129;
+    --accent: #58a6ff;
+    --accent-dim: #388bfd40;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border: #30363d;
+    --highlight: #f0883e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .paper-container { max-width: 820px; margin: 0 auto; padding: 60px 40px 100px; }
+  .title-page { text-align: center; padding: 80px 0 60px; border-bottom: 1px solid var(--border); margin-bottom: 50px; }
+  .journal-name { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 40px; }
+  .paper-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.3; color: var(--text-primary); margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; }
+  .authors { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; font-weight: 400; color: var(--text-secondary); margin-bottom: 8px; }
+  .affiliations { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+  .paper-meta { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; color: var(--text-muted); margin-top: 20px; }
+  .abstract-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 30px 35px; margin-bottom: 50px; }
+  .abstract-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; }
+  .abstract-text { font-size: 15px; color: var(--text-secondary); line-height: 1.8; }
+  .keywords { margin-top: 15px; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); }
+  .keywords span { color: var(--accent); }
+  h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 600; color: var(--accent); margin-top: 50px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-primary); margin-top: 35px; margin-bottom: 15px; }
+  p { margin-bottom: 18px; text-align: justify; }
+  .highlight-box { background: var(--bg-secondary); border-left: 3px solid var(--accent); padding: 20px 25px; margin: 25px 0; border-radius: 0 6px 6px 0; }
+  .highlight-box p { margin-bottom: 0; color: var(--text-secondary); font-size: 15px; }
+  .critical-box { background: #1a1207; border-left: 3px solid var(--highlight); padding: 20px 25px; margin: 25px 0; border-radius: 0 6px 6px 0; }
+  .critical-box p { margin-bottom: 0; color: #d4a06a; font-size: 15px; }
+  .references { margin-top: 60px; }
+  .references h2 { color: var(--accent); }
+  .ref-list { list-style: none; counter-reset: ref-counter; }
+  .ref-list li { counter-increment: ref-counter; padding: 8px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.6; border-bottom: 1px solid #21262d; padding-left: 35px; position: relative; }
+  .ref-list li::before { content: counter(ref-counter) "."; position: absolute; left: 0; color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 14px; }
+  th { background: var(--bg-secondary); color: var(--accent); font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; text-align: left; padding: 12px 15px; border: 1px solid var(--border); }
+  td { padding: 10px 15px; border: 1px solid var(--border); color: var(--text-secondary); }
+  sup { color: var(--accent); font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="paper-container">
+
+<div class="title-page">
+  <div class="journal-name">Journal of Theoretical Neuroscience &bull; 9-Neuron Framework Series &bull; Paper XI</div>
+  <h1 class="paper-title">Cortical Bilaterality as Quality Assurance: Beyond the Left-Right Myth</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> &amp; Azimute<sup>2</sup></div>
+  <div class="affiliations">
+    <sup>1</sup> Independent Researcher &bull; <sup>2</sup> Kerberos Research Initiative<br>
+    Correspondence: lk.adures@gmail.com
+  </div>
+  <div class="paper-meta">Submitted: February 2026 &bull; Preprint &bull; DOI: pending</div>
+</div>
+
+<div class="abstract-box">
+  <div class="abstract-label">Abstract</div>
+  <div class="abstract-text">
+    The popular notion that the left hemisphere is "logical" and the right hemisphere is "creative" has been thoroughly debunked by neuroscience, yet no compelling alternative explanation for cortical bilaterality has taken its place in public or theoretical discourse. We propose that cerebral bilaterality evolved as a quality assurance (QA) mechanism: two hemispheres processing the same information in parallel, with slightly different processing biases, and cross-checking results through the corpus callosum. This is not specialization—it is redundancy with verification. We reinterpret the classic split-brain findings of Sperry and Gazzaniga as evidence not of hemispheric specialization per se, but of what happens when the QA channel is severed: each hemisphere continues to produce outputs, but without cross-validation, errors go uncorrected and confabulation emerges. We critically engage with McGilchrist's influential "Master and Emissary" thesis—which correctly identifies hemispheric asymmetries but incorrectly frames them as competing worldviews rather than complementary QA processors. Within the 9-Neuron Framework, bilaterality operates across L7–L9 as a built-in error-correction system: two parallel processing streams that converge through callosal cross-talk to produce more reliable cognition than either hemisphere alone could achieve.
+  </div>
+  <div class="keywords"><span>Keywords:</span> bilaterality, corpus callosum, quality assurance, split-brain, hemispheric asymmetry, 9-Neuron Framework, error correction, cross-check</div>
+</div>
+
+<h2>1. Introduction</h2>
+
+<p>Why does the brain have two hemispheres? This is one of the most fundamental questions in neuroanatomy, yet the dominant popular answer—left brain for logic, right brain for creativity—is wrong. Decades of neuroimaging research have shown that virtually every cognitive function recruits bilateral networks (Nielsen et al., 2013). Language, long considered the quintessential left-lateralized function, involves right hemisphere contributions to prosody, pragmatics, discourse coherence, and metaphor comprehension (Lindell, 2006). Mathematical reasoning, supposedly left-lateralized, recruits bilateral parietal and prefrontal regions (Arsalidou & Taylor, 2011). Creative thinking activates distributed bilateral networks, not a privileged right hemisphere (Beaty et al., 2016).</p>
+
+<p>If hemispheric specialization is not the answer, what is? We propose a fundamentally different explanation: cortical bilaterality is a quality assurance (QA) mechanism. The brain maintains two parallel processing streams—not because they do different things, but because having two slightly different processors working on the same problem and cross-checking their results produces more reliable output than a single processor of equivalent size.</p>
+
+<p>This is an engineering principle well known in fault-tolerant computing, aerospace design, and industrial quality control: dual modular redundancy (DMR). In DMR systems, two independent processors execute the same computation, and their outputs are compared. If they agree, confidence is high. If they disagree, an error has been detected and correction procedures are initiated. We argue that the corpus callosum—the 200-million-fiber tract connecting the hemispheres—is the brain's DMR comparator: the QA channel through which hemispheric outputs are cross-validated.</p>
+
+<h2>2. The Left-Right Myth: A Critical History</h2>
+
+<h3>2.1 Origins</h3>
+
+<p>The lateralization myth traces to Broca's (1861) localization of speech production in the left inferior frontal gyrus and Wernicke's (1874) identification of left temporal regions for speech comprehension. These genuine findings of left-lateralized language production were progressively inflated into the claim that the left hemisphere handles all "analytical" or "logical" functions, while the right hemisphere handles "holistic" or "creative" ones (Corballis, 2014).</p>
+
+<p>The split-brain studies of Sperry (1968) and Gazzaniga (1967, 2005) appeared to confirm this dichotomy by demonstrating that disconnected hemispheres showed different capabilities. The left hemisphere could speak; the right could not (in most patients). The right hemisphere showed superior visuospatial processing. These findings were translated by popular culture into the left-brain/right-brain personality theory—a distortion that persists despite decades of disconfirmation (Corballis, 2012).</p>
+
+<h3>2.2 The Evidence Against</h3>
+
+<p>Nielsen et al. (2013) conducted a large-scale fMRI study of over 1,000 individuals and found no evidence for a dominant hemisphere in individuals: both hemispheres were equally active during resting state and task performance. Lateralization exists for specific subprocesses (e.g., Broca's area for speech articulation planning, right fusiform for face processing) but does not generalize to broad cognitive categories like "logic" versus "creativity."</p>
+
+<p>Corballis (2014) systematically dismantled the left-right dichotomy, showing that: (1) language is bilateral, with right hemisphere contributions essential for normal communication; (2) spatial processing recruits both hemispheres; (3) emotional processing is not right-lateralized but involves bilateral circuits with different aspects handled by different regions; and (4) the correlations between "brain dominance" questionnaires and actual hemispheric activation are near zero.</p>
+
+<h3>2.3 McGilchrist's "Master and Emissary": Correct Observations, Wrong Framework</h3>
+
+<p>McGilchrist (2009) offered the most sophisticated recent account of hemispheric differences in <em>The Master and His Emissary</em>. He argued that the left hemisphere provides focused, narrow, categorical attention (the "emissary") while the right provides broad, contextual, relational attention (the "master"). His observations about attentional asymmetries have empirical support (Kinsbourne, 1970; Heilman & Van Den Abell, 1980). His scholarship is impressive and his clinical examples are compelling.</p>
+
+<div class="critical-box">
+  <p><strong>Critical assessment:</strong> McGilchrist's error is not in his observations but in his framework. He treats the hemispheres as competing worldviews—two different ways of being in the world that are in tension. The right hemisphere "sees" the whole; the left "grasps" the parts; and Western civilization's decline reflects left-hemispheric dominance over the right "master." This is a cultural-philosophical narrative imposed on neuroscience, not a neuroscientific conclusion. The hemispheric asymmetries McGilchrist describes—focused vs. broad attention, categorical vs. contextual processing—are precisely the different processing biases that make the QA model work. You don't need the hemispheres to be competing worldviews; you need them to be complementary error-checkers with different blind spots.</p>
+</div>
+
+<h2>3. The Quality Assurance Model</h2>
+
+<h3>3.1 Engineering Precedents</h3>
+
+<p>Dual modular redundancy (DMR) is a standard reliability engineering technique used in safety-critical systems. Both Space Shuttle flight computers and modern fly-by-wire aircraft use multiple independent processors running the same computations in parallel, with voting mechanisms to detect and correct errors (Pradhan, 1996). The principle is simple: a single processor can produce an error without detecting it; two independent processors producing different outputs reveals the error.</p>
+
+<p>Triple modular redundancy (TMR) extends this to three processors with majority voting, allowing not just error detection but error correction (the majority vote identifies the correct output). The brain's bilaterality implements DMR with an important twist: the two "processors" are not identical but have slightly different processing biases, which means they catch different categories of errors.</p>
+
+<h3>3.2 Hemispheric Asymmetries as Complementary Biases</h3>
+
+<p>The real hemispheric asymmetries documented by neuroscience are not competing worldviews but complementary processing biases that optimize the QA function:</p>
+
+<table>
+  <tr><th>Processing Dimension</th><th>Left Hemisphere Bias</th><th>Right Hemisphere Bias</th><th>QA Benefit</th></tr>
+  <tr><td>Attention</td><td>Focused, local</td><td>Broad, global</td><td>Cross-checks detail against context</td></tr>
+  <tr><td>Temporal processing</td><td>Sequential, high-frequency</td><td>Holistic, low-frequency</td><td>Catches timing and gestalt errors</td></tr>
+  <tr><td>Categorization</td><td>Categorical, sharp boundaries</td><td>Graded, continuous</td><td>Prevents over- and under-categorization</td></tr>
+  <tr><td>Language</td><td>Syntax, phonology, literal meaning</td><td>Prosody, pragmatics, metaphor</td><td>Cross-checks what is said vs. what is meant</td></tr>
+  <tr><td>Emotion</td><td>Approach-related</td><td>Withdrawal-related</td><td>Balances risk tolerance</td></tr>
+  <tr><td>Novelty</td><td>Routine, automated</td><td>Novel, exploratory</td><td>Prevents habitual errors in new situations</td></tr>
+</table>
+
+<p>Each bias, taken alone, would produce systematic errors. A purely local-attention processor would miss context; a purely global-attention processor would miss details. A purely categorical processor would force continuous phenomena into artificial bins; a purely graded processor would fail to make necessary distinctions. By running both biases in parallel and cross-checking through the corpus callosum, the brain catches errors that either bias alone would miss.</p>
+
+<h3>3.3 The Corpus Callosum as QA Channel</h3>
+
+<p>The corpus callosum is the largest white matter tract in the brain, containing approximately 200 million fibers connecting homologous cortical regions across hemispheres (Aboitiz et al., 1992). Its function has been debated: does it primarily excite (integrate) or inhibit (segregate) contralateral regions? The answer appears to be both, depending on the processing stage (Bloom & Hynd, 2005).</p>
+
+<p>In the QA model, callosal fibers serve two functions: (1) <strong>comparison</strong>—transmitting each hemisphere's output to the other for cross-checking; and (2) <strong>inhibition</strong>—suppressing the output of whichever hemisphere's computation is less consistent with the convergent evidence. This is exactly how DMR comparators work in engineering: compare outputs, flag discrepancies, and select the more reliable result.</p>
+
+<p>van der Knaap and van der Ham (2011) showed that callosal integrity correlates with cognitive performance on tasks requiring integration of bilateral processing—consistent with the QA model's prediction that better cross-checking produces better cognition. Individuals with callosal agenesis (born without a corpus callosum) show subtle but consistent deficits in tasks requiring integration of contradictory information, novel problem-solving, and social cognition (Paul et al., 2007)—precisely the domains where QA cross-checking would be most valuable.</p>
+
+<h2>4. Split-Brain Studies Reinterpreted</h2>
+
+<h3>4.1 Sperry and Gazzaniga's Findings</h3>
+
+<p>The split-brain patients studied by Sperry (1968) and Gazzaniga (1967, 2005) had undergone corpus callosotomy for intractable epilepsy. When the callosum is severed, each hemisphere operates independently. The classic findings include: (1) the left hemisphere can verbally report stimuli presented to the right visual field but not the left; (2) the right hemisphere can guide the left hand to select objects it has seen but cannot verbally name them; and (3) when asked to explain left-hand actions guided by the right hemisphere, the left hemisphere confabulates plausible but false explanations.</p>
+
+<h3>4.2 The QA Interpretation</h3>
+
+<p>Standard interpretation: the hemispheres have different specializations that are revealed when they are disconnected. QA interpretation: what is revealed when the QA channel is severed is not specialization per se, but <strong>unchecked processing</strong>.</p>
+
+<div class="highlight-box">
+  <p><strong>Key reinterpretation:</strong> The most revealing split-brain finding is confabulation. When the left hemisphere is asked why the left hand (controlled by the disconnected right hemisphere) performed an action, it generates a plausible narrative—confidently and fluently—that is completely wrong. This is not a demonstration of left-hemispheric narrative ability; it is a demonstration of what happens when narrative generation operates without QA cross-checking. In the intact brain, the right hemisphere would flag the left's confabulation as inconsistent with its own processing. Without the callosal QA channel, the left hemisphere's narrative goes unchecked—and the result is confident, fluent, false explanation.</p>
+</div>
+
+<p>Gazzaniga (2000) himself identified this phenomenon, calling the left hemisphere the "interpreter"—a module that generates causal narratives for behavior. But he framed it as a left-hemispheric specialization. We reframe it: narrative generation is a general cognitive function that both hemispheres contribute to, but when one hemisphere operates without the other's cross-check, its narratives become unreliable. The left hemisphere's confabulation in split-brain patients is not evidence of what the left hemisphere uniquely does—it is evidence of what any processor does without error correction: it produces confident, unchecked, sometimes wrong output.</p>
+
+<h3>4.3 Anosognosia: QA Failure in Neurological Disease</h3>
+
+<p>Anosognosia—the inability to recognize one's own neurological deficit (e.g., denying paralysis of the left side after a right-hemisphere stroke)—provides further evidence for the QA model. Anosognosia occurs predominantly with right-hemisphere damage (Pia et al., 2004). In the QA framework, this is because the right hemisphere normally provides the broad-context, discrepancy-detecting function that catches the left hemisphere's tendency to generate narratives consistent with prior expectations rather than current reality. When the right hemisphere is damaged, the left hemisphere's narrative function operates without cross-checking and produces confabulation: "My arm is fine; I just don't feel like moving it."</p>
+
+<p>Ramachandran (1995) demonstrated this experimentally: caloric stimulation of the left ear (which activates right-hemispheric vestibular processing) temporarily resolves anosognosia, suggesting that reactivating the right hemisphere's QA function restores the patient's ability to detect the discrepancy between their narrative ("I'm fine") and their reality (they are paralyzed).</p>
+
+<h2>5. Bilaterality in the 9-Neuron Framework</h2>
+
+<h3>5.1 QA Across Layers</h3>
+
+<p>In the 9-Neuron Framework, bilaterality operates as a cross-cutting QA mechanism across multiple layers, but is most prominent at L7–L9:</p>
+
+<table>
+  <tr><th>Layer</th><th>Function</th><th>Bilateral QA Role</th></tr>
+  <tr><td>L7 (Rational analysis)</td><td>Logical reasoning, planning</td><td>Left: sequential analysis; Right: contextual check. Cross-validation prevents both overly narrow and overly vague conclusions.</td></tr>
+  <tr><td>L8 (Consciousness)</td><td>Global workspace integration</td><td>Bilateral integration ensures that conscious content reflects both focused and broad processing. QA failure = confabulation, neglect.</td></tr>
+  <tr><td>L9 (Metacognition)</td><td>Thinking about thinking</td><td>Cross-hemispheric monitoring enables detection of one's own cognitive biases. QA failure = anosognosia, loss of insight.</td></tr>
+</table>
+
+<h3>5.2 Predictive Processing and Bilateral Error Signals</h3>
+
+<p>The 9-Neuron Framework is grounded in predictive processing theory: each layer generates predictions about its inputs and learns from prediction errors. Bilaterality enhances this mechanism by providing two independent prediction generators for each layer. When both hemispheres' predictions align and both match the input, confidence is high. When predictions diverge, an error signal is generated that triggers more careful, controlled processing (Shallice & Cooper, 2011).</p>
+
+<p>This explains why novel situations recruit more bilateral activation than routine ones (Goldberg & Costa, 1981): novel inputs are more likely to produce divergent predictions across hemispheres, triggering the QA mechanism. Routine inputs produce convergent predictions that require minimal cross-checking, allowing more lateralized (efficient) processing.</p>
+
+<h3>5.3 The Callosal Maturation Curve</h3>
+
+<p>The corpus callosum continues to myelinate through adolescence, reaching full maturity around age 25—the same timeline as prefrontal cortex maturation (Keshavan et al., 2002). This is consistent with the QA model: the QA channel must mature in tandem with the processors it monitors. Adolescents' well-documented impulsivity, risk-taking, and poor metacognitive judgment (Steinberg, 2008) may reflect not just prefrontal immaturity but immature callosal QA: the hemispheres are individually capable but insufficiently cross-checked.</p>
+
+<p>Luders et al. (2010) showed that callosal thickness correlates with cognitive performance and IQ across the lifespan. Thicker, better-myelinated callosal fibers enable faster interhemispheric transfer and more efficient QA cross-checking. This predicts that cognitive decline in aging—which correlates with callosal atrophy (Ota et al., 2006)—represents in part a degradation of the QA mechanism: hemispheres become less able to cross-check each other, leading to increased cognitive errors, reduced insight, and greater vulnerability to confabulation.</p>
+
+<h2>6. Discussion</h2>
+
+<h3>6.1 Why Two and Not Three?</h3>
+
+<p>If redundancy improves reliability, why not three hemispheres (triple modular redundancy)? The answer is likely metabolic cost. The brain already consumes 20% of the body's energy at 2% of its mass. A third hemisphere would add approximately 50% more neural tissue with diminishing returns: DMR catches most errors; TMR adds correction capability but at enormous metabolic cost. Evolution appears to have found the DMR sweet spot—reliable enough for survival, affordable enough to sustain (Laughlin et al., 1998).</p>
+
+<p>Additionally, the non-identical biases of the two hemispheres partially compensate for DMR's inability to identify which processor is wrong (unlike TMR's majority vote). If the hemispheres had identical biases, a detected disagreement would provide no information about which output is correct. With complementary biases, the pattern of disagreement itself carries diagnostic information: if the left hemisphere says X and the right says Y, the nature of the difference reveals which bias is responsible and which output is more likely correct for the task at hand.</p>
+
+<h3>6.2 Implications for Artificial Intelligence</h3>
+
+<p>Current deep learning architectures are overwhelmingly unilateral: a single network processes input and produces output without parallel cross-checking. The QA model suggests that AI systems could benefit from bilateral architectures: two networks with different inductive biases processing the same input, with a comparator module that flags disagreements. This is conceptually related to ensemble methods and adversarial training, but the QA framework provides a principled neuroanatomical model for how to structure such systems.</p>
+
+<h3>6.3 Implications for Meditation and Hemispheric Synchronization</h3>
+
+<p>Practices that enhance interhemispheric coherence—meditation, binaural beats, bilateral eye movements (as in EMDR)—may work by optimizing the QA mechanism. Lutz et al. (2004) showed that experienced meditators exhibit increased gamma-band synchronization across hemispheres during meditation. If the QA model is correct, this synchronization represents enhanced cross-checking, which would explain the improved clarity, reduced cognitive distortion, and enhanced metacognition reported by meditators.</p>
+
+<h3>6.4 Limitations</h3>
+
+<p>The QA model is not mutually exclusive with functional lateralization—it reinterprets lateralization as bias differentiation rather than task specialization. The model does not explain why specific biases map to specific hemispheres (why local attention is left and global is right, rather than vice versa). The analogy to engineering DMR, while illuminating, should not be taken literally: biological neural networks are far more complex and flexible than digital comparators. Finally, direct experimental testing of the QA model—distinguishing it from the specialization model—requires precise manipulations of callosal function that are difficult to achieve in healthy subjects.</p>
+
+<h2>7. Conclusion</h2>
+
+<p>Cortical bilaterality is not about logic versus creativity, analysis versus intuition, or emissary versus master. It is about quality assurance: two parallel processors with complementary biases, cross-checking each other through 200 million callosal fibers to produce more reliable cognition than either could alone. Split-brain studies reveal not hemispheric specialization but the consequences of QA failure: confident, fluent, unchecked output—confabulation. Anosognosia reveals the same principle in neurological disease. Within the 9-Neuron Framework, bilaterality is the brain's built-in error correction system, operating across L7–L9 to ensure that rational analysis, conscious experience, and metacognitive self-monitoring achieve the reliability required for adaptive behavior. The question is not "which hemisphere is dominant?" but "how well are they cross-checking each other?"</p>
+
+<div class="references">
+<h2>References</h2>
+<ol class="ref-list">
+  <li>Aboitiz, F., Scheibel, A. B., Fisher, R. S., & Zaidel, E. (1992). Fiber composition of the human corpus callosum. <em>Brain Research, 598</em>(1–2), 143–153.</li>
+  <li>Adures, L., & Azimute. (2026). The 9-Neuron Framework: A layered architecture of predictive intelligence. <em>Preprint</em>.</li>
+  <li>Arsalidou, M., & Taylor, M. J. (2011). Is 2+2=4? Meta-analyses of brain areas needed for numbers and calculations. <em>NeuroImage, 54</em>(3), 2382–2393.</li>
+  <li>Beaty, R. E., Benedek, M., Silvia, P. J., & Schacter, D. L. (2016). Creative cognition and brain network dynamics. <em>Trends in Cognitive Sciences, 20</em>(2), 87–95.</li>
+  <li>Bloom, J. S., & Hynd, G. W. (2005). The role of the corpus callosum in interhemispheric transfer of information: Excitation or inhibition? <em>Neuropsychology Review, 15</em>(2), 59–71.</li>
+  <li>Broca, P. (1861). Remarques sur le siège de la faculté du langage articulé. <em>Bulletins de la Société Anatomique de Paris, 6</em>, 330–357.</li>
+  <li>Corballis, M. C. (2012). Lateralization of the human brain. <em>Progress in Brain Research, 195</em>, 103–121.</li>
+  <li>Corballis, M. C. (2014). Left brain, right brain: Facts and fantasies. <em>PLoS Biology, 12</em>(1), e1001767.</li>
+  <li>Gazzaniga, M. S. (1967). The split brain in man. <em>Scientific American, 217</em>(2), 24–29.</li>
+  <li>Gazzaniga, M. S. (2000). Cerebral specialization and interhemispheric communication: Does the corpus callosum enable the human condition? <em>Brain, 123</em>(7), 1293–1326.</li>
+  <li>Gazzaniga, M. S. (2005). Forty-five years of split-brain research and still going strong. <em>Nature Reviews Neuroscience, 6</em>(8), 653–659.</li>
+  <li>Goldberg, E., & Costa, L. D. (1981). Hemisphere differences in the acquisition and use of descriptive systems. <em>Brain and Language, 14</em>(1), 144–173.</li>
+  <li>Heilman, K. M., & Van Den Abell, T. (1980). Right hemisphere dominance for attention: The mechanism underlying hemispheric asymmetries of inattention (neglect). <em>Neurology, 30</em>(3), 327–330.</li>
+  <li>Keshavan, M. S., Diwadkar, V. A., DeBellis, M., et al. (2002). Development of the corpus callosum in childhood, adolescence and early adulthood. <em>Life Sciences, 70</em>(16), 1909–1922.</li>
+  <li>Kinsbourne, M. (1970). The cerebral basis of lateral asymmetries in attention. <em>Acta Psychologica, 33</em>, 193–201.</li>
+  <li>Laughlin, S. B., de Ruyter van Steveninck, R. R., & Anderson, J. C. (1998). The metabolic cost of neural information. <em>Nature Neuroscience, 1</em>(1), 36–41.</li>
+  <li>Lindell, A. K. (2006). In your right mind: Right hemisphere contributions to language processing and production. <em>Neuropsychology Review, 16</em>(3), 131–148.</li>
+  <li>Luders, E., Thompson, P. M., & Toga, A. W. (2010). The development of the corpus callosum in the healthy human brain. <em>Journal of Neuroscience, 30</em>(33), 10985–10990.</li>
+  <li>Lutz, A., Greischar, L. L., Rawlings, N. B., Ricard, M., & Davidson, R. J. (2004). Long-term meditators self-induce high-amplitude gamma synchrony during mental practice. <em>Proceedings of the National Academy of Sciences, 101</em>(46), 16369–16373.</li>
+  <li>McGilchrist, I. (2009). <em>The Master and His Emissary: The Divided Brain and the Making of the Western World</em>. Yale University Press.</li>
+  <li>Nielsen, J. A., Zielinski, B. A., Ferguson, M. A., et al. (2013). An evaluation of the left-brain vs. right-brain hypothesis with resting state functional connectivity magnetic resonance imaging. <em>PLoS ONE, 8</em>(8), e71275.</li>
+  <li>Ota, M., Obata, T., Akine, Y., et al. (2006). Age-related degeneration of corpus callosum measured with diffusion tensor imaging. <em>NeuroImage, 31</em>(4), 1445–1452.</li>
+  <li>Paul, L. K., Brown, W. S., Adolphs, R., et al. (2007). Agenesis of the corpus callosum: Genetic, developmental and functional aspects of connectivity. <em>Nature Reviews Neuroscience, 8</em>(4), 287–299.</li>
+  <li>Pia, L., Neppi-Modona, M., Ricci, R., & Berti, A. (2004). The anatomy of anosognosia for hemiplegia: A meta-analysis. <em>Cortex, 40</em>(2), 367–377.</li>
+  <li>Pradhan, D. K. (1996). <em>Fault-Tolerant Computer System Design</em>. Prentice Hall.</li>
+  <li>Ramachandran, V. S. (1995). Anosognosia in parietal lobe syndrome. <em>Consciousness and Cognition, 4</em>(1), 22–51.</li>
+  <li>Shallice, T., & Cooper, R. P. (2011). <em>The Organisation of Mind</em>. Oxford University Press.</li>
+  <li>Sperry, R. W. (1968). Hemisphere deconnection and unity in conscious awareness. <em>American Psychologist, 23</em>(10), 723–733.</li>
+  <li>Steinberg, L. (2008). A social neuroscience perspective on adolescent risk-taking. <em>Developmental Review, 28</em>(1), 78–106.</li>
+  <li>van der Knaap, L. J., & van der Ham, I. J. M. (2011). How does the corpus callosum mediate interhemispheric transfer? A review. <em>Behavioural Brain Research, 223</em>(1), 211–221.</li>
+  <li>Wernicke, C. (1874). <em>Der aphasische Symptomencomplex</em>. Breslau: Cohn & Weigert.</li>
+  <li>de Schotten, M. T., Dell'Acqua, F., Forkel, S. J., et al. (2011). A lateralized brain network for visuospatial attention. <em>Nature Neuroscience, 14</em>(10), 1245–1246.</li>
+  <li>Pinto, Y., Neville, D. A., Otten, M., et al. (2017). Split brain: Divided perception but undivided consciousness. <em>Brain, 140</em>(5), 1231–1237.</li>
+  <li>Gazzaniga, M. S., Bogen, J. E., & Sperry, R. W. (1962). Some functional effects of sectioning the cerebral commissures in man. <em>Proceedings of the National Academy of Sciences, 48</em>(10), 1765–1769.</li>
+</ol>
+</div>
+
+</div>
+</body>
+</html>

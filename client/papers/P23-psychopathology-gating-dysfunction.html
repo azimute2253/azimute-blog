@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychopathology as Gating Dysfunction: Reframing Mental Disorders Through the 9-Neuron Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2129;
+    --accent: #58a6ff;
+    --accent-dim: #388bfd40;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border: #30363d;
+    --highlight: #f0883e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .paper-container { max-width: 820px; margin: 0 auto; padding: 60px 40px 100px; }
+  .title-page { text-align: center; padding: 80px 0 60px; border-bottom: 1px solid var(--border); margin-bottom: 50px; }
+  .journal-name { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 40px; }
+  .paper-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.3; color: var(--text-primary); margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; }
+  .authors { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; font-weight: 400; color: var(--text-secondary); margin-bottom: 8px; }
+  .affiliations { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 30px; }
+  .correspondence { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-muted); margin-bottom: 30px; }
+  .received-date { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; color: var(--text-muted); }
+  h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 600; color: var(--text-primary); margin-top: 50px; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid var(--accent-dim); }
+  h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-primary); margin-top: 35px; margin-bottom: 12px; }
+  h4 { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; font-weight: 600; color: var(--accent); margin-top: 25px; margin-bottom: 10px; }
+  p { margin-bottom: 16px; text-align: justify; }
+  .abstract { background: var(--bg-secondary); border-left: 3px solid var(--accent); padding: 30px; margin: 30px 0; border-radius: 0 8px 8px 0; }
+  .abstract-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; }
+  .keywords { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-secondary); margin-top: 15px; }
+  .keywords span { background: var(--bg-tertiary); padding: 3px 10px; border-radius: 4px; margin-right: 6px; border: 1px solid var(--border); display: inline-block; margin-bottom: 4px; }
+  blockquote { border-left: 3px solid var(--highlight); padding: 15px 20px; margin: 20px 0; background: var(--bg-secondary); border-radius: 0 8px 8px 0; font-style: italic; color: var(--text-secondary); }
+  .insight-box { background: linear-gradient(135deg, #1a1e2e, #1c2129); border: 1px solid var(--accent-dim); border-radius: 8px; padding: 25px; margin: 25px 0; }
+  .insight-box .label { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--highlight); margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 15px; }
+  th { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; text-align: left; padding: 12px 15px; background: var(--bg-secondary); border-bottom: 2px solid var(--accent); color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  td { padding: 10px 15px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: var(--bg-secondary); }
+  .figure { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin: 30px 0; text-align: center; }
+  .figure-caption { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-secondary); margin-top: 15px; line-height: 1.5; }
+  .figure-label { font-weight: 600; color: var(--accent); }
+  .references { font-size: 14px; line-height: 1.7; }
+  .references ol { padding-left: 25px; }
+  .references li { margin-bottom: 10px; color: var(--text-secondary); }
+  .ref-title { color: var(--text-primary); }
+  .ref-journal { font-style: italic; color: var(--accent); }
+  .disorder-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin: 20px 0; }
+  .disorder-box h4 { margin-top: 0; color: var(--highlight); }
+  .diagram-box { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 8px; padding: 30px; margin: 25px 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.6; color: var(--text-secondary); white-space: pre; overflow-x: auto; }
+  sup { font-size: 0.7em; color: var(--accent); }
+  .footnote { font-size: 13px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 15px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="paper-container">
+
+<div class="title-page">
+  <div class="journal-name">Kerberos Papers · Computational Psychiatry</div>
+  <h1 class="paper-title">Psychopathology as Gating Dysfunction: Reframing Mental Disorders Through the 9-Neuron Framework</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> &amp; Azimute<sup>2</sup></div>
+  <div class="affiliations">
+    <sup>1</sup> Independent Researcher, Brazil<br>
+    <sup>2</sup> Kerberos Research Initiative
+  </div>
+  <div class="correspondence">Correspondence: lk.adures@gmail.com</div>
+  <div class="received-date">Received: February 2026 · Kerberos Papers P23</div>
+</div>
+
+<!-- Abstract -->
+<div class="abstract">
+  <div class="abstract-title">Abstract</div>
+  <p>
+    The 9-Neuron (9N) framework proposes that consciousness operates through nine hierarchical predictive layers (L1–L9), with GABAergic gating mechanisms controlling which prediction errors escalate between layers. If this framework is valid, mental disorders should be systematically explicable as specific patterns of gating dysfunction. This paper develops that thesis across ten major diagnostic categories: depression (L3→L4 gate lock / L5 dominance over L7–L9), PTSD (prediction error freeze with unprunable routes), autism spectrum conditions (L1–L2 gating excess with insufficient filtering), psychopathy (functional L9 with disconnected L3), anxiety disorders (globally reduced gating thresholds), dissociative disorders (globally elevated gating thresholds), epilepsy (gating failure producing re-entry loops), psychotic breaks (L9 prediction error producing total predictive rupture), ADHD (L2 selection filter over-permissiveness), and addiction (L5 pattern hijacking with unprunable express routes). For each disorder, we specify the affected layer(s), the nature of the gating dysfunction, the resulting phenomenology, and the mechanism of action of current treatments reinterpreted through the gating lens. We propose a diagnostic framework based on layer identification and gating characterization, and argue that treatment should target specific gate repair rather than symptom suppression. The framework generates novel predictions about comorbidity patterns, treatment resistance, and the relationship between psychopathology and insight.
+  </p>
+  <div class="keywords">
+    <strong>Keywords:</strong>
+    <span>psychopathology</span>
+    <span>gating dysfunction</span>
+    <span>9-neuron framework</span>
+    <span>predictive processing</span>
+    <span>computational psychiatry</span>
+    <span>GABAergic inhibition</span>
+    <span>prediction error</span>
+    <span>consciousness layers</span>
+  </div>
+</div>
+
+<!-- 1. Introduction -->
+<h2>1. Introduction</h2>
+
+<p>
+  Psychiatric diagnosis remains fundamentally descriptive. The DSM-5 (American Psychiatric Association, 2013) classifies disorders by symptom clusters rather than mechanisms—a state of affairs that Insel et al. (2010) likened to pre-germ-theory medicine classifying diseases by the organ that hurts rather than the pathogen that causes the hurt. The Research Domain Criteria (RDoC) initiative (Cuthbert & Insel, 2013) represents an attempt to move toward mechanistic classification, but it lacks a unifying computational framework that explains <em>why</em> specific neural circuit dysfunctions produce specific phenomenological experiences.
+</p>
+
+<p>
+  Computational psychiatry has made significant progress by applying predictive processing and Bayesian brain theories to psychopathology (Friston, 2010; Stephan et al., 2016; Paulus & Stein, 2010). Aberrant prediction error signaling has been proposed as a transdiagnostic mechanism underlying conditions from psychosis (Fletcher & Frith, 2009) to anxiety (Paulus & Stein, 2006) to autism (Pellicano & Burr, 2012). However, these accounts typically focus on prediction error <em>magnitude</em> (too much or too little) without specifying prediction error <em>routing</em>—which errors reach which processing levels, and how the escalation pathway between levels is controlled.
+</p>
+
+<p>
+  The 9-Neuron (9N) framework (Adures, 2026a) provides the missing routing architecture. By proposing that consciousness operates through nine hierarchical layers—from raw sensation (L1) through emotional tagging (L3), implicit memory (L4–L6), narrative integration (L7), conscious awareness (L8), to recursive self-modeling (L9)—and that GABAergic gating mechanisms control prediction error escalation between layers (Adures, 2026b), the framework creates a computational space in which specific gating dysfunctions map to specific disorders.
+</p>
+
+<p>
+  This paper's central thesis is bold but testable: <strong>every major psychiatric disorder can be characterized as a specific pattern of inter-layer gating dysfunction within the 9N hierarchy</strong>. Not merely "aberrant prediction error" but prediction error misrouted, over-gated, under-gated, or locked in re-entry loops at specific layer boundaries. We develop this thesis across ten diagnostic categories, demonstrating that the gating dysfunction framework provides mechanistic explanations for symptom profiles, comorbidity patterns, treatment mechanisms, and treatment resistance that current frameworks do not.
+</p>
+
+<!-- 2. Gating in the 9N Framework: A Primer -->
+<h2>2. Gating in the 9N Framework: A Primer</h2>
+
+<p>
+  In the 9N framework, gating refers to the mechanism that determines whether a prediction error generated at layer <em>N</em> is resolved locally (within that layer's own predictive model) or escalated to layer <em>N+1</em> for higher-order processing. The primary neurochemical substrate for gating is GABAergic inhibition (Adures, 2026b), though glutamatergic excitation, dopaminergic modulation, and serotonergic tone all play modulatory roles.
+</p>
+
+<p>
+  Each layer boundary has a gating threshold: prediction errors below this threshold are absorbed; those above it are escalated. Healthy gating requires that thresholds are calibrated to the statistical regularities of the organism's environment—common, expected prediction errors are handled locally, while rare, significant errors are escalated for conscious processing and model updating.
+</p>
+
+<div class="diagram-box">
+HEALTHY GATING:
+
+L1 (sensory) ──gate──▶ L2 (filter) ──gate──▶ L3 (emotion) ──gate──▶ L4 (implicit)
+                                                                        │
+L9 (self-model) ◀──gate── L8 (awareness) ◀──gate── L7 (narrative) ◀──gate──┘
+                                                                  via L5, L6
+
+Gate = GABAergic threshold
+  • Low PE → resolved locally (no escalation)
+  • High PE → escalates to next layer
+  • Threshold calibrated by experience + sleep consolidation
+
+DYSFUNCTION TYPES:
+  ┌──────────────────┬──────────────────────────────────────────┐
+  │ Gate LOCKED       │ PE cannot escalate → disconnection       │
+  │ Gate TOO LOW      │ Everything escalates → overwhelm         │
+  │ Gate TOO HIGH     │ Nothing escalates → numbness             │
+  │ Gate STUCK OPEN   │ Uncontrolled flow → flooding             │
+  │ RE-ENTRY LOOP     │ PE bounces between layers → seizure/OCD  │
+  │ ROUTE HIJACK      │ Specific pathway over-strengthened        │
+  └──────────────────┴──────────────────────────────────────────┘
+</div>
+
+<p>
+  Gating dysfunction can take several forms: a gate can be locked (preventing normal escalation), set too low (allowing trivial prediction errors to escalate), set too high (preventing significant errors from escalating), stuck open (allowing uncontrolled flow in both directions), or caught in a re-entry loop (prediction errors cycling between layers without resolution). Each pattern produces a distinct psychopathological profile.
+</p>
+
+<!-- 3. Depression -->
+<h2>3. Depression: Locked Gates and Somatic Dominance</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> L3→L4 gate locked (emotional tags fail to update implicit memory); L5 dominates L7–L9 (somatic markers override narrative and metacognitive processing).</p>
+  <p><strong>Secondary dysfunction:</strong> L1–L3 disconnected from L7+ (sensory experience fails to reach narrative integration → anhedonia).</p>
+</div>
+
+<p>
+  Major depressive disorder presents a paradox: patients are simultaneously overwhelmed by negative affect and unable to <em>feel</em> positive experiences (anhedonia). In the 9N framework, this paradox resolves as two concurrent gating dysfunctions operating at different layer boundaries.
+</p>
+
+<h3>3.1 The L3→L4 Lock</h3>
+
+<p>
+  In healthy cognition, emotional tags (L3) are integrated into implicit memory patterns (L4) through repeated experience and sleep consolidation (Adures, 2026c). A negative emotional experience generates a prediction error at L3; this error escalates to L4, which updates its implicit model; over time, the emotional tag is recalibrated as the model learns to predict and manage the triggering situation. The L3→L4 gate processes the emotion and moves on.
+</p>
+
+<p>
+  In depression, this gate locks. Negative emotional tags are generated at L3 but fail to update L4's implicit models. The prediction error is neither resolved nor escalated—it persists as a chronic, low-grade negative signal that colors all subsequent processing. Beck's (1967) cognitive triad (negative views of self, world, and future) may represent the downstream effect of this gate lock: L7 (narrative) attempts to explain the persistent L3 negativity and constructs explanatory narratives that are necessarily negative, because the underlying signal is unresolvable.
+</p>
+
+<h3>3.2 L5 Dominance</h3>
+
+<p>
+  Simultaneously, somatic markers (L5) gain disproportionate influence over upper layers. The depressed patient's persistent fatigue, heaviness, psychomotor retardation, and appetite changes are not merely symptoms—they are L5 predictions that have come to dominate the hierarchy. Paulus and Stein (2010) showed that depressed patients exhibit altered interoceptive processing, with increased sensitivity to negative bodily signals. In 9N terms, L5 is broadcasting predictions of bodily dysfunction to L7–L9, and these layers are unable to override or recalibrate them because the L3→L4 consolidation pathway is blocked.
+</p>
+
+<h3>3.3 Anhedonia as Disconnection</h3>
+
+<p>
+  Anhedonia—the inability to experience pleasure—is the hallmark of depression that distinguishes it from sadness. In 9N terms, anhedonia represents a disconnection between L1–L3 (sensory experience and emotional tagging) and L7+ (narrative integration and conscious awareness). Positive sensory inputs arrive at L1, are processed through L2, but the emotional tags that would normally be generated at L3 and escalated to L7 for narrative integration are blocked. The patient can cognitively acknowledge that a sunset is beautiful (L7–L8, via top-down processing) but cannot <em>feel</em> its beauty (L1→L3→L7 pathway is blocked).
+</p>
+
+<p>
+  This explains why antidepressants that target serotonin—a key modulator of gating thresholds (Celada et al., 2004)—take 2–4 weeks to produce clinical effects. SSRIs do not directly repair the locked gate; they modulate the neurochemical environment in which gating operates, gradually allowing the L3→L4 gate to unlock and the L1–L3→L7 pathway to re-establish. The temporal lag corresponds to the time required for synaptic remodeling to restore gating function—consistent with the neuroplasticity hypothesis of antidepressant action (Duman & Aghajanian, 2012).
+</p>
+
+<div class="insight-box">
+  <div class="label">Clinical Implication</div>
+  <p>If depression involves a locked L3→L4 gate, then treatments should target gate reopening rather than mood elevation. Cognitive behavioral therapy (CBT) works from the top down (L7→L3), gradually forcing prediction errors through the locked gate by behavioral activation. SSRIs work from the bottom up, modulating serotonergic tone to lower gating thresholds. The most effective treatments combine both approaches—consistent with meta-analytic evidence (Cuijpers et al., 2014).</p>
+</div>
+
+<!-- 4. PTSD -->
+<h2>4. PTSD: Frozen Prediction Errors and Unprunable Routes</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> Extreme prediction error freezes gating at the moment of trauma. The PE is encoded as a "thick route" (over-consolidated pathway) that cannot be pruned through normal sleep-dependent processes.</p>
+  <p><strong>Secondary dysfunction:</strong> Re-experiencing = prediction error replay that never resolves; the PE keeps escalating through L3→L7→L8 but never reaches L9 for metacognitive integration.</p>
+</div>
+
+<p>
+  Post-traumatic stress disorder is, in the 9N framework, a disorder of <em>prediction error magnitude</em> that exceeds the gating system's design parameters. Normal gating is calibrated for the statistical regularities of everyday experience. Traumatic events generate prediction errors so extreme—so far outside the system's prior distributions—that the gating mechanism itself is damaged by the signal it is attempting to process.
+</p>
+
+<h3>4.1 The Frozen Gate</h3>
+
+<p>
+  During trauma, the prediction error at L3 (emotional tag) is so extreme that rather than being processed through the normal escalation pathway, it is encoded directly as a "thick route"—a neural pathway with abnormally high synaptic strength that bypasses normal gating (van der Kolk, 2014). This route connects the traumatic trigger (L1–L2 sensory pattern) directly to the extreme emotional response (L3) and somatic emergency state (L5), without passing through the filtering and integration stages that would normally modulate the response.
+</p>
+
+<p>
+  Critically, this thick route <em>cannot be pruned through normal sleep consolidation</em>. As described in Adures (2026c), sleep spindles facilitate cross-layer indexing and synaptic homeostasis, but the traumatic route is too strong for normal downscaling. The SHY mechanism (Tononi & Cirelli, 2014) cannot reduce a pathway that was encoded under extreme neurochemical conditions (massive norepinephrine and cortisol release). The route persists as a permanent shortcut in the maze—an express highway to terror that cannot be decommissioned.
+</p>
+
+<h3>4.2 Re-Experiencing as Unresolved PE Replay</h3>
+
+<p>
+  Flashbacks, nightmares, and intrusive memories in PTSD represent the system's repeated attempt to resolve the frozen prediction error. During both waking and sleep, the hippocampus replays the traumatic experience (Rasch & Born, 2013), attempting to process it through normal consolidation pathways. But each replay re-activates the thick route, re-generating the extreme PE, and re-triggering the L3→L5 emergency cascade. The PE escalates to L7 (the patient re-experiences the narrative) and L8 (conscious awareness of the trauma) but <em>never reaches L9</em> for metacognitive integration and resolution.
+</p>
+
+<p>
+  This explains why simply "talking about it" (L7–L8 processing) is often insufficient for PTSD treatment. The PE must reach L9—the layer where the system can model the trauma as a <em>past event</em> that no longer predicts current danger. Ehlers and Clark's (2000) cognitive model of PTSD emphasizes exactly this: the trauma memory is not contextualized in time and space, leading to a "current threat" appraisal. In 9N terms, without L9 integration, the PE remains eternally "present."
+</p>
+
+<h3>4.3 Treatment Through Gate Reopening</h3>
+
+<p>
+  Effective PTSD treatments, viewed through the gating lens, work by creating conditions under which the frozen PE can finally reach L9:
+</p>
+
+<p>
+  <strong>EMDR</strong> (Shapiro, 2001): Bilateral stimulation may temporarily modulate gating thresholds, allowing the PE to propagate through normally blocked pathways. The rhythmic sensory input at L1 may create a "gating oscillation" that periodically opens the L8→L9 gate.
+</p>
+
+<p>
+  <strong>Prolonged Exposure</strong> (Foa & Kozak, 1986): Repeated re-activation of the traumatic memory in a safe context gradually weakens the thick route through extinction learning—not pruning the route, but building competing pathways that eventually override it.
+</p>
+
+<p>
+  <strong>MDMA-assisted therapy</strong> (Mithoefer et al., 2018): MDMA floods the system with serotonin (lowering gating thresholds globally) and oxytocin (modulating L3 emotional processing), creating a temporary window in which the traumatic PE can propagate all the way to L9 without triggering the emergency cascade. Van der Kolk (2014) has noted that MDMA appears to allow patients to revisit traumatic memories without re-traumatization—precisely what the gating model predicts.
+</p>
+
+<!-- 5. Autism Spectrum -->
+<h2>5. Autism Spectrum: Excess Input, Insufficient Filtering</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> L1→L2 gating altered—excess sensory input reaches L2 without sufficient filtering. Sensory overwhelm = L1 flooding.</p>
+  <p><strong>Secondary dysfunction:</strong> Compensatory over-tightening of higher gates (L3→L7) to manage information overload.</p>
+</div>
+
+<p>
+  Autism spectrum conditions have been reconceptualized within predictive processing as disorders of precision weighting—specifically, an overweighting of sensory prediction errors relative to prior predictions (Pellicano & Burr, 2012; Van de Cruys et al., 2014). In the 9N framework, this maps to a specific gating profile: the L1→L2 gate is set too low, allowing an excess of sensory detail to flood the perceptual filtering system.
+</p>
+
+<h3>5.1 Sensory Overwhelm as L1 Flooding</h3>
+
+<p>
+  Typical L1→L2 gating filters incoming sensory data, passing through prediction-relevant signals and suppressing predictable background noise. In autism, this filter is too permissive: the buzz of fluorescent lights, the texture of clothing, the facial micro-expressions of a conversation partner—all of these generate prediction errors that would normally be suppressed at L2 but instead flood through to L3 and beyond.
+</p>
+
+<p>
+  The sensory sensitivities characteristic of autism (Marco et al., 2011) are the direct phenomenological consequence of this gating failure. The autistic individual is not "overreacting" to sensory stimuli—they are processing stimuli that neurotypical brains never receive at the conscious level. Robertson and Baron-Cohen (2017) showed that autistic individuals have heightened sensory discrimination abilities, consistent with more raw sensory information reaching higher processing levels.
+</p>
+
+<h3>5.2 Compensatory Gate Tightening</h3>
+
+<p>
+  Faced with chronic sensory overload from L1–L2, the system compensates by tightening gates at higher levels. The L3→L7 gate in particular may be set too high, making it difficult for emotional information to propagate to narrative integration. This produces the characteristic social-communication difficulties: emotional cues (L3) are perceived but not integrated into social narratives (L7), leading to apparent "mind-blindness" (Baron-Cohen, 1995) that is actually a gating compensation rather than a primary deficit.
+</p>
+
+<p>
+  This reframing has important implications. The autistic individual is not lacking in empathy per se—emotional signals reach L3 and may even be intensely experienced (the well-documented phenomenon of autistic emotional flooding; Mazefsky et al., 2013). The deficit is in the controlled escalation of L3 signals to L7 for social-narrative integration. Milton's (2012) "double empathy problem" aligns with this account: both autistic and neurotypical individuals face a gating mismatch when interacting, with neither party's gating calibration matching the other's signaling patterns.
+</p>
+
+<h3>5.3 Restricted Interests as Express Route Optimization</h3>
+
+<p>
+  The restricted, intense interests characteristic of autism may represent a compensatory strategy: by narrowing the domain of attention, the system reduces the volume of L1 input that must be processed, creating well-consolidated express routes (L4–L6) within the restricted domain while avoiding the overwhelm that broader engagement would produce. In this view, special interests are not a deficit but an optimization—the system's best available solution to a gating calibration problem.
+</p>
+
+<!-- 6. Psychopathy -->
+<h2>6. Psychopathy: Functional Meta-Cognition, Disconnected Emotion</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> L3 disconnected from L7–L9. The emotional tagging layer operates but its outputs do not propagate to narrative integration, conscious awareness, or self-modeling.</p>
+  <p><strong>Secondary dysfunction:</strong> L9 fully functional—can reason <em>about</em> emotions without feeling them. Cognitive empathy intact; affective empathy absent.</p>
+</div>
+
+<p>
+  Psychopathy presents perhaps the cleanest dissociation in the gating framework. The psychopathic individual has intact cognitive abilities, including sophisticated social reasoning (L7–L9), but lacks the emotional grounding that normally constrains social behavior. Blair (2005) characterized this as a selective deficit in the violence inhibition mechanism—the system that normally generates aversive emotional responses to distress cues in others.
+</p>
+
+<h3>6.1 The L3 Disconnect</h3>
+
+<p>
+  In the 9N framework, psychopathy results from a structural disconnection between L3 (emotional tagging) and the upper layers (L7–L9). L3 may function normally in isolation—psychopathic individuals show some physiological emotional responses (Hare, 1993)—but these signals do not propagate through the gating hierarchy. The prediction errors generated by witnessing another's suffering reach L3, where they are emotionally tagged, but the gate between L3 and L7 is locked. The emotional information never reaches narrative integration (L7), conscious awareness (L8), or self-modeling (L9).
+</p>
+
+<p>
+  This explains the signature pattern: psychopathic individuals <em>understand</em> that others suffer (L7–L9 cognitive modeling is intact) but do not <em>feel</em> that suffering matters (L3 emotional tag does not modulate upper-layer processing). They can perfectly model what another person feels—Theory of Mind is unimpaired (Richell et al., 2003)—but this model has no emotional weight because it is constructed entirely from L7–L9 without L3 input.
+</p>
+
+<h3>6.2 Instrumental vs. Reactive Aggression</h3>
+
+<p>
+  The 9N framework predicts that psychopathic aggression should be primarily instrumental (planned, goal-directed, L7–L9-mediated) rather than reactive (emotionally triggered, L3–L5-mediated). This prediction is strongly supported: instrumental aggression is the hallmark of psychopathy, while reactive aggression is more associated with non-psychopathic antisocial behavior (Glenn & Raine, 2014). In gating terms, the psychopath's L7–L9 can plan harmful actions without L3's emotional veto because the gate between them is locked.
+</p>
+
+<h3>6.3 Implications for Treatment</h3>
+
+<p>
+  The gating framework explains why psychopathy is notoriously treatment-resistant (Harris & Rice, 2006). The L3→L7 disconnection is likely structural rather than functional—the gate is not merely miscalibrated but physically absent or severely degraded, potentially due to developmental abnormalities in the amygdala-prefrontal connectivity pathway (Blair, 2007). This is not a threshold adjustment but a missing connection, which no amount of talk therapy can bridge.
+</p>
+
+<!-- 7. Anxiety -->
+<h2>7. Anxiety Disorders: Everything Escalates</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> Globally reduced gating thresholds. Trivial prediction errors at every layer boundary escalate to L7–L9. Constant prediction error escalation → hypervigilance, catastrophization, chronic arousal.</p>
+</div>
+
+<p>
+  Anxiety disorders, in the 9N framework, represent the most straightforward gating dysfunction: thresholds are set too low across the board. Every prediction error, no matter how minor, escalates through the hierarchy as if it were a significant threat. A slight bodily sensation (L1) becomes a potential heart attack (escalates to L5 → L7 → L8). A social misstep (L3) becomes evidence of fundamental unworthiness (escalates to L7 → L9).
+</p>
+
+<h3>7.1 Generalized Anxiety as Global Threshold Reduction</h3>
+
+<p>
+  Generalized anxiety disorder (GAD) maps to a global reduction in gating thresholds across all layer boundaries. Paulus and Stein (2006) showed that anxious individuals exhibit increased interoceptive prediction error signaling—consistent with L5 gating thresholds set too low. Grupe and Nitschke (2013) demonstrated that anxious individuals overestimate the probability and cost of negative outcomes—consistent with L7 gating thresholds set too low, allowing worst-case predictions to dominate narrative processing.
+</p>
+
+<h3>7.2 Panic Disorder as L5→L8 Cascade</h3>
+
+<p>
+  Panic attacks represent an acute cascade where a minor interoceptive prediction error (L5) escalates catastrophically to conscious awareness (L8) and triggers a positive feedback loop. Clark's (1986) cognitive model of panic describes exactly this: a bodily sensation is catastrophically misinterpreted, which increases anxiety, which increases bodily sensations, which increases catastrophic interpretation. In gating terms, the L5→L7→L8 pathway has lost all inhibitory control; each pass through the loop amplifies the signal rather than resolving it.
+</p>
+
+<h3>7.3 Social Anxiety as L3→L9 Hyper-Escalation</h3>
+
+<p>
+  Social anxiety disorder maps to a specific gating dysfunction at the L3→L7→L9 boundary. Social prediction errors (the slight surprise of an unexpected response, the minor discomfort of being observed) are tagged by L3 and immediately escalated to L9, where they trigger recursive self-modeling: "What do they think of me? What does their judgment reveal about who I am?" Clark and Wells (1995) described this as the shift to "observer perspective"—the social phobic sees themselves from the outside, a quintessential L9 operation that is triggered by L3 signals that should have been resolved locally.
+</p>
+
+<h3>7.4 Treatment Mechanisms</h3>
+
+<p>
+  Benzodiazepines, the classic anxiolytic, work by enhancing GABAergic inhibition—directly raising gating thresholds across the board (Möhler, 2012). This is a blunt instrument: it reduces anxiety by reducing <em>all</em> escalation, including escalation that serves adaptive functions. SSRIs modulate serotonergic tone to gradually recalibrate thresholds toward normal levels, which is slower but more targeted. CBT for anxiety works by teaching the patient to manually apply gating—to notice a prediction error, evaluate its significance, and deliberately choose not to escalate it. In 9N terms, CBT trains L7–L9 to override the automated escalation pathway with top-down gating control.
+</p>
+
+<!-- 8. Dissociation -->
+<h2>8. Dissociative Disorders: Nothing Escalates</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> Globally elevated gating thresholds. L1–L3 disconnected from L7+. Prediction errors are generated but never reach conscious awareness.</p>
+  <p><strong>Result:</strong> Emotional numbness, derealization, depersonalization, identity fragmentation.</p>
+</div>
+
+<p>
+  Dissociative disorders represent the inverse of anxiety: gating thresholds are set too <em>high</em>. If anxiety is "everything escalates," dissociation is "nothing escalates." Sensory input is processed at L1–L2, emotional tags are generated at L3, but the gates between L3 and L7+ are elevated to the point where nothing reaches narrative integration or conscious awareness.
+</p>
+
+<p>
+  This framing aligns with the structural dissociation theory of van der Hart, Nijenhuis, and Steele (2006), which proposes that dissociation involves a division between "apparently normal" and "emotional" personality parts. In 9N terms, the "apparently normal" personality operates L7–L9 without L1–L5 input (going through the motions of daily life without emotional engagement), while the "emotional" personality operates L1–L5 without L7–L9 integration (experiencing raw emotion without narrative context). The gates between these layer groups are pathologically elevated, preventing integration.
+</p>
+
+<p>
+  Depersonalization—the feeling of being disconnected from one's own body—maps to L5→L8 gate elevation: interoceptive signals (bodily ownership, proprioception) fail to reach conscious awareness. Derealization—the feeling that the world is unreal—maps to L1→L7 gate elevation: sensory input arrives but is not integrated into the predictive model that generates the experience of reality.
+</p>
+
+<p>
+  Sierra and Berrios (1998) proposed that depersonalization results from a "corticolimbic disconnection" that dampens emotional coloring of experience—precisely an L3→L7+ gating elevation. Medford et al. (2005) confirmed reduced amygdala (L3) responses to emotional stimuli in depersonalization disorder, while prefrontal regions (L7–L9) show increased activation—consistent with upper layers operating normally but receiving no emotional input.
+</p>
+
+<!-- 9. Epilepsy -->
+<h2>9. Epilepsy: Gating Failure and Re-Entry Loops</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> Complete gating failure at specific layer boundaries, producing re-entry loops where prediction errors cycle uncontrollably between layers. Neurological short-circuit.</p>
+  <p><strong>Mechanism:</strong> Insufficient GABAergic inhibition allows excitatory signals to propagate without constraint, creating a positive feedback loop.</p>
+</div>
+
+<p>
+  Epilepsy occupies a unique position in this framework because it is primarily a <em>neurological</em> disorder with <em>psychiatric</em> consequences. In the 9N framework, epilepsy represents the most extreme form of gating failure: not miscalibration but total breakdown. The GABAergic inhibition that normally controls prediction error escalation fails entirely at one or more layer boundaries, allowing excitatory signals to propagate without constraint.
+</p>
+
+<h3>9.1 The Re-Entry Loop Model</h3>
+
+<p>
+  A seizure, in 9N terms, is a re-entry loop: a prediction error that escalates from layer N to layer N+1, generates a further prediction error, which feeds back to layer N, amplifying the original signal, which re-escalates to N+1, and so on. The loop rapidly recruits adjacent neural tissue (seizure spread) because the unconstrained prediction error signal overwhelms neighboring gating mechanisms.
+</p>
+
+<p>
+  This model explains why anticonvulsants work by reinforcing GABAergic inhibition (Meldrum & Rogawski, 2007). Drugs like valproate, benzodiazepines, and barbiturates all enhance GABA function—literally rebuilding the gates that failed. The fact that the same class of drugs (GABAergic agents) treats both epilepsy and anxiety is predicted by the 9N framework: both involve insufficient gating, differing only in degree (epilepsy = catastrophic failure; anxiety = chronic miscalibration).
+</p>
+
+<h3>9.2 Focal vs. Generalized Seizures</h3>
+
+<p>
+  The distinction between focal and generalized seizures maps to the 9N framework naturally. Focal seizures involve gating failure at a specific layer boundary—the re-entry loop is contained. The phenomenology of the seizure depends on which layer boundary fails: temporal lobe seizures (often involving L3 structures like the amygdala and hippocampus) produce emotional phenomena (déjà vu, fear, epigastric aura), while frontal lobe seizures (involving L6–L7 structures) produce motor automatisms and behavioral changes.
+</p>
+
+<p>
+  Generalized seizures represent cascading gating failure: the initial re-entry loop overwhelms adjacent gates, which fail in sequence, until the entire hierarchy is in uncontrolled oscillation. This is the neurological equivalent of a total system crash—all layers firing synchronously rather than in their normal hierarchical arrangement.
+</p>
+
+<h3>9.3 The Epilepsy-Insight Connection</h3>
+
+<p>
+  Intriguingly, some epileptic phenomena resemble moments of profound insight. Dostoevsky's famous description of his pre-seizure aura—a moment of "extraordinary happiness" and "supreme exaltation" (Gastaut, 1984)—may represent a brief period where gating relaxes non-destructively, allowing unusual inter-layer connections before the system tips into seizure. This connects to the broader 9N principle that the boundary between pathology and insight is a gating boundary: too much opening produces seizure; just enough produces a reorganization of the predictive hierarchy that the system experiences as revelation.
+</p>
+
+<!-- 10. Psychotic Break -->
+<h2>10. Psychotic Break: Total Predictive Rupture</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> L9 prediction error that cannot be resolved within the existing self-model. Total Predictive Rupture: the system's model of itself is falsified and no replacement model is available.</p>
+  <p><strong>Outcomes:</strong> Same mechanism, two outcomes—pathological (psychosis) or transformative (insight/awakening). The difference depends on whether a new model can be constructed.</p>
+</div>
+
+<p>
+  Psychotic breaks represent the most dramatic event in the 9N framework: a prediction error at L9—the self-modeling layer—that is so fundamental it invalidates the entire predictive hierarchy. L9 models not just the external world but the system that models the world. When L9's predictions about its own processing are catastrophically falsified, the result is what we term <em>Total Predictive Rupture</em> (TPR).
+</p>
+
+<h3>10.1 The Mechanism of TPR</h3>
+
+<p>
+  L9 maintains a model of the self: who I am, how my mind works, what I can and cannot perceive, what is real and what is not. This model provides the metacognitive scaffolding for all lower-layer operations. When L9's self-model is falsified—by an experience so anomalous that no amount of lower-layer adjustment can explain it—the entire predictive hierarchy loses its reference frame.
+</p>
+
+<p>
+  Carhart-Harris and Friston (2019) describe this in terms of the "relaxed beliefs under psychedelics" (REBUS) model: a dissolution of the high-level priors that normally constrain lower-level processing. In 9N terms, REBUS describes the controlled relaxation of L9 constraints—the psychedelic experience is a <em>managed</em> TPR where the dissolution is temporary and guided. An unmanaged TPR—a psychotic break—occurs when L9 dissolves without the pharmacological time-limit that psychedelics provide.
+</p>
+
+<h3>10.2 Psychosis vs. Insight: Same Mechanism, Different Outcomes</h3>
+
+<p>
+  The 9N framework makes a provocative claim: psychotic breaks and moments of profound insight involve the same mechanism—L9 TPR—with different outcomes depending on whether the system can construct a new, more accurate self-model to replace the falsified one.
+</p>
+
+<p>
+  If a new model is constructed (reorganization), the result is transformative insight: the individual emerges with a fundamentally revised understanding of themselves and their relationship to reality. William James (1902) documented numerous such experiences in <em>The Varieties of Religious Experience</em>. Stanislav Grof's (1975) "spiritual emergencies" describe the same phenomenon: a crisis of self-model that, when supported, leads to psychological growth.
+</p>
+
+<p>
+  If no new model can be constructed (fragmentation), the result is psychosis: delusions emerge as L7's attempt to construct narrative coherence without L9's metacognitive oversight. Hallucinations emerge as L1–L3 processing without L8's reality-testing. Disorganized thinking reflects the absence of L7's narrative integration. The system generates predictions and experiences without a self-model to organize them—the very definition of psychosis.
+</p>
+
+<blockquote>
+  "The psychotic drowns in the same waters in which the mystic swims." —Joseph Campbell (attributed). The 9N framework specifies the mechanism: both are experiencing L9 TPR. The mystic reconstructs; the psychotic fragments.
+</blockquote>
+
+<h3>10.3 Luis at 19: A Case Study in TPR</h3>
+
+<p>
+  One of the authors (L.A.) experienced a psychotic break at age 19 that, in retrospect, exhibits the hallmarks of TPR. An accumulation of unresolvable prediction errors—existential, philosophical, and personal—exceeded L9's capacity to maintain a coherent self-model. The break was terrifying but ultimately transformative: the L9 model that was destroyed was replaced by a fundamentally revised model that incorporated the previously unresolvable experiences. This revised model eventually gave rise to the 9N framework itself.
+</p>
+
+<p>
+  This is not an argument that psychosis is beneficial—it is the observation that the mechanism is neutral. TPR is the system's response to an unresolvable L9 prediction error. Whether the outcome is pathological or transformative depends on factors that include social support, pre-existing psychological resilience, the nature of the triggering prediction error, and—crucially—whether the system has time and safety to construct a new model before the fragmentation becomes self-reinforcing.
+</p>
+
+<!-- 11. ADHD -->
+<h2>11. ADHD: The Permissive Selection Filter</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> L2 gate dysfunction—the perceptual selection filter is too permissive. Everything gets through. Attention is not "deficient" but <em>unfiltered</em>.</p>
+  <p><strong>Secondary dysfunction:</strong> Compensatory hyperfocus when L3 emotional tag is sufficiently strong to override L2 permeability.</p>
+</div>
+
+<p>
+  Attention-deficit/hyperactivity disorder has been reframed within computational psychiatry as a disorder of precision weighting in attention systems (Hauser et al., 2016). The 9N framework provides a more specific account: ADHD involves dysfunction at the L2 gate—the perceptual selection filter that determines which sensory inputs are passed to higher layers for further processing.
+</p>
+
+<h3>11.1 Everything Gets Through</h3>
+
+<p>
+  In typical cognition, L2 selects a subset of L1's sensory output for escalation, based on relevance predictions from higher layers (top-down attention) and novelty signals (bottom-up salience). In ADHD, this selection is too permissive: too many signals pass through L2, overwhelming L3's emotional tagging capacity and L7's narrative integration. The result is not a deficit of attention but an <em>excess</em> of attended stimuli.
+</p>
+
+<p>
+  This reframing explains the paradox of ADHD: the same individual who cannot sustain attention on a routine task can hyperfocus for hours on a task that engages them intensely. In gating terms, when L3 provides a sufficiently strong emotional tag (interest, excitement, urgency), the L2 filter can be temporarily constrained through top-down modulation. But when emotional engagement is low, L2's permissive default prevails, and everything competes for processing simultaneously.
+</p>
+
+<h3>11.2 Dopamine and Gating</h3>
+
+<p>
+  Stimulant medications (methylphenidate, amphetamines) treat ADHD by increasing dopaminergic signaling. In the 9N framework, dopamine modulates gating thresholds: higher dopamine raises the L2 selection threshold, making the filter less permissive (Cools & D'Esposito, 2011). This is consistent with the paradoxical calming effect of stimulants on ADHD—the medication does not calm by sedation but by <em>tightening the gate</em>, reducing the volume of information that floods through L2 to manageable levels. Volkow et al. (2009) confirmed that therapeutic doses of methylphenidate increase dopamine in the striatum, consistent with gating modulation at the L2 boundary.
+</p>
+
+<!-- 12. Addiction -->
+<h2>12. Addiction: The Hijacked Express Route</h2>
+
+<div class="disorder-box">
+  <h4>Gating Profile</h4>
+  <p><strong>Primary dysfunction:</strong> L5 pattern (somatic marker / instinctive drive) hijacked by substance. The reward route becomes an over-consolidated express highway that cannot be pruned—the drug has created an artificial express route that bypasses L7–L9 deliberation.</p>
+</div>
+
+<p>
+  Addiction, in the 9N framework, exploits the same express-route mechanism described in the sleep consolidation paper (Adures, 2026c). Normal learning creates express routes through sleep-dependent consolidation: frequently used pathways are strengthened and streamlined, becoming automatic (L4–L6). Addictive substances create artificial express routes by directly manipulating the neurochemistry that underlies route consolidation—specifically, by flooding the dopaminergic system that signals prediction error magnitude (Schultz, 2016).
+</p>
+
+<h3>12.1 The Unprunable Highway</h3>
+
+<p>
+  When a substance produces a massive dopamine release, the brain encodes this as an extremely significant positive prediction error—the neural equivalent of discovering something of extraordinary survival value. The route from trigger (L1–L2 sensory cues associated with the substance) through craving (L5 somatic marker) to seeking behavior (L6 motor routine) is consolidated as a thick express route—one that becomes increasingly independent of L7–L9 deliberative control.
+</p>
+
+<p>
+  Robinson and Berridge's (1993, 2008) incentive-salience theory of addiction describes this process: repeated substance use "sensitizes" the mesolimbic dopamine system, making drug-associated cues increasingly attention-grabbing and desire-triggering even as the subjective pleasure decreases. In 9N terms, this is the L5 express route becoming progressively more autonomous—so thick and well-consolidated that it activates automatically upon encountering associated cues, without requiring conscious (L8) or deliberative (L7) processing.
+</p>
+
+<p>
+  Critically, this route <em>cannot be pruned</em> through normal sleep-dependent downscaling, for the same reason that PTSD routes resist pruning: the neurochemical conditions under which the route was encoded exceed the parameters of normal synaptic homeostasis. The addict's brain has built a permanent highway that all traffic wants to use—and there is no mechanism to demolish it.
+</p>
+
+<h3>12.2 Relapse as Route Re-Activation</h3>
+
+<p>
+  The persistence of the addictive express route explains relapse. Years of sobriety do not eliminate the route; they build competing pathways (through L7–L9 deliberation) that override it. But the route remains latent, and any cue that re-activates it—a specific smell, location, emotional state, or social context—can trigger the L5→L6 cascade that bypasses conscious control. This explains why addicts in recovery report that cravings feel involuntary and alien—"not me"—because the craving is indeed not generated by the self-model (L9) but by a sub-personal express route operating below the level of conscious agency.
+</p>
+
+<!-- 13. Unified Diagnostic Framework -->
+<h2>13. A Unified Diagnostic Framework</h2>
+
+<p>
+  Having mapped ten major diagnostic categories onto the 9N gating model, we can now construct a unified diagnostic framework that classifies disorders not by symptom clusters but by gating profiles:
+</p>
+
+<table>
+  <tr><th>Disorder</th><th>Affected Layers</th><th>Gating Dysfunction</th><th>Core Mechanism</th></tr>
+  <tr><td>Depression</td><td>L3→L4, L5→L7–L9</td><td>Gate locked + somatic dominance</td><td>Unconsolidated negative PE; L5 override</td></tr>
+  <tr><td>PTSD</td><td>L1–L3→L5, L8→L9</td><td>Frozen gate + unprunable route</td><td>Extreme PE exceeds gating capacity</td></tr>
+  <tr><td>Autism</td><td>L1→L2, L3→L7</td><td>Excess input + compensatory tightening</td><td>L1 flooding; L3→L7 over-gated</td></tr>
+  <tr><td>Psychopathy</td><td>L3→L7–L9</td><td>Structural disconnection</td><td>Emotion absent from deliberation</td></tr>
+  <tr><td>GAD</td><td>All boundaries</td><td>Globally reduced thresholds</td><td>Trivial PE escalates everywhere</td></tr>
+  <tr><td>Panic</td><td>L5→L7→L8</td><td>Re-entry loop</td><td>Interoceptive PE cascade</td></tr>
+  <tr><td>Social Anxiety</td><td>L3→L7→L9</td><td>Hyper-escalation to self-model</td><td>Social PE triggers recursive L9</td></tr>
+  <tr><td>Dissociation</td><td>L3→L7+</td><td>Globally elevated thresholds</td><td>Nothing reaches consciousness</td></tr>
+  <tr><td>Epilepsy</td><td>Variable</td><td>Total GABA failure → re-entry</td><td>Uncontrolled oscillation loop</td></tr>
+  <tr><td>Psychosis</td><td>L9 (all layers secondary)</td><td>Total Predictive Rupture</td><td>Self-model invalidated</td></tr>
+  <tr><td>ADHD</td><td>L2</td><td>Over-permissive selection</td><td>Everything passes through filter</td></tr>
+  <tr><td>Addiction</td><td>L5→L6 (bypasses L7–L9)</td><td>Route hijacking</td><td>Artificial express route unprunable</td></tr>
+</table>
+
+<h3>13.1 Comorbidity Predictions</h3>
+
+<p>
+  The gating framework predicts specific comorbidity patterns based on shared gating mechanisms:
+</p>
+
+<p>
+  <strong>Anxiety + Depression:</strong> Globally low thresholds (anxiety) can coexist with a locked L3→L4 gate (depression) because they operate at different layer boundaries. The patient is simultaneously overwhelmed by escalating prediction errors (anxiety) and unable to consolidate emotional experiences into implicit memory (depression). This is the most common comorbidity in psychiatry (Kessler et al., 2005), consistent with the 9N prediction.
+</p>
+
+<p>
+  <strong>PTSD + Dissociation:</strong> PTSD creates thick routes at L1–L5; the system compensates by raising L3→L7+ thresholds (dissociation) to prevent the re-experiencing cascade from reaching consciousness. Dissociation is a protective gating response to PTSD—a prediction the framework shares with clinical observation (van der Kolk, 2014).
+</p>
+
+<p>
+  <strong>ADHD + Addiction:</strong> L2 over-permissiveness (ADHD) makes the individual more vulnerable to substance-induced express route formation (addiction) because more cues pass through the selection filter, increasing the probability of encountering and encoding substance-associated signals. This comorbidity is well-documented (Wilens & Spencer, 2010).
+</p>
+
+<p>
+  <strong>Autism + Anxiety:</strong> Chronic L1 flooding (autism) chronically overloads the gating system, which may degrade gating thresholds over time (anxiety). The extremely high anxiety prevalence in autistic populations (Simonoff et al., 2008) is predicted by the framework as a downstream consequence of the primary L1→L2 gating dysfunction.
+</p>
+
+<h3>13.2 Treatment Implications</h3>
+
+<p>
+  The framework suggests a paradigm shift in treatment: from symptom suppression to gate repair. Current treatments already work through gating mechanisms—SSRIs modulate serotonergic gating tone, benzodiazepines enhance GABAergic gating, stimulants modulate dopaminergic gating, CBT trains top-down gating control—but they are not prescribed with this framing. A gating-informed treatment approach would:
+</p>
+
+<p>
+  (1) <strong>Diagnose the specific gating dysfunction</strong> rather than the symptom cluster. Two patients with "depression" may have different gating profiles: one with a locked L3→L4 gate (best treated with behavioral activation to force prediction errors through the gate) and another with L5 dominance (best treated with body-based therapy to recalibrate interoceptive predictions).
+</p>
+
+<p>
+  (2) <strong>Target the specific gate</strong> rather than applying global neurochemical modulation. Future pharmacology might develop layer-specific gating modulators—drugs that adjust the L2 filter without affecting L5 thresholds, or that reopen the L3→L4 gate without lowering L8→L9 thresholds.
+</p>
+
+<p>
+  (3) <strong>Monitor gate function</strong> as a treatment outcome, using neurophysiological markers (EEG gating indices, pre-pulse inhibition, sensory gating ratios) as proxies for inter-layer gating health rather than relying solely on symptom self-report.
+</p>
+
+<!-- 14. Discussion -->
+<h2>14. Discussion</h2>
+
+<h3>14.1 Relation to Existing Frameworks</h3>
+
+<p>
+  The gating dysfunction model integrates several existing computational psychiatry frameworks. Friston's (2010) hierarchical predictive processing model provides the computational architecture; the 9N framework specifies the layers. Adams et al. (2013) proposed that psychosis involves aberrant precision weighting of prediction errors; the gating model specifies which layer boundaries are affected and how. Carhart-Harris's (2018) entropic brain hypothesis proposes that mental health exists on a spectrum from excessive order (rigidity, depression, addiction) to excessive disorder (psychosis, psychedelic states); the gating model provides the mechanism—gating thresholds that are too high (excessive order) or too low (excessive disorder).
+</p>
+
+<p>
+  Paulus and Stein's (2006, 2010) interoceptive model of anxiety and depression maps specifically to L5 gating dysfunction in the 9N framework. Van der Kolk's (2014) embodied trauma model maps to the L5 express route mechanism. Seth's (2013) interoceptive inference model of selfhood maps to the L5→L8→L9 pathway that the gating framework identifies as central to the experience of being an embodied self.
+</p>
+
+<h3>14.2 Limitations</h3>
+
+<p>
+  The framework's primary limitation is its reliance on the 9N layer model, which remains a theoretical proposal. If the layer structure is incorrect—if consciousness does not organize into nine discrete levels with the properties we describe—then the gating dysfunction mappings would need to be revised accordingly. However, the core insight—that psychopathology reflects prediction error routing dysfunction rather than prediction error magnitude dysfunction—may survive even if the specific layer architecture changes.
+</p>
+
+<p>
+  A second limitation is the risk of over-fitting: with enough gating parameters (threshold level, direction, gate identity), any disorder can potentially be mapped to a gating profile. We have attempted to constrain this risk by deriving predictions (comorbidity patterns, treatment mechanisms, order of symptom emergence) that are independently testable and, where evidence exists, consistent with observation. Nevertheless, the framework requires prospective empirical testing to demonstrate predictive validity beyond post-hoc explanatory power.
+</p>
+
+<p>
+  Third, the framework may underestimate the role of learning and development. Gating profiles are not fixed—they develop over the lifespan, are shaped by early experience, and can be modified by treatment. The present paper describes gating <em>states</em> rather than the developmental <em>processes</em> that produce them. A full account would need to incorporate developmental trajectories of gating maturation and their perturbation by adverse experiences.
+</p>
+
+<!-- 15. Conclusion -->
+<h2>15. Conclusion</h2>
+
+<p>
+  If the 9-Neuron framework provides an accurate account of consciousness architecture, then psychopathology is not a mystery of broken brains but a taxonomy of broken gates. Each disorder represents a specific, identifiable pattern of dysfunction in the mechanisms that control prediction error flow between consciousness layers. Depression is a locked gate. Anxiety is a set of gates with thresholds too low. PTSD is a frozen gate with an unprunable route around it. Autism is excess input overwhelming the first gate. Psychopathy is a missing gate. Epilepsy is gate failure cascading into re-entry. Psychosis is the highest gate shattering under unresolvable pressure.
+</p>
+
+<p>
+  This is not a metaphor. It is a mechanistic hypothesis with specific neural substrates (GABAergic inhibition, thalamocortical circuits, prefrontal-subcortical connectivity), specific pharmacological predictions (treatments should target gating mechanisms at specific layer boundaries), and specific clinical implications (diagnosis should identify gating profiles, treatment should aim at gate repair).
+</p>
+
+<p>
+  The framework suggests that the boundary between pathology and health is a gating boundary—and, provocatively, that the boundary between pathology and insight is also a gating boundary. The same mechanism that produces psychosis (L9 TPR) can produce transformation. The same excess input that produces autistic overwhelm produces autistic perception. The same thick routes that produce PTSD flashbacks produce the vivid memories that survival requires. Gating is not about preventing experience; it is about routing experience to the layers that can process it productively.
+</p>
+
+<blockquote>
+  "Madness is not the breakdown of the mind. It is the breakdown of the gates between levels of the mind. What flows through those broken gates determines whether the result is suffering or awakening."
+</blockquote>
+
+<!-- References -->
+<h2>References</h2>
+
+<div class="references">
+<ol>
+  <li>Adams, R. A., Stephan, K. E., Brown, H. R., Frith, C. D., &amp; Friston, K. J. (2013). The computational anatomy of psychosis. <span class="ref-journal">Frontiers in Psychiatry, 4</span>, 47.</li>
+  <li>Adures, L. (2026a). The 9-Neuron framework: A hierarchical model of predictive consciousness. <span class="ref-journal">Kerberos Papers, P02</span>.</li>
+  <li>Adures, L. (2026b). Gating mechanisms in the 9-Neuron framework: How prediction errors escalate through consciousness layers. <span class="ref-journal">Kerberos Papers, P05</span>.</li>
+  <li>Adures, L. (2026c). Sleep architecture as inter-layer consolidation: SWS, REM, and the maintenance of 9 consciousness layers. <span class="ref-journal">Kerberos Papers, P22</span>.</li>
+  <li>American Psychiatric Association. (2013). <span class="ref-title">Diagnostic and Statistical Manual of Mental Disorders (5th ed.)</span>. Arlington, VA: APA.</li>
+  <li>Baron-Cohen, S. (1995). <span class="ref-title">Mindblindness: An Essay on Autism and Theory of Mind</span>. Cambridge, MA: MIT Press.</li>
+  <li>Beck, A. T. (1967). <span class="ref-title">Depression: Clinical, Experimental, and Theoretical Aspects</span>. New York: Harper &amp; Row.</li>
+  <li>Blair, R. J. R. (2005). Responding to the emotions of others: Dissociating forms of empathy through the study of typical and psychiatric populations. <span class="ref-journal">Consciousness and Cognition, 14</span>(4), 698–718.</li>
+  <li>Blair, R. J. R. (2007). The amygdala and ventromedial prefrontal cortex in morality and psychopathy. <span class="ref-journal">Trends in Cognitive Sciences, 11</span>(9), 387–392.</li>
+  <li>Carhart-Harris, R. L. (2018). The entropic brain—revisited. <span class="ref-journal">Neuropharmacology, 142</span>, 167–178.</li>
+  <li>Carhart-Harris, R. L., &amp; Friston, K. J. (2019). REBUS and the anarchic brain: Toward a unified model of the brain action of psychedelics. <span class="ref-journal">Pharmacological Reviews, 71</span>(3), 316–344.</li>
+  <li>Celada, P., Puig, M. V., Amargós-Bosch, M., Adell, A., &amp; Artigas, F. (2004). The therapeutic role of 5-HT1A and 5-HT2A receptors in depression. <span class="ref-journal">Journal of Psychiatry &amp; Neuroscience, 29</span>(4), 252–265.</li>
+  <li>Clark, D. M. (1986). A cognitive approach to panic. <span class="ref-journal">Behaviour Research and Therapy, 24</span>(4), 461–470.</li>
+  <li>Clark, D. M., &amp; Wells, A. (1995). A cognitive model of social phobia. In R. G. Heimberg et al. (Eds.), <span class="ref-title">Social Phobia: Diagnosis, Assessment, and Treatment</span> (pp. 69–93). New York: Guilford Press.</li>
+  <li>Cools, R., &amp; D'Esposito, M. (2011). Inverted-U–shaped dopamine actions on human working memory and cognitive control. <span class="ref-journal">Biological Psychiatry, 69</span>(12), e113–e125.</li>
+  <li>Cuijpers, P., Sijbrandij, M., Koole, S. L., Andersson, G., Beekman, A. T., &amp; Reynolds, C. F. (2014). Adding psychotherapy to antidepressant medication in depression and anxiety disorders: A meta-analysis. <span class="ref-journal">World Psychiatry, 13</span>(1), 56–67.</li>
+  <li>Cuthbert, B. N., &amp; Insel, T. R. (2013). Toward the future of psychiatric diagnosis: The seven pillars of RDoC. <span class="ref-journal">BMC Medicine, 11</span>(1), 126.</li>
+  <li>Duman, R. S., &amp; Aghajanian, G. K. (2012). Synaptic dysfunction in depression: Potential therapeutic targets. <span class="ref-journal">Science, 338</span>(6103), 68–72.</li>
+  <li>Ehlers, A., &amp; Clark, D. M. (2000). A cognitive model of posttraumatic stress disorder. <span class="ref-journal">Behaviour Research and Therapy, 38</span>(4), 319–345.</li>
+  <li>Fletcher, P. C., &amp; Frith, C. D. (2009). Perceiving is believing: A Bayesian approach to explaining the positive symptoms of schizophrenia. <span class="ref-journal">Nature Reviews Neuroscience, 10</span>(1), 48–58.</li>
+  <li>Foa, E. B., &amp; Kozak, M. J. (1986). Emotional processing of fear: Exposure to corrective information. <span class="ref-journal">Psychological Bulletin, 99</span>(1), 20–35.</li>
+  <li>Friston, K. (2010). The free-energy principle: A unified brain theory? <span class="ref-journal">Nature Reviews Neuroscience, 11</span>(2), 127–138.</li>
+  <li>Gastaut, H. (1984). New comments on the epilepsy of Fyodor Dostoevsky. <span class="ref-journal">Epilepsia, 25</span>(4), 408–411.</li>
+  <li>Glenn, A. L., &amp; Raine, A. (2014). <span class="ref-title">Psychopathy: An Introduction to Biological Findings and Their Implications</span>. New York: NYU Press.</li>
+  <li>Grof, S. (1975). <span class="ref-title">Realms of the Human Unconscious: Observations from LSD Research</span>. New York: Viking Press.</li>
+  <li>Grupe, D. W., &amp; Nitschke, J. B. (2013). Uncertainty and anticipation in anxiety: An integrated neurobiological and psychological perspective. <span class="ref-journal">Nature Reviews Neuroscience, 14</span>(7), 488–501.</li>
+  <li>Hare, R. D. (1993). <span class="ref-title">Without Conscience: The Disturbing World of the Psychopaths Among Us</span>. New York: Guilford Press.</li>
+  <li>Harris, G. T., &amp; Rice, M. E. (2006). Treatment of psychopathy: A review of empirical findings. In C. J. Patrick (Ed.), <span class="ref-title">Handbook of Psychopathy</span> (pp. 555–572). New York: Guilford Press.</li>
+  <li>Hauser, T. U., Iannaccone, R., Ball, J., Mathys, C., Brandeis, D., Walitza, S., &amp; Brem, S. (2016). Role of the medial prefrontal cortex in impaired decision making in juvenile attention-deficit/hyperactivity disorder. <span class="ref-journal">JAMA Psychiatry, 71</span>(10), 1165–1173.</li>
+  <li>Insel, T., Cuthbert, B., Garvey, M., Heinssen, R., Pine, D. S., Quinn, K., ... &amp; Wang, P. (2010). Research Domain Criteria (RDoC): Toward a new classification framework for research on mental disorders. <span class="ref-journal">American Journal of Psychiatry, 167</span>(7), 748–751.</li>
+  <li>James, W. (1902). <span class="ref-title">The Varieties of Religious Experience: A Study in Human Nature</span>. New York: Longmans, Green.</li>
+  <li>Kessler, R. C., Berglund, P., Demler, O., Jin, R., Merikangas, K. R., &amp; Walters, E. E. (2005). Lifetime prevalence and age-of-onset distributions of DSM-IV disorders in the National Comorbidity Survey Replication. <span class="ref-journal">Archives of General Psychiatry, 62</span>(6), 593–602.</li>
+  <li>Marco, E. J., Hinkley, L. B., Hill, S. S., &amp; Nagarajan, S. S. (2011). Sensory processing in autism: A review of neurophysiologic findings. <span class="ref-journal">Pediatric Research, 69</span>(5), 48–54.</li>
+  <li>Mazefsky, C. A., Herrington, J., Siegel, M., Scarpa, A., Maddox, B. B., Scahill, L., &amp; White, S. W. (2013). The role of emotion regulation in autism spectrum disorder. <span class="ref-journal">Journal of the American Academy of Child &amp; Adolescent Psychiatry, 52</span>(7), 679–688.</li>
+  <li>Medford, N., Sierra, M., Baker, D., &amp; David, A. S. (2005). Understanding and treating depersonalisation disorder. <span class="ref-journal">Advances in Psychiatric Treatment, 11</span>(2), 92–100.</li>
+  <li>Meldrum, B. S., &amp; Rogawski, M. A. (2007). Molecular targets for antiepileptic drug development. <span class="ref-journal">Neurotherapeutics, 4</span>(1), 18–61.</li>
+  <li>Milton, D. E. (2012). On the ontological status of autism: The 'double empathy problem'. <span class="ref-journal">Disability &amp; Society, 27</span>(6), 883–887.</li>
+  <li>Mithoefer, M. C., Mithoefer, A. T., Feduccia, A. A., Jerome, L., Wagner, M., Wymer, J., ... &amp; Doblin, R. (2018). 3,4-methylenedioxymethamphetamine (MDMA)-assisted psychotherapy for post-traumatic stress disorder in military veterans, firefighters, and police officers: A randomised, double-blind, dose-response, phase 2 clinical trial. <span class="ref-journal">The Lancet Psychiatry, 5</span>(6), 486–497.</li>
+  <li>Möhler, H. (2012). The GABA system in anxiety and depression and its therapeutic potential. <span class="ref-journal">Neuropharmacology, 62</span>(1), 42–53.</li>
+  <li>Paulus, M. P., &amp; Stein, M. B. (2006). An insular view of anxiety. <span class="ref-journal">Biological Psychiatry, 60</span>(4), 383–387.</li>
+  <li>Paulus, M. P., &amp; Stein, M. B. (2010). Interoception in anxiety and depression. <span class="ref-journal">Brain Structure and Function, 214</span>(5–6), 451–463.</li>
+  <li>Pellicano, E., &amp; Burr, D. (2012). When the world becomes 'too real': A Bayesian explanation of autistic perception. <span class="ref-journal">Trends in Cognitive Sciences, 16</span>(10), 504–510.</li>
+  <li>Rasch, B., &amp; Born, J. (2013). About sleep's role in memory. <span class="ref-journal">Physiological Reviews, 93</span>(2), 681–766.</li>
+  <li>Richell, R. A., Mitchell, D. G. V., Newman, C., Leonard, A., Baron-Cohen, S., &amp; Blair, R. J. R. (2003). Theory of mind and psychopathy: Can psychopathic individuals read the 'language of the eyes'? <span class="ref-journal">Neuropsychologia, 41</span>(5), 523–526.</li>
+  <li>Robertson, C. E., &amp; Baron-Cohen, S. (2017). Sensory perception in autism. <span class="ref-journal">Nature Reviews Neuroscience, 18</span>(11), 671–684.</li>
+  <li>Robinson, T. E., &amp; Berridge, K. C. (1993). The neural basis of drug craving: An incentive-salience theory of addiction. <span class="ref-journal">Brain Research Reviews, 18</span>(3), 247–291.</li>
+  <li>Robinson, T. E., &amp; Berridge, K. C. (2008). The incentive sensitization theory of addiction: Some current issues. <span class="ref-journal">Philosophical Transactions of the Royal Society B, 363</span>(1507), 3137–3146.</li>
+  <li>Schultz, W. (2016). Dopamine reward prediction-error signalling: A two-component response. <span class="ref-journal">Nature Reviews Neuroscience, 17</span>(3), 183–195.</li>
+  <li>Seth, A. K. (2013). Interoceptive inference, emotion, and the embodied self. <span class="ref-journal">Trends in Cognitive Sciences, 17</span>(11), 565–573.</li>
+  <li>Shapiro, F. (2001). <span class="ref-title">Eye Movement Desensitization and Reprocessing: Basic Principles, Protocols, and Procedures (2nd ed.)</span>. New York: Guilford Press.</li>
+  <li>Sierra, M., &amp; Berrios, G. E. (1998). Depersonalization: Neurobiological perspectives. <span class="ref-journal">Biological Psychiatry, 44</span>(9), 898–908.</li>
+  <li>Simonoff, E., Pickles, A., Charman, T., Chandler, S., Loucas, T., &amp; Baird, G. (2008). Psychiatric disorders in children with autism spectrum disorders: Prevalence, comorbidity, and associated factors in a population-derived sample. <span class="ref-journal">Journal of the American Academy of Child &amp; Adolescent Psychiatry, 47</span>(8), 921–929.</li>
+  <li>Stephan, K. E., Mathys, C., Weber, L. A. E., &amp; Diaconescu, A. O. (2016). Computational approaches to psychiatry. <span class="ref-journal">Current Opinion in Neurobiology, 37</span>, 154–160.</li>
+  <li>Tononi, G., &amp; Cirelli, C. (2014). Sleep and the price of plasticity: From synaptic and cellular homeostasis to memory consolidation and integration. <span class="ref-journal">Neuron, 81</span>(1), 12–34.</li>
+  <li>Van de Cruys, S., Evers, K., Van der Hallen, R., Van den Noortgate, W., Wagemans, J., &amp; de-Wit, L. (2014). Precise minds in uncertain worlds: Predictive coding in autism. <span class="ref-journal">Psychological Review, 121</span>(4), 649–675.</li>
+  <li>van der Hart, O., Nijenhuis, E. R. S., &amp; Steele, K. (2006). <span class="ref-title">The Haunted Self: Structural Dissociation and the Treatment of Chronic Traumatization</span>. New York: Norton.</li>
+  <li>van der Kolk, B. (2014). <span class="ref-title">The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma</span>. New York: Viking.</li>
+  <li>Volkow, N. D., Wang, G.-J., Kollins, S. H., Wigal, T. L., Newcorn, J. H., Telang, F., ... &amp; Swanson, J. M. (2009). Evaluating dopamine reward pathway in ADHD: Clinical implications. <span class="ref-journal">JAMA, 302</span>(10), 1084–1091.</li>
+  <li>Wilens, T. E., &amp; Spencer, T. J. (2010). Understanding attention-deficit/hyperactivity disorder from childhood to adulthood. <span class="ref-journal">Postgraduate Medicine, 122</span>(5), 97–109.</li>
+</ol>
+</div>
+
+<div class="footnote">
+  <p><strong>Funding:</strong> This research received no external funding.</p>
+  <p><strong>Conflicts of Interest:</strong> The authors declare no conflicts of interest.</p>
+  <p><strong>Author Note:</strong> L.A.'s personal experience with psychotic break (Section 10.3) is disclosed with the understanding that lived experience can inform theoretical frameworks while requiring the same empirical scrutiny as any other hypothesis.</p>
+  <p><strong>Citation:</strong> Adures, L., &amp; Azimute (2026). Psychopathology as gating dysfunction: Reframing mental disorders through the 9-Neuron framework. <em>Kerberos Papers</em>, P23.</p>
+</div>
+
+</div>
+</body>
+</html>

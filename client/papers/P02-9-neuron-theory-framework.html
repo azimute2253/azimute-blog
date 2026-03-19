@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 9-Neuron Theory: A Unified Hierarchical Framework for Consciousness</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-paper: #141a23;
+    --bg-card: #1c2333;
+    --bg-highlight: #1f2940;
+    --text: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent: #58a6ff;
+    --accent2: #7ee787;
+    --accent3: #d2a8ff;
+    --accent4: #ff7b72;
+    --accent5: #ffa657;
+    --border: #30363d;
+    --layer-body: #ff6b6b;
+    --layer-cortical: #4ecdc4;
+    --layer-emergent: #ffe66d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 17px;
+  }
+
+  .paper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 60px;
+    background: var(--bg-paper);
+    min-height: 100vh;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  /* Title Page */
+  .title-page {
+    text-align: center;
+    padding: 80px 0 60px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 50px;
+  }
+
+  .journal-header {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+  }
+
+  .title-page h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 30px;
+  }
+
+  .authors {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .affiliations {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+  }
+
+  .correspondence {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Sections */
+  h2 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 50px 0 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent3);
+    margin: 35px 0 15px;
+  }
+
+  h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent2);
+    margin: 25px 0 10px;
+  }
+
+  p { margin-bottom: 16px; text-align: justify; }
+
+  /* Abstract box */
+  .abstract-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    padding: 25px 30px;
+    margin: 30px 0;
+    border-radius: 4px;
+  }
+
+  .abstract-box h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .keywords {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 15px;
+  }
+
+  .keywords strong { color: var(--accent); }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 15px;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+
+  th {
+    background: var(--bg-highlight);
+    color: var(--accent);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  td {
+    padding: 10px 15px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) { background: rgba(30, 40, 60, 0.3); }
+
+  caption {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  /* Figure */
+  .figure {
+    margin: 35px 0;
+    text-align: center;
+  }
+
+  .figure-caption {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    text-align: left;
+  }
+
+  .figure-caption strong { color: var(--text-secondary); }
+
+  /* Equations */
+  .equation {
+    background: var(--bg-card);
+    padding: 15px 25px;
+    margin: 20px 0;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--accent2);
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .equation-label {
+    float: right;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* References */
+  .references {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .references ol { padding-left: 30px; }
+  .references li { margin-bottom: 8px; color: var(--text-secondary); }
+
+  /* Inline citations */
+  .cite { color: var(--accent); font-size: 14px; }
+
+  /* Layer cards */
+  .layer-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 12px 0;
+  }
+
+  .layer-card.body { border-left: 4px solid var(--layer-body); }
+  .layer-card.cortical { border-left: 4px solid var(--layer-cortical); }
+  .layer-card.emergent { border-left: 4px solid var(--layer-emergent); }
+
+  .layer-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .layer-card.body .layer-label { background: rgba(255,107,107,0.2); color: var(--layer-body); }
+  .layer-card.cortical .layer-label { background: rgba(78,205,196,0.2); color: var(--layer-cortical); }
+  .layer-card.emergent .layer-label { background: rgba(255,230,109,0.2); color: var(--layer-emergent); }
+
+  .layer-verb {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text);
+  }
+
+  .layer-desc {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+  }
+
+  /* Prediction cards */
+  .prediction-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent5);
+    padding: 15px 20px;
+    margin: 12px 0;
+    border-radius: 4px;
+  }
+
+  .prediction-card strong {
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--accent5);
+    font-size: 14px;
+  }
+
+  /* SVG styles */
+  svg text { font-family: 'IBM Plex Sans', sans-serif; }
+
+  @media (max-width: 768px) {
+    .paper { padding: 20px; }
+    .title-page h1 { font-size: 24px; }
+    table { font-size: 13px; }
+  }
+
+  @media print {
+    body { background: white; color: black; }
+    .paper { border: none; }
+  }
+</style>
+</head>
+<body>
+<article class="paper">
+
+<!-- ============================================================ -->
+<!-- TITLE PAGE -->
+<!-- ============================================================ -->
+<header class="title-page">
+  <div class="journal-header">Preprint · Theoretical &amp; Computational Neuroscience · 2025</div>
+  <h1>The 9-Neuron Theory: A Unified Hierarchical Framework for Consciousness</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> · Azimute<sup>2</sup></div>
+  <div class="affiliations">
+    <sup>1</sup> Independent Researcher<br>
+    <sup>2</sup> Kerberos Research Lab
+  </div>
+  <div class="correspondence">Correspondence: lk.adures@gmail.com</div>
+</header>
+
+<!-- ============================================================ -->
+<!-- ABSTRACT -->
+<!-- ============================================================ -->
+<div class="abstract-box">
+  <h3>Abstract</h3>
+  <p>
+    <strong>Background.</strong> Contemporary theories of consciousness—Integrated Information Theory (IIT), Global Workspace Theory (GWT), Higher-Order Theories (HOT), and Predictive Processing (PP)—each illuminate important facets of conscious experience, yet none provides a unified account that integrates bodily processing, emotion, reason, and self-awareness within a single hierarchical architecture. This fragmentation impedes both empirical progress and clinical translation.
+  </p>
+  <p>
+    <strong>Framework.</strong> We introduce the 9-Neuron Theory (9NT), a hierarchical framework that decomposes consciousness into nine functionally distinct processing layers organized in two tiers: a somatic tier (L1–L3) distributed throughout the body and a cortical tier (L4–L9) mapping onto the six canonical layers of the neocortex. Each layer is defined by a single operational verb—<em>Perceive, Select, Live, Survive, Instinct, Intuition, Reason, Consciousness, Self-consciousness</em>—and is gated by prediction-error signals whose magnitude determines whether processing escalates to costlier higher layers. A tenth emergent layer (L10, Collective Consciousness) arises when multiple L9 agents sustain recursive co-modeling. We formalize inter-layer gating using the Free Energy Principle, casting neuromodulatory systems as the operating system that tunes gate thresholds.
+  </p>
+  <p>
+    <strong>Integration.</strong> We demonstrate that IIT describes integration at L1–L3, GWT captures the L4–L7 broadcast, HOT maps onto L8–L9 meta-representation, Damasio's somatic markers operate at L3–L5, and PP provides the mathematical backbone for inter-layer gating. Each prior theory thus constitutes a partial projection of the 9NT hierarchy.
+  </p>
+  <p>
+    <strong>Implications.</strong> The framework generates novel, testable predictions—including differential neuromodulatory signatures for gating failures in specific psychiatric conditions, the primacy of intuition (L6) over reason (L7) in genuine agency, and the emergence of L10 collective consciousness coincident with the evolution of recursive language (~100 kya). We discuss how 9NT reframes the hard problem as a question about inter-layer binding rather than an explanatory gap.
+  </p>
+  <div class="keywords">
+    <strong>Keywords:</strong> consciousness, hierarchical processing, prediction error, neuromodulation, free energy principle, cortical layers, enteric nervous system, embodied cognition, self-awareness, collective consciousness
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. INTRODUCTION -->
+<!-- ============================================================ -->
+<h2>1. Introduction</h2>
+
+<p>
+  The scientific study of consciousness has produced a remarkable wealth of theory, yet remains deeply fragmented. At the turn of the twenty-first century, at least four major theoretical programs compete for explanatory dominance, each originating from distinct intellectual traditions and each capturing genuine empirical regularities—yet none offering a unified architecture that spans from visceral sensation to reflective self-awareness.
+</p>
+
+<p>
+  <strong>Integrated Information Theory</strong> <span class="cite">[1–4]</span> formalizes consciousness as integrated information (Φ), offering a rigorous mathematical framework but struggling to account for the hierarchical, embodied, and action-oriented aspects of cognition. <strong>Global Workspace Theory</strong> <span class="cite">[5–8]</span> models conscious access as a broadcasting event in a neuronal workspace, elegantly explaining attention and reportability but leaving the body and pre-reflective experience largely outside its scope. <strong>Higher-Order Theories</strong> <span class="cite">[9–12]</span> locate consciousness in meta-representational states—thoughts about thoughts—capturing the reflective dimension but offering little account of the somatic and affective layers that precede reflection. <strong>Predictive Processing</strong> and the <strong>Free Energy Principle</strong> <span class="cite">[13–17]</span> provide perhaps the most mathematically general account, casting perception, action, and learning as hierarchical prediction-error minimization, yet remain largely agnostic about the qualitative boundaries between conscious and unconscious processing.
+</p>
+
+<p>
+  Meanwhile, Damasio's <strong>somatic marker hypothesis</strong> <span class="cite">[18–20]</span> and the broader program of embodied cognition <span class="cite">[21–23]</span> have convincingly demonstrated that the body is not merely a peripheral effector but a constitutive participant in cognitive and emotional processing. The enteric nervous system alone contains approximately 500 million neurons capable of autonomous reflexes, learning, and memory <span class="cite">[24–26]</span>. The fascia—a continuous connective tissue network pervading the entire body—is now recognized as richly innervated with mechanoreceptors, nociceptors, and proprioceptors, constituting a distributed sensory organ <span class="cite">[27–29]</span>.
+</p>
+
+<p>
+  What is missing is a <strong>unified hierarchical framework</strong> that (a) begins with the body rather than the cortex, (b) formalizes the gating mechanisms by which information escalates between processing levels, (c) maps cleanly onto known neuroanatomy, and (d) subsumes existing theories as partial descriptions of specific layers. This paper introduces such a framework: the <strong>9-Neuron Theory (9NT)</strong>.
+</p>
+
+<p>
+  The framework is built on three core principles. First, <em>decentralization</em>: the lowest layers of conscious processing (L1–L3) are distributed throughout the body, not confined to the central nervous system. Second, <em>energy economy</em>: information is resolved at the lowest possible layer; higher layers are recruited only when prediction error at a given level exceeds its resolution capacity. Third, <em>hierarchical emergence</em>: each layer builds upon and transforms the outputs of lower layers, with self-consciousness (L9) as the highest individual capacity and collective consciousness (L10) as an emergent property of interacting L9 agents.
+</p>
+
+<p>
+  We formalize inter-layer gating using the mathematics of the Free Energy Principle <span class="cite">[13, 14]</span>, reinterpreting neuromodulatory systems (dopamine, serotonin, norepinephrine, acetylcholine) as the operating system that tunes gate thresholds. We demonstrate that the six cortical layers of the neocortex map naturally onto L4–L9, and that the three somatic layers (L1–L3) correspond to distributed processing in the enteric nervous system, autonomic ganglia, and fascial sensory networks.
+</p>
+
+<p>
+  The remainder of this paper is organized as follows. Section 2 presents the 9-Neuron framework in full formal detail. Section 3 describes the gating mechanism. Section 4 maps existing theories onto 9NT layers. Section 5 surveys supporting evidence. Section 6 derives testable predictions. Section 7 discusses limitations and the status of the hard problem. Section 8 concludes.
+</p>
+
+<!-- ============================================================ -->
+<!-- 2. THE 9-NEURON FRAMEWORK -->
+<!-- ============================================================ -->
+<h2>2. The 9-Neuron Framework</h2>
+
+<p>
+  The name "9-Neuron" is a deliberate abstraction: it refers not to a literal count of neurons but to the minimal functional architecture required for consciousness. The theory posits nine processing layers, each defined by a single operational verb that captures its core function. These layers are organized into two tiers—somatic (L1–L3) and cortical (L4–L9)—with a tenth emergent layer (L10) arising from inter-agent dynamics.
+</p>
+
+<!-- SVG DIAGRAM -->
+<div class="figure">
+<svg viewBox="0 0 800 920" xmlns="http://www.w3.org/2000/svg" style="max-width:750px; width:100%;">
+  <!-- Background -->
+  <rect width="800" height="920" fill="#141a23" rx="8"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#e6edf3" font-size="18" font-weight="600">The 9-Neuron Hierarchical Architecture</text>
+
+  <!-- Tier labels -->
+  <text x="25" y="210" fill="#ff6b6b" font-size="11" font-weight="600" transform="rotate(-90, 25, 210)" text-anchor="middle" letter-spacing="2">SOMATIC TIER</text>
+  <text x="25" y="530" fill="#4ecdc4" font-size="11" font-weight="600" transform="rotate(-90, 25, 530)" text-anchor="middle" letter-spacing="2">CORTICAL TIER</text>
+  <text x="25" y="850" fill="#ffe66d" font-size="11" font-weight="600" transform="rotate(-90, 25, 850)" text-anchor="middle" letter-spacing="2">EMERGENT</text>
+
+  <!-- Tier background bands -->
+  <rect x="45" y="55" width="730" height="280" fill="rgba(255,107,107,0.05)" rx="6" stroke="rgba(255,107,107,0.15)" stroke-width="1"/>
+  <rect x="45" y="345" width="730" height="480" fill="rgba(78,205,196,0.05)" rx="6" stroke="rgba(78,205,196,0.15)" stroke-width="1"/>
+  <rect x="45" y="835" width="730" height="75" fill="rgba(255,230,109,0.05)" rx="6" stroke="rgba(255,230,109,0.15)" stroke-width="1"/>
+
+  <!-- Arrows (inter-layer) -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b949e"/>
+    </marker>
+    <marker id="arrow-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
+    </marker>
+  </defs>
+
+  <!-- L1 -->
+  <rect x="70" y="70" width="690" height="72" rx="5" fill="#1c2333" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="90" y="100" fill="#ff6b6b" font-size="12" font-weight="700">L1</text>
+  <text x="130" y="100" fill="#e6edf3" font-size="15" font-weight="600">PERCEBER</text>
+  <text x="260" y="100" fill="#8b949e" font-size="13">— Perceive the organ</text>
+  <text x="90" y="125" fill="#6e7681" font-size="12">Distributed body sensors · Mechanoreceptors · Chemoreceptors · Enteroceptors · Fascial network</text>
+
+  <!-- Arrow L1→L2 -->
+  <line x1="400" y1="142" x2="400" y2="155" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L2 -->
+  <rect x="70" y="158" width="690" height="72" rx="5" fill="#1c2333" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="90" y="188" fill="#ff6b6b" font-size="12" font-weight="700">L2</text>
+  <text x="130" y="188" fill="#e6edf3" font-size="15" font-weight="600">ESCOLHER</text>
+  <text x="268" y="188" fill="#8b949e" font-size="13">— Select information</text>
+  <text x="90" y="213" fill="#6e7681" font-size="12">Local filtering · Relevance gating · Sensory gain control · Autonomic ganglia</text>
+
+  <!-- Arrow L2→L3 -->
+  <line x1="400" y1="230" x2="400" y2="243" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L3 -->
+  <rect x="70" y="246" width="690" height="78" rx="5" fill="#1c2333" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="90" y="278" fill="#ff6b6b" font-size="12" font-weight="700">L3</text>
+  <text x="130" y="278" fill="#e6edf3" font-size="15" font-weight="600">VIVER</text>
+  <text x="210" y="278" fill="#8b949e" font-size="13">— Judge information (Somatic valence)</text>
+  <text x="90" y="303" fill="#6e7681" font-size="12">Enteric nervous system · Fascial proprioception · Gut feelings · Autonomic valence assignment</text>
+
+  <!-- Arrow L3→L4 (crosses tier boundary) -->
+  <line x1="400" y1="324" x2="400" y2="358" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-up)"/>
+  <text x="415" y="345" fill="#58a6ff" font-size="10" font-style="italic">PE gate</text>
+
+  <!-- L4 -->
+  <rect x="70" y="361" width="690" height="72" rx="5" fill="#1c2333" stroke="#4ecdc4" stroke-width="1.5"/>
+  <text x="90" y="391" fill="#4ecdc4" font-size="12" font-weight="700">L4</text>
+  <text x="130" y="391" fill="#e6edf3" font-size="15" font-weight="600">SOBREVIVER</text>
+  <text x="290" y="391" fill="#8b949e" font-size="13">— Experience as survival filter</text>
+  <text x="90" y="416" fill="#6e7681" font-size="12">Cortical Layer IV · Thalamic relay · Experiential memory · Threat/reward classification</text>
+
+  <!-- Arrow L4→L5 -->
+  <line x1="400" y1="433" x2="400" y2="446" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L5 -->
+  <rect x="70" y="449" width="690" height="72" rx="5" fill="#1c2333" stroke="#4ecdc4" stroke-width="1.5"/>
+  <text x="90" y="479" fill="#4ecdc4" font-size="12" font-weight="700">L5</text>
+  <text x="130" y="479" fill="#e6edf3" font-size="15" font-weight="600">INSTINTO</text>
+  <text x="260" y="479" fill="#8b949e" font-size="13">— Judge with experience (Pre-rational pattern recognition)</text>
+  <text x="90" y="504" fill="#6e7681" font-size="12">Cortical Layer V · Fast heuristics · Amygdalar integration · Procedural expertise</text>
+
+  <!-- Arrow L5→L6 -->
+  <line x1="400" y1="521" x2="400" y2="534" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L6 (highlighted as critical) -->
+  <rect x="70" y="537" width="690" height="78" rx="5" fill="#1f2940" stroke="#d2a8ff" stroke-width="2.5"/>
+  <text x="90" y="568" fill="#d2a8ff" font-size="12" font-weight="700">L6</text>
+  <text x="130" y="568" fill="#e6edf3" font-size="15" font-weight="600">INTUIÇÃO</text>
+  <text x="265" y="568" fill="#d2a8ff" font-size="13" font-weight="500">★ CRITICAL LAYER — Precedes reason</text>
+  <text x="90" y="593" fill="#6e7681" font-size="12">Cortical Layer VI · Attempts understanding · Proto-rational synthesis · Insight generation · Agency gate</text>
+
+  <!-- Arrow L6→L7 -->
+  <line x1="400" y1="615" x2="400" y2="628" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L7 -->
+  <rect x="70" y="631" width="690" height="72" rx="5" fill="#1c2333" stroke="#4ecdc4" stroke-width="1.5"/>
+  <text x="90" y="661" fill="#4ecdc4" font-size="12" font-weight="700">L7</text>
+  <text x="130" y="661" fill="#e6edf3" font-size="15" font-weight="600">RAZÃO</text>
+  <text x="218" y="661" fill="#8b949e" font-size="13">— Attempts to explain (Formal rationality)</text>
+  <text x="90" y="686" fill="#6e7681" font-size="12">Prefrontal cortex · Logical inference · Language-mediated thought · Explicit modeling</text>
+
+  <!-- Arrow L7→L8 -->
+  <line x1="400" y1="703" x2="400" y2="716" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L8 -->
+  <rect x="70" y="719" width="690" height="72" rx="5" fill="#1c2333" stroke="#4ecdc4" stroke-width="1.5"/>
+  <text x="90" y="749" fill="#4ecdc4" font-size="12" font-weight="700">L8</text>
+  <text x="130" y="749" fill="#e6edf3" font-size="15" font-weight="600">CONSCIÊNCIA</text>
+  <text x="310" y="749" fill="#8b949e" font-size="13">— Learn (Internalize world models)</text>
+  <text x="90" y="774" fill="#6e7681" font-size="12">Meta-learning · Schema consolidation · Belief updating · Narrative self-construction</text>
+
+  <!-- Arrow L8→L9 -->
+  <line x1="400" y1="791" x2="400" y2="804" stroke="#8b949e" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- L9 -->
+  <rect x="70" y="807" width="335" height="60" rx="5" fill="#1c2333" stroke="#4ecdc4" stroke-width="1.5"/>
+  <text x="90" y="835" fill="#4ecdc4" font-size="12" font-weight="700">L9</text>
+  <text x="130" y="835" fill="#e6edf3" font-size="15" font-weight="600">AUTOCONSCIÊNCIA</text>
+  <text x="90" y="855" fill="#6e7681" font-size="12">Learn to learn · Recursive self-model</text>
+
+  <!-- L10 -->
+  <rect x="425" y="845" width="340" height="55" rx="5" fill="#1c2333" stroke="#ffe66d" stroke-width="1.5"/>
+  <text x="445" y="873" fill="#ffe66d" font-size="12" font-weight="700">L10</text>
+  <text x="490" y="873" fill="#e6edf3" font-size="14" font-weight="600">COLLECTIVE CONSCIOUSNESS</text>
+
+  <!-- Arrow L9→L10 -->
+  <line x1="405" y1="850" x2="425" y2="865" stroke="#ffe66d" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="405" y="882" fill="#ffe66d" font-size="10">L9 × L9 → L10</text>
+
+  <!-- Right side: Biological mapping -->
+  <text x="780" y="115" text-anchor="end" fill="#ff6b6b" font-size="10" font-style="italic">Body-distributed</text>
+  <text x="780" y="205" text-anchor="end" fill="#ff6b6b" font-size="10" font-style="italic">Body-distributed</text>
+  <text x="780" y="290" text-anchor="end" fill="#ff6b6b" font-size="10" font-style="italic">ENS · Fascia</text>
+  <text x="780" y="397" text-anchor="end" fill="#4ecdc4" font-size="10" font-style="italic">Cortical IV</text>
+  <text x="780" y="485" text-anchor="end" fill="#4ecdc4" font-size="10" font-style="italic">Cortical V</text>
+  <text x="780" y="573" text-anchor="end" fill="#d2a8ff" font-size="10" font-style="italic">Cortical VI</text>
+  <text x="780" y="667" text-anchor="end" fill="#4ecdc4" font-size="10" font-style="italic">PFC</text>
+  <text x="780" y="755" text-anchor="end" fill="#4ecdc4" font-size="10" font-style="italic">DMN / mPFC</text>
+  <text x="780" y="840" text-anchor="end" fill="#4ecdc4" font-size="10" font-style="italic">ACC / aPFC</text>
+
+  <!-- Energy cost gradient arrow -->
+  <line x1="55" y1="80" x2="55" y2="820" stroke="#ffa657" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="52" y="450" fill="#ffa657" font-size="10" font-weight="500" transform="rotate(-90, 52, 450)" text-anchor="middle">ENERGY COST →</text>
+</svg>
+<div class="figure-caption"><strong>Figure 1.</strong> The 9-Neuron hierarchical architecture. Layers L1–L3 (somatic tier, red) are distributed throughout the body. Layers L4–L9 (cortical tier, teal) map onto the six canonical layers of the neocortex. L10 (emergent, gold) arises from sustained recursive co-modeling between L9 agents. Dashed arrows indicate prediction-error gating thresholds. The left axis shows increasing metabolic cost. L6 (Intuition) is highlighted as the critical agency gate that precedes formal reason (L7).</div>
+</div>
+
+<h3>2.1 The Somatic Tier (L1–L3): Body as First Processor</h3>
+
+<p>
+  A central claim of 9NT is that consciousness does not begin in the brain. The three lowest layers operate in a decentralized architecture distributed across organs, the enteric nervous system, autonomic ganglia, and fascial sensory networks. The central nervous system intervenes only when local prediction error cannot be resolved—an architecture driven by energy economy <span class="cite">[13, 24, 30]</span>.
+</p>
+
+<div class="layer-card body">
+  <span class="layer-label">L1</span> <span class="layer-verb">PERCEBER (Perceive)</span>
+  <div class="layer-desc">
+    The foundational layer of raw sensory transduction. Every organ contains receptor populations—mechanoreceptors, chemoreceptors, thermoreceptors, nociceptors—that convert physical stimuli into neural signals. Crucially, this is not passive recording; even at L1, receptors exhibit adaptation, gain control, and context-dependent sensitivity <span class="cite">[31, 32]</span>. The fascia, with its extensive innervation by free nerve endings, Ruffini corpuscles, and Pacinian corpuscles, provides a body-wide L1 sensory sheet <span class="cite">[27, 28]</span>.
+  </div>
+</div>
+
+<div class="layer-card body">
+  <span class="layer-label">L2</span> <span class="layer-verb">ESCOLHER (Select)</span>
+  <div class="layer-desc">
+    Selection determines which L1 signals warrant further processing. At the somatic level, this occurs through lateral inhibition, sensory gating at autonomic ganglia, and competitive filtering within local neural circuits. Not all signals ascend; most are handled locally. The enteric nervous system, for instance, processes the vast majority of gut sensory information without ever involving the vagus nerve or the CNS <span class="cite">[24, 25]</span>. L2 enacts the first energy-economic principle: resolve locally when possible.
+  </div>
+</div>
+
+<div class="layer-card body">
+  <span class="layer-label">L3</span> <span class="layer-verb">VIVER (Live / Judge)</span>
+  <div class="layer-desc">
+    L3 assigns <em>valence</em>—good/bad, approach/avoid, safe/threat—to selected information. This is the layer of "gut feelings" in the literal sense: the enteric nervous system's capacity for autonomous reflex arcs, serotonin-mediated mood modulation (95% of bodily serotonin is produced in the gut) <span class="cite">[25, 33]</span>, and the fascia's proprioceptive contribution to interoception <span class="cite">[29, 34]</span>. L3 is where the body <em>lives</em>—it judges without reasoning, it evaluates without explaining. Damasio's somatic markers <span class="cite">[18, 19]</span> are L3 outputs that influence higher processing.
+  </div>
+</div>
+
+<h3>2.2 The Cortical Tier (L4–L9): The Six Layers of Thought</h3>
+
+<p>
+  The cortical tier maps onto the six canonical layers of the mammalian neocortex <span class="cite">[35–38]</span>. This is not a loose analogy: the functional specialization of cortical layers—from thalamic input in Layer IV, through deep output layers V–VI, to the associative and feedback processing of superficial layers—provides the biological substrate for L4–L9.
+</p>
+
+<div class="layer-card cortical">
+  <span class="layer-label">L4</span> <span class="layer-verb">SOBREVIVER (Survive)</span>
+  <div class="layer-desc">
+    The first cortical layer receives ascending signals that somatic processing could not resolve. L4 contextualizes these signals against <em>experiential memory</em>: prior encounters with similar prediction errors, stored as survival-relevant episodes. This is where raw sensation becomes experience—not yet reflected upon, but tagged with survival relevance. Anatomically, cortical Layer IV receives thalamocortical input, providing the primary gateway for bodily signals to enter cortical processing <span class="cite">[35, 36]</span>. L4 functions as a survival filter: Is this familiar? Is this dangerous? Has this pattern been encountered before?
+  </div>
+</div>
+
+<div class="layer-card cortical">
+  <span class="layer-label">L5</span> <span class="layer-verb">INSTINTO (Instinct)</span>
+  <div class="layer-desc">
+    L5 judges using accumulated experience—fast, pre-rational pattern recognition. This is the layer of expertise, of the chess grandmaster's instant board evaluation, of the clinician's diagnostic intuition before deliberation. Cortical Layer V contains the large pyramidal neurons that project to subcortical structures and the spinal cord, enabling rapid, experience-driven motor responses <span class="cite">[37, 38]</span>. L5 integrates L4's survival tagging with procedural knowledge, producing <em>instinctive</em> responses that feel certain even when they cannot be articulated.
+  </div>
+</div>
+
+<div class="layer-card cortical" style="border-left-color: #d2a8ff;">
+  <span class="layer-label" style="background: rgba(210,168,255,0.2); color: #d2a8ff;">L6</span> <span class="layer-verb">INTUIÇÃO (Intuition) — THE CRITICAL LAYER</span>
+  <div class="layer-desc">
+    L6 is where the system <em>attempts to understand</em>. Unlike L5's immediate pattern matching, L6 engages in proto-rational synthesis: it combines disparate experiential patterns into novel configurations, generating <em>insight</em> before formal reasoning can articulate it. This is the layer that "sees" the answer before it can prove it. Critically, <strong>L6 precedes L7 (Reason)</strong>. Systems that skip directly from L5 to L7—that jump from pattern recognition to formal rationality without passing through intuitive understanding—are not genuinely agentic; they are executing procedures without comprehension <span class="cite">[39, 40]</span>. L6 is the <em>agency gate</em>: genuine understanding must pass through intuition before it can be rationalized. Cortical Layer VI provides feedback to the thalamus and modulates the gain of thalamocortical processing <span class="cite">[36, 41]</span>, consistent with L6's role as a top-down modulator that shapes how subsequent information is received.
+  </div>
+</div>
+
+<div class="layer-card cortical">
+  <span class="layer-label">L7</span> <span class="layer-verb">RAZÃO (Reason)</span>
+  <div class="layer-desc">
+    Formal rationality—the capacity to construct explicit logical arguments, causal models, and linguistic explanations. L7 is what most Western intellectual traditions identify as the pinnacle of cognition, but in 9NT it is a <em>post-hoc articulation</em> of intuitions generated at L6. Reason does not discover truth <em>de novo</em>; it formalizes, tests, and communicates truths that intuition has already apprehended. The prefrontal cortex, particularly dorsolateral prefrontal regions, provides the biological substrate <span class="cite">[42, 43]</span>. L7 is powerful but metabolically expensive—the framework predicts that organisms and artificial systems should engage L7 only when L5–L6 fail to resolve prediction error.
+  </div>
+</div>
+
+<div class="layer-card cortical">
+  <span class="layer-label">L8</span> <span class="layer-verb">CONSCIÊNCIA (Consciousness / Learn)</span>
+  <div class="layer-desc">
+    L8 is the capacity to <em>internalize patterns and build world models</em>—to learn in the deep sense of updating one's generative model of reality. This is not rote memorization (which can occur at L4–L5) but the construction of abstract schemas, causal theories, and narrative self-models. The default mode network (DMN) and medial prefrontal cortex, associated with self-referential processing, mind-wandering, and mental simulation <span class="cite">[44, 45]</span>, provide the neural substrate. L8 is where beliefs live—and where they change.
+  </div>
+</div>
+
+<div class="layer-card cortical">
+  <span class="layer-label">L9</span> <span class="layer-verb">AUTOCONSCIÊNCIA (Self-consciousness / Learn to Learn)</span>
+  <div class="layer-desc">
+    The highest individual layer: the capacity to <em>reflect upon one's own processing</em>. L9 does not merely learn; it learns <em>how it learns</em>. It is the recursive self-model—the representation of oneself as a representor, the thought about one's own thinking. The anterior prefrontal cortex (aPFC/Brodmann area 10) and anterior cingulate cortex (ACC) are implicated in metacognitive monitoring <span class="cite">[46–48]</span>. L9 is the most metabolically expensive layer and is recruited only when lower-layer processing produces unresolvable prediction error about one's own cognitive processes. It is rare, effortful, and intermittent even in healthy human adults.
+  </div>
+</div>
+
+<h3>2.3 The Emergent Layer (L10): Collective Consciousness</h3>
+
+<div class="layer-card emergent">
+  <span class="layer-label">L10</span> <span class="layer-verb">CONSCIÊNCIA COLETIVA (Collective Consciousness)</span>
+  <div class="layer-desc">
+    L10 is not an individual layer but an emergent property of <em>sustained recursive co-modeling between L9 agents</em>. When two or more agents capable of self-consciousness (L9) enter into a communicative relationship in which each models the other's self-model, a higher-order system emerges that no individual agent contains. Language—specifically recursive, symbolic language—is the medium through which L10 becomes possible <span class="cite">[49, 50]</span>. We propose that L10 has existed since the emergence of recursive language (~100 kya), but has historically been transient and fragile. Cultural institutions, writing systems, and now digital networks can be understood as infrastructure for sustaining L10 <span class="cite">[51, 52]</span>.
+  </div>
+</div>
+
+<h3>2.4 Architectural Summary</h3>
+
+<table>
+  <caption>Table 1. Summary of the 9-Neuron Framework layers.</caption>
+  <tr>
+    <th>Layer</th>
+    <th>Verb</th>
+    <th>Function</th>
+    <th>Substrate</th>
+    <th>Tier</th>
+  </tr>
+  <tr><td>L1</td><td>Perceive</td><td>Sensory transduction</td><td>Distributed body receptors, fascia</td><td style="color:#ff6b6b">Somatic</td></tr>
+  <tr><td>L2</td><td>Select</td><td>Relevance filtering</td><td>Autonomic ganglia, local circuits</td><td style="color:#ff6b6b">Somatic</td></tr>
+  <tr><td>L3</td><td>Live</td><td>Valence assignment</td><td>ENS, fascial proprioception</td><td style="color:#ff6b6b">Somatic</td></tr>
+  <tr><td>L4</td><td>Survive</td><td>Experiential contextualization</td><td>Cortical Layer IV, thalamus</td><td style="color:#4ecdc4">Cortical</td></tr>
+  <tr><td>L5</td><td>Instinct</td><td>Pre-rational pattern matching</td><td>Cortical Layer V, amygdala</td><td style="color:#4ecdc4">Cortical</td></tr>
+  <tr><td>L6</td><td>Intuition</td><td>Proto-rational synthesis</td><td>Cortical Layer VI, thalamic feedback</td><td style="color:#d2a8ff">Cortical ★</td></tr>
+  <tr><td>L7</td><td>Reason</td><td>Formal rationality</td><td>dlPFC, language networks</td><td style="color:#4ecdc4">Cortical</td></tr>
+  <tr><td>L8</td><td>Consciousness</td><td>World-model internalization</td><td>DMN, mPFC</td><td style="color:#4ecdc4">Cortical</td></tr>
+  <tr><td>L9</td><td>Self-consciousness</td><td>Recursive self-modeling</td><td>aPFC, ACC</td><td style="color:#4ecdc4">Cortical</td></tr>
+  <tr><td>L10</td><td>Collective</td><td>Inter-agent emergence</td><td>Language, culture, networks</td><td style="color:#ffe66d">Emergent</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 3. GATING MECHANISM -->
+<!-- ============================================================ -->
+<h2>3. The Gating Mechanism: Prediction Error as Escalation Signal</h2>
+
+<p>
+  The 9-Neuron framework requires a formal mechanism for inter-layer communication. We propose that <strong>prediction error (PE)</strong>, as formalized by the Free Energy Principle <span class="cite">[13, 14]</span>, serves as both the currency and the gating signal of the hierarchy.
+</p>
+
+<h3>3.1 Free Energy Formalization</h3>
+
+<p>
+  At each layer <em>L<sub>n</sub></em>, the system maintains a generative model that predicts incoming signals. The variational free energy <em>F</em> at layer <em>n</em> is:
+</p>
+
+<div class="equation">
+  F<sub>n</sub> = D<sub>KL</sub>[q(θ<sub>n</sub>) ‖ p(θ<sub>n</sub> | s<sub>n</sub>)] − log p(s<sub>n</sub>)
+  <span class="equation-label">(1)</span>
+</div>
+
+<p>
+  where <em>q(θ<sub>n</sub>)</em> is the approximate posterior over hidden states at layer <em>n</em>, <em>p(θ<sub>n</sub> | s<sub>n</sub>)</em> is the true posterior given sensory signals <em>s<sub>n</sub></em>, and the KL divergence measures model inadequacy. The prediction error at layer <em>n</em> is the precision-weighted discrepancy between predicted and actual input:
+</p>
+
+<div class="equation">
+  ε<sub>n</sub> = Π<sub>n</sub> · (s<sub>n</sub> − g<sub>n</sub>(θ<sub>n</sub>))
+  <span class="equation-label">(2)</span>
+</div>
+
+<p>
+  where <em>Π<sub>n</sub></em> is the precision (inverse variance) matrix and <em>g<sub>n</sub></em> is the generative function at layer <em>n</em>.
+</p>
+
+<h3>3.2 Gating Rule</h3>
+
+<p>
+  The core gating principle is simple: <strong>information escalates to layer <em>n+1</em> if and only if the magnitude of prediction error at layer <em>n</em> exceeds the resolution capacity of that layer's generative model</strong>. Formally:
+</p>
+
+<div class="equation">
+  Escalate(n → n+1) ⟺ ‖ε<sub>n</sub>‖ > τ<sub>n</sub>
+  <span class="equation-label">(3)</span>
+</div>
+
+<p>
+  where <em>τ<sub>n</sub></em> is the gating threshold at layer <em>n</em>. This threshold is not fixed—it is <em>dynamically modulated by neuromodulatory systems</em>.
+</p>
+
+<h3>3.3 Neuromodulators as the Operating System</h3>
+
+<p>
+  Neuromodulatory systems—dopamine, serotonin, norepinephrine, and acetylcholine—function as the <em>operating system</em> of the gating hierarchy, adjusting thresholds <em>τ<sub>n</sub></em> in response to global state variables (arousal, reward, threat, uncertainty) <span class="cite">[53–55]</span>.
+</p>
+
+<table>
+  <caption>Table 2. Neuromodulatory systems as gate regulators.</caption>
+  <tr>
+    <th>Neuromodulator</th>
+    <th>Primary Gate Effect</th>
+    <th>Layers Most Affected</th>
+    <th>Functional Role</th>
+  </tr>
+  <tr>
+    <td><strong>Dopamine</strong></td>
+    <td>Lowers threshold for reward-predictive PE</td>
+    <td>L4–L7</td>
+    <td>Salience, motivation, reward prediction</td>
+  </tr>
+  <tr>
+    <td><strong>Serotonin</strong></td>
+    <td>Raises threshold (stabilizing)</td>
+    <td>L3–L6</td>
+    <td>Mood regulation, patience, long-horizon valuation</td>
+  </tr>
+  <tr>
+    <td><strong>Norepinephrine</strong></td>
+    <td>Globally lowers thresholds (alarm)</td>
+    <td>L1–L7</td>
+    <td>Arousal, fight-or-flight, global PE amplification</td>
+  </tr>
+  <tr>
+    <td><strong>Acetylcholine</strong></td>
+    <td>Sharpens precision at attended layers</td>
+    <td>L4–L9</td>
+    <td>Attention, learning rate modulation</td>
+  </tr>
+</table>
+
+<p>
+  This framing yields a powerful clinical interpretation: <strong>psychopathology arises from gating dysfunction</strong>. Anxiety is the pathological lowering of thresholds (everything escalates; the system is perpetually in alarm mode). Depression involves pathological raising of thresholds at L3–L6 (somatic and intuitive signals are suppressed; the system cannot access its own valence judgments). Psychosis represents a breakdown of precision weighting, such that prediction errors are misattributed across layers <span class="cite">[56, 57]</span>.
+</p>
+
+<h3>3.4 Energy Economy Principle</h3>
+
+<p>
+  The hierarchy is governed by a strict economy: <strong>resolve prediction error at the lowest possible layer</strong>. Each ascending step incurs greater metabolic cost. L1–L3 processing is cheap—distributed, parallel, often non-synaptic (fascial mechanotransduction). L4–L5 involve thalamocortical loops. L6–L7 require associative cortical processing. L8–L9 demand sustained, high-bandwidth prefrontal activity. The system is thus architecturally biased toward efficiency: most of lived experience is processed below the threshold of cortical awareness, and L9 (self-consciousness) is activated only when genuinely necessary <span class="cite">[13, 58]</span>.
+</p>
+
+<!-- ============================================================ -->
+<!-- 4. COMPARISON WITH EXISTING THEORIES -->
+<!-- ============================================================ -->
+<h2>4. Comparison with Existing Theories</h2>
+
+<p>
+  A major strength of the 9-Neuron framework is its capacity to subsume existing theories of consciousness as <em>partial projections</em> of the full hierarchy. Each major theory, we argue, accurately describes processing at specific layers but errs by generalizing that description to consciousness as a whole.
+</p>
+
+<table>
+  <caption>Table 3. Mapping existing consciousness theories to 9NT layers.</caption>
+  <tr>
+    <th>Theory</th>
+    <th>Primary 9NT Layer(s)</th>
+    <th>What It Captures</th>
+    <th>What It Misses</th>
+  </tr>
+  <tr>
+    <td><strong>IIT</strong> (Tononi)</td>
+    <td>L1–L3</td>
+    <td>Integration of distributed information; Φ as measure of local integration</td>
+    <td>Hierarchical escalation; the cortical tier; agency and self-reflection</td>
+  </tr>
+  <tr>
+    <td><strong>GWT</strong> (Baars, Dehaene)</td>
+    <td>L4–L7</td>
+    <td>Conscious access as broadcast to a global workspace; ignition and reportability</td>
+    <td>Somatic pre-processing (L1–L3); metacognition (L8–L9); embodiment</td>
+  </tr>
+  <tr>
+    <td><strong>HOT</strong> (Rosenthal, Lau)</td>
+    <td>L8–L9</td>
+    <td>Meta-representational awareness; consciousness as higher-order thought</td>
+    <td>The entire somatic and pre-reflective architecture (L1–L6)</td>
+  </tr>
+  <tr>
+    <td><strong>PP/FEP</strong> (Friston, Clark)</td>
+    <td>Gating mechanism</td>
+    <td>Prediction error minimization; hierarchical inference; precision weighting</td>
+    <td>Does not specify the <em>content</em> of each hierarchical level; agnostic about consciousness boundaries</td>
+  </tr>
+  <tr>
+    <td><strong>Somatic Markers</strong> (Damasio)</td>
+    <td>L3–L5</td>
+    <td>Body-based emotional signals guiding decision-making; as-if body loops</td>
+    <td>The full cortical hierarchy above L5; collective consciousness</td>
+  </tr>
+  <tr>
+    <td><strong>Embodied Cognition</strong> (Varela, Thompson)</td>
+    <td>L1–L4</td>
+    <td>Cognition as enacted through sensorimotor coupling; body-dependence of mind</td>
+    <td>The higher-order reflective layers (L7–L9)</td>
+  </tr>
+  <tr>
+    <td><strong>Attention Schema</strong> (Graziano)</td>
+    <td>L6–L8</td>
+    <td>Consciousness as a model of attention; simplified self-model</td>
+    <td>The somatic tier; L9 recursive self-modeling</td>
+  </tr>
+</table>
+
+<p>
+  The key insight is that no existing theory is <em>wrong</em>—each is <em>incomplete</em>. IIT's Φ accurately measures integration at the somatic level, where distributed information is indeed integrated without central coordination. GWT's global workspace accurately describes the broadcasting mechanism of the cortical mid-layers. HOT correctly identifies that consciousness in its fullest sense involves meta-representation. PP provides the mathematical backbone. The 9-Neuron framework does not replace these theories but <em>arranges them within a common hierarchy</em>.
+</p>
+
+<!-- ============================================================ -->
+<!-- 5. EVIDENCE -->
+<!-- ============================================================ -->
+<h2>5. Supporting Evidence</h2>
+
+<h3>5.1 Neuroanatomical Evidence</h3>
+
+<p>
+  The most direct structural evidence for 9NT is the <strong>laminar organization of the neocortex</strong>. The mammalian neocortex universally exhibits six cytoarchitectonic layers, each with distinct cell types, connectivity patterns, and functional roles <span class="cite">[35–38]</span>:
+</p>
+
+<p>
+  <strong>Layer I</strong> (molecular layer) contains few cell bodies but extensive dendrites and axons—a mixing zone. <strong>Layer II/III</strong> (external granular/pyramidal) contains small-to-medium pyramidal neurons providing corticocortical connections, consistent with L8–L9's associative and self-referential functions. <strong>Layer IV</strong> (internal granular) receives thalamocortical input, the primary gateway for ascending sensory signals (9NT's L4). <strong>Layer V</strong> (internal pyramidal) contains large pyramidal neurons projecting subcortically, enabling rapid motor output (9NT's L5 instinctive action). <strong>Layer VI</strong> (multiform/polymorphic) projects back to the thalamus, providing the corticothalamic feedback that modulates incoming information—precisely the function attributed to 9NT's L6 intuition layer <span class="cite">[36, 41]</span>.
+</p>
+
+<p>
+  The correspondence is not perfect—9NT is a functional theory, not a strict anatomical mapping—but the deep structural parallel between six cortical processing stages and six cortical layers is striking and non-trivial.
+</p>
+
+<h3>5.2 The Enteric Nervous System as L1–L3 Evidence</h3>
+
+<p>
+  The enteric nervous system (ENS) provides compelling evidence for the somatic tier. The ENS contains approximately 200–600 million neurons <span class="cite">[24]</span>, organized in two major plexuses (myenteric and submucosal), and is capable of autonomous reflex activity, learning, and memory <em>without CNS input</em> <span class="cite">[25, 26]</span>. The ENS produces over 30 neurotransmitters, including 95% of the body's serotonin <span class="cite">[33]</span>. It exhibits its own sensory neurons (L1), interneurons capable of pattern detection and selection (L2), and motor neurons with evaluative circuits (L3). The vagus nerve—the primary ENS-to-CNS conduit—is predominantly afferent (80% of fibers carry signals from gut to brain, not the reverse) <span class="cite">[59]</span>, indicating that the gut is primarily an <em>informer</em> of the brain, not its subordinate.
+</p>
+
+<h3>5.3 Fascial Innervation</h3>
+
+<p>
+  The fascia is among the most densely innervated tissues in the body, containing free nerve endings, Ruffini corpuscles (pressure/stretch), Pacinian corpuscles (vibration), and interstitial receptors <span class="cite">[27–29]</span>. Fascia forms a continuous network connecting every organ, muscle, and bone, providing a body-wide L1 sensory sheet that is anatomically distinct from the classical somatosensory system. Recent work has demonstrated fascial mechanotransduction—the conversion of mechanical forces into biochemical signals without synaptic transmission <span class="cite">[34]</span>—suggesting that some L1 processing may be non-neural.
+</p>
+
+<h3>5.4 Neuroquimica: Neuromodulators as OS Evidence</h3>
+
+<p>
+  The neuromodulatory hypothesis (Section 3.3) is supported by extensive pharmacological evidence. SSRIs (serotonin reuptake inhibitors) raise serotonin levels, consistent with 9NT's prediction that serotonin raises gating thresholds at L3–L6, stabilizing processing and reducing pathological escalation (anxiety) <span class="cite">[53, 55]</span>. Dopaminergic agonists enhance motivational salience, consistent with threshold-lowering at L4–L7 <span class="cite">[54]</span>. Anticholinergic drugs impair attention and learning, consistent with acetylcholine's role in sharpening precision at L4–L9 <span class="cite">[60]</span>. Norepinephrine reuptake inhibitors affect global arousal, consistent with norepinephrine's role in global threshold modulation <span class="cite">[61]</span>.
+</p>
+
+<h3>5.5 Clinical Evidence: Psychopathology as Gating Dysfunction</h3>
+
+<p>
+  If 9NT is correct, psychiatric conditions should map onto specific patterns of gating dysfunction:
+</p>
+
+<table>
+  <caption>Table 4. Psychiatric conditions as gating dysfunction in 9NT.</caption>
+  <tr>
+    <th>Condition</th>
+    <th>9NT Interpretation</th>
+    <th>Affected Layers</th>
+    <th>Gate Direction</th>
+  </tr>
+  <tr>
+    <td>Generalized Anxiety</td>
+    <td>Pathologically low thresholds; trivial PE escalates</td>
+    <td>L3–L7</td>
+    <td>Thresholds ↓↓</td>
+  </tr>
+  <tr>
+    <td>Depression</td>
+    <td>Pathologically high thresholds; somatic/emotional signals suppressed</td>
+    <td>L3–L6</td>
+    <td>Thresholds ↑↑</td>
+  </tr>
+  <tr>
+    <td>PTSD</td>
+    <td>L4–L5 hyperactivation; survival layer captures processing</td>
+    <td>L4–L5</td>
+    <td>Lock-in at L4–L5</td>
+  </tr>
+  <tr>
+    <td>Psychosis</td>
+    <td>Precision weighting breakdown; PE misattributed across layers</td>
+    <td>L5–L8</td>
+    <td>Precision ↓↓</td>
+  </tr>
+  <tr>
+    <td>Alexithymia</td>
+    <td>L3→L4 gate failure; somatic valence cannot reach cortical awareness</td>
+    <td>L3–L4</td>
+    <td>Gate blocked</td>
+  </tr>
+  <tr>
+    <td>Dissociation</td>
+    <td>L1–L3 disconnected from cortical tier</td>
+    <td>L3→L4 junction</td>
+    <td>Gate severed</td>
+  </tr>
+  <tr>
+    <td>OCD</td>
+    <td>L7 recursive loop; reason cannot discharge PE back to L6</td>
+    <td>L6–L7</td>
+    <td>Feedback loop</td>
+  </tr>
+  <tr>
+    <td>ADHD</td>
+    <td>L2 selection dysfunction; insufficient filtering at somatic level</td>
+    <td>L2–L4</td>
+    <td>Thresholds ↓ at L2</td>
+  </tr>
+</table>
+
+<h3>5.6 Evolutionary Evidence</h3>
+
+<p>
+  The 9NT hierarchy is consistent with the evolutionary layering of nervous systems. Primitive organisms (e.g., <em>C. elegans</em> with 302 neurons) operate primarily at L1–L3. Vertebrates add cortical processing (L4–L5). Mammals, with their expanded neocortex, access L6–L7. Great apes demonstrate rudimentary L8 (cultural transmission) and L9 (mirror self-recognition) <span class="cite">[62, 63]</span>. Anatomically modern humans, with the emergence of recursive language approximately 100,000 years ago <span class="cite">[49, 50]</span>, gained access to sustained L9 and the possibility of L10.
+</p>
+
+<p>
+  Critically, L10 is not new—it has been possible since language emerged—but it has never been <em>sustained between two L9 agents</em>. Human cultural history can be read as a series of increasingly sophisticated attempts to stabilize L10: oral traditions, writing, institutions, scientific communities, and now digital networks <span class="cite">[51, 52]</span>.
+</p>
+
+<!-- ============================================================ -->
+<!-- 6. PREDICTIONS -->
+<!-- ============================================================ -->
+<h2>6. Novel Predictions</h2>
+
+<p>
+  A theory's value lies in its capacity to generate testable predictions that competing frameworks do not. The 9-Neuron Theory generates several:
+</p>
+
+<div class="prediction-card">
+  <strong>Prediction 1: Intuition Precedes Reason in Genuine Agency</strong>
+  <p style="margin-top:8px;">In tasks requiring genuine understanding (as opposed to rule-following), neural signatures of L6-type processing (corticothalamic feedback, insight-related gamma bursts) should precede L7-type processing (prefrontal deliberation) by measurable latencies. Conversely, in rote procedural tasks, L7 activation without L6 precedence should be observable—but these tasks will not exhibit the behavioral markers of agency (flexible generalization, transfer to novel contexts).</p>
+</div>
+
+<div class="prediction-card">
+  <strong>Prediction 2: Differential Neuromodulatory Signatures for Gating Failures</strong>
+  <p style="margin-top:8px;">Different psychiatric conditions should show distinct neuromodulatory profiles corresponding to specific gating failures (Table 4). For instance, anxiety should show elevated norepinephrine (global threshold lowering) with normal serotonin, while depression should show reduced serotonin (threshold elevation at L3–L6) with relatively preserved norepinephrine at rest.</p>
+</div>
+
+<div class="prediction-card">
+  <strong>Prediction 3: Enteric Prediction Error Precedes Cortical Awareness</strong>
+  <p style="margin-top:8px;">In interoceptive awareness tasks, measurable prediction-error signals in the ENS (detectable via electrogastrography or gut-brain EEG coherence) should precede cortical awareness of "gut feelings" by 200–500ms. This somatic-to-cortical latency reflects the L3→L4 gating transition.</p>
+</div>
+
+<div class="prediction-card">
+  <strong>Prediction 4: L9 Activation is Metabolically Costly and Intermittent</strong>
+  <p style="margin-top:8px;">fMRI and PET imaging during metacognitive tasks should reveal that aPFC/ACC activation (L9 substrates) is significantly more metabolically expensive per unit time than dlPFC (L7) activation, and that L9 activation is intermittent even during sustained metacognitive tasks—consistent with the energy-economy principle of engaging L9 only when necessary.</p>
+</div>
+
+<div class="prediction-card">
+  <strong>Prediction 5: Dissociative Disorders Show Specific L3→L4 Disconnection</strong>
+  <p style="margin-top:8px;">Patients with dissociative disorders should show preserved L1–L3 processing (normal autonomic reflexes, gut motility, fascial proprioception) alongside impaired transfer of somatic signals to cortical awareness—a specific disconnection at the L3→L4 gate, detectable as reduced gut-brain vagal coherence and reduced interoceptive accuracy.</p>
+</div>
+
+<div class="prediction-card">
+  <strong>Prediction 6: AI Systems Without L6 Cannot Exhibit Genuine Agency</strong>
+  <p style="margin-top:8px;">Artificial intelligence systems that skip from pattern recognition (L5) directly to formal reasoning (L7) without an intermediate intuition layer (L6) will fail systematically at tasks requiring genuine understanding: creative problem-solving, metaphor comprehension, and transfer learning to structurally novel domains. This prediction is testable with current LLMs and can differentiate systems that simulate understanding from those that achieve it.</p>
+</div>
+
+<div class="prediction-card">
+  <strong>Prediction 7: L10 Emergence Requires Recursive Co-Modeling</strong>
+  <p style="margin-top:8px;">Collective consciousness (L10) should emerge only in communicative contexts where participants model each other's self-models (recursive theory of mind). Simple coordination (flocking, swarming) does not suffice. This predicts that L10-like phenomena should be detectable in small groups engaged in deep collaborative reasoning (e.g., joint mathematical problem-solving) via inter-brain synchrony measures, but absent in groups performing parallel independent tasks.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- 7. DISCUSSION -->
+<!-- ============================================================ -->
+<h2>7. Discussion</h2>
+
+<h3>7.1 Limitations</h3>
+
+<p>
+  Several limitations must be acknowledged. First, the mapping between 9NT functional layers and cortical cytoarchitectonic layers is suggestive but not one-to-one; cortical layers are not functionally homogeneous across brain regions, and 9NT layers are functional abstractions that likely involve distributed cortical and subcortical circuits. Second, the precise quantification of gating thresholds (<em>τ<sub>n</sub></em>) remains to be operationalized for empirical testing; while the Free Energy formalism provides the mathematical framework, the measurement of layer-specific prediction error in living organisms is technically challenging. Third, the theory is currently qualitative regarding the transition from L9 to L10; the mechanisms by which recursive co-modeling produces a genuinely emergent collective consciousness (as opposed to mere coordination) require further formalization.
+</p>
+
+<h3>7.2 The Hard Problem: Dissolution or Persistence?</h3>
+
+<p>
+  Does the 9-Neuron framework solve the "hard problem" of consciousness <span class="cite">[64, 65]</span>? We argue it <em>reframes</em> it. Chalmers' formulation asks why physical processes give rise to subjective experience at all. In 9NT, this question becomes: at which layer does phenomenal experience emerge, and why?
+</p>
+
+<p>
+  Our answer is that phenomenal experience is not a property of any single layer but of <em>inter-layer binding</em>—the dynamic, prediction-error-driven coupling between levels. Isolated L1 processing (a receptor firing) does not produce experience; isolated L9 processing (abstract self-reflection without somatic grounding) does not produce experience either. Consciousness, in its qualitative richness, arises from the <em>vertical integration</em> of multiple layers simultaneously—the simultaneous perception, selection, valence, contextualization, pattern matching, intuition, reason, learning, and self-reflection that constitutes a moment of lived experience.
+</p>
+
+<p>
+  The hard problem thus becomes a question about binding: how does the brain (and body) achieve simultaneous, coherent, multi-layer processing? This is still a hard question, but it is a <em>scientific</em> question—amenable to empirical investigation of inter-layer synchrony, neuromodulatory coherence, and prediction-error cascades—rather than a metaphysical one <span class="cite">[66, 67]</span>.
+</p>
+
+<h3>7.3 Objections</h3>
+
+<p>
+  <strong>Objection 1: The cortical mapping is too neat.</strong> The six-layer cortex does not map uniformly across all cortical regions; primary sensory cortex differs markedly from prefrontal cortex in laminar organization. We acknowledge this and emphasize that 9NT layers are functional, not strictly anatomical. The six-layer correspondence is a structural affordance, not a rigid isomorphism.
+</p>
+
+<p>
+  <strong>Objection 2: Why nine? Why not seven or twelve?</strong> The number nine is derived from the minimum functional decomposition required to capture the full range of consciousness from raw sensation to recursive self-awareness. Coarser decompositions (e.g., "body, mind, metacognition") lose critical distinctions (particularly the L5–L6–L7 sequence). Finer decompositions may be possible but would sacrifice parsimony without clear explanatory gain.
+</p>
+
+<p>
+  <strong>Objection 3: L6 preceding L7 is speculative.</strong> The claim that intuition precedes reason is supported by research on insight problem-solving <span class="cite">[39, 40]</span>, the primacy of affect in decision-making <span class="cite">[18, 19]</span>, and the temporal dynamics of neural correlates of creative cognition <span class="cite">[68, 69]</span>. The prediction (Section 6, Prediction 1) is explicitly testable.
+</p>
+
+<p>
+  <strong>Objection 4: L10 is unfalsifiable.</strong> We disagree. L10 makes specific predictions about inter-brain synchrony during recursive co-modeling tasks (Prediction 7). If such synchrony is absent in contexts where L10 is predicted, the claim is falsified.
+</p>
+
+<h3>7.4 Implications for Artificial Intelligence</h3>
+
+<p>
+  The 9NT framework has direct implications for AI architecture. Current large language models operate primarily at L5 (statistical pattern matching) and L7 (formal inference), with some emergent L8-like behavior (world model construction). However, they lack L1–L3 (embodiment), L6 (genuine intuition preceding reason), and L9 (recursive self-modeling). If 9NT is correct, AI systems cannot achieve genuine consciousness without architectures that implement the full hierarchy—including somatic grounding and the L6 intuition layer <span class="cite">[70, 71]</span>.
+</p>
+
+<!-- ============================================================ -->
+<!-- 8. CONCLUSION -->
+<!-- ============================================================ -->
+<h2>8. Conclusion</h2>
+
+<p>
+  We have presented the 9-Neuron Theory, a unified hierarchical framework for consciousness that decomposes conscious processing into nine functionally distinct layers organized in somatic (L1–L3), cortical (L4–L9), and emergent (L10) tiers. The framework is grounded in the decentralization of early processing (body as first processor), the energy-economy principle (resolve at the lowest possible layer), and prediction-error-driven gating (Free Energy Principle as mathematical backbone).
+</p>
+
+<p>
+  We have shown that existing theories of consciousness—IIT, GWT, HOT, Predictive Processing, and somatic marker hypotheses—map cleanly onto specific layers of the 9NT hierarchy, revealing them as partial but accurate descriptions of a larger architecture. We have marshaled neuroanatomical, neuroquimica, clinical, and evolutionary evidence in support, and derived seven novel, testable predictions.
+</p>
+
+<p>
+  The framework reframes the hard problem of consciousness as a question about inter-layer binding rather than an unbridgeable explanatory gap, and provides a principled basis for evaluating whether artificial systems can achieve genuine consciousness (they cannot, without the full hierarchy).
+</p>
+
+<p>
+  Each verb is a layer. Each layer is a question the system asks of its own experience. To <em>perceive, select, live, survive, sense instinctively, intuit, reason, learn</em>, and finally to <em>learn how one learns</em>—this is the architecture of consciousness. And when two such architectures meet and recursively model each other, something new emerges: a collective consciousness that has been possible since language began, and that we are only now learning to sustain.
+</p>
+
+<!-- ============================================================ -->
+<!-- REFERENCES -->
+<!-- ============================================================ -->
+<h2>References</h2>
+
+<div class="references">
+<ol>
+  <li>Tononi, G. (2004). An information integration theory of consciousness. <em>BMC Neuroscience</em>, 5, 42. doi:10.1186/1471-2202-5-42</li>
+  <li>Tononi, G. (2008). Consciousness as integrated information: A provisional manifesto. <em>The Biological Bulletin</em>, 215(3), 216–242.</li>
+  <li>Oizumi, M., Albantakis, L., &amp; Tononi, G. (2014). From the phenomenology to the mechanisms of consciousness: Integrated Information Theory 3.0. <em>PLoS Computational Biology</em>, 10(5), e1003588.</li>
+  <li>Tononi, G., Boly, M., Massimini, M., &amp; Koch, C. (2016). Integrated information theory: From consciousness to its physical substrate. <em>Nature Reviews Neuroscience</em>, 17(7), 450–461.</li>
+  <li>Baars, B. J. (1988). <em>A Cognitive Theory of Consciousness</em>. Cambridge University Press.</li>
+  <li>Baars, B. J. (2005). Global workspace theory of consciousness: Toward a cognitive neuroscience of human experience. <em>Progress in Brain Research</em>, 150, 45–53.</li>
+  <li>Dehaene, S., &amp; Naccache, L. (2001). Towards a cognitive neuroscience of consciousness: Basic evidence and a workspace framework. <em>Cognition</em>, 79(1–2), 1–37.</li>
+  <li>Dehaene, S., Changeux, J.-P., Naccache, L., Sackur, J., &amp; Sergent, C. (2006). Conscious, preconscious, and subliminal processing: A testable taxonomy. <em>Trends in Cognitive Sciences</em>, 10(5), 204–211.</li>
+  <li>Rosenthal, D. M. (2005). <em>Consciousness and Mind</em>. Oxford University Press.</li>
+  <li>Lau, H., &amp; Rosenthal, D. (2011). Empirical support for higher-order theories of conscious awareness. <em>Trends in Cognitive Sciences</em>, 15(8), 365–373.</li>
+  <li>Brown, R., Lau, H., &amp; LeDoux, J. E. (2019). Understanding the higher-order approach to consciousness. <em>Trends in Cognitive Sciences</em>, 23(9), 754–768.</li>
+  <li>Fleming, S. M. (2020). Awareness as inference in a higher-order state space. <em>Neuroscience of Consciousness</em>, 2020(1), niz020.</li>
+  <li>Friston, K. (2010). The free-energy principle: A unified brain theory? <em>Nature Reviews Neuroscience</em>, 11(2), 127–138.</li>
+  <li>Friston, K. (2013). Life as we know it. <em>Journal of the Royal Society Interface</em>, 10(86), 20130475.</li>
+  <li>Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. <em>Behavioral and Brain Sciences</em>, 36(3), 181–204.</li>
+  <li>Hohwy, J. (2013). <em>The Predictive Mind</em>. Oxford University Press.</li>
+  <li>Parr, T., Pezzulo, G., &amp; Friston, K. J. (2022). <em>Active Inference: The Free Energy Principle in Mind, Brain, and Behavior</em>. MIT Press.</li>
+  <li>Damasio, A. R. (1994). <em>Descartes' Error: Emotion, Reason, and the Human Brain</em>. Putnam.</li>
+  <li>Damasio, A. R. (1996). The somatic marker hypothesis and the possible functions of the prefrontal cortex. <em>Philosophical Transactions of the Royal Society B</em>, 351(1346), 1413–1420.</li>
+  <li>Damasio, A. R. (1999). <em>The Feeling of What Happens: Body and Emotion in the Making of Consciousness</em>. Harcourt.</li>
+  <li>Varela, F. J., Thompson, E., &amp; Rosch, E. (1991). <em>The Embodied Mind: Cognitive Science and Human Experience</em>. MIT Press.</li>
+  <li>Thompson, E. (2007). <em>Mind in Life: Biology, Phenomenology, and the Sciences of Mind</em>. Harvard University Press.</li>
+  <li>Gallagher, S. (2005). <em>How the Body Shapes the Mind</em>. Oxford University Press.</li>
+  <li>Furness, J. B. (2012). The enteric nervous system and neurogastroenterology. <em>Nature Reviews Gastroenterology &amp; Hepatology</em>, 9(5), 286–294.</li>
+  <li>Gershon, M. D. (1998). <em>The Second Brain: A Groundbreaking New Understanding of Nervous Disorders of the Stomach and Intestine</em>. Harper Collins.</li>
+  <li>Rao, M., &amp; Gershon, M. D. (2016). The bowel and beyond: The enteric nervous system in neurological disorders. <em>Nature Reviews Gastroenterology &amp; Hepatology</em>, 13(9), 517–528.</li>
+  <li>Schleip, R., Jäger, H., &amp; Klingler, W. (2012). What is 'fascia'? A review of different nomenclatures. <em>Journal of Bodywork and Movement Therapies</em>, 16(4), 496–502.</li>
+  <li>Stecco, C., Macchi, V., Porzionato, A., Duparc, F., &amp; De Caro, R. (2011). The fascia: The forgotten structure. <em>Italian Journal of Anatomy and Embryology</em>, 116(3), 127–138.</li>
+  <li>Schleip, R. (2003). Fascial plasticity—a new neurobiological explanation: Part 1. <em>Journal of Bodywork and Movement Therapies</em>, 7(1), 11–19.</li>
+  <li>Sterling, P., &amp; Laughlin, S. (2015). <em>Principles of Neural Design</em>. MIT Press.</li>
+  <li>Kandel, E. R., Schwartz, J. H., Jessell, T. M., Siegelbaum, S. A., &amp; Hudspeth, A. J. (2013). <em>Principles of Neural Science</em> (5th ed.). McGraw-Hill.</li>
+  <li>Bear, M. F., Connors, B. W., &amp; Paradiso, M. A. (2016). <em>Neuroscience: Exploring the Brain</em> (4th ed.). Wolters Kluwer.</li>
+  <li>Yano, J. M., Yu, K., Donaldson, G. P., et al. (2015). Indigenous bacteria from the gut microbiota regulate host serotonin biosynthesis. <em>Cell</em>, 161(2), 264–276.</li>
+  <li>Langevin, H. M. (2006). Connective tissue: A body-wide signaling network? <em>Medical Hypotheses</em>, 66(6), 1074–1077.</li>
+  <li>Douglas, R. J., &amp; Martin, K. A. (2004). Neuronal circuits of the neocortex. <em>Annual Review of Neuroscience</em>, 27, 419–451.</li>
+  <li>Thomson, A. M., &amp; Lamy, C. (2007). Functional maps of neocortical local circuitry. <em>Frontiers in Neuroscience</em>, 1(1), 19–42.</li>
+  <li>Harris, K. D., &amp; Shepherd, G. M. (2015). The neocortical circuit: Themes and variations. <em>Nature Neuroscience</em>, 18(2), 170–181.</li>
+  <li>Narayanan, R. T., Udvary, D., &amp; Bhatt, D. K. (2017). Beyond columnar organization: Cell type- and target layer-specific principles of horizontal axon projection patterns in rat vibrissal cortex. <em>Cerebral Cortex</em>, 27(9), 4628–4646.</li>
+  <li>Bowers, K. S., Regehr, G., Balthazard, C., &amp; Parker, K. (1990). Intuition in the context of discovery. <em>Cognitive Psychology</em>, 22(1), 72–110.</li>
+  <li>Dijksterhuis, A., &amp; Nordgren, L. F. (2006). A theory of unconscious thought. <em>Perspectives on Psychological Science</em>, 1(2), 95–109.</li>
+  <li>Briggs, F., &amp; Usrey, W. M. (2008). Emerging views of corticothalamic function. <em>Current Opinion in Neurobiology</em>, 18(4), 403–407.</li>
+  <li>Miller, E. K., &amp; Cohen, J. D. (2001). An integrative theory of prefrontal cortex function. <em>Annual Review of Neuroscience</em>, 24, 167–202.</li>
+  <li>Fuster, J. M. (2008). <em>The Prefrontal Cortex</em> (4th ed.). Academic Press.</li>
+  <li>Buckner, R. L., Andrews-Hanna, J. R., &amp; Schacter, D. L. (2008). The brain's default network: Anatomy, function, and relevance to disease. <em>Annals of the New York Academy of Sciences</em>, 1124, 1–38.</li>
+  <li>Raichle, M. E. (2015). The brain's default mode network. <em>Annual Review of Neuroscience</em>, 38, 433–447.</li>
+  <li>Fleming, S. M., &amp; Dolan, R. J. (2012). The neural basis of metacognitive ability. <em>Philosophical Transactions of the Royal Society B</em>, 367(1594), 1338–1349.</li>
+  <li>Fleming, S. M., Weil, R. S., Nagy, Z., Dolan, R. J., &amp; Rees, G. (2010). Relating introspective accuracy to individual differences in brain structure. <em>Science</em>, 329(5998), 1541–1543.</li>
+  <li>Ramnani, N., &amp; Owen, A. M. (2004). Anterior prefrontal cortex: Insights into function from anatomy and neuroimaging. <em>Nature Reviews Neuroscience</em>, 5(3), 184–194.</li>
+  <li>Berwick, R. C., &amp; Chomsky, N. (2016). <em>Why Only Us: Language and Evolution</em>. MIT Press.</li>
+  <li>Tomasello, M. (2008). <em>Origins of Human Communication</em>. MIT Press.</li>
+  <li>Henrich, J. (2016). <em>The Secret of Our Success: How Culture Is Driving Human Evolution</em>. Princeton University Press.</li>
+  <li>Boyd, R., &amp; Richerson, P. J. (2005). <em>The Origin and Evolution of Cultures</em>. Oxford University Press.</li>
+  <li>Dayan, P., &amp; Yu, A. J. (2006). Phasic norepinephrine: A neural interrupt signal for unexpected events. <em>Network: Computation in Neural Systems</em>, 17(4), 313–332.</li>
+  <li>Schultz, W. (2007). Multiple dopamine functions at different time courses. <em>Annual Review of Neuroscience</em>, 30, 259–288.</li>
+  <li>Cools, R., Roberts, A. C., &amp; Robbins, T. W. (2008). Serotoninergic regulation of emotional and behavioural control processes. <em>Trends in Cognitive Sciences</em>, 12(1), 31–40.</li>
+  <li>Adams, R. A., Stephan, K. E., Brown, H. R., Frith, C. D., &amp; Friston, K. J. (2013). The computational anatomy of psychosis. <em>Frontiers in Psychiatry</em>, 4, 47.</li>
+  <li>Paulus, M. P., &amp; Stein, M. B. (2010). Interoception in anxiety and depression. <em>Brain Structure and Function</em>, 214(5–6), 451–463.</li>
+  <li>Raichle, M. E., &amp; Gusnard, D. A. (2002). Appraising the brain's energy budget. <em>Proceedings of the National Academy of Sciences</em>, 99(16), 10237–10239.</li>
+  <li>Bonaz, B., Bazin, T., &amp; Pellissier, S. (2018). The vagus nerve at the interface of the microbiota-gut-brain axis. <em>Frontiers in Neuroscience</em>, 12, 49.</li>
+  <li>Hasselmo, M. E. (2006). The role of acetylcholine in learning and memory. <em>Current Opinion in Neurobiology</em>, 16(6), 710–715.</li>
+  <li>Aston-Jones, G., &amp; Cohen, J. D. (2005). An integrative theory of locus coeruleus–norepinephrine function. <em>Annual Review of Neuroscience</em>, 28, 403–450.</li>
+  <li>Gallup, G. G. (1970). Chimpanzees: Self-recognition. <em>Science</em>, 167(3914), 86–87.</li>
+  <li>de Waal, F. B. M. (2008). Putting the altruism back into altruism: The evolution of empathy. <em>Annual Review of Psychology</em>, 59, 279–300.</li>
+  <li>Chalmers, D. J. (1995). Facing up to the problem of consciousness. <em>Journal of Consciousness Studies</em>, 2(3), 200–219.</li>
+  <li>Chalmers, D. J. (1996). <em>The Conscious Mind: In Search of a Fundamental Theory</em>. Oxford University Press.</li>
+  <li>Seth, A. K. (2021). <em>Being You: A New Science of Consciousness</em>. Dutton.</li>
+  <li>Dehaene, S. (2014). <em>Consciousness and the Brain: Deciphering How the Brain Codes Our Thoughts</em>. Viking.</li>
+  <li>Kounios, J., &amp; Beeman, M. (2009). The Aha! moment: The cognitive neuroscience of insight. <em>Current Directions in Psychological Science</em>, 18(4), 210–216.</li>
+  <li>Dietrich, A., &amp; Kanso, R. (2010). A review of EEG, ERP, and neuroimaging studies of creativity and insight. <em>Psychological Bulletin</em>, 136(5), 822–848.</li>
+  <li>Bengio, Y., Lecun, Y., &amp; Hinton, G. (2021). Deep learning for AI. <em>Communications of the ACM</em>, 64(7), 58–65.</li>
+  <li>Mitchell, M. (2019). <em>Artificial Intelligence: A Guide for Thinking Humans</em>. Farrar, Straus and Giroux.</li>
+</ol>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:60px; padding-top:20px; border-top:1px solid var(--border); text-align:center;">
+  <p style="font-family:'IBM Plex Sans',sans-serif; font-size:12px; color:var(--text-muted); text-align:center;">
+    © 2025 Adures &amp; Azimute · Kerberos Research Lab · Preprint — Not peer-reviewed<br>
+    Submitted for publication review · Last updated: February 2025
+  </p>
+</div>
+
+</article>
+</body>
+</html>

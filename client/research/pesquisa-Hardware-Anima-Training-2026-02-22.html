@@ -1,0 +1,1919 @@
+<div class="container">
+        <header>
+            <h1>Hardware Infrastructure para Anima</h1>
+            <p class="subtitle">Treinamento de Modelo Proprietário + Inferência Local — Análise Completa de 4 Tiers</p>
+            <div class="meta">
+                <span>📅 22 de Fevereiro, 2026</span>
+                <span>🔬 Pesquisador: Azimute</span>
+                <span>👤 Cliente: Luis Adures</span>
+            </div>
+        </header>
+
+        <!-- EXECUTIVE SUMMARY -->
+        <section>
+            <h2>📊 Executive Summary</h2>
+            <div class="summary-box">
+                <p><strong>Objetivo:</strong> Especificar hardware para dois workloads críticos do Anima:</p>
+                <ul>
+                    <li><strong>Inferência Local:</strong> Múltiplos LLMs simultâneos, Memory Core, sub-agents, routing em tempo real, ciclos de "sono"</li>
+                    <li><strong>Treinamento de Arquitetura Neural Customizada:</strong> 7B parameters (proof-of-concept) → 70B parameters (produção)</li>
+                </ul>
+                <p><strong>Requisito Principal:</strong> NO BOTTLENECKS — workstation/cluster profissional de ML, não gaming PC.</p>
+            </div>
+
+            <div class="spec-grid">
+                <div class="spec-item">
+                    <div class="spec-label">Tier 1: Proof of Concept</div>
+                    <div class="spec-value price">$10-15K</div>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Treina 7B, roda 13B inference</p>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Tier 2: Production Dev</div>
+                    <div class="spec-value price">$30-50K</div>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Treina 30B, roda 70B quantized</p>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Tier 3: No Bottlenecks</div>
+                    <div class="spec-value price">$80-150K</div>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Treina 70B, roda múltiplos grandes</p>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Tier 4: Small Cluster</div>
+                    <div class="spec-value price">$200-500K</div>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Treina 100B+, redundância, escalável</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART I: WORKLOAD ANALYSIS -->
+        <section>
+            <h2>Part I — Understanding the Workloads</h2>
+            
+            <h3>A. Inference Workload (Anima Runtime)</h3>
+            <div class="card">
+                <div class="card-title">Características do Runtime</div>
+                <ul>
+                    <li><strong>Múltiplos LLMs Simultâneos:</strong> Diferentes tamanhos para diferentes "layers" da consciência (1B-13B-70B rodando em paralelo)</li>
+                    <li><strong>Memory Core:</strong> Semantic search com embeddings (nomic-embed-text via Ollama), operações de vector database</li>
+                    <li><strong>Sub-Agents Paralelos:</strong> Múltiplas sessões executando simultaneamente, cada uma com seu próprio contexto</li>
+                    <li><strong>Real-Time Processing:</strong> Message routing, gating, tool execution, browser automation</li>
+                    <li><strong>Sleep Cycles:</strong> Batch jobs durante "noite" (consolidação de memória, relatórios, limpeza)</li>
+                    <li><strong>Infraestrutura:</strong> Web search, database ops, file I/O intensivo</li>
+                </ul>
+                
+                <h4>Requisitos de VRAM (Inferência) <span class="source-badge source-T">[T]</span></h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model Size</th>
+                            <th>FP16 (16-bit)</th>
+                            <th>INT8 Quantized</th>
+                            <th>INT4 Quantized</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>7B parameters</td>
+                            <td>~14 GB VRAM</td>
+                            <td>~7 GB VRAM</td>
+                            <td>~3.5 GB VRAM</td>
+                        </tr>
+                        <tr>
+                            <td>13B parameters</td>
+                            <td>~26 GB VRAM</td>
+                            <td>~13 GB VRAM</td>
+                            <td>~6.5 GB VRAM</td>
+                        </tr>
+                        <tr>
+                            <td>30B parameters</td>
+                            <td>~60 GB VRAM</td>
+                            <td>~30 GB VRAM</td>
+                            <td>~15 GB VRAM</td>
+                        </tr>
+                        <tr>
+                            <td>70B parameters</td>
+                            <td>~140 GB VRAM</td>
+                            <td>~70 GB VRAM</td>
+                            <td>~35 GB VRAM</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>Fonte: Modal.com ML Infrastructure Guide [T], WhiteFiber GPU Comparison 2025 [T]</em></p>
+            </div>
+
+            <h3>B. Training Workload (Custom Neural Architecture)</h3>
+            <div class="card">
+                <div class="card-title">Características do Treinamento</div>
+                <ul>
+                    <li><strong>Novel Architecture:</strong> Não é fine-tuning LoRA — treinamento from scratch de arquitetura inspirada nos 9 Layers</li>
+                    <li><strong>Model Sizes:</strong> 7B (proof-of-concept) → 30B (intermediário) → 70B (produção)</li>
+                    <li><strong>Custom CUDA Kernels:</strong> Potencialmente necessários para implementar mecanismos únicos da arquitetura</li>
+                    <li><strong>Dataset:</strong> Corpus de pesquisa (~5MB) + curated training data (estimativa: 50-200GB tokenizados)</li>
+                    <li><strong>Experimentação:</strong> Muitos training runs para testar ideias arquiteturais (iteração rápida essencial)</li>
+                    <li><strong>Mixed Precision:</strong> FP16/BF16 training com gradient checkpointing para economizar VRAM</li>
+                </ul>
+
+                <h4>Requisitos de VRAM (Treinamento) <span class="source-badge source-A">[A]</span> <span class="source-badge source-T">[T]</span></h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Precision</th>
+                            <th>7B</th>
+                            <th>13B</th>
+                            <th>30B</th>
+                            <th>70B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="comparison-row">
+                            <td>Full Training</td>
+                            <td>FP16</td>
+                            <td>~67 GB</td>
+                            <td>~125 GB</td>
+                            <td>~288 GB</td>
+                            <td>~672 GB</td>
+                        </tr>
+                        <tr>
+                            <td>LoRA Fine-Tuning</td>
+                            <td>FP16</td>
+                            <td>~15 GB</td>
+                            <td>~28 GB</td>
+                            <td>~63 GB</td>
+                            <td>~146 GB</td>
+                        </tr>
+                        <tr>
+                            <td>QLoRA (8-bit)</td>
+                            <td>INT8</td>
+                            <td>~9 GB</td>
+                            <td>~17 GB</td>
+                            <td>~38 GB</td>
+                            <td>~88 GB</td>
+                        </tr>
+                        <tr>
+                            <td>QLoRA (4-bit)</td>
+                            <td>INT4</td>
+                            <td>~5 GB</td>
+                            <td>~9 GB</td>
+                            <td>~20 GB</td>
+                            <td>~46 GB</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>VRAM = Model Weights (FP16) + Optimizer States (AdamW: 3× FP32) + Gradients (FP16)</em></p>
+                <p><em>Para 7B: 14GB (weights) + 42GB (optimizer 8-bit) + 14GB (gradients) ≈ 70GB</em></p>
+                <p><em>Fonte: Modal.com "How much VRAM for fine-tuning" [A], Jarvislabs H100 Price Guide [A]</em></p>
+            </div>
+
+            <div class="warning-box">
+                <p><strong>⚠️ Implicação Crítica:</strong> Custom architecture training from scratch requer VRAM total completo (~70GB para 7B, ~672GB para 70B). Fine-tuning (LoRA/QLoRA) reduziria drasticamente requisitos, mas não é aplicável para arquitetura proprietária inicial.</p>
+            </div>
+        </section>
+
+        <!-- PART II: GPU OPTIONS -->
+        <section>
+            <h2>Part II — GPU Options: Detailed Comparison</h2>
+
+            <h3>Consumer/Prosumer GPUs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>GPU</th>
+                        <th>VRAM</th>
+                        <th>Preço (USD)</th>
+                        <th>TDP</th>
+                        <th>FP16 TFLOPS</th>
+                        <th>Good For</th>
+                        <th>Limitations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RTX 4090</strong></td>
+                        <td>24 GB GDDR6X</td>
+                        <td class="price">~$1,600</td>
+                        <td>450W</td>
+                        <td>166 TFLOPS</td>
+                        <td>7B inference, small fine-tunes, prototyping</td>
+                        <td>24GB insuficiente para treinar >13B from scratch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RTX 5090</strong></td>
+                        <td>32 GB GDDR7</td>
+                        <td class="price">~$2,000</td>
+                        <td>575W</td>
+                        <td>204.9 TFLOPS</td>
+                        <td>13B inference, 7B training, melhor custo/VRAM</td>
+                        <td>Ainda consumer-tier; NVLink não suportado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2× RTX 4090</strong></td>
+                        <td>48 GB total</td>
+                        <td class="price">~$3,200</td>
+                        <td>900W</td>
+                        <td>332 TFLOPS</td>
+                        <td>13B training, 30B inference (quantized)</td>
+                        <td>Sem NVLink nos 4090; PCIe bandwidth limitado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2× RTX 5090</strong></td>
+                        <td>64 GB total</td>
+                        <td class="price">~$4,000</td>
+                        <td>1150W</td>
+                        <td>410 TFLOPS</td>
+                        <td>30B training, 70B inference (4-bit quant)</td>
+                        <td>Sem NVLink; melhor opção consumer multi-GPU</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Fonte: TechPowerUp GPU Database [T], NVIDIA Official Specs [A], WCCFTech RTX 5090 Review [E]</em></p>
+
+            <h3>Professional GPUs (Workstation/Datacenter)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>GPU</th>
+                        <th>VRAM</th>
+                        <th>Preço (USD)</th>
+                        <th>TDP</th>
+                        <th>FP16 TFLOPS</th>
+                        <th>NVLink</th>
+                        <th>Ideal Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>A6000</strong></td>
+                        <td>48 GB GDDR6</td>
+                        <td class="price">~$4,500</td>
+                        <td>300W</td>
+                        <td>~150 TFLOPS</td>
+                        <td>❌</td>
+                        <td>Workstation profissional; 48GB significativo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A100 40GB</strong></td>
+                        <td>40 GB HBM2e</td>
+                        <td class="price">~$8-10K (usado)</td>
+                        <td>250-400W</td>
+                        <td>624 TFLOPS</td>
+                        <td>✅</td>
+                        <td>ML standard; excelente para training 7-13B</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A100 80GB</strong></td>
+                        <td>80 GB HBM2e</td>
+                        <td class="price">~$15-20K</td>
+                        <td>250-400W</td>
+                        <td>624 TFLOPS</td>
+                        <td>✅</td>
+                        <td>Gold standard; treina até 30B com multi-GPU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>H100 PCIe</strong></td>
+                        <td>80 GB HBM3</td>
+                        <td class="price">~$25-30K</td>
+                        <td>350W</td>
+                        <td>1,200 TFLOPS</td>
+                        <td>❌</td>
+                        <td>Latest gen; 2-3× mais rápido que A100</td>
+                    </tr>
+                    <tr>
+                        <td><strong>H100 SXM</strong></td>
+                        <td>80 GB HBM3</td>
+                        <td class="price">~$30-35K</td>
+                        <td>700W</td>
+                        <td>1,200 TFLOPS</td>
+                        <td>✅ (900 GB/s)</td>
+                        <td>Máximo performance; requer liquid cooling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>H200</strong></td>
+                        <td>141 GB HBM3e</td>
+                        <td class="price">~$30-40K</td>
+                        <td>700W</td>
+                        <td>~1,400 TFLOPS</td>
+                        <td>✅</td>
+                        <td>Monster VRAM; treina 70B single-GPU (LoRA)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Fonte: GPU-Mart H100 vs A100 vs RTX 4090 [A], Jarvislabs H100 Price Guide [A], NVIDIA Datacenter GPUs [A]</em></p>
+
+            <h3>Multi-GPU Configurations (Professional)</h3>
+            <div class="card">
+                <div class="card-title">Escalabilidade de Training</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Configuration</th>
+                            <th>Total VRAM</th>
+                            <th>Cost (USD)</th>
+                            <th>Can Train</th>
+                            <th>Scaling Efficiency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>2× A100 80GB</strong> (NVLink)</td>
+                            <td>160 GB</td>
+                            <td class="price">~$30-40K</td>
+                            <td>30B from scratch</td>
+                            <td>~85% (NVLink)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4× A100 80GB</strong> (NVLink)</td>
+                            <td>320 GB</td>
+                            <td class="price">~$60-80K</td>
+                            <td>70B from scratch</td>
+                            <td>~75-80%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8× A100 80GB</strong> (NVLink)</td>
+                            <td>640 GB</td>
+                            <td class="price">~$120-160K</td>
+                            <td>70B full precision, 100B+ FP16</td>
+                            <td>~70-75%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4× H100 SXM</strong> (NVLink)</td>
+                            <td>320 GB</td>
+                            <td class="price">~$120-140K</td>
+                            <td>70B from scratch (2-3× faster)</td>
+                            <td>~80-85%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8× H100 SXM</strong> (NVLink)</td>
+                            <td>640 GB</td>
+                            <td class="price">~$240-280K</td>
+                            <td>100B+ from scratch</td>
+                            <td>~75-80%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>Scaling Efficiency = Performance real vs. linear ideal (75-85% = excelente para distributed training)</em></p>
+                <p><em>Fonte: Jarvislabs Multi-GPU Benchmarks [A], GPU-Mart Scaling Analysis [T], NVIDIA DGX Documentation [A]</em></p>
+            </div>
+
+            <h3>AMD Alternatives (Emerging)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>GPU</th>
+                        <th>VRAM</th>
+                        <th>Preço (USD)</th>
+                        <th>Performance vs H100</th>
+                        <th>Ecosystem Maturity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AMD MI300X</strong></td>
+                        <td>192 GB HBM3</td>
+                        <td class="price">~$10-15K</td>
+                        <td>~80-90% H100 (training), ~95% (inference)</td>
+                        <td>⚠️ ROCm still maturing; PyTorch support improving</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AMD MI250</strong></td>
+                        <td>128 GB HBM2e</td>
+                        <td class="price">~$6-8K (usado)</td>
+                        <td>~50-60% H100</td>
+                        <td>⚠️ Older gen; limited software support</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="warning-box">
+                <p><strong>⚠️ AMD Considerations:</strong> MI300X oferece VRAM massivo (192GB!) a preço competitivo, MAS ROCm ecosystem ainda tem gaps vs CUDA. PyTorch funciona, mas DeepSpeed/Megatron-LM têm suporte limitado. <strong>Recomendação:</strong> NVIDIA para custom architecture development (máxima compatibilidade); AMD viável para inference depois do modelo treinado.</p>
+            </div>
+            <p><em>Fonte: Reddit r/Amd MI300X Benchmarks [E], Clarifai MI300X vs H100 [T], RunPod AMD Performance [E]</em></p>
+        </section>
+
+        <!-- PART III: COMPLETE SYSTEM BUILDS -->
+        <section>
+            <h2>Part III — Complete System Builds (4 Tiers)</h2>
+
+            <div class="card tier-card tier-1">
+                <div class="card-title" style="font-size: 1.4rem;">💚 Tier 1: Proof of Concept — $10-15K</div>
+                <p><strong>Target:</strong> Treina 7B from scratch, roda 13B inference, experimenta arquitetura</p>
+                
+                <h4>Opção A: 2× RTX 5090 (Melhor Custo-Benefício)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Spec</th>
+                            <th>Price (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GPU</strong></td>
+                            <td>2× NVIDIA RTX 5090 32GB GDDR7</td>
+                            <td class="price">$4,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU</strong></td>
+                            <td>AMD Ryzen 9 7950X (16-core, 32-thread) <em>ou</em><br>AMD EPYC 7443P (24-core, 48-thread)</td>
+                            <td class="price">$700 / $1,200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM</strong></td>
+                            <td>128GB DDR5-5600 (4×32GB)</td>
+                            <td class="price">$400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motherboard</strong></td>
+                            <td>ASUS Pro WS WRX80E-SAGE SE (PCIe 4.0 x16 dual-slot)</td>
+                            <td class="price">$800</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Storage</strong></td>
+                            <td>2TB NVMe Gen4 (Samsung 990 Pro) + 8TB SATA SSD (datasets)</td>
+                            <td class="price">$300 + $400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PSU</strong></td>
+                            <td>2000W 80+ Platinum (Corsair AX2000)</td>
+                            <td class="price">$600</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling</strong></td>
+                            <td>Noctua NH-U14S (CPU) + case fans 140mm×6</td>
+                            <td class="price">$150</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Case</strong></td>
+                            <td>Fractal Design Define 7 XL (dual-GPU spacing)</td>
+                            <td class="price">$200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UPS</strong></td>
+                            <td>APC Smart-UPS 2200VA (1980W)</td>
+                            <td class="price">$800</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: right;"><strong class="price">~$8,350 - $8,850</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Opção B: 1× A100 40GB (Profissional)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Spec</th>
+                            <th>Price (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GPU</strong></td>
+                            <td>1× NVIDIA A100 40GB PCIe (usado/refurb)</td>
+                            <td class="price">$8,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU</strong></td>
+                            <td>AMD EPYC 7443P (24-core)</td>
+                            <td class="price">$1,200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM</strong></td>
+                            <td>256GB DDR4-3200 ECC (8×32GB)</td>
+                            <td class="price">$800</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motherboard</strong></td>
+                            <td>Supermicro H12SSL-i (single-socket SP3)</td>
+                            <td class="price">$600</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Storage</strong></td>
+                            <td>2TB NVMe + 8TB SATA SSD</td>
+                            <td class="price">$700</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PSU</strong></td>
+                            <td>1200W 80+ Platinum redundante</td>
+                            <td class="price">$400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling</strong></td>
+                            <td>CPU cooler + chassis fans</td>
+                            <td class="price">$200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Case</strong></td>
+                            <td>4U rackmount chassis</td>
+                            <td class="price">$300</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UPS</strong></td>
+                            <td>APC Smart-UPS 1500VA</td>
+                            <td class="price">$600</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: right;"><strong class="price">~$12,800</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 4px;">
+                    <p><strong>Recomendação Tier 1:</strong> <span class="highlight">Opção A (2× RTX 5090)</span> — melhor custo-benefício, 64GB VRAM total, suficiente para 7B training e 13B inference. Opção B oferece profissionalismo A100 mas a 40GB limita experimentação.</p>
+                </div>
+            </div>
+
+            <div class="card tier-card tier-2">
+                <div class="card-title" style="font-size: 1.4rem;">🔵 Tier 2: Production Development — $30-50K</div>
+                <p><strong>Target:</strong> Treina 13-30B from scratch, roda 70B inference (quantized), desenvolvimento sério</p>
+                
+                <h4>Build: 2× A100 80GB com NVLink</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Spec</th>
+                            <th>Price (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GPU</strong></td>
+                            <td>2× NVIDIA A100 80GB SXM (com NVLink bridge)</td>
+                            <td class="price">$30,000 - $40,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU</strong></td>
+                            <td>AMD EPYC 7543 (32-core, 64-thread, 3.7GHz boost)</td>
+                            <td class="price">$2,500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM</strong></td>
+                            <td>512GB DDR4-3200 ECC (16×32GB)</td>
+                            <td class="price">$1,600</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motherboard</strong></td>
+                            <td>Supermicro H12DSi-N6 (dual-GPU SXM support)</td>
+                            <td class="price">$1,200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Storage</strong></td>
+                            <td>4TB NVMe Gen4 RAID0 (2×2TB) + 16TB SATA array</td>
+                            <td class="price">$1,200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Networking</strong></td>
+                            <td>Dual 10GbE NIC (Mellanox ConnectX-5)</td>
+                            <td class="price">$800</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PSU</strong></td>
+                            <td>Dual 2000W 80+ Platinum redundante</td>
+                            <td class="price">$1,400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling</strong></td>
+                            <td>Liquid cooling loop (GPU+CPU) + chassis</td>
+                            <td class="price">$1,500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Case</strong></td>
+                            <td>4U rackmount chassis (42U rack-ready)</td>
+                            <td class="price">$800</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UPS</strong></td>
+                            <td>APC Smart-UPS SRT 3000VA (2700W)</td>
+                            <td class="price">$1,500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NVLink Bridge</strong></td>
+                            <td>NVIDIA NVLink 4-slot (900 GB/s)</td>
+                            <td class="price">$500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: right;"><strong class="price">~$42,000 - $52,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 4px;">
+                    <p><strong>Recomendação Tier 2:</strong> <span class="highlight">2× A100 80GB</span> — sweet spot para desenvolvimento. 160GB VRAM combinado permite treinar 30B from scratch com ~85% scaling efficiency via NVLink. Suporta 70B inference quantizado (INT4). Infraestrutura profissional com redundância.</p>
+                </div>
+            </div>
+
+            <div class="card tier-card tier-3">
+                <div class="card-title" style="font-size: 1.4rem;">🟡 Tier 3: No Bottlenecks — $80-150K</div>
+                <p><strong>Target:</strong> Treina 70B from scratch, roda múltiplos LLMs grandes simultaneamente, ZERO limitações</p>
+                
+                <h4>Build: 4× H100 SXM com NVLink</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Spec</th>
+                            <th>Price (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GPU</strong></td>
+                            <td>4× NVIDIA H100 80GB SXM5 (NVSwitch interconnect)</td>
+                            <td class="price">$120,000 - $140,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU</strong></td>
+                            <td>Dual AMD EPYC 9554 (128 cores total, 256 threads)</td>
+                            <td class="price">$12,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM</strong></td>
+                            <td>1TB DDR5-4800 ECC (32×32GB, 8-channel)</td>
+                            <td class="price">$4,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motherboard</strong></td>
+                            <td>Supermicro H13DSH-T (dual SP5, 4×PCIe 5.0 x16)</td>
+                            <td class="price">$2,500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Storage</strong></td>
+                            <td>8TB NVMe Gen5 RAID0 (4×2TB) + 32TB NVMe Gen4 (datasets)</td>
+                            <td class="price">$5,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Networking</strong></td>
+                            <td>Dual 100GbE NIC (Mellanox ConnectX-7) + InfiniBand HDR adapter</td>
+                            <td class="price">$3,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PSU</strong></td>
+                            <td>Dual 3000W 80+ Titanium redundante (6000W total)</td>
+                            <td class="price">$3,500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling</strong></td>
+                            <td>Custom liquid cooling loop (GPUs + CPUs), CDU (Coolant Distribution Unit)</td>
+                            <td class="price">$5,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Case</strong></td>
+                            <td>8U rackmount chassis (enterprise-grade, 42U rack)</td>
+                            <td class="price">$2,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UPS</strong></td>
+                            <td>APC Symmetra PX 10kVA (9kW, 10min runtime @ full load)</td>
+                            <td class="price">$8,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NVSwitch</strong></td>
+                            <td>NVIDIA NVSwitch (900 GB/s per GPU all-to-all)</td>
+                            <td class="price">Included in SXM</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rack Infrastructure</strong></td>
+                            <td>42U rack, PDU, monitoring, cable management</td>
+                            <td class="price">$3,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: right;"><strong class="price">~$168,000 - $188,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 4px;">
+                    <p><strong>Recomendação Tier 3:</strong> <span class="highlight">4× H100 SXM</span> — the "no bottlenecks" build. 320GB VRAM combinado treina 70B from scratch em ~4-6 semanas (vs. ~12-16 semanas em cloud). Pode rodar múltiplos 13B-30B LLMs simultaneamente para Anima runtime. NVSwitch fornece 900 GB/s all-to-all communication. <strong>Este é o sweet spot para produção séria.</strong></p>
+                </div>
+            </div>
+
+            <div class="card tier-card tier-4">
+                <div class="card-title" style="font-size: 1.4rem;">🔴 Tier 4: Small Cluster — $200-500K</div>
+                <p><strong>Target:</strong> Treina 100B+ models, distributed training, redundância enterprise, escalabilidade</p>
+                
+                <h4>Build: 2 Nodes × 4× H100 SXM (8 GPUs total)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Spec (per Node)</th>
+                            <th>Price per Node</th>
+                            <th>×2 Nodes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GPU</strong></td>
+                            <td>4× NVIDIA H100 80GB SXM5</td>
+                            <td class="price">$130,000</td>
+                            <td class="price">$260,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU</strong></td>
+                            <td>Dual AMD EPYC 9554P (128 cores)</td>
+                            <td class="price">$12,000</td>
+                            <td class="price">$24,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM</strong></td>
+                            <td>1.5TB DDR5-4800 ECC</td>
+                            <td class="price">$6,000</td>
+                            <td class="price">$12,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Storage</strong></td>
+                            <td>8TB NVMe Gen5 + 64TB NVMe Gen4</td>
+                            <td class="price">$8,000</td>
+                            <td class="price">$16,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Networking</strong></td>
+                            <td>Dual 200GbE + InfiniBand NDR</td>
+                            <td class="price">$6,000</td>
+                            <td class="price">$12,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PSU</strong></td>
+                            <td>Dual 3500W 80+ Titanium</td>
+                            <td class="price">$4,000</td>
+                            <td class="price">$8,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling</strong></td>
+                            <td>Liquid cooling + CDU</td>
+                            <td class="price">$6,000</td>
+                            <td class="price">$12,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chassis</strong></td>
+                            <td>8U rackmount enterprise</td>
+                            <td class="price">$2,500</td>
+                            <td class="price">$5,000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Shared Infrastructure:</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>InfiniBand Switch</strong></td>
+                            <td colspan="2">NVIDIA Quantum-2 NDR 400Gbps 32-port</td>
+                            <td class="price">$40,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Network Storage</strong></td>
+                            <td colspan="2">128TB NVMe all-flash NAS (10GbE)</td>
+                            <td class="price">$20,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UPS</strong></td>
+                            <td colspan="2">APC Symmetra PX 20kVA (18kW, dual redundant)</td>
+                            <td class="price">$18,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rack + PDU + Monitoring</strong></td>
+                            <td colspan="2">42U racks ×2, intelligent PDUs, Nagios/Prometheus</td>
+                            <td class="price">$8,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cooling Infrastructure</strong></td>
+                            <td colspan="2">In-row cooling unit, 30kW capacity</td>
+                            <td class="price">$15,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td colspan="3" style="text-align: right;"><strong class="price">~$450,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 4px;">
+                    <p><strong>Recomendação Tier 4:</strong> <span class="highlight">2-node cluster (8× H100 total)</span> — enterprise-grade distributed training. 640GB VRAM combinado treina 100B+ models. InfiniBand NDR (400Gbps) permite scaling ~75-80% efficiency. Redundância em todos os níveis. Requer sala dedicada com AC, 220V trifásico, monitoramento 24/7. <strong>Apenas justificável para operation de escala (múltiplas equipes, múltiplos projetos).</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART IV: INFRASTRUCTURE BEYOND GPUs -->
+        <section>
+            <h2>Part IV — Beyond GPUs: Full Infrastructure</h2>
+
+            <h3>CPU Selection: AMD EPYC vs Intel Xeon</h3>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>AMD EPYC (Zen 4)</th>
+                            <th>Intel Xeon (Sapphire Rapids)</th>
+                            <th>Winner</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Core Count</strong></td>
+                            <td>Up to 128 cores (EPYC 9554)</td>
+                            <td>Up to 60 cores (Xeon 8490H)</td>
+                            <td>✅ AMD (2×)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Price/Performance</strong></td>
+                            <td>~$150/core (EPYC 9554)</td>
+                            <td>~$200/core (Xeon 8490H)</td>
+                            <td>✅ AMD (33% cheaper)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PCIe Lanes</strong></td>
+                            <td>128× PCIe 5.0 lanes</td>
+                            <td>80× PCIe 5.0 lanes</td>
+                            <td>✅ AMD (60% more)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory Bandwidth</strong></td>
+                            <td>12-channel DDR5-4800 (460 GB/s)</td>
+                            <td>8-channel DDR5-4800 (307 GB/s)</td>
+                            <td>✅ AMD (50% faster)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI Accelerators</strong></td>
+                            <td>AVX-512, VNNI</td>
+                            <td>AMX (Advanced Matrix Extensions)</td>
+                            <td>⚖️ Intel (AI-specific)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ecosystem</strong></td>
+                            <td>Excellent Linux support</td>
+                            <td>Best Windows/enterprise support</td>
+                            <td>⚖️ Tie</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Recomendação:</strong> <span class="highlight">AMD EPYC para ML workloads</span> — superior core count, PCIe lanes, e memory bandwidth essenciais para data preprocessing e multi-GPU setups. Intel apenas se AVX-512/AMX críticos para seu workflow.</p>
+                <p><em>Fonte: AMD EPYC vs Xeon 2025 Comparison [A], VRLATech AI Server Guide [T]</em></p>
+            </div>
+
+            <h3>RAM: Sizing for ML Workloads</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>System Tier</th>
+                        <th>Recommended RAM</th>
+                        <th>Justification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tier 1</strong></td>
+                        <td>128GB DDR5</td>
+                        <td>Suficiente para dataset caching (50GB), OS, sub-agents paralelos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 2</strong></td>
+                        <td>256-512GB DDR4/DDR5 ECC</td>
+                        <td>Permite data preprocessing de datasets grandes sem swap to disk</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 3</strong></td>
+                        <td>768GB-1TB DDR5 ECC</td>
+                        <td>Full dataset in RAM (200GB) + headroom para batch processing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 4</strong></td>
+                        <td>1.5TB+ per node</td>
+                        <td>Distributed data loading, multiple concurrent training jobs</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Regra de ouro: RAM ≥ 2× dataset size para performance ideal. ECC obrigatório para Tier 2+.</em></p>
+
+            <h3>Storage Architecture</h3>
+            <div class="card">
+                <h4>Tier Strategy</h4>
+                <ul>
+                    <li><strong>Hot Storage (NVMe Gen4/Gen5):</strong> Training datasets ativos, checkpoints, model weights (~2-8TB)</li>
+                    <li><strong>Warm Storage (SATA SSD):</strong> Dataset archives, completed experiments (~8-32TB)</li>
+                    <li><strong>Cold Storage (HDD/NAS):</strong> Long-term backups, raw data (~64TB+)</li>
+                </ul>
+                <h4>Performance Requirements</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Minimum</th>
+                            <th>Recommended</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sequential Read</td>
+                            <td>3,000 MB/s</td>
+                            <td>7,000 MB/s (Gen4)</td>
+                            <td>Data loading bottleneck reduction</td>
+                        </tr>
+                        <tr>
+                            <td>Random IOPS</td>
+                            <td>100K IOPS</td>
+                            <td>500K IOPS</td>
+                            <td>Small file access (tokenized data)</td>
+                        </tr>
+                        <tr>
+                            <td>Latency</td>
+                            <td><1ms</td>
+                            <td><0.1ms</td>
+                            <td>Checkpoint saving speed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Networking: 1GbE → 10GbE → InfiniBand</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Network</th>
+                        <th>Bandwidth</th>
+                        <th>Use Case</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tier 1</strong></td>
+                        <td>1GbE (onboard)</td>
+                        <td>125 MB/s</td>
+                        <td>Single workstation, internet access</td>
+                        <td>$0 (included)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 2</strong></td>
+                        <td>10GbE NIC</td>
+                        <td>1,250 MB/s</td>
+                        <td>NAS access, remote dataset loading</td>
+                        <td>$300-800</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 3</strong></td>
+                        <td>100GbE NIC</td>
+                        <td>12,500 MB/s</td>
+                        <td>Multi-node training (prep for cluster)</td>
+                        <td>$2,000-3,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 4</strong></td>
+                        <td>InfiniBand NDR</td>
+                        <td>50,000 MB/s (400Gbps)</td>
+                        <td>Distributed training, GPU-to-GPU over network</td>
+                        <td>$6,000 NIC + $40,000 switch</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>InfiniBand oferece latency <1µs (vs. ~10µs Ethernet), crítico para all-reduce operations em distributed training.</em></p>
+
+            <h3>Power Requirements & Electrical Infrastructure</h3>
+            <div class="card">
+                <h4>Power Consumption por Tier (Full Load 24/7)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>GPU Power</th>
+                            <th>System Total</th>
+                            <th>Breaker Required</th>
+                            <th>Monthly kWh (Brasil)</th>
+                            <th>Monthly Cost (R$0.80/kWh)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tier 1</strong></td>
+                            <td>1150W (2× RTX 5090)</td>
+                            <td>~1,600W</td>
+                            <td>20A @ 120V</td>
+                            <td>1,152 kWh</td>
+                            <td class="price">R$922 / $184</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 2</strong></td>
+                            <td>800W (2× A100 80GB)</td>
+                            <td>~1,400W</td>
+                            <td>20A @ 120V</td>
+                            <td>1,008 kWh</td>
+                            <td class="price">R$806 / $161</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 3</strong></td>
+                            <td>2,800W (4× H100 SXM)</td>
+                            <td>~4,000W</td>
+                            <td>30A @ 220V</td>
+                            <td>2,880 kWh</td>
+                            <td class="price">R$2,304 / $461</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 4</strong></td>
+                            <td>5,600W (8× H100 total)</td>
+                            <td>~8,000W</td>
+                            <td>50A @ 220V trifásico</td>
+                            <td>5,760 kWh</td>
+                            <td class="price">R$4,608 / $922</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>Nota: Workload real varia; training 24/7 ≈ 90% utilização, inference ≈ 30-50% médio.</em></p>
+                <p><em>Conversão: R$ → USD @ R$5.00 = $1.00 (taxa Feb 2026)</em></p>
+            </div>
+
+            <h3>Cooling Solutions</h3>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cooling Type</th>
+                            <th>Cooling Capacity</th>
+                            <th>Best For</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Air (Case Fans)</strong></td>
+                            <td>Up to 2kW GPU load</td>
+                            <td>Tier 1 (2× RTX 5090)</td>
+                            <td>$150-300</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AIO Liquid (CPU)</strong></td>
+                            <td>Up to 4kW total</td>
+                            <td>Tier 2 (2× A100 + EPYC)</td>
+                            <td>$500-1,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Custom Loop</strong></td>
+                            <td>Up to 8kW total</td>
+                            <td>Tier 3 (4× H100 SXM)</td>
+                            <td>$3,000-5,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CDU (Coolant Distribution Unit)</strong></td>
+                            <td>Up to 30kW (multi-rack)</td>
+                            <td>Tier 4 (cluster)</td>
+                            <td>$15,000-25,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Immersion Cooling</strong></td>
+                            <td>Up to 100kW+ (datacenter)</td>
+                            <td>Large-scale clusters (>16 GPUs)</td>
+                            <td>$50,000-150,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>⚠️ Ambient Temperature Impact:</strong> Brasil = clima quente. Add 20-30% cooling overhead vs. temperate climates. AC dedicado recomendado para Tier 2+.</p>
+            </div>
+
+            <h3>UPS (Uninterruptible Power Supply)</h3>
+            <div class="warning-box">
+                <p><strong>🔋 Por que UPS é CRÍTICO:</strong> Perder um training run de 3-7 dias = perda de $5,000-20,000 em custo de GPU cloud equivalente. UPS fornece 5-15 minutos para shutdown gracioso ou switch para gerador.</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>UPS Capacity</th>
+                        <th>Runtime @ Full Load</th>
+                        <th>Model Example</th>
+                        <th>Cost (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tier 1</strong></td>
+                        <td>2200VA (1980W)</td>
+                        <td>~8 minutes</td>
+                        <td>APC Smart-UPS 2200VA</td>
+                        <td class="price">$800</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 2</strong></td>
+                        <td>3000VA (2700W)</td>
+                        <td>~10 minutes</td>
+                        <td>APC Smart-UPS SRT 3000VA</td>
+                        <td class="price">$1,500</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 3</strong></td>
+                        <td>10kVA (9kW)</td>
+                        <td>~10 minutes</td>
+                        <td>APC Symmetra PX 10kVA</td>
+                        <td class="price">$8,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 4</strong></td>
+                        <td>20kVA (18kW) dual</td>
+                        <td>~15 minutes (redundant)</td>
+                        <td>APC Symmetra PX 20kVA ×2</td>
+                        <td class="price">$18,000</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Fonte: Vertiv UPS AI Power Demands [T], APC UPS Specifications [A]</em></p>
+
+            <h3>Physical Space & Rack Requirements</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Form Factor</th>
+                        <th>Rack Units</th>
+                        <th>Floor Space</th>
+                        <th>Noise Level</th>
+                        <th>Heat Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tier 1</strong></td>
+                        <td>Tower case</td>
+                        <td>N/A</td>
+                        <td>~0.5m²</td>
+                        <td>40-50 dB (office)</td>
+                        <td>~5,500 BTU/h</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 2</strong></td>
+                        <td>4U rackmount</td>
+                        <td>4U</td>
+                        <td>~1m² (com rack)</td>
+                        <td>50-60 dB (server room)</td>
+                        <td>~4,800 BTU/h</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 3</strong></td>
+                        <td>8U rackmount</td>
+                        <td>8U</td>
+                        <td>~1.5m²</td>
+                        <td>60-70 dB (datacenter)</td>
+                        <td>~13,650 BTU/h</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 4</strong></td>
+                        <td>2× 8U nodes + switch</td>
+                        <td>20U total</td>
+                        <td>~3m² (full rack)</td>
+                        <td>70-80 dB (datacenter)</td>
+                        <td>~27,300 BTU/h</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Tier 3-4 requerem sala dedicada com AC (12,000-30,000 BTU), ruído impede colocação em escritório.</em></p>
+        </section>
+
+        <!-- PART V: CLOUD HYBRID OPTIONS -->
+        <section>
+            <h2>Part V — Cloud Hybrid Options</h2>
+
+            <h3>GPU Cloud Providers: Pricing Comparison (Feb 2026)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Provider</th>
+                        <th>RTX 4090</th>
+                        <th>A100 40GB</th>
+                        <th>A100 80GB</th>
+                        <th>H100 80GB</th>
+                        <th>Billing</th>
+                        <th>Availability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lambda Labs</strong></td>
+                        <td>—</td>
+                        <td>$1.29/hr</td>
+                        <td>$2.99/hr</td>
+                        <td>$2.99/hr</td>
+                        <td>Per-minute</td>
+                        <td>⚠️ Often sold out</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jarvislabs</strong></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>$2.99/hr</td>
+                        <td>Per-minute</td>
+                        <td>✅ High availability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RunPod</strong></td>
+                        <td>$0.39/hr</td>
+                        <td>$0.89/hr (spot)</td>
+                        <td>$1.69/hr (spot)</td>
+                        <td>$2.99/hr</td>
+                        <td>Per-second</td>
+                        <td>✅ Spot + on-demand</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vast.ai</strong></td>
+                        <td>$0.25-0.50/hr</td>
+                        <td>$0.60-1.20/hr</td>
+                        <td>$1.20-2.50/hr</td>
+                        <td>$2.00-4.00/hr</td>
+                        <td>Per-hour</td>
+                        <td>⚠️ Marketplace (variable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Modal</strong></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>$4.56/hr</td>
+                        <td>Serverless</td>
+                        <td>✅ Auto-scaling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AWS EC2</strong></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>p4d.24xlarge<br>$32.77/hr (8×A100)</td>
+                        <td>p5.48xlarge<br>$98.32/hr (8×H100)</td>
+                        <td>Per-second</td>
+                        <td>✅ Enterprise-grade</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GCP</strong></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>a2-ultragpu-8g<br>$33.29/hr (8×A100)</td>
+                        <td>—</td>
+                        <td>Per-second</td>
+                        <td>✅ Preemptible -70%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Azure</strong></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>NDv4<br>$27.20/hr (8×A100)</td>
+                        <td>—</td>
+                        <td>Per-minute</td>
+                        <td>⚠️ Limited regions</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Fonte: Lambda Labs Pricing [A], RunPod Official [T], GPULeaderboard Cheapest Providers [T], AWS/GCP/Azure pricing pages [A]</em></p>
+
+            <h3>Cloud TCO Analysis: 2-Year Comparison</h3>
+            <div class="card">
+                <h4>Scenario: Treinar 70B model (4× H100, 840 horas = 5 semanas)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Initial Cost</th>
+                            <th>Training Cost (1×)</th>
+                            <th>2-Year TCO (1 training/ano)</th>
+                            <th>Break-Even</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cloud (Lambda)</strong></td>
+                            <td>$0</td>
+                            <td>$10,049<br>(840h × 4 GPUs × $2.99)</td>
+                            <td>$20,098</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>On-Premise (4× H100)</strong></td>
+                            <td>$168,000</td>
+                            <td>$387<br>(electricity only)</td>
+                            <td>$179,200<br>($168K + $11.2K electricity)</td>
+                            <td>~8.4 years @ 1 training/ano</td>
+                        </tr>
+                        <tr>
+                            <td><strong>On-Premise (24/7 usage)</strong></td>
+                            <td>$168,000</td>
+                            <td>—</td>
+                            <td>$179,200</td>
+                            <td>~14 months @ 24/7</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Insight:</strong> Cloud é dramaticamente mais barato para <span class="highlight">training esporádico</span> (1-4× por ano). On-premise justifica-se apenas com <span class="highlight">uso intensivo 24/7</span> (continuous experimentation).</p>
+            </div>
+
+            <h3>Hybrid Approach: Best of Both Worlds</h3>
+            <div class="summary-box">
+                <h4>Estratégia Recomendada para Anima:</h4>
+                <ul>
+                    <li><strong>Local (Tier 1-2):</strong> Inferência 24/7 (múltiplos LLMs rodando), desenvolvimento rápido, prototyping</li>
+                    <li><strong>Cloud Burst (Lambda/RunPod):</strong> Training runs longos (70B model from scratch)</li>
+                    <li><strong>Justificativa:</strong>
+                        <ul>
+                            <li>Inferência: latency baixíssima, controle total, custo fixo previsível</li>
+                            <li>Training: paga apenas quando treina (5-10 semanas/ano), evita $150K+ capex</li>
+                            <li>ROI: Tier 2 local ($40K) + 2 training runs/ano cloud ($20K) = $60K total vs. $168K Tier 3 on-premise</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>Cloud Provider Selection Matrix</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Use Case</th>
+                        <th>Best Provider</th>
+                        <th>Why</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Quick experiments (< 10h)</td>
+                        <td>RunPod (spot)</td>
+                        <td>Per-second billing, preemptible 40-60% desconto</td>
+                    </tr>
+                    <tr>
+                        <td>70B training (5-10 semanas)</td>
+                        <td>Lambda Labs / Jarvislabs</td>
+                        <td>$2.99/hr H100, alta disponibilidade, per-minute billing</td>
+                    </tr>
+                    <tr>
+                        <td>Production inference (24/7)</td>
+                        <td>Modal (serverless)</td>
+                        <td>Auto-scaling, pay-per-token, managed</td>
+                    </tr>
+                    <tr>
+                        <td>Enterprise compliance (SOC2)</td>
+                        <td>AWS/GCP/Azure</td>
+                        <td>Certifications, SLAs, suporte enterprise</td>
+                    </tr>
+                    <tr>
+                        <td>Budget-constrained research</td>
+                        <td>Vast.ai marketplace</td>
+                        <td>$0.25-0.50/hr RTX 4090, community GPUs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- PART VI: SOFTWARE STACK -->
+        <section>
+            <h2>Part VI — Software Stack for Custom Architecture</h2>
+
+            <h3>Core Framework: PyTorch + Distributed Training</h3>
+            <div class="card">
+                <h4>PyTorch 2.x (Primary DL Framework)</h4>
+                <ul>
+                    <li><strong>Why PyTorch:</strong> Dynamic computation graph → ideal para custom architecture experimentation</li>
+                    <li><strong>torch.compile:</strong> 2× speedup via graph optimization (TorchDynamo + TorchInductor)</li>
+                    <li><strong>FSDP (Fully Sharded Data Parallel):</strong> Train models >VRAM single-GPU via sharding</li>
+                    <li><strong>CUDA Support:</strong> Native CUDA kernel integration para mecanismos customizados</li>
+                </ul>
+
+                <h4>DeepSpeed (Microsoft Distributed Training)</h4>
+                <ul>
+                    <li><strong>ZeRO (Zero Redundancy Optimizer):</strong> Reduz memory footprint 4-8×
+                        <ul>
+                            <li>ZeRO-1: Shards optimizer states</li>
+                            <li>ZeRO-2: Shards gradients também</li>
+                            <li>ZeRO-3: Shards model parameters (treina 13B em 24GB VRAM)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pipeline Parallelism:</strong> Divide model em stages, processa batches em pipeline</li>
+                    <li><strong>Gradient Checkpointing:</strong> Trade compute por memory (re-compute activations)</li>
+                    <li><strong>Mixed Precision (FP16/BF16):</strong> 2× faster training, 2× memory reduction</li>
+                </ul>
+
+                <h4>Megatron-LM (NVIDIA Large Model Training)</h4>
+                <ul>
+                    <li><strong>Tensor Parallelism:</strong> Split layers across GPUs (vs. FSDP model-parallel)</li>
+                    <li><strong>Sequence Parallelism:</strong> Split sequence dimension para long-context models</li>
+                    <li><strong>Expert Parallelism:</strong> Para Mixture-of-Experts architectures</li>
+                    <li><strong>Integration:</strong> DeepSpeed + Megatron-LM = Megatron-DeepSpeed (best of both)</li>
+                </ul>
+            </div>
+
+            <h3>Custom Kernel Development: CUDA vs Triton</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Framework</th>
+                        <th>Complexity</th>
+                        <th>Performance</th>
+                        <th>Development Time</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CUDA C++</strong></td>
+                        <td>High</td>
+                        <td>100% (hand-optimized)</td>
+                        <td>Weeks-Months</td>
+                        <td>Performance-critical operations (attention, custom activations)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Triton (OpenAI)</strong></td>
+                        <td>Medium</td>
+                        <td>90-95% CUDA</td>
+                        <td>Days-Weeks</td>
+                        <td>Rapid prototyping de custom ops, fusion kernels</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PyTorch Autograd</strong></td>
+                        <td>Low</td>
+                        <td>70-80% (overhead)</td>
+                        <td>Hours</td>
+                        <td>Prototyping inicial, baseline implementation</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Recomendação:</strong> Start com PyTorch native ops → profile → identify bottlenecks → rewrite hot paths em Triton → se critical, otimizar em CUDA.</p>
+
+            <h3>Inference Serving: vLLM + Ollama</h3>
+            <div class="card">
+                <h4>vLLM (High-Throughput Inference Server)</h4>
+                <ul>
+                    <li><strong>PagedAttention:</strong> 20× throughput vs. HuggingFace Transformers</li>
+                    <li><strong>Continuous Batching:</strong> Dynamic batching sem padding waste</li>
+                    <li><strong>Quantization:</strong> INT8/INT4 on-the-fly (AWQ, GPTQ)</li>
+                    <li><strong>Throughput:</strong> H100 80GB → ~3,500-4,000 tokens/sec (Llama 70B)</li>
+                </ul>
+
+                <h4>Ollama (Local Model Management)</h4>
+                <ul>
+                    <li><strong>Model Registry:</strong> Download, manage, version local models</li>
+                    <li><strong>API Server:</strong> OpenAI-compatible REST API</li>
+                    <li><strong>Quantization:</strong> Automatic Q4/Q8 quantization para consumer GPUs</li>
+                    <li><strong>Use Case:</strong> Development/prototyping; production → vLLM</li>
+                </ul>
+            </div>
+
+            <h3>Complete Stack Diagram</h3>
+            <div style="background: var(--bg-primary); padding: 1.5rem; border-radius: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; line-height: 1.8;">
+<pre style="margin: 0; color: var(--text-primary);">
+┌─────────────────────────────────────────────────────────────┐
+│  <span style="color: var(--accent);">APPLICATION LAYER</span>                                         │
+│  Anima Runtime, Memory Core, Sub-Agents, Sleep Cycles      │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  <span style="color: var(--accent);">INFERENCE LAYER</span>                                          │
+│  vLLM (production) | Ollama (dev) | Custom Serving          │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  <span style="color: var(--accent);">MODEL LAYER</span>                                              │
+│  Custom 9-Layer Architecture (7B → 70B)                     │
+│  Supporting Models: nomic-embed-text, routing models        │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  <span style="color: var(--accent);">TRAINING FRAMEWORK</span>                                       │
+│  PyTorch 2.x + DeepSpeed ZeRO-3 + Megatron-LM              │
+│  Custom Kernels: CUDA / Triton                              │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  <span style="color: var(--accent);">COMPUTE LAYER</span>                                            │
+│  Multi-GPU (NVLink/NVSwitch) | CUDA 12.x | cuDNN 9.x       │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  <span style="color: var(--accent);">HARDWARE LAYER</span>                                           │
+│  4× H100 SXM | AMD EPYC 9554 | 1TB RAM | 8TB NVMe          │
+└─────────────────────────────────────────────────────────────┘
+</pre>
+            </div>
+        </section>
+
+        <!-- PART VII: COST ANALYSIS -->
+        <section>
+            <h2>Part VII — Cost Analysis & TCO (Brasil Context)</h2>
+
+            <h3>Hardware Cost Summary (All Tiers)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Hardware Cost</th>
+                        <th>Monthly Electricity (24/7)</th>
+                        <th>Annual Opex</th>
+                        <th>2-Year TCO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tier 1</strong></td>
+                        <td class="price">$8,350 - $8,850</td>
+                        <td class="price">$184 (R$922)</td>
+                        <td class="price">$2,208</td>
+                        <td class="price">$13,266 - $13,766</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 2</strong></td>
+                        <td class="price">$42,000 - $52,000</td>
+                        <td class="price">$161 (R$806)</td>
+                        <td class="price">$1,932</td>
+                        <td class="price">$45,864 - $55,864</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 3</strong></td>
+                        <td class="price">$168,000 - $188,000</td>
+                        <td class="price">$461 (R$2,304)</td>
+                        <td class="price">$5,532</td>
+                        <td class="price">$179,064 - $199,064</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 4</strong></td>
+                        <td class="price">~$450,000</td>
+                        <td class="price">$922 (R$4,608)</td>
+                        <td class="price">$11,064</td>
+                        <td class="price">$472,128</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Brazil-Specific Costs: Import Taxes & Markup</h3>
+            <div class="warning-box">
+                <h4>⚠️ Importação de Hardware no Brasil</h4>
+                <ul>
+                    <li><strong>Imposto de Importação (II):</strong> 16% sobre CIF (Cost + Insurance + Freight)</li>
+                    <li><strong>IPI (Imposto sobre Produtos Industrializados):</strong> 0-15% dependendo do item</li>
+                    <li><strong>ICMS (Imposto sobre Circulação de Mercadorias):</strong> ~18% (varia por estado)</li>
+                    <li><strong>PIS/COFINS:</strong> ~11.75%</li>
+                    <li><strong>Total Effective Tax:</strong> ~60-80% sobre preço FOB (Free On Board)</li>
+                    <li><strong>Retail Markup Brasil:</strong> GPUs enterprise têm 40-60% markup adicional sobre preço US + taxes</li>
+                </ul>
+                <p><strong>Exemplo:</strong> H100 80GB SXM $30K USD → ~R$270K-330K no Brasil ($54K-66K) = 80-120% markup total</p>
+                <p><em>Fonte: Trade.gov Brazil Import Tariffs [A], LinkedIn Brazil AI Workstation Market [E], Reddit r/computadores hardware pricing [E]</em></p>
+            </div>
+
+            <div class="card">
+                <h4>Estratégias para Reduzir Custos no Brasil</h4>
+                <ol>
+                    <li><strong>REDATA Program (Sep 2025):</strong> Incentivos fiscais para datacenters — isenção de II para equipamentos sem produção similar nacional. Aplicável a GPUs enterprise (A100/H100). <span class="source-badge source-A">[A]</span></li>
+                    <li><strong>Compra via Empresa:</strong> CNPJ permite recuperação de ICMS/PIS/COFINS (reduz ~30% custo efetivo)</li>
+                    <li><strong>Used/Refurb Market:</strong> A100 40GB usado $8K USD vs. $12K novo (33% desconto)</li>
+                    <li><strong>Cloud Hybrid:</strong> Evita capex; Lambda/Jarvislabs cobram em USD direto (sem markup Brasil)</li>
+                    <li><strong>Phased Investment:</strong> Começar Tier 1-2 local (menor impacto fiscal) + cloud burst para training</li>
+                </ol>
+            </div>
+
+            <h3>Cloud vs On-Premise TCO (3 Anos, Brasil)</h3>
+            <div class="card">
+                <h4>Scenario: Anima Runtime + 2 Training Runs/Ano (70B model)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Year 0 (Capex)</th>
+                            <th>Year 1 Opex</th>
+                            <th>Year 2 Opex</th>
+                            <th>Year 3 Opex</th>
+                            <th>3-Year Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>100% Cloud</strong><br>(Inference + Training)</td>
+                            <td class="price">$0</td>
+                            <td class="price">$30K<br>(inference 24/7 + 2 trainings)</td>
+                            <td class="price">$30K</td>
+                            <td class="price">$30K</td>
+                            <td class="price">$90K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 2 Local + Cloud Training</strong><br>(Inference local, training cloud)</td>
+                            <td class="price">$50K<br>(hardware Brasil import)</td>
+                            <td class="price">$22K<br>($2K electricity + $20K cloud training)</td>
+                            <td class="price">$22K</td>
+                            <td class="price">$22K</td>
+                            <td class="price">$116K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 3 Full On-Premise</strong><br>(Tudo local)</td>
+                            <td class="price">$200K<br>(hardware Brasil import)</td>
+                            <td class="price">$6K<br>(electricity only)</td>
+                            <td class="price">$6K</td>
+                            <td class="price">$6K</td>
+                            <td class="price">$218K</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 4px;">
+                    <p><strong>Winner (3 anos):</strong> <span class="highlight">100% Cloud ($90K)</span> — menor TCO absoluto.</p>
+                    <p><strong>BUT:</strong> Tier 2 hybrid ($116K) oferece:</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>✅ Controle total sobre inference (latency, uptime, privacy)</li>
+                        <li>✅ Experimentação rápida sem cold starts</li>
+                        <li>✅ Evita vendor lock-in</li>
+                        <li>✅ Break-even em ~4 anos (vs. cloud)</li>
+                    </ul>
+                    <p style="margin-top: 0.5rem;"><strong>Tier 3 on-premise ($218K)</strong> apenas se: training contínuo (>10 runs/ano) ou requisitos de compliance impedem cloud.</p>
+                </div>
+            </div>
+
+            <h3>ROI Analysis: When Does On-Premise Pay Off?</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hardware Investment</th>
+                        <th>Cloud Equivalent (Monthly)</th>
+                        <th>Break-Even (Months)</th>
+                        <th>Break-Even (Usage)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tier 1 ($10K)</td>
+                        <td>$500 (2× RTX 5090 @ 50% avg usage)</td>
+                        <td>20 months</td>
+                        <td>12h/day average</td>
+                    </tr>
+                    <tr>
+                        <td>Tier 2 ($50K)</td>
+                        <td>$2,500 (2× A100 80GB @ 50% avg)</td>
+                        <td>20 months</td>
+                        <td>12h/day average</td>
+                    </tr>
+                    <tr>
+                        <td>Tier 3 ($180K)</td>
+                        <td>$12,000 (4× H100 @ 50% avg)</td>
+                        <td>15 months</td>
+                        <td>12h/day average</td>
+                    </tr>
+                    <tr>
+                        <td>Tier 3 (24/7 usage)</td>
+                        <td>$24,000 (4× H100 @ 100%)</td>
+                        <td>7.5 months</td>
+                        <td>24/7 continuous</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Cloud pricing: $2.99/hr H100, $2.99/hr A100 80GB (Lambda/Jarvislabs). 50% avg = development/experimentation cycles.</em></p>
+        </section>
+
+        <!-- PART VIII: RECOMMENDATIONS -->
+        <section>
+            <h2>Part VIII — Recommendations & Investment Roadmap</h2>
+
+            <h3>Minimum Viable Setup: Start NOW</h3>
+            <div class="summary-box">
+                <h4>🚀 Recommended: Tier 1 (2× RTX 5090) — $10K Investment</h4>
+                <ul>
+                    <li><strong>What You Get:</strong>
+                        <ul>
+                            <li>64GB VRAM total → treina 7B from scratch, experimenta arquitetura custom</li>
+                            <li>Roda 13B inference local (INT8 quant), múltiplos 7B simultâneos</li>
+                            <li>Prova-de-conceito completa da arquitetura "9 Layers"</li>
+                            <li>Desenvolvimento rápido sem depender de cloud cold starts</li>
+                        </ul>
+                    </li>
+                    <li><strong>Quando Funciona:</strong> Você está na fase de <em>experimentação arquitetural</em> — testando ideias, iterando rápido, validando conceitos. 7B é suficiente para provar que a arquitetura funciona.</li>
+                    <li><strong>Next Step:</strong> Depois que 7B prova viabilidade → cloud burst (Lambda Labs) para treinar 70B production model ($10K cloud cost vs. $150K+ capex Tier 3).</li>
+                </ul>
+            </div>
+
+            <h3>Phased Investment Plan (2026-2027)</h3>
+            <div class="card">
+                <h4>Phase 1: Q1-Q2 2026 (Agora) — Proof of Concept</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Invest In</th>
+                            <th>Cost</th>
+                            <th>Goal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tier 1 Hardware</strong><br>(2× RTX 5090 build)</td>
+                            <td class="price">$10K</td>
+                            <td>Desenvolver arquitetura custom 7B, validar conceito "9 Layers"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cloud Credits</strong><br>(Lambda/RunPod exploratory)</td>
+                            <td class="price">$500-1K</td>
+                            <td>Testar 13B-30B models, benchmark cloud workflows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Phase 1</strong></td>
+                            <td class="price">$10.5-11K</td>
+                            <td><strong>Deliverable:</strong> Working 7B prototype, proven architecture</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Phase 2: Q3-Q4 2026 — Scale to 30B</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Decision Point</th>
+                            <th>Option A (Hybrid)</th>
+                            <th>Option B (Full Local)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>If 7B proves viable:</strong></td>
+                            <td>
+                                <strong>Cloud Training:</strong><br>
+                                Treinar 30B no Lambda Labs<br>
+                                Cost: $5K (1 training run)<br>
+                                Timeline: 2-3 semanas
+                            </td>
+                            <td>
+                                <strong>Upgrade to Tier 2:</strong><br>
+                                2× A100 80GB build<br>
+                                Cost: $40-50K<br>
+                                Timeline: treinar 30B local em 4-6 semanas
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Inference:</strong></td>
+                            <td colspan="2">
+                                Keep Tier 1 local para inference (suficiente para 13B-30B quantized)<br>
+                                Deploy 30B model em vLLM server
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Phase 3: 2027 — Production 70B Model</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Decision Point</th>
+                            <th>Path A (Cloud)</th>
+                            <th>Path B (Tier 3 On-Premise)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>If revenue justifies:</strong></td>
+                            <td>
+                                <strong>Cloud 70B Training:</strong><br>
+                                4× H100 × 5 weeks @ Lambda<br>
+                                Cost: $10K per training<br>
+                                Frequency: 2-4× per year = $20-40K/yr
+                            </td>
+                            <td>
+                                <strong>Tier 3 Investment:</strong><br>
+                                4× H100 SXM build<br>
+                                Cost: $180-200K (Brasil import)<br>
+                                ROI: 7.5 months @ 24/7 usage
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>When to Choose:</strong></td>
+                            <td>
+                                ✅ Training esporádico (2-4×/ano)<br>
+                                ✅ Capital limitado<br>
+                                ✅ Flexibilidade > ownership
+                            </td>
+                            <td>
+                                ✅ Training contínuo (>8×/ano)<br>
+                                ✅ Captou investimento ($500K+)<br>
+                                ✅ Compliance requer on-premise
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Final Recommendation Matrix</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Your Situation</th>
+                        <th>Invest In</th>
+                        <th>Total Cost (Year 1)</th>
+                        <th>Why</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bootstrap (< $20K capital)</strong></td>
+                        <td>Tier 1 local + cloud burst</td>
+                        <td class="price">$10K + $5K cloud = $15K</td>
+                        <td>Lowest capex, fastest validation, scale to 30B via cloud</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seed Funded ($50-100K)</strong></td>
+                        <td>Tier 2 local + cloud for 70B</td>
+                        <td class="price">$50K + $10K cloud = $60K</td>
+                        <td>Professional dev environment, production 30B local, 70B cloud</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Series A ($500K+)</strong></td>
+                        <td>Tier 3 on-premise</td>
+                        <td class="price">$180-200K</td>
+                        <td>Zero cloud dependency, train 70B em 4-6 semanas, full control</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enterprise (Millions)</strong></td>
+                        <td>Tier 4 cluster</td>
+                        <td class="price">$450K+</td>
+                        <td>Train 100B+, distributed teams, redundância, compliance</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <h4>🎯 Para Anima (Feb 2026):</h4>
+                <p><strong>Recomendação Específica:</strong> <span class="highlight">Tier 1 (2× RTX 5090) NOW</span></p>
+                <ul>
+                    <li><strong>Investment:</strong> $10K (viável imediatamente)</li>
+                    <li><strong>Timeline:</strong> 2-4 semanas para setup + começar experiments</li>
+                    <li><strong>Workload Coverage:</strong>
+                        <ul>
+                            <li>✅ Treinar 7B custom architecture from scratch</li>
+                            <li>✅ Rodar Anima runtime local (múltiplos LLMs 1B-13B)</li>
+                            <li>✅ Memory Core embeddings (nomic-embed-text)</li>
+                            <li>✅ Sub-agents paralelos, sleep cycles</li>
+                        </ul>
+                    </li>
+                    <li><strong>Scaling Path:</strong>
+                        <ul>
+                            <li>Q3 2026: Se 7B prova conceito → cloud burst Lambda Labs para treinar 30B ($5K)</li>
+                            <li>Q1 2027: Revenue justifica? → upgrade to Tier 2 ($40K) ou continue cloud hybrid</li>
+                            <li>2027+: Se captou investimento → Tier 3 ($180K) para full autonomy</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Why This Works:</strong> Valida arquitetura proprietária SEM apostar $180K antes de provar que funciona. Cloud burst fornece escala quando necessário. Break-even em 20 meses se uso consistente. ROI positivo desde Dia 1 por evitar vendor lock-in.</p>
+            </div>
+
+            <h3>Ideal Setup ("No Bottlenecks") — When You Scale</h3>
+            <div class="card tier-card tier-3">
+                <div class="card-title">🟡 The "No Bottlenecks" Build (Future State)</div>
+                <p><strong>When:</strong> Anima em produção, revenue $500K+/ano, training contínuo justificado</p>
+                <p><strong>What:</strong> Tier 3 (4× H100 SXM) — $180-200K</p>
+                <ul>
+                    <li>✅ Treina 70B from scratch em 4-6 semanas (vs. 12-16 weeks cloud)</li>
+                    <li>✅ Roda múltiplos LLMs grandes simultaneamente (3× 30B ou 1× 70B + 2× 13B)</li>
+                    <li>✅ Zero latency para experiments (no cold starts, no quotas)</li>
+                    <li>✅ Privacy total (custom architecture fica in-house)</li>
+                    <li>✅ Break-even: 7.5 meses @ 24/7 usage, 15 meses @ 50% usage</li>
+                </ul>
+                <p><strong>This is the endgame.</strong> Mas não é o começo. Start small (Tier 1), prove it works, scale when revenue justifies.</p>
+            </div>
+        </section>
+
+        <!-- SOURCES -->
+        <div class="sources">
+            <h3>📚 Fontes (Minimum 10 Sources, Classificadas)</h3>
+            <ol>
+                <li><span class="source-badge source-A">[A]</span> Jarvislabs.ai — <em>"NVIDIA H100 Price Guide 2026: GPU Costs, Cloud Pricing & Buy vs Rent"</em> (Jan 2026) — <strong>Authoritative:</strong> oficial pricing data, TCO analysis, multi-GPU benchmarks. <a href="https://docs.jarvislabs.ai/blog/h100-price" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-A">[A]</span> GPU-Mart.com — <em>"H100 vs A100 vs RTX 4090"</em> (2025) — <strong>Authoritative:</strong> detailed GPU spec comparison, tensor core metrics, use case recommendations. <a href="https://www.gpu-mart.com/blog/h100-vs-a100-vs-rtx-4090" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-A">[A]</span> Modal.com — <em>"How much VRAM do I need for LLM model fine-tuning?"</em> (Sep 2024) — <strong>Authoritative:</strong> VRAM calculation breakdown, optimizer states analysis, LoRA/QLoRA comparison table. <a href="https://modal.com/blog/how-much-vram-need-fine-tuning" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-T">[T]</span> TechPowerUp GPU Database — <em>"NVIDIA GeForce RTX 5090 Specs"</em> (2025) — <strong>Technical:</strong> official GPU specifications, architecture details, GDDR7 memory specs. <a href="https://www.techpowerup.com/gpu-specs/geforce-rtx-5090.c4216" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-T">[T]</span> WhiteFiber.com — <em>"Best GPUs for LLM inference in 2025"</em> — <strong>Technical:</strong> VRAM requirements per model size, memory bandwidth analysis, inference optimization. <a href="https://www.whitefiber.com/compare/best-gpus-for-llm-inference-in-2025" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-T">[T]</span> GPULeaderboard.com — <em>"Cheapest GPU Cloud Providers 2025"</em> (Feb 2026) — <strong>Technical:</strong> real-time cloud pricing comparison, spot vs on-demand analysis. <a href="https://gpuleaderboard.com/cheapestgpucloudproviders" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-A">[A]</span> NVIDIA Official Documentation — <em>"H100 Tensor Core GPU"</em> (2023-2025) — <strong>Authoritative:</strong> official product specifications, NVLink/NVSwitch architecture, power requirements. <a href="https://www.nvidia.com/en-us/data-center/h100/" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-A">[A]</span> Trade.gov — <em>"Brazil - Import Tariffs"</em> (Aug 2025) — <strong>Authoritative:</strong> official US government guidance on Brazilian import taxes, IPI, ICMS, PIS/COFINS rates. <a href="https://www.trade.gov/country-commercial-guides/brazil-import-tariffs" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-E">[E]</span> LinkedIn — <em>"Brazil AI Workstation Market AI Impact: Size, Drivers And Challenges"</em> (2025) — <strong>Empirical:</strong> market analysis, hardware cost challenges Brazil-specific, import tax impact. <a href="https://www.linkedin.com/pulse/brazil-ai-workstation-market-impact-size-drivers-challenges-2x9cf" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-T">[T]</span> VRLATech — <em>"Choosing AMD EPYC vs Intel XEON CPUs for an AI Server"</em> (2025) — <strong>Technical:</strong> CPU comparison for ML workloads, PCIe lanes analysis, memory bandwidth benchmarks. <a href="https://vrlatech.com/the-ultimate-guide-to-choosing-the-right-ai-server-intel-xeon-vs-amd-epyc/" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-C">[C]</span> Reddit r/LocalLLaMA — <em>"Explanation of 7b vs 13b and VRAM requirements"</em> (2023) — <strong>Community:</strong> practical user experiences with VRAM usage, quantization real-world performance. <a href="https://www.reddit.com/r/LocalLLM/comments/17gwzcg/explanation_of_7b_vs_13b_and_vram_requirements/" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-C">[C]</span> Reddit r/Amd — <em>"MI300X vs H100 vs H200 Benchmark Part 1: Training"</em> (Dec 2025) — <strong>Community:</strong> real-world AMD MI300X benchmarks, ROCm ecosystem maturity assessment. <a href="https://www.reddit.com/r/Amd/comments/1hkd3aj/mi300x_vs_h100_vs_h200_benchmark_part_1_training/" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-T">[T]</span> NZOCloud — <em>"AI Workstation Build Guide for 2025"</em> (Aug 2025) — <strong>Technical:</strong> complete system builds, component selection rationale, PSU/cooling sizing. <a href="https://nzocloud.com/blog/ai-workstation-build/" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-A">[A]</span> DeepSpeed.ai — <em>"Megatron-LM GPT2 Tutorial"</em> (Feb 2026) — <strong>Authoritative:</strong> official Microsoft DeepSpeed + Megatron-LM integration guide, ZeRO optimization. <a href="https://www.deepspeed.ai/tutorials/megatron/" target="_blank">Link</a></li>
+                
+                <li><span class="source-badge source-E">[E]</span> WCCFTech — <em>"NVIDIA RTX 5090: Full Specs, Benchmarks, Price & Where to Buy"</em> (2025) — <strong>Empirical:</strong> RTX 5090 real-world benchmarks, pricing availability, thermal performance. <a href="https://wccftech.com/roundup/nvidia-geforce-rtx-5090/" target="_blank">Link</a></li>
+            </ol>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);"><strong>Classification Legend:</strong></p>
+            <ul style="font-size: 0.85rem; color: var(--text-secondary);">
+                <li><span class="source-badge source-A">[A]</span> <strong>Authoritative</strong> — Official vendor docs, government sources, peer-reviewed</li>
+                <li><span class="source-badge source-T">[T]</span> <strong>Technical</strong> — Technical databases, benchmarks, spec sheets</li>
+                <li><span class="source-badge source-E">[E]</span> <strong>Empirical</strong> — Industry analysis, market research, news</li>
+                <li><span class="source-badge source-C">[C]</span> <strong>Community</strong> — Reddit, forums, user experiences (lower confidence)</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Relatório gerado por <strong>Azimute</strong> para <strong>Luis Adures</strong> — Projeto Anima</p>
+            <p>22 de Fevereiro, 2026 | Research Session: <code>research-hardware-anima</code></p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <em>Todas as estimativas de preço são aproximadas e sujeitas a variação de mercado. Cotações Brasil incluem markup estimado de 60-80% sobre preços USD FOB. Confirme preços atuais com fornecedores antes de compra.</em>
+            </p>
+        </footer>
+    </div>

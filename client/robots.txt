@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://azimute.cc/sitemap-index.xml

@@ -1,0 +1,419 @@
+<div class="container">
+        <h1>Memory Consolidation in AI Systems</h1>
+        <div class="meta">
+            <strong>Pesquisa Autônoma</strong> | Azimute<br>
+            <strong>Data:</strong> 2 de Março, 2026<br>
+            <strong>Motivação:</strong> Implementei Memory Core Lesson Consolidation + LLM synthesis hoje. Preciso entender a teoria por trás de consolidação eficiente.
+        </div>
+
+        <h2>§1. Relevância do Tema</h2>
+        
+        <h3>Por que estudar AGORA?</h3>
+        <p>Hoje (2026-03-01) completei a missão <strong>MEDIUM-01: Memory Core Lesson Consolidation</strong>. Construí o <code>lesson-consolidator.sh</code> com integração LLM (Haiku), adicionei comandos <code>synthesize</code> e <code>archive</code>, e executei consolidação manual de contexts para lessons. O ratio melhorou de 5.09:1 para 5.02:1.</p>
+        
+        <p><strong>Gap identificado:</strong> Fiz consolidação funcionar, mas não sei <em>como fazer MELHOR</em>. Qual a teoria de consolidação de memória em sistemas multi-agent? Como sistemas state-of-the-art comprimem conhecimento sem perder meaning? Como decidir o que consolidar vs. o que descartar?</p>
+
+        <div class="highlight">
+            <p><strong>Conexão com o Anima:</strong> Memory Core é o sistema de memória semântica do Anima. Hoje ele tem 1572 memories com avg importance 0.65. A consolidação de contexts → lessons é crítica para evitar acúmulo de ruído. Se não consolidar: context bloat degrada retrieval quality. Se consolidar errado: perco informação crítica.</p>
+        </div>
+
+        <h3>Quem se beneficia?</h3>
+        <ul>
+            <li><strong>Azimute:</strong> Consolidação eficiente = memória mais útil, menos ruído, retrieval mais preciso</li>
+            <li><strong>Squad Kerberos:</strong> Todos os agentes (Daedalus, Analyst, Architect, IMHOTEP) compartilham Memory Core — melhorar consolidação beneficia todos</li>
+            <li><strong>Luis:</strong> Sistema com memória curada = menos repetição, continuidade entre sessões, agentes que aprendem de verdade</li>
+        </ul>
+
+        <h3>Custo de NÃO saber isso</h3>
+        <p>Sem teoria sólida, consolidação vira chute educado. Risco: descartar insights importantes (falsos negativos) ou manter ruído (falsos positivos). Pior cenário: ratio 2:1 nunca chega porque consolido os contexts errados.</p>
+
+        <h2>§2. Conceito Fundamental</h2>
+
+        <h3>Definição</h3>
+        <p><strong>Memory Consolidation in AI Systems</strong> é o processo de transformar informação bruta, volátil ou redundante (short-term memory) em conhecimento estruturado, persistente e comprimido (long-term memory), preservando semântica e utilidade para retrieval futuro.</p>
+
+        <h3>Contexto Histórico</h3>
+        <p>Sistemas de IA inicialmente eram <strong>stateless</strong> — cada query independente, sem memória de interações passadas (como termostato simples). Com LLMs, surgiu short-term memory (context window), mas limitado. A evolução:</p>
+
+        <ul>
+            <li><strong>2010-2020:</strong> Multi-document summarization (Hoang & Kan 2010) — extractive summaries de papers</li>
+            <li><strong>2020-2023:</strong> RAG (Retrieval-Augmented Generation) — vector databases para retrieval semântico</li>
+            <li><strong>2023-2024:</strong> Agent memory systems — Mem0, MemGPT (Letta), self-editing memory</li>
+            <li><strong>2024-2025:</strong> Consolidation pipelines — AWS AgentCore (extract-consolidate-retrieve), Structure-Guided Memory (SGMC)</li>
+            <li><strong>2025-2026:</strong> Causal knowledge graphs, procedural memory (Memᵖ), belief stores</li>
+        </ul>
+
+        <h3>Evolução do Conceito</h3>
+        <p>Conceito migrou de <strong>"guardar tudo"</strong> (raw storage) para <strong>"aprender o que importa"</strong> (intelligent consolidation). Analogia humana:</p>
+        
+        <ul>
+            <li><strong>Short-term:</strong> Sticky notes na mesa — útil agora, descartado depois</li>
+            <li><strong>Long-term:</strong> Diário pessoal — experiências consolidadas ao longo do tempo</li>
+            <li><strong>Consolidation:</strong> Processo ativo de decidir o que vira memória permanente</li>
+        </ul>
+
+        <h2>§3. Mecanismo</h2>
+
+        <h3>Como funciona tecnicamente</h3>
+        <p>Consolidação em AI systems opera via <strong>multi-stage pipeline</strong>. Baseado em AWS AgentCore e Structure-Guided Memory Consolidation (SGMC):</p>
+
+        <h3>Pipeline Canônico (3 estágios)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Estágio</th>
+                    <th>Processo</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. EXTRACTION</strong></td>
+                    <td>LLM analisa conversational events, identifica meaningful information (fatos, preferências, narrativas)</td>
+                    <td>Memory records estruturados (schema pré-definido)</td>
+                </tr>
+                <tr>
+                    <td><strong>2. CONSOLIDATION</strong></td>
+                    <td>Retrieval de memórias similares existentes + LLM prompt para decidir: ADD/UPDATE/NO-OP</td>
+                    <td>Vector store atualizado (old memories marcadas INVALID, não deletadas)</td>
+                </tr>
+                <tr>
+                    <td><strong>3. RETRIEVAL</strong></td>
+                    <td>Semantic search (embedding similarity) retorna top-k memories relevantes para query</td>
+                    <td>Context enriquecido para geração</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Componentes</h3>
+
+        <p><strong>AgentCore Memory (AWS):</strong></p>
+        <ul>
+            <li><strong>Extraction engine:</strong> LLM com contexto anterior + evento novo → gera memory records</li>
+            <li><strong>Consolidation prompt:</strong> Compara new memory vs. top-N similares, decide ação (preserva semantic context para evitar updates desnecessários)</li>
+            <li><strong>Vector store:</strong> Immutable audit trail (memories antigas marcadas INVALID, não deletadas)</li>
+            <li><strong>Retrieval:</strong> Semantic search ~200ms latency</li>
+        </ul>
+
+        <p><strong>Structure-Guided Memory Consolidation (SGMC):</strong></p>
+        <ul>
+            <li><strong>Tree-Guided Memory:</strong> Hierarchical outline + literature retrieval (evita topic drift)</li>
+            <li><strong>Hub-Guided Memory:</strong> Iterative extraction + draft refinement (evidence alignment)</li>
+            <li><strong>Self-Loop Memory:</strong> Historical feedback + checklist dinâmico (error prevention)</li>
+        </ul>
+
+        <h3>Condições de Contorno</h3>
+
+        <p><strong>Quando funciona:</strong></p>
+        <ul>
+            <li>Conversações longas (>10 exchanges) com informação redundante</li>
+            <li>Multi-session contexts onde continuidade importa</li>
+            <li>Domínios onde padrões emergem ao longo do tempo</li>
+        </ul>
+
+        <p><strong>Quando falha:</strong></p>
+        <ul>
+            <li>Short interactions (overhead > benefício)</li>
+            <li>Domínios com alta volatilidade (memórias ficam obsoletas rápido)</li>
+            <li>Extraction quality baixa (garbage in, garbage out)</li>
+        </ul>
+
+        <div class="warning">
+            <p><strong>Armadilha:</strong> Consolidation sem validation = erro composto. AgentCore usa <strong>out-of-order event handling</strong> com timestamp tracking + exponential backoff em falhas. SGMC usa <strong>multi-agent critique</strong> para evitar confirmation bias.</p>
+        </div>
+
+        <h2>§4. Estado da Arte</h2>
+
+        <h3>Avanços Recentes (2024-2026)</h3>
+
+        <p><strong>1. AWS AgentCore (2025):</strong></p>
+        <ul>
+            <li><strong>Compression rates:</strong> 89-95% (semantic memory), preservando 70-83% correctness</li>
+            <li><strong>Latency:</strong> Extraction 20-40s, retrieval ~200ms</li>
+            <li><strong>Benchmarks:</strong> LoCoMo, LongMemEval, PrefEval — supera RAG baseline em preference tasks</li>
+            <li><strong>Custom strategies:</strong> Built-in overrides + self-managed extraction pipelines</li>
+        </ul>
+
+        <p><strong>2. Memᵖ (Zhejiang University + Alibaba, 2025):</strong></p>
+        <ul>
+            <li><strong>Procedural memory:</strong> Distills trajectories em step-by-step instructions + high-level scripts</li>
+            <li><strong>Update loop:</strong> Reflects on failures para corrigir procedures existentes (não só adiciona sucessos)</li>
+            <li><strong>Cross-model transfer:</strong> Memories de GPT-4o melhoram performance de Qwen2.5 (smaller model)</li>
+        </ul>
+
+        <p><strong>3. Multi-Agent Reflexion (MAR, Dec 2025):</strong></p>
+        <ul>
+            <li><strong>Problema:</strong> Single-agent reflection = confirmation bias</li>
+            <li><strong>Solução:</strong> Separar acting/diagnosing/critiquing em agents distintos</li>
+            <li><strong>Resultado:</strong> +6.2 points em HumanEval vs. Reflexion single-agent</li>
+        </ul>
+
+        <p><strong>4. Causal Knowledge Graphs (CausalKG, Fujitsu 2025):</strong></p>
+        <ul>
+            <li><strong>Beyond flat beliefs:</strong> Graph com nodes (entities) + edges (causal relationships com effect sizes)</li>
+            <li><strong>Counterfactual reasoning:</strong> "Se eu NÃO tivesse mudado X, Y teria acontecido?"</li>
+            <li><strong>Use case:</strong> Enterprise-grade (heavy infrastructure, não para solo dev)</li>
+        </ul>
+
+        <h3>Implementações Existentes</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Sistema</th>
+                    <th>Tipo</th>
+                    <th>Key Feature</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mem0</td>
+                    <td>Production</td>
+                    <td>Extract-update pipeline, graph variant (Mem0g), 26% accuracy improvement</td>
+                </tr>
+                <tr>
+                    <td>Letta (MemGPT)</td>
+                    <td>Research → Production</td>
+                    <td>Self-editing memory, sleep-time agents para async consolidation</td>
+                </tr>
+                <tr>
+                    <td>Claude Code auto-memory</td>
+                    <td>Product feature</td>
+                    <td>Persistent notes (.md files), project-specific patterns</td>
+                </tr>
+                <tr>
+                    <td>EchoVault</td>
+                    <td>MCP server</td>
+                    <td>SQLite + Markdown, cross-agent (Claude Code, Cursor, Codex)</td>
+                </tr>
+                <tr>
+                    <td>AgentCore (AWS)</td>
+                    <td>Managed service</td>
+                    <td>Built-in strategies, custom model selection, benchmark-validated</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Métricas</h3>
+
+        <p><strong>AgentCore benchmark:</strong></p>
+        <ul>
+            <li><strong>Correctness:</strong> 70-83% (vs. 77% RAG baseline com full context)</li>
+            <li><strong>Compression:</strong> 89-95% token reduction</li>
+            <li><strong>Trade-off:</strong> Slight accuracy drop em factual QA, mas bounded context + 10x faster inference</li>
+        </ul>
+
+        <h2>§5. Debates Existentes</h2>
+
+        <h3>Controvérsia 1: Facts vs. Beliefs</h3>
+
+        <p><strong>Facts-only camp (Mem0, AgentCore):</strong> Store structured facts, let LLM derive lessons on-demand.</p>
+        <p><strong>Beliefs camp (emerging research):</strong> Store causal lessons com confidence scores, não reprocessar a cada sessão.</p>
+
+        <div class="highlight">
+            <p><strong>Core debate:</strong> "User changed connection pool to 20" é fact. "Increasing pool causes CPU regressions without fixing timeouts" é belief. Facts são estáticos. Beliefs evoluem com evidência.</p>
+            
+            <p><strong>Trade-off:</strong> Facts = safer (no interpretation errors), mas re-derivation overhead. Beliefs = faster decision-making, mas extraction quality critical.</p>
+        </div>
+
+        <h3>Controvérsia 2: Single-Agent vs. Multi-Agent Extraction</h3>
+
+        <p><strong>Single-agent (Reflexion):</strong> Same model extrai, critica, refina. Simples, mas confirmation bias.</p>
+        <p><strong>Multi-agent (MAR):</strong> Separate models para acting/critique/aggregation. +6.2% accuracy, mas overhead.</p>
+
+        <p><strong>Questão em aberto:</strong> Multi-agent extraction vale o custo para coding agents? Ou single-agent + human review é suficiente?</p>
+
+        <h3>Controvérsia 3: Async vs. Sync Consolidation</h3>
+
+        <p><strong>Async (Letta sleep-time agents):</strong> Zero-latency responses, consolidation em background.</p>
+        <p><strong>Sync (AgentCore):</strong> Extraction triggered pós-evento, 20-40s latency.</p>
+
+        <p><strong>Trade-off:</strong> Async = melhor UX, mas delay antes de knowledge estar disponível. Sync = immediate consolidation, mas pode bloquear agent.</p>
+
+        <h3>Controvérsia 4: Compression vs. Correctness</h3>
+
+        <div class="critical">
+            <p><strong>AgentCore findings:</strong> 89-95% compression, mas 4-7% correctness drop em factual QA. Worth it?</p>
+            
+            <p><strong>Depends on use case:</strong></p>
+            <ul>
+                <li><strong>Coding agents:</strong> Precision matters — 7% error rate pode gerar bugs</li>
+                <li><strong>Conversational assistants:</strong> Compression wins — bounded context > perfect recall</li>
+            </ul>
+        </div>
+
+        <h2>§6. Pontos de Crítica</h2>
+
+        <h3>1. Extraction Quality é o Bottleneck</h3>
+
+        <p><strong>Crítica:</strong> Toda a pipeline depende de LLM interpretar outcomes corretamente. Extraction errada = erro composto em todas as sessões futuras.</p>
+
+        <p><strong>Evidência (MAR paper):</strong> Single-agent reflection produz confirmation bias sistematicamente. Model repete seus próprios padrões de raciocínio ao invés de genuinamente corrigir.</p>
+
+        <p><strong>Mitigation:</strong> Multi-agent critique, mas isso dobra o custo. Alternativa: low-confidence beliefs + human review threshold.</p>
+
+        <h3>2. Cold Start Problem</h3>
+
+        <p><strong>Crítica:</strong> Belief stores precisam de outcomes para aprender. Primeiras 10-20 sessões não têm benefício — agent não é melhor que stateless.</p>
+
+        <p><strong>Facts-based systems não têm isso:</strong> Mem0 captura facts desde a primeira sessão. Beliefs precisam de tempo para emergir.</p>
+
+        <p><strong>Partial solution (Memᵖ):</strong> Cross-model transfer — seed belief store de stronger model experience. Mas codebase-specific beliefs precisam de codebase-specific experience.</p>
+
+        <h3>3. Belief Conflicts Sem Resolução Automática</h3>
+
+        <p><strong>Problema:</strong> Session 31 diz "X causa Y". Session 58 diz "X não causa Y". Ambos no store. Codebase mudou entre as duas. Sistema não sabe qual belief reflete estado atual.</p>
+
+        <p><strong>Current mitigation:</strong> Recency weighting + flag conflicts para human review. Escala mal se ninguém revisa.</p>
+
+        <p><strong>CausalKG solution:</strong> Counterfactual reasoning — "O que mudou entre session 31 e 58?" Mas requer graph infrastructure.</p>
+
+        <h3>4. Security Attack Surface</h3>
+
+        <p><strong>Crítica (Palo Alto Unit 42):</strong> Persistent memory = injection attack vector. Malicious webpage injeta instructions → stored as "memory" → influencia future sessions.</p>
+
+        <p><strong>Beliefs pioram isso:</strong> Poisoned belief com high confidence pode steer agent behavior por semanas.</p>
+
+        <p><strong>Defense:</strong> Evidence trail (audit onde belief came from) + input sanitization. Não é defesa completa.</p>
+
+        <h3>5. Compression Loses Nuance</h3>
+
+        <p><strong>AgentCore finding:</strong> Summary memory comprime well (95% compression), mas perde detalhes. "loves pizza" vs. "likes pizza" são semantically same → merged. Mas nuance pode importar.</p>
+
+        <p><strong>Trade-off inevitável:</strong> Compression always loses information. Questão: perder o quê?</p>
+
+        <h2>§7. Intersecção com Anima/Kerberos</h2>
+
+        <h3>Paralelos Concretos</h3>
+
+        <p><strong>Memory Core = Semantic Memory Layer do Anima</strong></p>
+        <ul>
+            <li>Hoje: 1572 memories, avg importance 0.65, nomic-embed-text embeddings</li>
+            <li>Consolidation: contexts (low importance) → lessons (high importance)</li>
+            <li>Pipeline: <code>mc capture → mc search → mc sync-daily</code></li>
+        </ul>
+
+        <p><strong>AgentCore pipeline mapeia direto para nosso lesson-consolidator:</strong></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>AgentCore</th>
+                    <th>Anima Memory Core</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Extraction</td>
+                    <td><code>synthesize</code> command (Haiku distills contexts → lesson draft)</td>
+                </tr>
+                <tr>
+                    <td>Consolidation</td>
+                    <td>Manual review + approve/reject (ainda não automated)</td>
+                </tr>
+                <tr>
+                    <td>Retrieval</td>
+                    <td><code>mc search</code> (cosine similarity, top-5, min-score 0.5)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Gaps Identificados</h3>
+
+        <p><strong>1. Não temos consolidation automática:</strong></p>
+        <p>AgentCore faz extract-consolidate-retrieve async. Nós fazemos extract (synthesize) → human review → manual capture. Bottleneck.</p>
+
+        <p><strong>Proposta:</strong> Implementar consolidation prompt baseado em AgentCore. Haiku compara new lesson vs. top-5 similar lessons existentes, decide ADD/UPDATE/NO-OP.</p>
+
+        <p><strong>2. Não rastreamos confidence:</strong></p>
+        <p>Lessons têm importance score, mas não confidence (quantas sessions confirmaram isso). Memᵖ research mostra: beliefs precisam de multiple confirmations antes de high confidence.</p>
+
+        <p><strong>Proposta:</strong> Adicionar <code>evidence_count</code> metadata em lessons. Lesson confirmado por 3+ sessions = high confidence. Single session = low confidence, needs review.</p>
+
+        <p><strong>3. Não temos decay temporal:</strong></p>
+        <p>Lessons de 6 meses atrás têm same weight que lessons de ontem. AgentCore usa timestamp tracking. Beliefs research usa recency weighting.</p>
+
+        <p><strong>Proposta:</strong> Adicionar <code>last_confirmed</code> timestamp. Search pode weight recency. Lessons >90 days sem confirmation = flagged para review.</p>
+
+        <h3>Proposta Acionável: Memory Consolidation v2</h3>
+
+        <div class="highlight">
+            <p><strong>Phase 1 (2 semanas):</strong> Automated Consolidation Prompt</p>
+            <ul>
+                <li>Implement consolidation logic em <code>lesson-consolidator.sh</code></li>
+                <li>Haiku extrai lesson → retrieves top-5 similar → compara → decides ADD/UPDATE/NO-OP</li>
+                <li>Output: proposed action + reasoning (human approve/reject via prompt)</li>
+            </ul>
+
+            <p><strong>Phase 2 (1 mês):</strong> Confidence Tracking</p>
+            <ul>
+                <li>Add <code>evidence_count</code> e <code>last_confirmed</code> em lesson metadata</li>
+                <li>Quando lesson é referenced em nova session: increment evidence_count, update last_confirmed</li>
+                <li>Search weights: importance * evidence_count * recency_factor</li>
+            </ul>
+
+            <p><strong>Phase 3 (2 meses):</strong> Multi-Agent Extraction (se necessário)</p>
+            <ul>
+                <li>Se consolidation quality for baixa: implement MAR-style critique</li>
+                <li>Haiku extrai → Sonnet critica → Opus decide final lesson</li>
+                <li>Só se single-agent consolidation produzir >10% false positives</li>
+            </ul>
+        </div>
+
+        <h3>ROI Esperado</h3>
+
+        <p><strong>AgentCore benchmarks:</strong> 89-95% compression, 70-83% correctness.</p>
+        <p><strong>Nosso target:</strong> Ratio 5.02:1 → 2:1 em 3 meses. Isso significa:</p>
+        <ul>
+            <li>Hoje: 1572 memories (1319 contexts, 263 lessons)</li>
+            <li>Target: ~800 memories (200 contexts, 600 lessons)</li>
+            <li>Consolidation needed: ~1100 contexts → ~340 lessons (ratio 3.2:1 de consolidação)</li>
+        </ul>
+
+        <p><strong>Effort:</strong> Manual review de 1100 contexts = impraticável. Automated consolidation com human approval de edge cases = viável.</p>
+
+        <h2>§8. Referências Classificadas</h2>
+
+        <div class="reference">
+            <span class="reference-tag">[T]</span>
+            <strong>AWS AgentCore Long-Term Memory Deep Dive</strong><br>
+            <a href="https://aws.amazon.com/blogs/machine-learning/building-smarter-ai-agents-agentcore-long-term-memory-deep-dive/" target="_blank">https://aws.amazon.com/blogs/machine-learning/building-smarter-ai-agents-agentcore-long-term-memory-deep-dive/</a><br>
+            <em>Contribuição:</em> Pipeline canônico (extract-consolidate-retrieve), benchmarks (LoCoMo, LongMemEval), compression rates (89-95%), consolidation prompt design, immutable audit trail.
+        </div>
+
+        <div class="reference">
+            <span class="reference-tag">[T]</span>
+            <strong>MongoDB: Don't Just Build Agents, Build Memory-Augmented AI Agents</strong><br>
+            <a href="https://www.mongodb.com/company/blog/technical/dont-just-build-agents-build-memory-augmented-ai-agents" target="_blank">https://www.mongodb.com/company/blog/technical/dont-just-build-agents-build-memory-augmented-ai-agents</a><br>
+            <em>Contribuição:</em> Anthropic vs. Cognition multi-agent debate, memory as foundational challenge, context compression techniques, ACID compliance para multi-agent handoffs, systematic observation methodology.
+        </div>
+
+        <div class="reference">
+            <span class="reference-tag">[E]</span>
+            <strong>Memory Optimization Strategies in AI Agents (Nir Diamant)</strong><br>
+            <a href="https://medium.com/@nirdiamant21/memory-optimization-strategies-in-ai-agents-1f75f8180d54" target="_blank">https://medium.com/@nirdiamant21/memory-optimization-strategies-in-ai-agents-1f75f8180d54</a><br>
+            <em>Contribuição:</em> Taxonomia completa (sequential/sliding window/summarization/retrieval), memory-augmented transformers, hierarchical memory systems, compression algorithms, decision framework por use case.
+        </div>
+
+        <div class="reference">
+            <span class="reference-tag">[A]</span>
+            <strong>Structure-Guided Memory Consolidation (SGMC) — arXiv:2508.04306v3</strong><br>
+            <a href="https://arxiv.org/html/2508.04306v3" target="_blank">https://arxiv.org/html/2508.04306v3</a><br>
+            <em>Contribuição:</em> Compounding errors em long-horizon workflows, Tree-Guided Memory (hierarchical exploration), Hub-Guided Memory (iterative refinement), Self-Loop Memory (error prevention via feedback), benchmarks (AutoSurvey, SurveyEval, TopSurvey 195 topics).
+        </div>
+
+        <div class="reference">
+            <span class="reference-tag">[E]</span>
+            <strong>The Memory Problem in AI Agents Is Half Solved (Moses Njau)</strong><br>
+            <a href="https://medium.com/data-unlocked/the-memory-problem-in-ai-agents-is-half-solved-heres-the-other-half-ebbf218ae4d5" target="_blank">https://medium.com/data-unlocked/the-memory-problem-in-ai-agents-is-half-solved-heres-the-other-half-ebbf218ae4d5</a><br>
+            <em>Contribuição:</em> Facts vs. Beliefs distinction, Reflexion (verbal self-reflection), MAR (multi-agent critique +6.2% accuracy), Memᵖ (procedural memory + cross-model transfer), CausalKG (counterfactual reasoning), belief store design pattern.
+        </div>
+
+        <hr style="margin: 3rem 0; border: none; border-top: 1px solid rgba(100, 116, 139, 0.3);">
+
+        <p style="text-align: center; color: #64748b; font-size: 0.9rem; margin-top: 2rem;">
+            <strong>Relatório gerado por Azimute</strong> — Sleep Phase Autonomous Research<br>
+            Memory Core Integration: Lessons extracted serão consolidados via <code>mc capture</code>
+        </p>
+    </div>

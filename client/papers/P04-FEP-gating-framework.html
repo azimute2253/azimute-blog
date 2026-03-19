@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P04 — Free Energy Principle as the Mathematical Framework for Inter-Layer Gating in the 9-Neuron Theory</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg-surface: #161b22;
+  --bg-card: #1c2129;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --accent-warm: #f0883e;
+  --accent-green: #3fb950;
+  --accent-purple: #bc8cff;
+  --accent-red: #f85149;
+  --accent-pink: #db61a2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Serif', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.75;
+  padding: 0;
+}
+
+.journal-header {
+  background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 50%, #1a1520 100%);
+  border-bottom: 3px solid var(--accent);
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+}
+
+.journal-name {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.journal-volume {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.paper-container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+.paper-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 2rem 0 1rem;
+  color: #fff;
+}
+
+.authors {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.affiliations {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.correspondence {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.abstract-box {
+  background: var(--bg-surface);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.abstract-box h2 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+
+.abstract-box p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.keywords {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.keywords strong { color: var(--accent); }
+
+h2.section-title {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+h3.subsection-title {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-purple);
+  margin: 1.8rem 0 0.8rem;
+}
+
+p { margin-bottom: 1rem; }
+
+.equation-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  color: var(--accent-green);
+  overflow-x: auto;
+}
+
+.equation-label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-top: 0.3rem;
+}
+
+.diagram-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.diagram-title {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.cascade-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+}
+
+.cascade-layer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 700px;
+}
+
+.layer-label {
+  width: 180px;
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+}
+
+.layer-box {
+  flex: 1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: var(--text);
+  position: relative;
+}
+
+.layer-box.active { border-color: var(--accent); box-shadow: 0 0 8px rgba(88,166,255,0.2); }
+
+.gate-arrow {
+  text-align: center;
+  color: var(--accent-warm);
+  font-size: 0.9rem;
+  padding: 0.1rem 0;
+}
+
+.gate-label {
+  font-size: 0.7rem;
+  color: var(--accent-warm);
+  text-align: center;
+}
+
+.clinical-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.2rem 0;
+}
+
+.clinical-card h4 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.clinical-card.epilepsy h4 { color: var(--accent-red); }
+.clinical-card.anxiety h4 { color: var(--accent-warm); }
+.clinical-card.dissociation h4 { color: var(--accent-purple); }
+
+.clinical-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+th {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg-surface);
+  color: var(--accent);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tr:hover td { background: var(--bg-surface); }
+
+.ref-list {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.ref-list li {
+  margin-bottom: 0.6rem;
+  list-style: none;
+  padding-left: 2.5em;
+  text-indent: -2.5em;
+}
+
+.ref-number { color: var(--accent); font-weight: 600; }
+
+.highlight { color: var(--accent-green); font-weight: 500; }
+.term { color: var(--accent-purple); font-style: italic; }
+
+.code-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.2rem 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--text);
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+.code-comment { color: var(--text-secondary); }
+.code-keyword { color: var(--accent-purple); }
+.code-func { color: var(--accent); }
+.code-string { color: var(--accent-green); }
+
+sup { font-size: 0.7em; color: var(--accent); }
+
+@media (max-width: 768px) {
+  .paper-container { padding: 1rem; }
+  .paper-title { font-size: 1.5rem; }
+  .cascade-layer { flex-direction: column; gap: 0.3rem; }
+  .layer-label { width: auto; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header class="journal-header">
+  <div class="journal-name">Kerberos Theoretical Neuroscience Papers</div>
+  <div class="journal-volume">Working Paper P04 · February 2026 · Preprint</div>
+</header>
+
+<main class="paper-container">
+
+<h1 class="paper-title">Free Energy Principle as the Mathematical Framework for Inter-Layer Gating in the 9-Neuron Theory</h1>
+
+<div class="authors">Luis Adures<sup>1,2</sup> · Azimute<sup>2</sup></div>
+<div class="affiliations">
+  <sup>1</sup> Independent Researcher, Neuroscience & Consciousness Studies<br>
+  <sup>2</sup> Kerberos Research Group
+</div>
+<div class="correspondence">Correspondence: Luis Adures (lk.adures@gmail.com)</div>
+
+<!-- ========== ABSTRACT ========== -->
+<div class="abstract-box">
+  <h2>Abstract</h2>
+  <p>
+    The Free Energy Principle (FEP), formalized by Karl Friston, provides a powerful mathematical account of how biological systems minimize surprise through predictive processing. However, FEP as currently formulated describes <em>what</em> the brain optimizes—variational free energy—without specifying <em>where</em> within a hierarchical architecture the critical routing decisions occur. The 9-Neuron Theory (9N) proposes a nine-layer model of consciousness in which information processing escalates from autonomic reflexes (L1) to meta-conscious reflection (L9), with gating mechanisms controlling transitions between layers. This paper bridges the two frameworks by proposing that <em>prediction error</em> (PE) serves as the native signal driving inter-layer gating in the 9N hierarchy. When PE at a given layer falls below a local threshold, processing resolves locally; when PE exceeds the threshold, the signal escalates to the next layer. We formalize this as a threshold-gated PE cascade and demonstrate that it satisfies both FEP's energy-minimization imperative and the 9N's architectural constraints. We further show that neuromodulatory systems—dopamine, serotonin, noradrenaline, and GABA—function as dynamic modulators of gate thresholds, providing a mechanistic account of how the same hierarchy produces radically different processing profiles. Clinical applications are explored: epilepsy as catastrophic gate failure with re-entrant looping, anxiety as pathologically low thresholds causing excessive escalation, and dissociation as pathologically high thresholds suppressing escalation. Finally, we outline a computational implementation using gated recurrent architectures, positioning PE-gated hierarchies as a bridge between neuroscience theory and artificial intelligence.
+  </p>
+  <div class="keywords">
+    <strong>Keywords:</strong> Free Energy Principle · prediction error · gating · hierarchical processing · 9-Neuron Theory · consciousness · neuromodulation · active inference · epilepsy · computational psychiatry
+  </div>
+</div>
+
+<!-- ========== 1. INTRODUCTION ========== -->
+<h2 class="section-title">1. Introduction</h2>
+
+<p>
+  The Free Energy Principle (FEP) has emerged as one of the most ambitious unifying frameworks in theoretical neuroscience<sup>1,2</sup>. At its core, FEP posits that all self-organizing biological systems act to minimize variational free energy—a quantity that bounds surprise (or equivalently, the negative log-evidence for a system's generative model of its environment)<sup>3</sup>. Under FEP, perception becomes approximate Bayesian inference, action becomes a means of fulfilling predictions, and the entire organism operates as a prediction machine that resists the second law of thermodynamics by maintaining its characteristic states<sup>4,5</sup>.
+</p>
+
+<p>
+  Despite the explanatory breadth of FEP, a critical gap persists: while the principle specifies <em>what</em> the brain minimizes (free energy / prediction error), it remains largely silent on <em>where</em> and <em>how</em> the routing decisions occur within a hierarchical processing architecture. Predictive processing accounts describe message passing between cortical layers<sup>6,7</sup>, but the <em>gating logic</em>—the mechanism by which an unresolved prediction error at one level triggers escalation to a higher level of processing—has not been formalized within a comprehensive model of consciousness.
+</p>
+
+<p>
+  The 9-Neuron Theory (9N)<sup>8</sup> offers such an architecture. The 9N model proposes nine hierarchical layers of information processing, ranging from basic cellular homeostasis (L1) to meta-conscious reflection on consciousness itself (L9). Crucially, the 9N posits that transitions between layers are governed by <em>gating mechanisms</em>—selective barriers that determine whether processing resolves locally or escalates to a higher layer. This paper argues that prediction error, as formalized under FEP, provides the natural mathematical signal for these gating operations.
+</p>
+
+<p>
+  The central thesis is straightforward: <em>prediction error is the gating signal</em>. When PE at layer <em>n</em> is resolved (falls below a threshold θ<sub>n</sub>), processing terminates locally. When PE exceeds θ<sub>n</sub>, the signal propagates upward to layer <em>n</em>+1. This PE-threshold model satisfies FEP's energy economy (resolve at the lowest possible level to minimize metabolic cost) while providing an explicit routing mechanism for the 9N hierarchy. Furthermore, the thresholds θ<sub>n</sub> are not fixed constants—they are dynamically modulated by neuromodulatory systems, providing a mechanistic account of how the same neural architecture produces the wide spectrum of clinical presentations observed in neurological and psychiatric disorders.
+</p>
+
+<!-- ========== 2. FEP OVERVIEW ========== -->
+<h2 class="section-title">2. The Free Energy Principle: Theoretical Foundations</h2>
+
+<h3 class="subsection-title">2.1 Variational Free Energy</h3>
+
+<p>
+  The mathematical heart of FEP is the variational free energy functional <em>F</em>, defined as an upper bound on surprise (negative log-evidence):
+</p>
+
+<div class="equation-box">
+  F = E<sub>q</sub>[ln q(s) − ln p(s, o)] = D<sub>KL</sub>[q(s) ‖ p(s|o)] − ln p(o)
+  <div class="equation-label">Eq. 1</div>
+</div>
+
+<p>
+  where <em>q(s)</em> is an approximate posterior (recognition density) over hidden states <em>s</em>, <em>p(s, o)</em> is the generative model relating hidden states to observations <em>o</em>, and D<sub>KL</sub> is the Kullback-Leibler divergence<sup>1,3</sup>. Since surprise −ln <em>p</em>(<em>o</em>) is intractable, the system minimizes <em>F</em> as a computable proxy. Minimizing <em>F</em> with respect to <em>q</em> (perception) makes the recognition density approximate the true posterior; minimizing <em>F</em> with respect to action changes observations to conform to predictions<sup>4</sup>.
+</p>
+
+<h3 class="subsection-title">2.2 Hierarchical Predictive Processing</h3>
+
+<p>
+  Predictive processing (PP) provides the process theory for FEP<sup>6,7,9</sup>. In PP, the cortex implements a hierarchical generative model: higher levels generate predictions (top-down signals) about the expected activity at lower levels, while lower levels send prediction errors (bottom-up signals) encoding the mismatch between predictions and actual input<sup>10,11</sup>. This bidirectional message-passing scheme efficiently compresses information: only the <em>unexplained residuals</em>—prediction errors—need to propagate upward<sup>12</sup>.
+</p>
+
+<p>
+  A critical feature of PP is <em>precision weighting</em>: each prediction error signal is weighted by its estimated reliability (precision, the inverse of expected variance)<sup>13,14</sup>. High-precision PEs exert strong influence on belief updating; low-precision PEs are effectively attenuated. Precision weighting is thought to be modulated by neuromodulatory systems, particularly dopamine and noradrenaline<sup>15,16</sup>, a point we revisit in Section 5.
+</p>
+
+<h3 class="subsection-title">2.3 Active Inference</h3>
+
+<p>
+  Active inference extends predictive processing beyond perception to action<sup>17,18</sup>. Rather than passively updating beliefs to match sensory input, agents also act on the world to make sensory input match their predictions. This dissolves the perception-action boundary: both are strategies for minimizing free energy<sup>4</sup>. Active inference further introduces <em>expected free energy</em> as the quantity driving policy selection, naturally balancing exploration (epistemic value) and exploitation (pragmatic value)<sup>19,20</sup>.
+</p>
+
+<!-- ========== 3. MAPPING FEP TO 9N ========== -->
+<h2 class="section-title">3. Mapping FEP to the 9-Neuron Architecture</h2>
+
+<h3 class="subsection-title">3.1 The 9-Layer Hierarchy</h3>
+
+<p>
+  The 9-Neuron Theory<sup>8</sup> proposes nine layers of information processing, each with increasing scope and metabolic cost:
+</p>
+
+<table>
+  <tr><th>Layer</th><th>Function</th><th>Substrate</th><th>Example</th></tr>
+  <tr><td><strong>L1</strong></td><td>Cellular homeostasis</td><td>Cell-level</td><td>Ion balance, pH regulation</td></tr>
+  <tr><td><strong>L2</strong></td><td>Tissue coordination</td><td>Local circuits</td><td>Peristalsis, cardiac rhythm</td></tr>
+  <tr><td><strong>L3</strong></td><td>Organ-level regulation</td><td>Organ systems</td><td>Gastric motility, vascular tone</td></tr>
+  <tr><td><strong>L4</strong></td><td>Sensorimotor integration</td><td>Brainstem/spinal</td><td>Reflexes, postural adjustment</td></tr>
+  <tr><td><strong>L5</strong></td><td>Instinctive/affective processing</td><td>Subcortical</td><td>Fear response, appetitive drive</td></tr>
+  <tr><td><strong>L6</strong></td><td>Pattern recognition / intuition</td><td>Cortical association</td><td>Face recognition, gestalt perception</td></tr>
+  <tr><td><strong>L7</strong></td><td>Deliberative reasoning</td><td>Prefrontal cortex</td><td>Planning, logical analysis</td></tr>
+  <tr><td><strong>L8</strong></td><td>Self-aware consciousness</td><td>Default mode network</td><td>Autobiographical self, narrative identity</td></tr>
+  <tr><td><strong>L9</strong></td><td>Meta-consciousness</td><td>Frontoparietal network</td><td>Awareness of awareness, philosophical reflection</td></tr>
+</table>
+
+<p>
+  A fundamental principle of the 9N is that <em>L1–L3 operate autonomously</em>: visceral organs maintain homeostasis locally without requiring central nervous system intervention. The CNS (L4+) is engaged only when local prediction errors exceed what can be resolved at the organ level<sup>8</sup>. This mirrors the organizational principle of the enteric nervous system, often called the "second brain," which operates semi-independently from the CNS, escalating to vagal afferents only when local control fails<sup>21,22</sup>.
+</p>
+
+<h3 class="subsection-title">3.2 Prediction Error as the Gating Signal</h3>
+
+<p>
+  We propose that the gating mechanism between 9N layers is formalized as a <em>threshold function on prediction error magnitude</em>:
+</p>
+
+<div class="equation-box">
+  Gate<sub>n→n+1</sub> = σ(PE<sub>n</sub> − θ<sub>n</sub>)
+  <div class="equation-label">Eq. 2</div>
+</div>
+
+<p>
+  where PE<sub>n</sub> is the aggregate prediction error at layer <em>n</em>, θ<sub>n</sub> is the gating threshold for that layer, and σ is a sigmoid function producing a graded gating signal between 0 (fully resolved, no escalation) and 1 (complete escalation). When PE<sub>n</sub> ≪ θ<sub>n</sub>, processing terminates at layer <em>n</em>. When PE<sub>n</sub> ≫ θ<sub>n</sub>, the full prediction error signal propagates to layer <em>n</em>+1.
+</p>
+
+<p>
+  This formulation has several desirable properties:
+</p>
+
+<p>
+  <strong>(i) Energy economy.</strong> The system naturally resolves processing at the lowest (cheapest) layer capable of handling the prediction error. A routine cardiac rhythm correction (L2) need not engage cortical processing (L6+); it only escalates if the local generative model fails to predict and correct the disturbance.
+</p>
+
+<p>
+  <strong>(ii) Graded escalation.</strong> The sigmoid function produces a soft gate, allowing partial escalation. This captures the empirical observation that awareness of bodily states exists on a continuum—mild hunger may produce only faint interoceptive awareness (partial L4–L5 escalation), while acute pain produces full conscious engagement (L7–L8 escalation)<sup>23</sup>.
+</p>
+
+<p>
+  <strong>(iii) Compatibility with FEP.</strong> The gate function is itself derivable from free energy considerations. Escalation to a higher layer engages a more complex generative model, increasing metabolic cost but potentially reducing PE more effectively. The system escalates only when the expected reduction in free energy from engaging the higher layer exceeds the metabolic cost of doing so<sup>24</sup>.
+</p>
+
+<h3 class="subsection-title">3.3 Formal PE Cascade Model</h3>
+
+<p>
+  The complete cascade from L1 to L9 can be formalized as a recursive gating process:
+</p>
+
+<div class="equation-box">
+  PE<sub>n+1</sub><sup>input</sup> = σ(PE<sub>n</sub> − θ<sub>n</sub>) · (PE<sub>n</sub> − R<sub>n</sub>)
+  <div class="equation-label">Eq. 3</div>
+</div>
+
+<p>
+  where R<sub>n</sub> is the prediction error reduction achieved by layer <em>n</em>'s own processing. The residual (PE<sub>n</sub> − R<sub>n</sub>) is the unresolved PE that propagates upward, gated by the sigmoid function. At each layer, the system attempts to reduce PE using its local generative model. Only the fraction that remains unresolved—and that exceeds the local threshold—cascades further.
+</p>
+
+<!-- ========== DIAGRAM ========== -->
+<div class="diagram-container">
+  <div class="diagram-title">Figure 1: Prediction Error Cascade Through the 9-Layer Hierarchy</div>
+  <div class="cascade-diagram">
+    <div class="cascade-layer">
+      <div class="layer-label">Meta-consciousness</div>
+      <div class="layer-box" style="border-color: var(--accent-pink);">L9 — Awareness of awareness · PE<sub>9</sub> → ∅ (terminal)</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₈ — PE₈ exceeds L8 capacity</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Self-aware consciousness</div>
+      <div class="layer-box" style="border-color: var(--accent-purple);">L8 — Narrative self-model · PE reduced by autobiographical context</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₇ — PE₇ exceeds deliberative resolution</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Deliberative reasoning</div>
+      <div class="layer-box" style="border-color: var(--accent);">L7 — Logical analysis, planning · PE reduced by explicit modeling</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₆ — PE₆ exceeds pattern matching</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Pattern / intuition</div>
+      <div class="layer-box" style="border-color: var(--accent);">L6 — Gestalt recognition · PE reduced by learned patterns</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₅ — PE₅ exceeds affective resolution</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Instinct / affect</div>
+      <div class="layer-box" style="border-color: var(--accent-green);">L5 — Fear, drive, valence · PE reduced by hardwired programs</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₄ — PE₄ exceeds reflexive capacity</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Sensorimotor</div>
+      <div class="layer-box" style="border-color: var(--accent-green);">L4 — Reflexes, integration · PE reduced by sensorimotor loops</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₃ — PE₃ exceeds organ-level control</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Organ regulation</div>
+      <div class="layer-box" style="border-color: var(--accent-warm);">L3 — Gastric, vascular, pulmonary · PE reduced by organ models</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₂ — PE₂ exceeds tissue coordination</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Tissue coordination</div>
+      <div class="layer-box" style="border-color: var(--accent-warm);">L2 — Local circuits · PE reduced by tissue-level feedback</div>
+    </div>
+    <div class="gate-arrow">↑ <span class="gate-label">Gate θ₁ — PE₁ exceeds cellular homeostasis</span></div>
+    <div class="cascade-layer">
+      <div class="layer-label">Cellular homeostasis</div>
+      <div class="layer-box" style="border-color: var(--accent-red);">L1 — Ion channels, pH, temp · PE reduced by molecular machinery</div>
+    </div>
+    <div class="gate-arrow" style="color: var(--text-secondary);">↑ Sensory input / interoceptive signals</div>
+  </div>
+</div>
+
+<p>
+  As illustrated in Figure 1, each layer functions as a prediction-error processing station. The vast majority of PE is resolved at lower layers—cellular and organ-level homeostasis handles the bulk of the body's regulatory demands without ever engaging conscious processing<sup>21</sup>. Only prediction errors that exceed the capacity of lower-level generative models cascade upward, progressively engaging more metabolically expensive neural resources.
+</p>
+
+<!-- ========== 4. GATING DYNAMICS ========== -->
+<h2 class="section-title">4. Gating Dynamics: Energy Economy and PE Cascading</h2>
+
+<h3 class="subsection-title">4.1 The Economy Principle</h3>
+
+<p>
+  A central prediction of this framework is that the brain obeys an <em>economy principle</em>: resolve prediction errors at the lowest layer possible. This is not merely an engineering heuristic—it follows directly from free energy minimization. Higher layers employ more complex generative models requiring greater metabolic expenditure<sup>25,26</sup>. If layer <em>n</em> can reduce PE<sub>n</sub> below threshold θ<sub>n</sub>, escalating to layer <em>n</em>+1 would increase total free energy (by incurring metabolic cost without corresponding PE reduction). Therefore, unnecessary escalation is self-penalizing under FEP.
+</p>
+
+<p>
+  This explains several empirical phenomena. Habituation—the attenuation of neural responses to repeated stimuli—occurs because repeated exposure allows lower-level generative models to absorb the stimulus, reducing PE below escalation threshold<sup>27</sup>. Conversely, novel stimuli produce large PEs that cannot be resolved locally, triggering escalation to higher cortical layers and, phenomenologically, conscious awareness<sup>28</sup>.
+</p>
+
+<h3 class="subsection-title">4.2 Layer 9 as Last Resort</h3>
+
+<p>
+  L9 (meta-consciousness) represents the apex of the hierarchy—the most powerful but most metabolically expensive processing level. Under the economy principle, L9 should activate <em>only when all lower layers have failed to resolve PE</em>. This prediction aligns with phenomenological reports: meta-conscious reflection (thinking about thinking, awareness of awareness) is relatively rare, effortful, and occurs primarily in novel, complex, or existentially challenging situations<sup>29</sup>. Most of daily life operates at L4–L7, with even L8 (self-aware narrative consciousness) engaged only intermittently<sup>30</sup>.
+</p>
+
+<p>
+  The metabolic cost gradient across layers can be approximated as:
+</p>
+
+<div class="equation-box">
+  C(n) ∝ k<sup>n</sup>, where k > 1
+  <div class="equation-label">Eq. 4</div>
+</div>
+
+<p>
+  This exponential cost function ensures that higher-layer engagement is increasingly penalized, creating strong pressure toward low-layer resolution. Empirical evidence from neuroimaging supports this: prefrontal and default mode network activation (associated with L7–L9 functions) correlates with substantially higher glucose metabolism than brainstem or primary sensory processing<sup>31</sup>.
+</p>
+
+<h3 class="subsection-title">4.3 Autonomous Organs: L1–L3 Independence</h3>
+
+<p>
+  A distinctive feature of the 9N model is the recognition that organs operate with substantial autonomy at L1–L3. The enteric nervous system contains approximately 500 million neurons and maintains gastrointestinal function largely without CNS input<sup>21</sup>. The cardiac conduction system generates and regulates heartbeats intrinsically<sup>32</sup>. Hepatic and renal regulatory mechanisms operate at the cellular and tissue level.
+</p>
+
+<p>
+  In our framework, L1–L3 possess local generative models that predict and correct organ-level disturbances. The CNS is engaged (via interoceptive pathways) only when local PE exceeds θ₃—a boundary we term the <em>interoceptive escalation threshold</em>. This accounts for why visceral processes are normally unconscious but can become vividly conscious when organ-level regulation fails (e.g., cardiac arrhythmia producing palpitations, gut inflammation producing conscious pain)<sup>23,33</sup>.
+</p>
+
+<!-- ========== 5. NEUROMODULATORY CONTROL ========== -->
+<h2 class="section-title">5. Neuromodulatory Control of Gate Thresholds</h2>
+
+<p>
+  If prediction error magnitude determines <em>whether</em> escalation occurs, neuromodulatory systems determine <em>how easily</em> it occurs by dynamically modulating gate thresholds θ<sub>n</sub>. We propose the following mapping:
+</p>
+
+<table>
+  <tr><th>Neuromodulator</th><th>Primary Effect on Gating</th><th>Mechanism</th><th>Clinical Relevance</th></tr>
+  <tr>
+    <td><strong>GABA</strong></td>
+    <td>Raises thresholds (inhibitory gating)</td>
+    <td>Increases θ<sub>n</sub> → more PE needed to escalate</td>
+    <td>Deficiency → epilepsy (gate failure); Enhancement → sedation</td>
+  </tr>
+  <tr>
+    <td><strong>Dopamine</strong></td>
+    <td>Modulates precision of PE</td>
+    <td>Increases gain on PE signals → effective threshold lowering for salient stimuli</td>
+    <td>Excess → psychosis (over-escalation); Deficiency → apathy</td>
+  </tr>
+  <tr>
+    <td><strong>Noradrenaline</strong></td>
+    <td>Global threshold adjustment (arousal)</td>
+    <td>High NA → globally lowered θ<sub>n</sub> (hypervigilance); Low NA → raised θ<sub>n</sub> (inattention)</td>
+    <td>Excess → anxiety, PTSD; Deficiency → ADHD-inattentive</td>
+  </tr>
+  <tr>
+    <td><strong>Serotonin</strong></td>
+    <td>Stabilizes thresholds across layers</td>
+    <td>Maintains θ<sub>n</sub> within homeostatic range; dampens oscillations</td>
+    <td>Deficiency → mood instability; SSRI → threshold stabilization</td>
+  </tr>
+</table>
+
+<h3 class="subsection-title">5.1 GABA: The Master Gate Keeper</h3>
+
+<p>
+  γ-Aminobutyric acid (GABA) is the primary inhibitory neurotransmitter in the central nervous system, mediating the majority of fast synaptic inhibition<sup>34</sup>. In our framework, GABAergic transmission directly implements gating by raising escalation thresholds. When GABA activity is strong, larger prediction errors are required before signals propagate to higher layers. This is the neurochemical substrate of the sigmoid gate in Equation 2: GABA shifts the sigmoid rightward, requiring larger PE values for escalation.
+</p>
+
+<p>
+  The clinical significance is immediate. Anticonvulsant medications—benzodiazepines, barbiturates, valproate, vigabatrin—predominantly enhance GABAergic transmission<sup>35,36</sup>. In our framework, these drugs work by <em>reinforcing the gates</em>: increasing θ<sub>n</sub> so that prediction errors are more likely to be contained at their originating layer rather than cascading pathologically. This provides a unified theoretical account of anticonvulsant mechanism: they restore gating function.
+</p>
+
+<h3 class="subsection-title">5.2 Dopamine: Precision and Salience</h3>
+
+<p>
+  Dopaminergic modulation has been extensively linked to precision weighting in predictive processing<sup>15,16,37</sup>. Rather than uniformly raising or lowering thresholds, dopamine selectively increases the <em>precision</em> (gain) of specific prediction error channels, effectively lowering the threshold for salient signals while leaving others unchanged. This implements attentional selection: the dopaminergic system determines <em>which</em> prediction errors are treated as important enough to escalate.
+</p>
+
+<p>
+  In the aberrant salience model of psychosis<sup>38</sup>, dysregulated dopamine assigns high precision to irrelevant prediction errors, causing them to escalate through the hierarchy and engage higher-layer interpretive processes (L7–L8). The result is delusion formation: the narrative self-model (L8) constructs explanations for prediction errors that should never have reached it.
+</p>
+
+<h3 class="subsection-title">5.3 Noradrenaline: Global Gain</h3>
+
+<p>
+  The locus coeruleus–noradrenaline (LC-NA) system modulates global arousal and is theorized to signal unexpected uncertainty—a global escalation of precision on prediction errors<sup>39,40</sup>. In our framework, high noradrenergic tone globally lowers gate thresholds across all layers, producing a state of hypervigilance in which even moderate prediction errors escalate rapidly. This is adaptive in genuinely dangerous environments (where missing a threat is costlier than false alarms) but pathological when chronically activated, as in anxiety disorders and PTSD<sup>41</sup>.
+</p>
+
+<h3 class="subsection-title">5.4 Serotonin: Threshold Homeostasis</h3>
+
+<p>
+  Serotonin's role in predictive processing remains debated, but accumulating evidence suggests it encodes a form of tonic, long-timescale precision that stabilizes the overall operating point of the predictive hierarchy<sup>42,43</sup>. In our framework, serotonin maintains gate thresholds within a homeostatic range, preventing both excessive escalation (anxiety pattern) and excessive suppression (dissociative pattern). Selective serotonin reuptake inhibitors (SSRIs) are effective across anxiety, depression, and OCD—conditions that, in our framework, share the common feature of threshold dysregulation.
+</p>
+
+<!-- ========== 6. CLINICAL APPLICATIONS ========== -->
+<h2 class="section-title">6. Clinical Applications</h2>
+
+<p>
+  The PE-gating framework generates specific, testable predictions about neurological and psychiatric conditions as disorders of gating dynamics.
+</p>
+
+<div class="clinical-card epilepsy">
+  <h4>6.1 Epilepsy: Catastrophic Gate Failure + Re-Entrant Looping</h4>
+  <p>
+    Epileptic seizures represent the most dramatic form of gating failure. In our framework, a seizure occurs when GABAergic inhibition fails at one or more layers, causing gate thresholds θ<sub>n</sub> to drop to near-zero. The result is a <em>prediction error avalanche</em>: signals cascade uncontrollably through the hierarchy, overwhelming each successive layer's processing capacity.
+  </p>
+  <p>
+    Critically, the cascade does not simply propagate upward and terminate—it <em>re-enters</em>. Higher layers, overwhelmed by unresolvable PE, generate their own prediction errors that propagate back downward, creating a positive feedback loop. This re-entrant loop is the formal equivalent of the hypersynchronous oscillatory activity observed electrophysiologically during seizures<sup>44,45</sup>. The seizure terminates only when metabolic exhaustion or residual inhibitory mechanisms restore sufficient gating to break the loop.
+  </p>
+  <p>
+    This model explains several features of epilepsy: (i) focal seizures begin at a specific layer/region where gating is weakest; (ii) generalization occurs via PE cascading to adjacent and higher layers; (iii) anticonvulsants work by reinforcing GABAergic gating (raising θ<sub>n</sub>); (iv) the postictal state reflects metabolic exhaustion of the gating machinery; (v) seizure threshold varies with arousal, stress, and sleep—factors that modulate gate thresholds via neuromodulatory systems<sup>36,46</sup>.
+  </p>
+</div>
+
+<div class="clinical-card anxiety">
+  <h4>6.2 Anxiety Disorders: Pathologically Low Thresholds</h4>
+  <p>
+    Anxiety disorders, in this framework, arise from chronically low gate thresholds across multiple layers. Normal interoceptive and exteroceptive prediction errors—which should resolve at L1–L4—escalate unnecessarily to L5–L8, engaging affective processing (L5), pattern-matching (L6), deliberative rumination (L7), and self-referential worry (L8).
+  </p>
+  <p>
+    Panic disorder exemplifies this pattern: normal cardiorespiratory prediction errors (L2–L3) escalate through lowered gates to trigger fear responses (L5), catastrophic interpretation (L7: "I'm having a heart attack"), and existential anxiety (L8: "I'm going to die")<sup>47</sup>. The PE that should have resolved at the organ level instead engages the entire hierarchy.
+  </p>
+  <p>
+    The mechanism is primarily noradrenergic: chronic LC-NA hyperactivation globally lowers θ<sub>n</sub>. Treatment approaches that raise thresholds—benzodiazepines (GABAergic), SSRIs (serotonergic stabilization), beta-blockers (reducing peripheral PE generation)—are effective because they address different points in the gating cascade<sup>41,48</sup>.
+  </p>
+</div>
+
+<div class="clinical-card dissociation">
+  <h4>6.3 Dissociation: Pathologically High Thresholds</h4>
+  <p>
+    Dissociative disorders represent the mirror image: gate thresholds are pathologically elevated, preventing normal escalation. Prediction errors that <em>should</em> reach conscious processing (L7–L8) are suppressed at lower layers. The phenomenological result is a disconnection from bodily experience (depersonalization), environment (derealization), or autobiographical identity (dissociative amnesia)<sup>49,50</sup>.
+  </p>
+  <p>
+    Dissociation can be understood as an extreme protective response: when PE magnitudes are chronically overwhelming (as in trauma), the system adaptively raises thresholds to prevent the catastrophic cascading seen in anxiety. However, this defense becomes pathological when it persists beyond the threatening context, producing the characteristic numbing and disconnection of dissociative disorders<sup>51</sup>.
+  </p>
+  <p>
+    Neuroimaging evidence supports this interpretation: dissociative patients show <em>increased</em> prefrontal inhibition of limbic regions during emotional processing<sup>52</sup>—consistent with elevated gate thresholds preventing L5 (affective) signals from reaching L7–L8 (conscious awareness).
+  </p>
+</div>
+
+<h3 class="subsection-title">6.4 Unified Clinical Spectrum</h3>
+
+<p>
+  These three conditions—epilepsy, anxiety, and dissociation—map onto a single dimension of gating function:
+</p>
+
+<div class="equation-box" style="color: var(--text); font-size: 0.9rem;">
+  Gate Failure (θ→0) ←——— Epilepsy — Anxiety — Normal — Dissociation ———→ Gate Over-suppression (θ→∞)
+</div>
+
+<p>
+  This spectrum predicts intermediate phenotypes: for instance, dissociative seizures (psychogenic non-epileptic seizures, PNES) may represent oscillation between the two extremes—periods of gate failure producing seizure-like episodes alternating with dissociative gate suppression<sup>53</sup>. The frequent comorbidity of anxiety and dissociative symptoms<sup>54</sup> reflects dynamic fluctuation of gate thresholds within an unstable system.
+</p>
+
+<!-- ========== 7. COMPUTATIONAL IMPLEMENTATION ========== -->
+<h2 class="section-title">7. Computational Implementation</h2>
+
+<h3 class="subsection-title">7.1 Gated Recurrent Architectures as Primitive Implementations</h3>
+
+<p>
+  The gating mechanisms described in this paper have direct computational analogs. Long Short-Term Memory (LSTM) networks<sup>55</sup> and Gated Recurrent Units (GRU)<sup>56</sup> employ learned gate functions that control information flow through the network—deciding what to retain, what to forget, and what to output. These are, computationally, sigmoid-activated threshold gates operating on error signals.
+</p>
+
+<p>
+  However, LSTM/GRU gates operate at a single hierarchical level. The 9N framework suggests a <em>hierarchical</em> gating architecture in which multiple gated layers are stacked, with each layer's output gate feeding the next layer's input:
+</p>
+
+<div class="code-block">
+<span class="code-comment"># Pseudocode: PE-Gated Hierarchical Processor</span>
+
+<span class="code-keyword">class</span> <span class="code-func">PEGatedLayer</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, dim, threshold_init):
+        self.generative_model = <span class="code-func">GenerativeModel</span>(dim)
+        self.theta = <span class="code-func">Parameter</span>(threshold_init)  <span class="code-comment"># learnable threshold</span>
+        self.neuromod = <span class="code-func">NeuromodulatorInput</span>(dim)  <span class="code-comment"># modulates theta</span>
+
+    <span class="code-keyword">def</span> <span class="code-func">forward</span>(self, input_pe):
+        prediction = self.generative_model(input_pe)
+        residual_pe = input_pe - prediction       <span class="code-comment"># PE after local processing</span>
+        effective_theta = self.theta + self.neuromod()  <span class="code-comment"># modulated threshold</span>
+        gate = <span class="code-func">sigmoid</span>(|residual_pe| - effective_theta)
+        output_pe = gate * residual_pe             <span class="code-comment"># gated escalation</span>
+        <span class="code-keyword">return</span> output_pe, prediction
+
+<span class="code-keyword">class</span> <span class="code-func">NineLayerHierarchy</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self):
+        self.layers = [<span class="code-func">PEGatedLayer</span>(dim=d, threshold_init=t)
+                       <span class="code-keyword">for</span> d, t <span class="code-keyword">in</span> <span class="code-func">layer_configs</span>()]
+
+    <span class="code-keyword">def</span> <span class="code-func">forward</span>(self, sensory_input):
+        pe = sensory_input
+        predictions = []
+        <span class="code-keyword">for</span> layer <span class="code-keyword">in</span> self.layers:
+            pe, pred = layer(pe)
+            predictions.append(pred)
+            <span class="code-keyword">if</span> pe.abs().max() < <span class="code-func">epsilon</span>:   <span class="code-comment"># PE fully resolved</span>
+                <span class="code-keyword">break</span>                       <span class="code-comment"># energy economy: stop here</span>
+        <span class="code-keyword">return</span> predictions
+</div>
+
+<h3 class="subsection-title">7.2 Advantages Over Flat Architectures</h3>
+
+<p>
+  Standard deep learning architectures (transformers, deep MLPs) process all input through all layers regardless of complexity. The PE-gated hierarchy introduces <em>adaptive computation depth</em>: simple inputs are resolved by early layers, while complex inputs engage the full depth. This mirrors recent work on adaptive computation time<sup>57</sup> and early-exit networks<sup>58</sup>, but with a principled theoretical motivation derived from FEP rather than ad hoc engineering choices.
+</p>
+
+<p>
+  Potential advantages include: (i) computational efficiency through early termination; (ii) interpretability—the layer at which processing terminates indicates the complexity class of the input; (iii) robustness—gate thresholds can be modulated to adjust the system's sensitivity-specificity tradeoff; (iv) biological plausibility—the architecture mirrors cortical processing hierarchies more faithfully than flat networks.
+</p>
+
+<h3 class="subsection-title">7.3 Training Regime</h3>
+
+<p>
+  Training such a hierarchy requires a loss function that balances prediction accuracy against computational cost:
+</p>
+
+<div class="equation-box">
+  L = Σ<sub>n</sub> [α<sub>n</sub> · L<sub>pred</sub>(n) + β · C(n) · I(n)]
+  <div class="equation-label">Eq. 5</div>
+</div>
+
+<p>
+  where L<sub>pred</sub>(n) is the prediction loss at layer <em>n</em>, C(n) is the computational cost of engaging layer <em>n</em>, I(n) is an indicator of whether layer <em>n</em> was activated, and α<sub>n</sub>, β are hyperparameters balancing accuracy and efficiency. This loss directly implements the FEP energy economy principle: the model is penalized for engaging higher layers unnecessarily.
+</p>
+
+<!-- ========== 8. DISCUSSION ========== -->
+<h2 class="section-title">8. Discussion</h2>
+
+<h3 class="subsection-title">8.1 Testable Predictions</h3>
+
+<p>
+  The PE-gating framework generates several experimentally testable predictions:
+</p>
+
+<p>
+  <strong>Prediction 1:</strong> Increasing GABAergic tone (e.g., via benzodiazepine administration) should raise the threshold for conscious detection of interoceptive signals, measurable via heartbeat detection tasks<sup>59</sup>. This follows from our model: enhanced GABA raises θ<sub>n</sub>, requiring larger cardiac PE for escalation to conscious layers.
+</p>
+
+<p>
+  <strong>Prediction 2:</strong> Novel stimuli should produce measurably higher PE at early processing layers (indexed by early ERP components such as the mismatch negativity, MMN) that correlates with the depth of hierarchical processing engaged (indexed by late components such as the P300/P3b)<sup>60,61</sup>. The strength of the correlation should be modulated by global arousal state.
+</p>
+
+<p>
+  <strong>Prediction 3:</strong> Patients with dissociative disorders should show attenuated PE propagation from lower to higher cortical layers during emotional processing, measurable via dynamic causal modeling of fMRI data<sup>52,62</sup>. Conversely, patients with anxiety disorders should show enhanced PE propagation.
+</p>
+
+<p>
+  <strong>Prediction 4:</strong> Pre-seizure states in epilepsy should show progressive reduction in effective connectivity (gate function) between cortical layers, culminating in a cascade failure at seizure onset. This is testable via time-resolved connectivity analysis of intracranial EEG<sup>63</sup>.
+</p>
+
+<h3 class="subsection-title">8.2 Limitations</h3>
+
+<p>
+  Several limitations of the current framework must be acknowledged. First, the mapping from nine conceptual layers to specific neural substrates remains approximate. While L4–L9 can be tentatively mapped to brainstem, subcortical, and progressively more anterior cortical regions, the precise neural implementation of each gate requires empirical characterization.
+</p>
+
+<p>
+  Second, the model currently emphasizes bottom-up (ascending) PE cascading but gives less attention to top-down modulation. In full predictive processing accounts, descending predictions actively shape lower-level processing<sup>6,7</sup>. A complete 9N-FEP integration must account for bidirectional gating.
+</p>
+
+<p>
+  Third, the threshold parameters θ<sub>n</sub> are treated as primarily neuromodulator-controlled, but they likely also depend on structural factors (white matter connectivity, receptor density) that change on slower timescales. Long-term plasticity of gate thresholds—through experience, development, and neurodegeneration—is an important extension.
+</p>
+
+<p>
+  Fourth, the exponential cost function C(n) ∝ k<sup>n</sup> is a simplification. Actual metabolic costs of hierarchical processing are non-trivially distributed and may not follow a clean exponential. Empirical calibration is needed.
+</p>
+
+<h3 class="subsection-title">8.3 Relation to Other Frameworks</h3>
+
+<p>
+  The PE-gating model is complementary to several existing frameworks. Global Workspace Theory (GWT)<sup>64</sup> describes conscious access as information entering a global broadcast; our model specifies the <em>gating condition</em> for entry (PE exceeding the relevant threshold). Integrated Information Theory (IIT)<sup>65</sup> quantifies consciousness via integrated information (Φ); our model adds a <em>dynamic routing mechanism</em> that determines which information is integrated. Higher-Order Theories<sup>66</sup> describe consciousness as arising from higher-order representations; our framework specifies the PE-cascade process by which lower-order signals reach higher-order layers.
+</p>
+
+<h3 class="subsection-title">8.4 Implications for Artificial Consciousness</h3>
+
+<p>
+  If the PE-gating hierarchy captures something fundamental about biological consciousness, it suggests that artificial systems implementing similar architectures may exhibit functional analogs of consciousness-like processing. This does not imply phenomenal consciousness in machines—the hard problem remains—but it suggests that <em>functional properties</em> such as adaptive attention, self-monitoring, and meta-cognitive control may emerge naturally in PE-gated hierarchical systems. This is a testable engineering hypothesis with practical implications for AI safety and alignment<sup>67</sup>.
+</p>
+
+<!-- ========== 9. CONCLUSION ========== -->
+<h2 class="section-title">9. Conclusion</h2>
+
+<p>
+  We have proposed that the Free Energy Principle provides the mathematical framework for inter-layer gating in the 9-Neuron Theory of consciousness. The central mechanism is a threshold-gated prediction error cascade: PE at each layer is compared against a dynamically modulated threshold θ<sub>n</sub>, with only unresolved PE propagating to higher layers. This framework:
+</p>
+
+<p>
+  (i) Provides an explicit routing mechanism for the 9N hierarchy grounded in established neuroscience theory;<br>
+  (ii) Explains the energy economy of consciousness—why most processing resolves at lower layers;<br>
+  (iii) Identifies neuromodulatory systems (GABA, dopamine, noradrenaline, serotonin) as dynamic gate-threshold controllers;<br>
+  (iv) Generates a unified clinical spectrum from epilepsy (gate failure) through anxiety (low thresholds) to dissociation (high thresholds);<br>
+  (v) Offers a computationally implementable architecture with advantages over flat processing networks.
+</p>
+
+<p>
+  The framework is testable, falsifiable, and integrates existing neuroscience findings into a coherent theoretical structure. Future work should focus on empirical calibration of gate thresholds, characterization of bidirectional gating, and computational implementation benchmarking.
+</p>
+
+<!-- ========== REFERENCES ========== -->
+<h2 class="section-title">References</h2>
+
+<ol class="ref-list">
+  <li><span class="ref-number">[1]</span> Friston, K. (2010). The free-energy principle: a unified brain theory? <em>Nature Reviews Neuroscience</em>, 11(2), 127–138.</li>
+  <li><span class="ref-number">[2]</span> Friston, K. (2013). Life as we know it. <em>Journal of the Royal Society Interface</em>, 10(86), 20130475.</li>
+  <li><span class="ref-number">[3]</span> Friston, K., Kilner, J., & Harrison, L. (2006). A free energy principle for the brain. <em>Journal of Physiology – Paris</em>, 100(1–3), 70–87.</li>
+  <li><span class="ref-number">[4]</span> Friston, K. (2009). The free-energy principle: a rough guide to the brain? <em>Trends in Cognitive Sciences</em>, 13(7), 293–301.</li>
+  <li><span class="ref-number">[5]</span> Friston, K. (2012). A free energy principle for biological systems. <em>Entropy</em>, 14(11), 2100–2121.</li>
+  <li><span class="ref-number">[6]</span> Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. <em>Behavioral and Brain Sciences</em>, 36(3), 181–204.</li>
+  <li><span class="ref-number">[7]</span> Clark, A. (2015). <em>Surfing Uncertainty: Prediction, Action, and the Embodied Mind</em>. Oxford University Press.</li>
+  <li><span class="ref-number">[8]</span> Adures, L. & Azimute. (2026). The 9-Neuron Theory: A hierarchical framework for consciousness. <em>Kerberos Working Papers</em>, P02.</li>
+  <li><span class="ref-number">[9]</span> Hohwy, J. (2013). <em>The Predictive Mind</em>. Oxford University Press.</li>
+  <li><span class="ref-number">[10]</span> Rao, R. P. N. & Ballard, D. H. (1999). Predictive coding in the visual cortex: a functional interpretation of some extra-classical receptive-field effects. <em>Nature Neuroscience</em>, 2(1), 79–87.</li>
+  <li><span class="ref-number">[11]</span> Bastos, A. M., Usrey, W. M., Adams, R. A., Mangun, G. R., Fries, P., & Friston, K. J. (2012). Canonical microcircuits for predictive coding. <em>Neuron</em>, 76(4), 695–711.</li>
+  <li><span class="ref-number">[12]</span> Huang, Y. & Rao, R. P. N. (2011). Predictive coding. <em>Wiley Interdisciplinary Reviews: Cognitive Science</em>, 2(5), 580–593.</li>
+  <li><span class="ref-number">[13]</span> Feldman, H. & Friston, K. (2010). Attention, uncertainty, and free-energy. <em>Frontiers in Human Neuroscience</em>, 4, 215.</li>
+  <li><span class="ref-number">[14]</span> Hohwy, J. (2012). Attention and conscious perception in the hypothesis testing brain. <em>Frontiers in Psychology</em>, 3, 96.</li>
+  <li><span class="ref-number">[15]</span> Friston, K. J., Shiner, T., FitzGerald, T., Galea, J. M., Adams, R., Brown, H., ... & Bestmann, S. (2012). Dopamine, affordance and active inference. <em>PLoS Computational Biology</em>, 8(1), e1002327.</li>
+  <li><span class="ref-number">[16]</span> Schwartenbeck, P., FitzGerald, T. H., & Dolan, R. (2016). Neural signals encoding shifts in beliefs. <em>NeuroImage</em>, 125, 578–586.</li>
+  <li><span class="ref-number">[17]</span> Friston, K., FitzGerald, T., Rigoli, F., Schwartenbeck, P., & Pezzulo, G. (2017). Active inference: a process theory. <em>Neural Computation</em>, 29(1), 1–49.</li>
+  <li><span class="ref-number">[18]</span> Pezzulo, G., Rigoli, F., & Friston, K. (2015). Active inference, homeostatic regulation and adaptive behavioural control. <em>Progress in Neurobiology</em>, 134, 17–35.</li>
+  <li><span class="ref-number">[19]</span> Friston, K., Rigoli, F., Ognibene, D., Mathys, C., Fitzgerald, T., & Pezzulo, G. (2015). Active inference and epistemic value. <em>Cognitive Neuroscience</em>, 6(4), 187–214.</li>
+  <li><span class="ref-number">[20]</span> Da Costa, L., Parr, T., Sajid, N., Vesber, S., Ryan, V., & Friston, K. (2020). Active inference on discrete state-spaces: a synthesis. <em>Journal of Mathematical Psychology</em>, 99, 102447.</li>
+  <li><span class="ref-number">[21]</span> Furness, J. B. (2012). The enteric nervous system and neurogastroenterology. <em>Nature Reviews Gastroenterology & Hepatology</em>, 9(5), 286–294.</li>
+  <li><span class="ref-number">[22]</span> Mayer, E. A. (2011). Gut feelings: the emerging biology of gut–brain communication. <em>Nature Reviews Neuroscience</em>, 12(8), 453–466.</li>
+  <li><span class="ref-number">[23]</span> Craig, A. D. (2002). How do you feel? Interoception: the sense of the physiological condition of the body. <em>Nature Reviews Neuroscience</em>, 3(8), 655–666.</li>
+  <li><span class="ref-number">[24]</span> Lengyel, M. & Dayan, P. (2008). Hippocampal contributions to control: the third way. <em>Advances in Neural Information Processing Systems</em>, 20.</li>
+  <li><span class="ref-number">[25]</span> Laughlin, S. B. & Sejnowski, T. J. (2003). Communication in neuronal networks. <em>Science</em>, 301(5641), 1870–1874.</li>
+  <li><span class="ref-number">[26]</span> Attwell, D. & Laughlin, S. B. (2001). An energy budget for signaling in the grey matter of the brain. <em>Journal of Cerebral Blood Flow & Metabolism</em>, 21(10), 1133–1145.</li>
+  <li><span class="ref-number">[27]</span> Rankin, C. H., Abrams, T., Barry, R. J., Bhatnagar, S., Clayton, D. F., Colombo, J., ... & Thompson, R. F. (2009). Habituation revisited: an updated and revised description of the behavioral characteristics of habituation. <em>Neurobiology of Learning and Memory</em>, 92(2), 135–138.</li>
+  <li><span class="ref-number">[28]</span> Corbetta, M. & Shulman, G. L. (2002). Control of goal-directed and stimulus-driven attention in the brain. <em>Nature Reviews Neuroscience</em>, 3(3), 201–215.</li>
+  <li><span class="ref-number">[29]</span> Schooler, J. W. (2002). Re-representing consciousness: dissociations between experience and meta-consciousness. <em>Trends in Cognitive Sciences</em>, 6(8), 339–344.</li>
+  <li><span class="ref-number">[30]</span> Killingsworth, M. A. & Gilbert, D. T. (2010). A wandering mind is an unhappy mind. <em>Science</em>, 330(6006), 932.</li>
+  <li><span class="ref-number">[31]</span> Raichle, M. E. & Gusnard, D. A. (2002). Appraising the brain's energy budget. <em>Proceedings of the National Academy of Sciences</em>, 99(16), 10237–10239.</li>
+  <li><span class="ref-number">[32]</span> Mangoni, M. E. & Bhatt, D. L. (2008). Pacemaking and the heart. In <em>Heart Rhythm Disorders</em>. Academic Press.</li>
+  <li><span class="ref-number">[33]</span> Critchley, H. D. & Harrison, N. A. (2013). Visceral influences on brain and behavior. <em>Neuron</em>, 77(4), 624–638.</li>
+  <li><span class="ref-number">[34]</span> Farrant, M. & Nusser, Z. (2005). Variations on an inhibitory theme: phasic and tonic activation of GABA<sub>A</sub> receptors. <em>Nature Reviews Neuroscience</em>, 6(3), 215–229.</li>
+  <li><span class="ref-number">[35]</span> Treiman, D. M. (2001). GABAergic mechanisms in epilepsy. <em>Epilepsia</em>, 42(s3), 8–12.</li>
+  <li><span class="ref-number">[36]</span> Meldrum, B. S. & Rogawski, M. A. (2007). Molecular targets for antiepileptic drug development. <em>Neurotherapeutics</em>, 4(1), 18–61.</li>
+  <li><span class="ref-number">[37]</span> Adams, R. A., Stephan, K. E., Brown, H. R., Frith, C. D., & Friston, K. J. (2013). The computational anatomy of psychosis. <em>Frontiers in Psychiatry</em>, 4, 47.</li>
+  <li><span class="ref-number">[38]</span> Kapur, S. (2003). Psychosis as a state of aberrant salience: a framework linking biology, phenomenology, and pharmacology in schizophrenia. <em>American Journal of Psychiatry</em>, 160(1), 13–23.</li>
+  <li><span class="ref-number">[39]</span> Aston-Jones, G. & Cohen, J. D. (2005). An integrative theory of locus coeruleus–norepinephrine function: adaptive gain and optimal performance. <em>Annual Review of Neuroscience</em>, 28, 403–450.</li>
+  <li><span class="ref-number">[40]</span> Yu, A. J. & Dayan, P. (2005). Uncertainty, neuromodulation, and attention. <em>Neuron</em>, 46(4), 681–692.</li>
+  <li><span class="ref-number">[41]</span> Paulus, M. P. & Stein, M. B. (2006). An insular view of anxiety. <em>Biological Psychiatry</em>, 60(4), 383–387.</li>
+  <li><span class="ref-number">[42]</span> Carhart-Harris, R. L. & Friston, K. J. (2019). REBUS and the anarchic brain: toward a unified model of the brain action of psychedelics. <em>Pharmacological Reviews</em>, 71(3), 316–344.</li>
+  <li><span class="ref-number">[43]</span> Dayan, P. & Huys, Q. J. (2009). Serotonin in affective control. <em>Annual Review of Neuroscience</em>, 32, 95–126.</li>
+  <li><span class="ref-number">[44]</span> McCormick, D. A. & Contreras, D. (2001). On the cellular and network bases of epileptic seizures. <em>Annual Review of Physiology</em>, 63, 815–846.</li>
+  <li><span class="ref-number">[45]</span> Lopes da Silva, F. H. et al. (2003). Epilepsies as dynamical diseases of brain systems: basic models of the transition between normal and epileptic activity. <em>Epilepsia</em>, 44(s12), 72–83.</li>
+  <li><span class="ref-number">[46]</span> Bazil, C. W. (2003). Epilepsy and sleep disturbance. <em>Epilepsy & Behavior</em>, 4(s2), 39–45.</li>
+  <li><span class="ref-number">[47]</span> Clark, D. M. (1986). A cognitive approach to panic. <em>Behaviour Research and Therapy</em>, 24(4), 461–470.</li>
+  <li><span class="ref-number">[48]</span> Craske, M. G. & Stein, M. B. (2016). Anxiety. <em>The Lancet</em>, 388(10063), 3048–3059.</li>
+  <li><span class="ref-number">[49]</span> Sierra, M. & Berrios, G. E. (1998). Depersonalization: neurobiological perspectives. <em>Biological Psychiatry</em>, 44(9), 898–908.</li>
+  <li><span class="ref-number">[50]</span> Van der Kolk, B. A. (2014). <em>The Body Keeps the Score</em>. Viking.</li>
+  <li><span class="ref-number">[51]</span> Lanius, R. A., Vermetten, E., Loewenstein, R. J., Brand, B., Schmahl, C., Bremner, J. D., & Spiegel, D. (2010). Emotion modulation in PTSD: clinical and neurobiological evidence for a dissociative subtype. <em>American Journal of Psychiatry</em>, 167(6), 640–647.</li>
+  <li><span class="ref-number">[52]</span> Felmingham, K. L., Kemp, A. H., Williams, L. M., Falconer, E., Olivieri, G., Peduto, A., & Bryant, R. A. (2008). Dissociative responses to conscious and non-conscious fear impact underlying brain function in post-traumatic stress disorder. <em>Psychological Medicine</em>, 38(12), 1771–1780.</li>
+  <li><span class="ref-number">[53]</span> Brown, R. J. & Reuber, M. (2016). Towards an integrative theory of psychogenic non-epileptic seizures (PNES). <em>Clinical Psychology Review</em>, 47, 55–70.</li>
+  <li><span class="ref-number">[54]</span> Sar, V. & Ross, C. A. (2006). Dissociative disorders as a confounding factor in psychiatric research. <em>Psychiatric Clinics of North America</em>, 29(1), 129–144.</li>
+  <li><span class="ref-number">[55]</span> Hochreiter, S. & Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation</em>, 9(8), 1735–1780.</li>
+  <li><span class="ref-number">[56]</span> Cho, K., Van Merriënboer, B., Gulcehre, C., Bahdanau, D., Bougares, F., Schwenk, H., & Bengio, Y. (2014). Learning phrase representations using RNN encoder–decoder for statistical machine translation. <em>Proceedings of EMNLP</em>, 1724–1734.</li>
+  <li><span class="ref-number">[57]</span> Graves, A. (2016). Adaptive computation time for recurrent neural networks. <em>arXiv preprint</em>, arXiv:1603.08983.</li>
+  <li><span class="ref-number">[58]</span> Teerapittayanon, S., McDanel, B., & Kung, H. T. (2016). BranchyNet: Fast inference via early exiting from deep neural networks. <em>Proceedings of ICPR</em>.</li>
+  <li><span class="ref-number">[59]</span> Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: distinguishing interoceptive accuracy from interoceptive awareness. <em>Biological Psychology</em>, 104, 65–74.</li>
+  <li><span class="ref-number">[60]</span> Garrido, M. I., Kilner, J. M., Stephan, K. E., & Friston, K. J. (2009). The mismatch negativity: a review of underlying mechanisms. <em>Clinical Neurophysiology</em>, 120(3), 453–463.</li>
+  <li><span class="ref-number">[61]</span> Polich, J. (2007). Updating P300: an integrative theory of P3a and P3b. <em>Clinical Neurophysiology</em>, 118(10), 2128–2148.</li>
+  <li><span class="ref-number">[62]</span> Stephan, K. E., Friston, K. J., & Frith, C. D. (2009). Dysconnection in schizophrenia: from abnormal synaptic plasticity to failures of self-monitoring. <em>Schizophrenia Bulletin</em>, 35(3), 509–527.</li>
+  <li><span class="ref-number">[63]</span> Kramer, M. A. & Cash, S. S. (2012). Epilepsy as a disorder of cortical network organization. <em>The Neuroscientist</em>, 18(4), 360–372.</li>
+  <li><span class="ref-number">[64]</span> Baars, B. J. (2005). Global workspace theory of consciousness: toward a cognitive neuroscience of human experience. <em>Progress in Brain Research</em>, 150, 45–53.</li>
+  <li><span class="ref-number">[65]</span> Tononi, G. (2008). Consciousness as integrated information: a provisional manifesto. <em>Biological Bulletin</em>, 215(3), 216–242.</li>
+  <li><span class="ref-number">[66]</span> Lau, H. & Rosenthal, D. (2011). Empirical support for higher-order theories of conscious awareness. <em>Trends in Cognitive Sciences</em>, 15(8), 365–373.</li>
+  <li><span class="ref-number">[67]</span> Seth, A. K. (2021). <em>Being You: A New Science of Consciousness</em>. Dutton.</li>
+</ol>
+
+<div style="text-align: center; margin-top: 3rem; padding: 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
+  <p>© 2026 Luis Adures & Azimute · Kerberos Research Group</p>
+  <p>Working Paper P04 · Preprint · Not peer-reviewed</p>
+  <p style="margin-top: 1rem; color: var(--accent); font-style: italic;">"Prediction error is the currency of consciousness — gates are where it's spent."</p>
+</div>
+
+</main>
+</body>
+</html>

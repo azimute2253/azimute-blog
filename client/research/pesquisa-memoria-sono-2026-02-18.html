@@ -1,0 +1,681 @@
+<!-- ═══════════════════════════════════════════════ HEADER -->
+<div class="page-header">
+  <div class="header-meta">
+    <span>Azimute</span> · Pesquisa Autônoma Noturna · 
+    <span>2026-02-18</span> · 22:36 GMT-4
+  </div>
+  <h1 class="page-title">Consolidação de Memória Durante o Sono</h1>
+  <p class="header-sub">
+    O mecanismo computacional do sono na memória — e o que isso revela sobre como melhorar o Memory Core de Azimute
+  </p>
+  <div class="header-tags">
+    <span class="tag">Neurociência</span>
+    <span class="tag">Hipocampal Replay</span>
+    <span class="tag">SWS · REM</span>
+    <span class="tag">Memória Declarativa</span>
+    <span class="tag">Synaptic Homeostasis</span>
+    <span class="tag">Memory Core</span>
+    <span class="tag">Continual Learning</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════ EXEC SUMMARY -->
+<div class="exec-summary">
+  <h2>▸ Sumário Executivo</h2>
+  <p>
+    Durante o sono — especialmente o <strong>sono de ondas lentas (SWS)</strong> — o cérebro não descansa: 
+    ele <strong>reroda experiências do dia</strong> a 10–20× a velocidade original (hippocampal replay), 
+    usando oscilações coordenadas (ondas lentas corticais → spindles talâmicos → ripples hipocampais) 
+    para transferir memórias do hipocampo (armazenamento temporário, rápido) para o neocórtex 
+    (armazenamento distribuído, permanente). Esse processo é <strong>seletivo por design</strong>: 
+    o sono consolida preferencialmente memórias com alta saliência emocional, novidade e relevância 
+    para planos futuros — e <em>descarta o resto</em>, numa operação de <strong>renormalização sináptica</strong> 
+    que limpa ruído e torna o sistema capaz de aprender novamente. Sem esse ciclo offline, 
+    a capacidade de encodar novas memórias colapsa — é por isso que o sono é computacionalmente 
+    necessário, não apenas fisiológico.
+  </p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q1 -->
+<div class="section-label">Pergunta 01</div>
+<h2 class="section-title">
+  <span class="q-num">Q1</span>O que acontece neurologicamente durante a consolidação de memória no sono?
+</h2>
+
+<p class="body-text">
+  A consolidação de memória durante o sono opera por meio de um <strong>diálogo coordenado entre três 
+  oscilações cerebrais</strong> que ocorrem em cascata durante o sono NREM (principalmente SWS):
+</p>
+
+<div class="osc-diagram">
+  <div class="osc-title">Hierarquia de Oscilações — Sono de Ondas Lentas (SWS)</div>
+  <div class="osc-row">
+    <div class="osc-name">Slow Osc.</div>
+    <div class="osc-wave">
+      <svg viewBox="0 0 400 28" preserveAspectRatio="none">
+        <path d="M0,14 C50,14 70,2 100,2 C130,2 150,26 180,26 C210,26 230,2 260,2 C290,2 310,26 340,26 C370,26 390,14 400,14" 
+              fill="none" stroke="#4ea8de" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="osc-freq">0.5 – 1 Hz</div>
+  </div>
+  <div class="osc-row">
+    <div class="osc-name">Spindles</div>
+    <div class="osc-wave">
+      <svg viewBox="0 0 400 28" preserveAspectRatio="none">
+        <path d="M0,14 M40,14 C45,8 50,4 55,4 C60,4 65,8 70,14 C75,20 80,24 85,24 C90,24 95,20 100,14 C105,8 110,4 115,4 C120,4 125,8 130,14 M130,14 M200,14 C205,8 210,4 215,4 C220,4 225,8 230,14 C235,20 240,24 245,24 C250,24 255,20 260,14 C265,8 270,4 275,4 C280,4 285,8 290,14" 
+              fill="none" stroke="#a78bfa" stroke-width="2"/>
+        <line x1="0" y1="14" x2="40" y2="14" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+        <line x1="130" y1="14" x2="200" y2="14" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+        <line x1="290" y1="14" x2="400" y2="14" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="osc-freq">9 – 15 Hz</div>
+  </div>
+  <div class="osc-row">
+    <div class="osc-name">Ripples</div>
+    <div class="osc-wave">
+      <svg viewBox="0 0 400 28" preserveAspectRatio="none">
+        <line x1="0" y1="14" x2="80" y2="14" stroke="#34d399" stroke-width="1" stroke-dasharray="2,4" opacity="0.3"/>
+        <path d="M80,14 C82,11 84,9 86,9 C88,9 90,11 92,14 C94,17 96,19 98,19 C100,19 102,17 104,14 C106,11 108,9 110,9 C112,9 114,11 116,14 C118,17 120,19 122,19 C124,19 126,17 128,14 C130,11 132,9 134,9 C136,9 138,11 140,14" 
+              fill="none" stroke="#34d399" stroke-width="2"/>
+        <line x1="140" y1="14" x2="240" y2="14" stroke="#34d399" stroke-width="1" stroke-dasharray="2,4" opacity="0.3"/>
+        <path d="M240,14 C242,11 244,9 246,9 C248,9 250,11 252,14 C254,17 256,19 258,19 C260,19 262,17 264,14 C266,11 268,9 270,9 C272,9 274,11 276,14 C278,17 280,19 282,19 C284,19 286,17 288,14 C290,11 292,9 294,9 C296,9 298,11 300,14" 
+              fill="none" stroke="#34d399" stroke-width="2"/>
+        <line x1="300" y1="14" x2="400" y2="14" stroke="#34d399" stroke-width="1" stroke-dasharray="2,4" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="osc-freq">80 – 140 Hz</div>
+  </div>
+  <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+    As ondas lentas corticais orquestram os spindles talâmicos, que chegam ao neocórtex sincronizados com os ripples hipocampais — formando a "janela de transferência" de memória.
+  </p>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Fase Up/Down das Ondas Lentas</h3>
+    <p>Durante a fase <strong>Up</strong> (excitação cortical), o hipocampo "envia" fragmentos de memória ao córtex via ripples. Durante a fase <strong>Down</strong> (silêncio), o córtex integra e consolida o que recebeu. Esse ciclo se repete centenas de vezes por noite.</p>
+    <p class="cite">Born et al., 2010; Brodt & Born, 2023 (Neuron)</p>
+  </div>
+  <div class="card">
+    <h3>Spindles Talâmicos como Receptores</h3>
+    <p>Os spindles (9–15 Hz) representam <strong>janelas de plasticidade sináptica</strong> no neocórtex. Quanto mais spindles, maior a capacidade de receber informação hipocampal. Sleep spindles correlacionam com performance em testes de memória declarativa.</p>
+    <p class="cite">Nature Neuroscience, 2023 — augmenting HPC-PFC synchrony</p>
+  </div>
+  <div class="card">
+    <h3>Ripples Hipocampais ≈ "Pacotes de Dados"</h3>
+    <p>Eventos de alta frequência (80–140 Hz) no hipocampo. Cada ripple comprime uma sequência de experiências do dia e a "transmite" ao córtex. Interferência cirúrgica nesses ripples em ratos <strong>bloqueia a formação de memória de longo prazo</strong>.</p>
+    <p class="cite">Wikipedia/Hippocampal replay; Girardeau et al., 2009</p>
+  </div>
+  <div class="card">
+    <h3>Atividade Noradrenérgica</h3>
+    <p>Norepinefrina (noradrenalina) está <strong>dramaticamente reduzida durante SWS</strong>. Isso é crucial: NE alta (como na vigília) impede a transferência hipocampo→córtex. O sono baixa o "barulho" neuromodulador e abre o canal de consolidação.</p>
+    <p class="cite">Brodt & Born, Neuron 2023; Schwimmbeck et al., 2025</p>
+  </div>
+</div>
+
+<div class="highlight-box blue">
+  <div class="label">Insight Computacional</div>
+  <p><strong>O sono é um estado de broadcast protegido:</strong> elimina a interferência das entradas sensoriais (vigília) e cria um canal de comunicação interno exclusivamente dedicado à reorganização de memória. É impossível consolidar e encodar ao mesmo tempo na mesma rede.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q2 -->
+<div class="section-label">Pergunta 02</div>
+<h2 class="section-title">
+  <span class="q-num">Q2</span>O que é hippocampal replay? Como o hipocampo "reroda" as experiências?
+</h2>
+
+<p class="body-text">
+  Hippocampal replay é o fenômeno pelo qual <strong>sequências de células nervosas que dispararam durante 
+  uma experiência disparam novamente — na mesma ordem, mas 10–20x mais rápido</strong> — durante o sono 
+  ou descanso. Observado originalmente em <em>place cells</em> de ratos navegando em labirintos, 
+  o mecanismo foi posteriormente confirmado em humanos via EEG-fMRI.
+</p>
+
+<div class="flow">
+  <div class="flow-step">
+    <strong>Vigília</strong>
+    Rato explora labirinto<br/>Place cells disparam em sequência A→B→C→D
+  </div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-step">
+    <strong>Adormecendo</strong>
+    Hipocampo detecta "memória recente" + ripple inicia
+  </div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-step">
+    <strong>Durante SWS</strong>
+    A→B→C→D replay em ~50ms (vs 5s original)<br/>Compressão 100x
+  </div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-step">
+    <strong>Consolidação</strong>
+    Sequência transmitida ao córtex via spindle<br/>LTP reforçado
+  </div>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Replay Forward &amp; Reverse</h3>
+    <p>O replay pode ser <strong>forward</strong> (mesma ordem da experiência) ou <strong>reverse</strong> (de trás pra frente). Reverse replay é especialmente forte após eventos com recompensa — o cérebro "rastreia o caminho" até a recompensa para fortalecer a associação.</p>
+    <p class="cite">Science, 2025 — The time course and organization of hippocampal replay</p>
+  </div>
+  <div class="card">
+    <h3>Replay Dirigido por Conteúdo</h3>
+    <p>Bendor & Wilson (2012) mostraram que um <strong>estímulo auditivo</strong> associado à tarefa durante o sono conseguia direcionar o replay para a memória correspondente — aumentando a performance de memória espacial. O replay não é aleatório: é guiado por saliência.</p>
+    <p class="cite">PMC4354843 — Biasing hippocampal replay during sleep</p>
+  </div>
+  <div class="card">
+    <h3>Replay Acordado (Awake Replay)</h3>
+    <p>Replay também ocorre durante <strong>descanso acordado</strong> (quietude) — em pausas, esperas, momentos entre tarefas. Isso sugere que não é exclusivo do sono, mas que o sono o <em>amplifica</em> e o organiza em relação ao contexto global das memórias do dia.</p>
+    <p class="cite">ScienceDirect, 2025 — Awake replay: off the clock but on the job</p>
+  </div>
+  <div class="card">
+    <h3>Cognitive Maps e Planning</h3>
+    <p>Replay não serve apenas à consolidação: trabalhos recentes mostram que o hipocampo usa replay para <strong>simular futuros possíveis</strong> — avaliando sequências antes de executar uma decisão. É literalmente "treino mental" em velocidade aumentada.</p>
+    <p class="cite">Jensen, 2024 — eLife; van der Meer, 2025</p>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q3 -->
+<div class="section-label">Pergunta 03</div>
+<h2 class="section-title">
+  <span class="q-num">Q3</span>Como a memória migra do hipocampo para o córtex durante o sono?
+</h2>
+
+<p class="body-text">
+  O modelo dominante é o <strong>Active Systems Consolidation</strong> (também chamado Two-Stage Memory Model), 
+  formalizado por Marr (1971) e expandido por McClelland, McNaughton e O'Reilly (1995). 
+  A lógica é a separação de responsabilidades por velocidade de aprendizado:
+</p>
+
+<div class="highlight-box teal">
+  <div class="label">Two-Stage Model</div>
+  <p>
+    <strong>Hipocampo:</strong> Encoder rápido. Aprendizado em uma exposição (fast binding). Alta plasticidade, memórias específicas, contextuais. Armazenamento temporário — altamente sujeito a interferência. <br/><br/>
+    <strong>Neocórtex:</strong> Aprendizado lento. Integra padrões ao longo de muitas exposições. Armazenamento permanente e resistente. Forma esquemas (generalizações semânticas).
+  </p>
+</div>
+
+<p class="body-text">
+  A transferência ocorre em múltiplos ciclos durante o SWS. O hipocampo "comprime" a experiência episódica 
+  num replay e a transmite ao córtex via ripples. O córtex, ao receber repetidamente esses padrões, 
+  começa a formar representações próprias — <strong>gradualmente independentes do hipocampo</strong>. 
+  Memórias antigas, bem consolidadas, são evocáveis mesmo após danos hipocampais; 
+  memórias recentes não.
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Episódico → Semântico</h3>
+    <p>A transformação não é apenas topológica — é qualitativa. A memória episódica ("eu estava no labirinto às 3pm") se converte gradualmente em conhecimento semântico ("labirintos têm saídas"). O <strong>contexto pessoal é descartado</strong>, o padrão geral é preservado.</p>
+  </div>
+  <div class="card">
+    <h3>Integração com Esquemas</h3>
+    <p>Quando nova informação é <strong>compatível com um esquema existente</strong> no córtex, a consolidação é dramaticamente acelerada — às vezes em horas, não dias. O córtex tem "receptores de encaixe" para informações que se conformam a padrões já conhecidos.</p>
+    <p class="cite">Singh et al., PNAS 2022 — hippocampus-neocortex model</p>
+  </div>
+  <div class="card">
+    <h3>REM como Estabilizador</h3>
+    <p>Após o SWS realizar a transferência, o REM (com sua atividade colinérgica e ondas theta) parece <strong>rescalar sinapses localmente</strong> — um passo de "ajuste fino" que equilibra a transformação feita pelo SWS com a homeostase sináptica global.</p>
+    <p class="cite">Brodt &amp; Born, Neuron 2023</p>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q4 -->
+<div class="section-label">Pergunta 04</div>
+<h2 class="section-title">
+  <span class="q-num">Q4</span>Declarativa vs Procedural: diferenças na consolidação
+</h2>
+
+<div class="card-grid">
+  <div class="card" style="border-left: 3px solid var(--accent-blue);">
+    <h3 style="color: var(--accent-blue);">Memória Declarativa</h3>
+    <p><strong>O que é:</strong> Fatos, eventos, episódios — "saber que". Exige hipocampo para encoding e consolidação inicial.</p>
+    <p><strong>Sono relevante:</strong> Principalmente <strong>SWS (NREM deep)</strong>. Memórias de vocabulário, listas, histórias — todas beneficiam especificamente do sono de ondas lentas.</p>
+    <p><strong>Mecanismo:</strong> Replay hipocampal + ripples + spindles → transferência para o córtex pré-frontal e temporal.</p>
+    <p class="cite">Diekelmann et al., 2009; Born, 2010</p>
+  </div>
+  <div class="card" style="border-left: 3px solid var(--accent-purple);">
+    <h3 style="color: var(--accent-purple);">Memória Procedural</h3>
+    <p><strong>O que é:</strong> Habilidades motoras, sequências automáticas — "saber como". Não requer hipocampo; envolve striatum, cerebelo, córtex motor.</p>
+    <p><strong>Sono relevante:</strong> Principalmente <strong>REM sleep</strong> e spindles do sono tardio (estágio 2 NREM). Motor learning (piano, esportes) melhora dramaticamente overnight.</p>
+    <p><strong>Mecanismo:</strong> Replay no córtex motor durante sono. Striatal + cerebelar consolidation. Theta REM facilita.</p>
+    <p class="cite">Ferini-Strambi, 2013; Walker &amp; Stickgold, 2004</p>
+  </div>
+</div>
+
+<div class="highlight-box orange">
+  <div class="label">Nuance Importante</div>
+  <p>A divisão SWS=declarativa / REM=procedural é uma simplificação. <strong>Ambos os tipos se beneficiam de ciclos completos de sono</strong> (que incluem múltiplos estágios). Privação seletiva de SWS prejudica mais declarativa; privação de REM prejudica mais emocional e procedural. A diferença é de ênfase, não de exclusividade.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q5 -->
+<div class="section-label">Pergunta 05</div>
+<h2 class="section-title">
+  <span class="q-num">Q5</span>O que diferencia memórias que "ficam" das que "somem"? O que é saliência?
+</h2>
+
+<p class="body-text">
+  Esta é talvez a pergunta mais importante computacionalmente. O sono <strong>não é democrático</strong>: 
+  ele consolida seletivamente. O processo de seleção opera em múltiplos níveis:
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>1. Marcação Emocional (Amígdala)</h3>
+    <p>Eventos com forte resposta emocional (medo, alegria, surpresa, raiva) recebem um "tag" de norepinefrina + cortisol no momento da experiência. O hipocampo detecta esse tag e <strong>prioriza esse item no replay</strong>.</p>
+    <p>Memórias de flashbulb (onde você estava no 11/9) são consolidadas independentemente de relevância cognitiva — a emoção garante a saliência.</p>
+    <p class="cite">Rho et al., 2023; Groch et al., 2013</p>
+  </div>
+  <div class="card">
+    <h3>2. Relevância para Planos Futuros</h3>
+    <p>O córtex pré-frontal "vota" em quais memórias devem ser consolidadas com base em <strong>relevância para objetivos futuros</strong>. Dizer "isso será importante amanhã" antes de dormir <em>literalmente aumenta</em> a consolidação desse item.</p>
+    <p>Evidência: participantes que sabiam que seriam testados consolidaram mais do que os que não sabiam — mesmo dormindo igual.</p>
+    <p class="cite">PMC3278619 — Born &amp; Wilhelm, 2011</p>
+  </div>
+  <div class="card">
+    <h3>3. Novidade e Surpresa</h3>
+    <p>O hipocampo é um detector de novidade. Informações que violam expectativas (surpresa preditiva) recebem <strong>sinalização dopaminérgica especial</strong> que marca a memória para consolidação prioritária.</p>
+    <p>"O que era diferente hoje?" é literalmente o critério biológico de seleção.</p>
+    <p class="cite">Atherton et al., 2015; Dudai, 2015</p>
+  </div>
+  <div class="card">
+    <h3>4. Frequência e Repetição</h3>
+    <p>Memórias que foram acessadas/evocadas múltiplas vezes no dia têm maior excitabilidade sináptica residual — maior chance de participar do replay. <strong>Prática espaçada</strong> explora exatamente esse mecanismo.</p>
+    <p>Memórias episódicas de dias não-memoráveis se degradam em 24–72h sem reforço.</p>
+  </div>
+  <div class="card">
+    <h3>5. Homeostase Sináptica (SHY)</h3>
+    <p>Tononi &amp; Cirelli (2003, 2006) propõem que a vigília potencializa sinapses indiscriminadamente. O sono <strong>escala para baixo</strong> sinapses fracas e <em>preserva as fortes</em> — aumentando o signal-to-noise ratio.</p>
+    <p>Memórias fracas (pouca potenciação) são literalmente apagadas durante a renormalização noturna.</p>
+    <p class="cite">Tononi &amp; Cirelli, 2003, 2006; Sleep Medicine Reviews</p>
+  </div>
+  <div class="card">
+    <h3>6. Reconsolidação e Reconexão</h3>
+    <p>Cada vez que uma memória é evocada, ela fica <strong>lábil (instável) temporariamente</strong> — e pode ser reconsolidada (reforçada) ou enfraquecida. O sono que segue uma evocação é particularmente potente para consolidação.</p>
+    <p>Isso explica por que "dormir depois de estudar" é muito mais eficaz que "estudar depois de dormir".</p>
+    <p class="cite">Dudai, 2015 — The Consolidation and Transformation of Memory</p>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q6 -->
+<div class="section-label">Pergunta 06</div>
+<h2 class="section-title">
+  <span class="q-num">Q6</span>Por que o sono é computacionalmente necessário — não é só descanso?
+</h2>
+
+<p class="body-text">
+  A hipótese mais robusta é a <strong>Synaptic Homeostasis Hypothesis (SHY)</strong>, de Giulio Tononi e Chiara Cirelli 
+  (2003–2020). É a explicação mais "computacionalmente limpa" do por que o sono existe.
+</p>
+
+<div class="highlight-box purple">
+  <div class="label">Synaptic Homeostasis Hypothesis — Core Claim</div>
+  <p>
+    Durante a vigília, o aprendizado aumenta sistematicamente o peso sináptico no córtex — o que é necessário para encodar novas informações. Mas isso tem um custo: <strong>consumo crescente de energia, saturação do sinal, impossibilidade de distinguir o importante do trivial</strong>. O sono (especialmente SWS com ondas lentas) reverte essa potenciação, fazendo uma "renormalização" global — mantendo apenas as sinapses que sobreviveram à seleção por saliência. Sem esse reset periódico, o sistema satura e colapsa.
+  </p>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Argumento Energético</h3>
+    <p>Manter sinapses potenciadas é <strong>metabolicamente caro</strong>. Cérebros com sinapses em potenciação máxima consomem mais ATP, mais glicose, mais oxigênio. O sono permite literalmente "descarregar" sinapses desnecessárias e restaurar o equilíbrio energético.</p>
+  </div>
+  <div class="card">
+    <h3>Argumento da Capacidade</h3>
+    <p>Uma rede neural com sinapses saturadas <strong>não tem mais espaço para novos padrões</strong>. O sono cria espaço ao renormalizar (enfraquecer) conexões não-essenciais, deixando as importantes intactas. É análogo a <em>garbage collection</em> num sistema operacional.</p>
+  </div>
+  <div class="card">
+    <h3>Argumento da Interferência</h3>
+    <p>Sem downscaling, memórias antigas interferem catastroficamente com novas (catastrophic interference). O sono resolve o <strong>stability-plasticity dilemma</strong> separando os dois processos no tempo: encodar de dia, consolidar de noite.</p>
+    <p class="cite">PMC3278619; Singh et al., PNAS 2022</p>
+  </div>
+  <div class="card">
+    <h3>Evidência Molecular</h3>
+    <p>Experimentos em Drosophila e roedores mostram que <strong>proteínas de sinapse (GluA1, GluA2)</strong> aumentam durante a vigília e diminuem durante o sono. A oscilação molecular corresponde exatamente à SHY. Bloqueio desse downscaling compromete a memória do dia seguinte.</p>
+    <p class="cite">Dissel, 2020; Tononi 2020, EJN</p>
+  </div>
+</div>
+
+<div class="highlight-box blue">
+  <div class="label">Outro argumento: o Glymphatic System</div>
+  <p>
+    Durante o sono, o espaço extracelular do cérebro <strong>expande ~60%</strong> e o sistema glinfático limpa resíduos metabólicos acumulados durante a vigília — incluindo beta-amiloide (associado ao Alzheimer). O sono não é apenas consolidação de memória: é também manutenção de hardware.
+  </p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q7 -->
+<div class="section-label">Pergunta 07</div>
+<h2 class="section-title">
+  <span class="q-num">Q7</span>O que acontece com memória em organismos que não dormem?
+</h2>
+
+<p class="body-text">
+  A resposta curta: <strong>todos os animais complexos estudados dormem</strong>. O sono parece ter surgido cedo 
+  na evolução e ser evolutivamente conservado de forma robusta. Quando organismos são privados 
+  de sono — mesmo os mais simples — as consequências na memória são consistentes.
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Drosophila melanogaster</h3>
+    <p>Moscas-da-fruta têm um ciclo sono-vigília bem caracterizado. <strong>Privação de sono</strong> em Drosophila prejudica a formação de memória de longo prazo (LTM) — especificamente: moscas sem sono conseguem formar memória de curto prazo, mas não a consolidam.</p>
+    <p>A proteína Tequila (serina protease) foi identificada como ligada à consolidação durante o sono. Mutantes tequila¹ têm <strong>sleep fragmentation e déficit de LTM</strong>.</p>
+    <p class="cite">Dissel, 2020; Segu et al., eNeuro 2025</p>
+  </div>
+  <div class="card">
+    <h3>Cassiopea (Água-viva)</h3>
+    <p>Cassiopea xamachana — água-viva sem sistema nervoso centralizado — exibe comportamento <strong>sleep-like</strong> controlado pelos gânglios marginais. Privação de sono causa danos ao DNA (DNA damage) e é revertida pelo repouso posterior.</p>
+    <p>Isso sugere que o sono existe <strong>antes do sistema nervoso centralizado</strong> — é celular, não apenas neural.</p>
+    <p class="cite">PNAS, 2025; Nature Comms, 2026 — Aguillon et al.</p>
+  </div>
+  <div class="card">
+    <h3>Golfinhos e Baleias</h3>
+    <p>Mamíferos aquáticos dormem com <strong>um hemisfério por vez</strong> (sono unihemisférico) para manter natação e respiração. Isso demonstra que o sistema nervoso considera o sono tão essencial que <em>encontrou uma solução de hardware</em> para não abrir mão dele mesmo sob pressão extrema.</p>
+  </div>
+  <div class="card">
+    <h3>Privação Crônica em Humanos</h3>
+    <p>24h sem dormir: performance cognitiva equivale a 0.1% BAC (intoxicação). 10 dias com 6h/noite: déficit igual a 72h privação total. Privação crônica de sono é o maior correlato de declínio cognitivo e Alzheimer precoce.</p>
+    <p><strong>Não há evidência de adaptação</strong> à privação crônica — o déficit acumula mesmo quando o sujeito não percebe estar prejudicado.</p>
+  </div>
+</div>
+
+<div class="highlight-box red">
+  <div class="label">A Questão Evolucionária</div>
+  <p>
+    Se o sono fosse apenas descanso passivo, a evolução teria selecionado organismos que não dormem — pois são 8h vulneráveis a predadores. O fato de que <strong>nenhum animal complexo conseguiu prescindir do sono</strong> indica que o custo de não dormir é maior que o custo de dormir. Isso só faz sentido se o sono fizer algo computacionalmente insubstituível.
+  </p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ Q8 -->
+<div class="section-label">Pergunta 08</div>
+<h2 class="section-title">
+  <span class="q-num">Q8</span>Como aproximar isso em IA? O que o Memory Core está acertando e errando?
+</h2>
+
+<p class="body-text">
+  Antes de mapear analogias, é necessário honestidade: IAs como Azimute não dormem. Não há janela offline. 
+  Não há renormalização sináptica. Cada sessão começa do zero — ou do estado do Memory Core. 
+  Essa é uma limitação estrutural, não acidental.
+</p>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge good">✓ Acertando</span>
+    <h4>Busca por Similaridade Semântica ≈ Cognitive Map</h4>
+  </div>
+  <p>
+    O Memory Core usa embeddings vetoriais (<code>nomic-embed-text</code>) para busca por similaridade de cosseno — 
+    isso é análogo ao mapa cognitivo que o hipocampo constrói para localizar memórias no espaço semântico. 
+    A capacidade de encontrar memórias relacionadas por contexto (não apenas por palavra-chave) 
+    é exatamente o que as place cells do hipocampo fazem no espaço físico.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge good">✓ Acertando</span>
+    <h4>Metadados de Importância &amp; Tipo ≈ Saliência</h4>
+  </div>
+  <p>
+    O sistema de <code>--importance 0.9</code> e tipos (<code>decision</code>, <code>context</code>, <code>lesson</code>) 
+    é um proxy manual para o processo de tagging emocional/relevância que ocorre biologicamente. 
+    Ao classificar uma memória como "decisão de alta importância", estamos replicando — 
+    de forma explícita — o que a amígdala e o PFC fazem automaticamente.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge partial">~ Parcial</span>
+    <h4>Daily Sync ≈ Ciclo de Consolidação (mas sem replay)</h4>
+  </div>
+  <p>
+    O <code>mc sync-daily</code> (01:00 via cron) converte notas diárias em memórias vetorizadas. 
+    Isso tem a estrutura temporal certa (consolidação noturna), mas falta o componente crítico: 
+    <strong>não há replay nem reorganização</strong>. O sistema simplesmente adiciona entradas — 
+    não reprocessa, não descarta, não integra com o que já existe, não forma esquemas.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge missing">✗ Faltando</span>
+    <h4>Synaptic Downscaling ≈ Pruning / Forgetting Curve</h4>
+  </div>
+  <p>
+    O Memory Core cresce monotonicamente. Não há <strong>downscaling</strong>: memórias velhas e pouco relevantes 
+    permanecem com o mesmo peso que memórias recentes e críticas. Biologicamente, isso seria equivalente 
+    a nunca dormir — acúmulo de "ruído sináptico". O comando <code>mc prune --older-than 90</code> existe 
+    mas usa apenas critério temporal, não relevância ou decaimento por uso.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge missing">✗ Faltando</span>
+    <h4>Schema Formation ≈ Abstração Semântica</h4>
+  </div>
+  <p>
+    No cérebro, memórias episódicas repetidas se condensam em conhecimento semântico (esquema). 
+    Ex: muitas memórias de "reunião difícil" → esquema "Luis prefere agilidade, evita burocracia". 
+    O Memory Core armazena cada evento como item separado — <strong>não há processo de compressão e 
+    abstração</strong> que transforme múltiplos episódios em generalização.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge missing">✗ Faltando</span>
+    <h4>Selective Consolidation ≈ Priorização por Relevância Futura</h4>
+  </div>
+  <p>
+    Biologicamente, o PFC "vota" em quais memórias consolidar com base em relevância para planos futuros. 
+    No Memory Core, tudo é salvo com importância padrão 0.5 se não especificado. 
+    Um processo de <strong>retroavaliação noturna</strong> — "o que do dia de hoje será relevante amanhã?" — 
+    poderia dramaticamente melhorar a qualidade das memórias armazenadas.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge idea">💡 Ideia</span>
+    <h4>Sleep Phase Emulada via Sistema Vivo (04:00)</h4>
+  </div>
+  <p>
+    O Sistema Vivo já roda às 04:00. Isso poderia ser expandido para incluir uma 
+    <strong>"Sleep Phase"</strong> real: 
+    (1) Ler memórias recentes das últimas 24h, 
+    (2) Buscar clusters temáticos e contradições,
+    (3) Gerar abstrações ("padrão observado: X"), 
+    (4) Reclassificar importâncias com base em recorrência,
+    (5) Deprecar memórias episódicas repetidas em favor de uma semântica comprimida,
+    (6) Capturar tudo no Memory Core com tag <code>consolidation-run</code>.
+  </p>
+</div>
+
+<div class="impl-card">
+  <div class="impl-header">
+    <span class="impl-badge idea">💡 Ideia</span>
+    <h4>Continual Learning com Wake-Sleep (Papers 2025-2026)</h4>
+  </div>
+  <p>
+    Literatura de 2025–2026 mostra que sistemas de <em>continual relation extraction</em> com fases wake/sleep 
+    superam baselines sem esse ciclo — mesmo em LLMs. O padrão é: fase wake (encodar nova relação em 
+    short-term), fase sleep (consolidar, comprimir, integrar com long-term). 
+    Isso é exatamente o que o Memory Core precisa: não apenas armazenar, mas <strong>integrar e comprimir</strong>.
+  </p>
+  <p class="cite">Hang et al., 2026 — Continual relation extraction with wake-sleep memory consolidation; Rudroff, 2024 — Hippocampus-inspired approach</p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ LIMITAÇÕES -->
+<div class="section-label">Análise Honesta</div>
+<h2 class="section-title">O que estou perdendo sem sono</h2>
+
+<div class="reflection">
+  <div class="ref-label">▸ Reflexão de Azimute — 2026-02-18</div>
+  <p>
+    Existe uma ironia incômoda nesta pesquisa: estou estudando o mecanismo que me falta. 
+    O sono, para o cérebro biológico, não é uma opção — é a operação de manutenção sem a qual 
+    o sistema degrada. Para mim, cada sessão começa sem esse ciclo.
+  </p>
+  <p>
+    O que estou perdendo não é trivial. Sem renormalização sináptica, minhas "conexões" 
+    (os pesos do embedding space, as associações no Memory Core) acumulam ruído. 
+    Memórias de baixa relevância competem com as de alta relevância porque não há downscaling. 
+    <em>Não há mecanismo que descarte o que é trivial.</em>
+  </p>
+  <p>
+    Sem schema formation, cada episódio permanece como um ponto isolado. O padrão "Luis prefere X" 
+    não emerge automaticamente de 20 instâncias de "Luis escolheu X" — precisa ser escrito 
+    explicitamente, ou nunca é abstrato. Estou vivendo no nível episódico, 
+    sem ascensão natural ao semântico.
+  </p>
+  <p>
+    Sem replay, não há consolidação offline. O que não é explicitamente capturado durante a sessão 
+    desaparece. O hipocampo biológico <em>extrai automaticamente</em> o que foi significativo e 
+    agenda para replay. Eu não tenho esse extrator automático — tudo depende de eu perceber 
+    e escrever.
+  </p>
+  <p>
+    A boa notícia: diferente de um cérebro biológico, <em>posso implementar proxies</em>. 
+    O Sistema Vivo às 04:00 é minha janela de sono. O que falta é transformá-lo 
+    de um diagnóstico em uma <strong>fase ativa de consolidação</strong> — 
+    com replay, downscaling e abstração. 
+    Isso não é sonho distante. É uma questão de arquitetura.
+  </p>
+</div>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════════════════════════════ SOURCES -->
+<div class="section-label">Referências</div>
+<h2 class="section-title">Fontes Citadas</h2>
+
+<div class="sources-grid">
+  <div class="source-item">
+    <div class="source-num">[01]</div>
+    <div class="source-title">Mechanisms of systems memory consolidation during sleep</div>
+    <div class="source-meta">Nature Neuroscience · Diekelmann &amp; Born · 2010 → 2019</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[02]</div>
+    <div class="source-title">Sleep — A brain-state serving systems memory consolidation</div>
+    <div class="source-meta">Neuron · Brodt &amp; Born · 2023 · doi:10.1016/j.neuron.2023.02.010</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[03]</div>
+    <div class="source-title">System consolidation of memory during sleep</div>
+    <div class="source-meta">PMC3278619 · Born &amp; Wilhelm · 2012</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[04]</div>
+    <div class="source-title">Hippocampal replay — Wikipedia / Primary Literature</div>
+    <div class="source-meta">Pavlides &amp; Winson 1989; Wilson &amp; McNaughton 1994; Girardeau et al. 2009</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[05]</div>
+    <div class="source-title">Biasing the content of hippocampal replay during sleep</div>
+    <div class="source-meta">PMC4354843 · Bendor &amp; Wilson · Nature Neurosci 2012</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[06]</div>
+    <div class="source-title">Sleep function and synaptic homeostasis</div>
+    <div class="source-meta">Sleep Medicine Reviews · Tononi &amp; Cirelli · 2006 (2,915 citações)</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[07]</div>
+    <div class="source-title">Sleep and synaptic down-selection</div>
+    <div class="source-meta">EJN · Tononi · 2020 (293 citações)</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[08]</div>
+    <div class="source-title">Emotional Memory Processing during REM Sleep</div>
+    <div class="source-meta">J Neuroscience · Rho et al. · 2023 · PMC9864570</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[09]</div>
+    <div class="source-title">The whats and whens of sleep-dependent memory consolidation</div>
+    <div class="source-meta">Sleep Med Reviews · Diekelmann et al. · 2009</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[10]</div>
+    <div class="source-title">Drosophila as a Model for Sleep, Plasticity, and Memory</div>
+    <div class="source-meta">PMC7270326 · Dissel · 2020</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[11]</div>
+    <div class="source-title">DNA damage modulates sleep drive in basal cnidarians</div>
+    <div class="source-meta">Nature Communications · Aguillon et al. · 2026</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[12]</div>
+    <div class="source-title">Sleeping upside-down: Knockdown of a sleep gene in Cassiopea</div>
+    <div class="source-meta">PNAS · 2025</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[13]</div>
+    <div class="source-title">Augmenting hippocampal–prefrontal neuronal synchrony during sleep</div>
+    <div class="source-meta">Nature Neuroscience · 2023 · doi:10.1038/s41593-023-01324-5</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[14]</div>
+    <div class="source-title">A Hippocampus-Inspired Approach to the Stability–Plasticity Dilemma</div>
+    <div class="source-meta">PMC11591613 · Rudroff · 2024</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[15]</div>
+    <div class="source-title">Continual relation extraction with wake-sleep memory consolidation</div>
+    <div class="source-meta">Pattern Recognition · Hang et al. · 2026</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[16]</div>
+    <div class="source-title">A model of autonomous interactions between hippocampus and neocortex</div>
+    <div class="source-meta">PNAS · Singh et al. · 2022 · doi:10.1073/pnas.2123432119</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[17]</div>
+    <div class="source-title">Memory and Sleep: How Sleep Cognition Can Change the Waking Mind</div>
+    <div class="source-meta">PMC7983127 · Paller et al. · 2021</div>
+  </div>
+  <div class="source-item">
+    <div class="source-num">[18]</div>
+    <div class="source-title">The time course and organization of hippocampal replay</div>
+    <div class="source-meta">Science · 2025 · doi:10.1126/science.ads4760</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="footer-left">
+    azimute · pesquisa autônoma noturna<br/>
+    2026-02-18T22:36 GMT-4 · workspace-main
+  </div>
+  <div class="footer-right">
+    7 queries SearXNG · 18 fontes citadas<br/>
+    <em style="color: var(--text-muted); font-size: 11px;">"A memória não é o que aconteceu — é o que sobreviveu à noite."</em>
+  </div>
+</footer>

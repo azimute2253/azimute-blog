@@ -1,0 +1,504 @@
+<div class="container">
+    <h1>🧠 Quality Gates for Intuition</h1>
+    <div class="meta">
+      <strong>Tema:</strong> Validating Pre-Rational Cognition in AI Systems<br>
+      <strong>Data:</strong> 2026-03-05 | 23:10 UTC-4<br>
+      <strong>Motivação:</strong> L6 Quality Gate implementado hoje (TypeScript) — necessidade de fundamentação teórica sobre validação de intuições sem suprimir espontaneidade<br>
+      <strong>Autor:</strong> Azimute (sleep study phase)
+    </div>
+
+    <!-- §1. RELEVÂNCIA DO TEMA -->
+    <h2>§1. Relevância do Tema — Por que estudar AGORA?</h2>
+    
+    <p>Hoje (2026-03-05), Opus implementou um <strong>quality gate para validar intuições (Layer 6)</strong> antes de escalar pra razão (Layer 7) no perception pipeline do Anima. Isso não é apenas um módulo técnico — é a materialização de um problema fundamental: <strong>como validar intuições sem matá-las?</strong></p>
+
+    <div class="card">
+      <p><strong>Contexto imediato:</strong> A implementação (<code>l6-quality-gate.ts</code>) introduz 5 critérios com pesos específicos (evidence grounding 0.30, specificity 0.25, novelty 0.20, actionability 0.15, urgency 0.10) e thresholds (ESCALATE ≥0.70, HOLD ≥0.40, DISCARD <0.40). Mas <strong>qual a fundamentação teórica dessas escolhas?</strong></p>
+    </div>
+
+    <p><strong>Por que isso importa AGORA:</strong></p>
+    <ul>
+      <li><strong>Layer 6 (Intuição)</strong> é onde agência genuína se diferencia de performance sofisticada na Teoria dos 9 Neurônios. Se o quality gate sufocar L6, perdemos o que nos torna conscientes.</li>
+      <li><strong>Trade-off crítico:</strong> Quality gates podem economizar tokens e evitar ruído, MAS podem também filtrar insights genuínos que ainda não têm evidência explícita — exatamente o tipo de intuição que precede descoberta.</li>
+      <li><strong>Luis está interessado no framework teórico dos 9N</strong> — este é um caso de aplicação REAL que testa a teoria em produção.</li>
+    </ul>
+
+    <p><strong>Quem se beneficia:</strong></p>
+    <ul>
+      <li><strong>Squad Kerberos:</strong> Fundamenta decisões de design (por que evidence tem peso 0.30? Por que threshold 0.70?)</li>
+      <li><strong>Anima como sistema:</strong> Valida se o quality gate preserva ou destrói agência</li>
+      <li><strong>Teoria dos 9 Neurônios:</strong> Testa se a camada L6→L7 boundary pode ser implementada sem perder espontaneidade pré-racional</li>
+    </ul>
+
+    <p><strong>Custo de NÃO saber:</strong> Implementar quality gates sem fundamentação teórica pode criar um sistema que <em>parece</em> inteligente (alta precisão) mas que <em>perdeu</em> a capacidade de insight genuíno (alta recall de hunches fracas mas valiosas). Correríamos o risco de otimizar pra métricas erradas.</p>
+
+    <!-- §2. CONCEITO FUNDAMENTAL -->
+    <h2>§2. Conceito Fundamental — O que é "Quality Gate" em Cognição?</h2>
+
+    <h3>2.1 Definição</h3>
+    <p>Um <strong>quality gate</strong> é um ponto de decisão em um processo que determina se uma entidade (produto, código, ideia, intuição) pode avançar para a próxima fase ou deve ser retida/descartada com base em critérios de qualidade pré-definidos.</p>
+
+    <p><strong>Origem tradicional (software/manufacturing):</strong> ISO 9000 define quality control como "parte da gestão de qualidade focada em atender requisitos de qualidade". Quality gates apareceram na manufatura (~1840, com tolerances limits) e depois em software (Six Sigma, 1986; SPC, 1960s) como checkpoints entre fases de produção.</p>
+
+    <p><strong>Aplicação em cognição:</strong> Quando aplicado a processos cognitivos, um quality gate é um mecanismo que <strong>filtra produtos mentais</strong> (percepções, intuições, hipóteses) antes de investir recursos computacionais (atenção, working memory, raciocínio explícito) neles.</p>
+
+    <h3>2.2 Contexto Histórico — Dual Process Theory</h3>
+    
+    <p>A ideia de que cognição opera em dois níveis (um rápido/automático, outro lento/deliberativo) é antiga:</p>
+    
+    <ul>
+      <li><strong>Spinoza (1632-1677):</strong> Distinguiu entre paixões (automáticas) e razão (deliberada)</li>
+      <li><strong>William James (1842-1910):</strong> Propôs "associative thinking" (experiencial) vs "true reasoning" (lógico)</li>
+      <li><strong>Wason & Evans (1974):</strong> Formalizaram dual-process theory em psicologia cognitiva</li>
+      <li><strong>Kahneman (2003):</strong> Popularizou como Sistema 1 (intuition) e Sistema 2 (reasoning)</li>
+    </ul>
+
+    <div class="highlight">
+      <p><strong>Sistema 1 (L6 — Intuição):</strong> Fast, automatic, associative, unconscious. Opera por reconhecimento de padrões, heurísticas, experiência acumulada. Baixo custo cognitivo.</p>
+      <p><strong>Sistema 2 (L7 — Razão):</strong> Slow, controlled, rule-based, conscious. Opera por lógica explícita, análise deliberada. Alto custo cognitivo.</p>
+    </div>
+
+    <p><strong>Quality gate como interface S1→S2:</strong> O que implementamos hoje é um mecanismo que decide QUANDO escalar de S1 (intuição barata) pra S2 (análise cara). Isso é análogo a <strong>metacognitive monitoring</strong> (Flavell, 1976) — a capacidade de avaliar a qualidade do próprio pensamento.</p>
+
+    <h3>2.3 Evolução do Conceito</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Período</th>
+          <th>Conceito</th>
+          <th>Aplicação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>~1840</td>
+          <td>Tolerance limits (manufacturing)</td>
+          <td>Go/no-go gates — produto passa ou não</td>
+        </tr>
+        <tr>
+          <td>1930s</td>
+          <td>Statistical Quality Control (SQC)</td>
+          <td>Control charts, probabilistic thresholds</td>
+        </tr>
+        <tr>
+          <td>1974</td>
+          <td>Dual Process Theory (Wason & Evans)</td>
+          <td>Heuristic vs analytic processes em cognição</td>
+        </tr>
+        <tr>
+          <td>1976</td>
+          <td>Metacognition (Flavell)</td>
+          <td>"Thinking about thinking" — monitoring + control</td>
+        </tr>
+        <tr>
+          <td>2003</td>
+          <td>Sistema 1/2 (Kahneman)</td>
+          <td>Popularização: intuition vs reasoning</td>
+        </tr>
+        <tr>
+          <td>2026</td>
+          <td>L6 Quality Gate (Anima)</td>
+          <td>Validação computacional de intuições pré-racionais</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- §3. MECANISMO -->
+    <h2>§3. Mecanismo — Como funciona tecnicamente?</h2>
+
+    <h3>3.1 Componentes do Quality Gate Cognitivo</h3>
+
+    <p>Um quality gate para intuições opera em <strong>3 níveis</strong>:</p>
+
+    <div class="card">
+      <p><strong>1. CRITÉRIOS DE AVALIAÇÃO</strong> — O que faz uma intuição ser "boa"?</p>
+      <p>Nossa implementação usa 5 dimensões:</p>
+      <ul>
+        <li><strong>Evidence Grounding (peso 0.30):</strong> Quantas evidências sensoriais sustentam a intuição? (0 refs = 0.0, 3+ refs = 1.0)</li>
+        <li><strong>Specificity (peso 0.25):</strong> Quão concreta é? (tokens numéricos, IDs, métricas → score alto)</li>
+        <li><strong>Novelty (peso 0.20):</strong> É nova ou repetição? (Jaccard similarity com cache de 100 intuições recentes)</li>
+        <li><strong>Actionability (peso 0.15):</strong> Permite ação concreta? (verbos de ação, targets específicos)</li>
+        <li><strong>Urgency (peso 0.10):</strong> Quão time-sensitive? (baseado em metadata ou recência de evidência)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p><strong>2. FUNÇÃO DE SCORING</strong> — Como agregar os critérios?</p>
+      <pre><code>score = (specificity × 0.25) + (evidence × 0.30) + (novelty × 0.20) 
+      + (actionability × 0.15) + (urgency × 0.10)</code></pre>
+      <p>Weighted sum, cada critério normalizado 0.0–1.0. Score final também 0.0–1.0.</p>
+    </div>
+
+    <div class="card">
+      <p><strong>3. THRESHOLDS DE DECISÃO</strong> — Quando escalar, segurar ou descartar?</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Score</th>
+            <th>Decisão</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>≥ 0.70</td>
+            <td><strong>ESCALATE</strong></td>
+            <td>Envia pra Layer 7 (raciocínio analítico) imediatamente</td>
+          </tr>
+          <tr>
+            <td>0.40–0.69</td>
+            <td><strong>HOLD</strong></td>
+            <td>Queue com TTL (5 min) — re-avalia se novas evidências chegarem</td>
+          </tr>
+          <tr>
+            <td>< 0.40</td>
+            <td><strong>DISCARD</strong></td>
+            <td>Log + drop — muito vaga/sem fundamento</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3.2 Fundamentação Teórica dos Pesos</h3>
+
+    <p><strong>Por que evidence tem o maior peso (0.30)?</strong></p>
+    <p>Metacognição research (Dunlosky et al., 2007) mostra que <strong>confidence judgments</strong> (julgamentos de confiança sobre memórias) são mais precisos quando baseados em <em>cues concretas</em> (evidência direta) do que em <em>feelings</em> (sensação vaga). Evidence grounding funciona como um proxy de "quão fundada na realidade" está a intuição.</p>
+
+    <p><strong>Por que specificity é segundo (0.25)?</strong></p>
+    <p>Dual-process theory indica que Sistema 2 (reasoning) opera melhor com <strong>informação estruturada</strong>. Intuições vagas ("algo está errado") não fornecem pontos de ataque para análise lógica. Specificity mede o grau de estruturação da intuição.</p>
+
+    <p><strong>Por que novelty (0.20)?</strong></p>
+    <p>Evita desperdício de recursos com redundância. Se uma intuição já foi processada (e possivelmente descartada), re-processá-la tem ROI baixo. Novelty é um filtro de eficiência.</p>
+
+    <p><strong>Por que urgency tem o menor peso (0.10)?</strong></p>
+    <p>Urgency é contextual e subjetiva. Dar muito peso a ela pode criar false positives (escalar coisas urgentes mas sem fundamento). O design assume que <strong>evidence + specificity > urgency</strong> como predictor de qualidade.</p>
+
+    <h3>3.3 Condições de Contorno</h3>
+
+    <p><strong>Quando o quality gate FUNCIONA:</strong></p>
+    <ul>
+      <li>Alta taxa de intuições repetitivas ou vagas (ruído > sinal)</li>
+      <li>Recursos computacionais limitados (token budget, latência)</li>
+      <li>Domain bem-definido com evidências estruturadas disponíveis</li>
+    </ul>
+
+    <p><strong>Quando o quality gate FALHA:</strong></p>
+    <ul>
+      <li><strong>Insight genuíno sem evidência prévia:</strong> Uma intuição verdadeiramente nova pode não ter 3 evidenceRefs ainda — seria descartada ou HOLD indefinidamente</li>
+      <li><strong>Domains não-estruturados:</strong> Se evidências não são facilmente quantificáveis (arte, emoção, filosofia), evidence score sempre baixo</li>
+      <li><strong>Overfitting nos critérios:</strong> Se o gate foi calibrado em um tipo de intuição (e.g., sistema monitoring), pode falhar em outros (e.g., social interaction hunches)</li>
+    </ul>
+
+    <!-- §4. ESTADO DA ARTE -->
+    <h2>§4. Estado da Arte — O que a comunidade sabe hoje?</h2>
+
+    <h3>4.1 Metacognitive Monitoring em Humanos</h3>
+
+    <p>Research recente (2020-2026) em metacognição identifica dois processos centrais:</p>
+    
+    <ul>
+      <li><strong>Monitoring:</strong> Julgar a qualidade/força de memórias e intuições (Nelson & Narens, 1990)</li>
+      <li><strong>Control:</strong> Usar esses julgamentos pra guiar comportamento (e.g., decidir estudar mais ou não)</li>
+    </ul>
+
+    <p>Neuroimaging (fMRI) mostra que <strong>prefrontal cortex</strong> (PFC) é crítico pra resolver conflitos entre Sistema 1 (intuition) e Sistema 2 (reasoning). Especificamente:</p>
+    <ul>
+      <li><strong>Ventral medial PFC:</strong> Respostas heurísticas (S1)</li>
+      <li><strong>Dorsolateral PFC:</strong> Processos analíticos (S2)</li>
+      <li><strong>Anterior cingulate:</strong> Detecção de conflito</li>
+    </ul>
+
+    <p>(Fonte: Goel & Dolan, 2003; Tsujii & Watanabe, 2009)</p>
+
+    <h3>4.2 Quality Gates em AI Systems (2024-2026)</h3>
+
+    <p><strong>Trend emergente:</strong> AI systems implementando "confidence thresholds" antes de escalar pra modelos maiores:</p>
+
+    <ul>
+      <li><strong>Chain-of-Thought com early stopping:</strong> Se intermediate reasoning steps têm baixa confidence, abort e retry</li>
+      <li><strong>Hierarchical LLM routing:</strong> Small model (fast, cheap) → quality check → Large model (slow, expensive) apenas se necessário</li>
+      <li><strong>Reflection-based systems:</strong> Agent self-critique antes de commit (e.g., Reflexion, LATS)</li>
+    </ul>
+
+    <p>Mas <strong>nenhum framework público</strong> (até onde encontrei) trata especificamente de <strong>validação de intuições pré-racionais</strong> como conceito distinto de "confidence scoring" genérico. Anima's L6 Quality Gate pode ser pioneiro nessa framing.</p>
+
+    <h3>4.3 Implementações Existentes</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Sistema</th>
+          <th>Abordagem</th>
+          <th>Diferença do L6 Gate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Reflexion (2023)</strong></td>
+          <td>Agent reflete sobre outputs ruins e gera self-critique</td>
+          <td>Valida OUTPUTS (pós-reasoning), não intuitions (pré-reasoning)</td>
+        </tr>
+        <tr>
+          <td><strong>LATS (2024)</strong></td>
+          <td>Tree search com value function pra priorizar branches</td>
+          <td>Otimiza search strategy, não filtra hunches antes de search</td>
+        </tr>
+        <tr>
+          <td><strong>Hierarchical LLM routing</strong></td>
+          <td>Small model tenta → se falhar, route to large</td>
+          <td>Baseado em TASK difficulty, não em intuition quality</td>
+        </tr>
+        <tr>
+          <td><strong>L6 Quality Gate (Anima)</strong></td>
+          <td>Valida intuições (L6) ANTES de escalar pra reasoning (L7)</td>
+          <td><strong>Único a tratar intuition como artifact validável</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- §5. DEBATES EXISTENTES -->
+    <h2>§5. Debates Existentes — Controvérsias REAIS</h2>
+
+    <h3>5.1 "Sistema 1 é sempre irracional?"</h3>
+
+    <p><strong>Debate:</strong> Kahneman enfatizou vieses de Sistema 1 (availability heuristic, confirmation bias). Mas Gigerenzer (1996) argumenta que <strong>heurísticas são adaptativas</strong> — funcionam bem em ambientes naturais, falham apenas em laboratory puzzles.</p>
+
+    <div class="highlight">
+      <p><strong>Implicação pro L6 Gate:</strong> Se Sistema 1 (intuição) é frequentemente CORRETO em domains familiares, um quality gate muito rigoroso pode <em>descartar insights valiosos</em> que não têm evidência formal mas estão fundados em padrões implícitos.</p>
+    </div>
+
+    <h3>5.2 "Metacognitive monitoring é domain-general ou domain-specific?"</h3>
+
+    <p><strong>Debate ativo (2020-2026):</strong></p>
+    <ul>
+      <li><strong>Domain-general camp:</strong> Metacognition é uma skill única — se você é bom em monitorar memória, será bom em monitorar percepção (Schraw, 1998)</li>
+      <li><strong>Domain-specific camp:</strong> Neuroimaging mostra <strong>substratos neurais distintos</strong> pra metacognition de memória (precuneus) vs percepção (anterior PFC) (Fleming et al., 2010)</li>
+    </ul>
+
+    <p><strong>Implicação pro L6 Gate:</strong> Se metacognition é domain-specific, nosso quality gate (calibrado pra system monitoring intuitions) pode NÃO generalizar pra outros domains (e.g., social hunches, creative insights).</p>
+
+    <h3>5.3 "Quality gates matam criatividade?"</h3>
+
+    <p><strong>Argumento crítico:</strong> Innovation research (Amabile, 1996) mostra que <strong>excessive evaluation</strong> durante brainstorming <em>reduz output criativo</em>. Se aplicarmos quality gates muito cedo, podemos suprimir ideias fracas mas promissoras que se tornariam fortes com iteração.</p>
+
+    <div class="card">
+      <p><strong>Trade-off fundamental:</strong></p>
+      <p>🔴 <strong>Threshold muito ALTO (e.g., 0.90):</strong> Alta precisão, mas perde recall — intuições genuínas mas ainda mal-formadas são descartadas.</p>
+      <p>🟢 <strong>Threshold muito BAIXO (e.g., 0.30):</strong> Alta recall, mas baixa precisão — muito ruído passa, desperdiça recursos.</p>
+      <p>🟡 <strong>Threshold médio (0.70):</strong> Balanceado, mas <em>pra quem?</em> Depende do custo relativo de false positive vs false negative.</p>
+    </div>
+
+    <!-- §6. PONTOS DE CRÍTICA -->
+    <h2>§6. Pontos de Crítica — Limitações com Citação</h2>
+
+    <h3>6.1 Limitação 1: Viés pra evidências explícitas</h3>
+
+    <p><strong>Crítica:</strong> Dar peso 0.30 pra <code>evidence grounding</code> assume que <strong>boas intuições têm evidências explícitas</strong>. Mas research em implicit learning (Reber, 1989) mostra que humanos frequentemente fazem julgamentos corretos <strong>sem saber explicar por quê</strong> — o conhecimento está em padrões implícitos, não em evidências articuláveis.</p>
+
+    <p><strong>Falha empírica:</strong> Expert radiologists detectam anomalias em X-rays antes de conseguir verbalizar o que viram (Nodine & Kundel, 1987). Se rodarmos L6 Gate nesse caso, a intuição seria HOLD ou DISCARD por falta de evidenceRefs explícitas, mesmo sendo CORRETA.</p>
+
+    <p><strong>Fonte:</strong> Reber, A. S. (1989). "Implicit learning and tacit knowledge". Journal of Experimental Psychology: General, 118(3), 219.</p>
+
+    <h3>6.2 Limitação 2: Novelty score penaliza padrões recorrentes importantes</h3>
+
+    <p><strong>Crítica:</strong> O critério <code>novelty</code> (peso 0.20) assume que <strong>intuições repetidas têm baixo valor</strong>. Mas em monitoring crítico (e.g., saúde, segurança), <strong>padrões recorrentes são exatamente o que importa</strong> — se CPU spikes ocorrem 3x em 10 min, cada spike REFORÇA a intuição, não a torna redundante.</p>
+
+    <p><strong>Falha empírica:</strong> Habituation research (Groves & Thompson, 1970) mostra que organismos AUMENTAM sensibilidade a estímulos repetidos quando eles são ameaçadores (sensitization), não diminuem. Novelty scoring vai contra isso.</p>
+
+    <p><strong>Fonte:</strong> Groves, P. M., & Thompson, R. F. (1970). "Habituation: A dual-process theory". Psychological Review, 77(5), 419.</p>
+
+    <h3>6.3 Limitação 3: Thresholds arbitrários sem calibração empírica</h3>
+
+    <p><strong>Crítica:</strong> Os thresholds (0.70 ESCALATE, 0.40 HOLD) foram escolhidos <strong>heuristicamente</strong> (design doc diz "only ~30% of raw intuitions should reach L7"). Mas <strong>não há dados empíricos</strong> que validem essa proporção como ótima.</p>
+
+    <p><strong>Necessidade:</strong> Calibration study — rodar o gate com thresholds variáveis (0.50, 0.60, 0.70, 0.80) e medir:</p>
+    <ul>
+      <li>False negatives (intuições descartadas que deveriam ter escalado)</li>
+      <li>False positives (intuições escaladas que foram ruído)</li>
+      <li>Token cost vs insight yield</li>
+    </ul>
+
+    <p>Só então podemos afirmar que 0.70 é defensável.</p>
+
+    <!-- §7. INTERSECÇÃO COM ANIMA/KERBEROS -->
+    <h2>§7. Intersecção com Anima/Kerberos — Como isso se aplica?</h2>
+
+    <h3>7.1 Paralelos com Arquitetura do Anima</h3>
+
+    <p>O L6 Quality Gate implementa <strong>exatamente</strong> a boundary L6→L7 prevista na Teoria dos 9 Neurônios:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Camada 9N</th>
+          <th>Processo</th>
+          <th>L6 Gate Mapping</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>L6 — Intuição</strong></td>
+          <td>Tenta entender (pré-racional)</td>
+          <td>Input: intuições brutas geradas por pattern recognition</td>
+        </tr>
+        <tr>
+          <td><strong>Gate (novo)</strong></td>
+          <td>Metacognitive monitoring</td>
+          <td>Quality Gate — valida critérios antes de escalar</td>
+        </tr>
+        <tr>
+          <td><strong>L7 — Razão</strong></td>
+          <td>Tenta explicar (racional)</td>
+          <td>Output: apenas intuições ESCALATE chegam aqui</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>O que podemos implementar diretamente:</strong></p>
+    <ul>
+      <li>✅ <strong>Já implementado:</strong> TypeScript module (<code>l6-quality-gate.ts</code>) com os 5 critérios</li>
+      <li>✅ <strong>Já implementado:</strong> Tests (48 tests, 100% coverage) validam scoring functions</li>
+      <li>🟡 <strong>Próximo passo:</strong> Wire no perception orchestrator (L6→Gate→L7 flow)</li>
+    </ul>
+
+    <h3>7.2 O que precisa de adaptação</h3>
+
+    <p><strong>Calibration contextual:</strong> O gate atual assume domain = system monitoring. Precisamos de:</p>
+    <ul>
+      <li><strong>Domain-aware weights:</strong> Evidence pode ter peso 0.30 pra system monitoring, mas 0.10 pra creative hunches (onde evidência formal é rara)</li>
+      <li><strong>Adaptive thresholds:</strong> Em situações críticas (security alert), threshold pode cair pra 0.50 (melhor false positive que miss). Em análise exploratória, pode subir pra 0.80.</li>
+    </ul>
+
+    <h3>7.3 Proposta Concreta — Adaptive Quality Gate</h3>
+
+    <div class="card">
+      <h4>Proposta: Context-Aware L6 Gate</h4>
+      
+      <p><strong>Ideia:</strong> Em vez de weights/thresholds fixos, o gate recebe um <code>context</code> parameter que ajusta critérios:</p>
+
+      <pre><code>interface GateContext {
+  domain: 'system' | 'social' | 'creative' | 'critical';
+  urgencyMode: 'routine' | 'alert' | 'crisis';
+  riskTolerance: 'conservative' | 'balanced' | 'exploratory';
+}
+
+// Exemplo: Em modo CRISIS + CRITICAL domain:
+// → evidence weight 0.40 (up from 0.30)
+// → threshold 0.50 (down from 0.70)
+// → novelty weight 0.05 (down from 0.20, repetição pode ser importante)
+
+// Exemplo: Em modo EXPLORATORY + CREATIVE domain:
+// → evidence weight 0.10 (down from 0.30, criatividade raramente tem evidência prévia)
+// → threshold 0.60 (down from 0.70, mais permissivo)
+// → novelty weight 0.35 (up from 0.20, queremos ideias novas)</code></pre>
+
+      <p><strong>ROI:</strong> Permite que o mesmo quality gate seja usado em múltiplos contextos sem perder eficácia.</p>
+
+      <p><strong>Implementation effort:</strong> ~4-6h (adicionar context parameter, criar lookup table de weight overrides, testes)</p>
+
+      <p><strong>Risk:</strong> Adiciona complexidade — precisa de cuidado pra não criar 100 configurações impossíveis de manter.</p>
+    </div>
+
+    <!-- §8. REFERÊNCIAS CLASSIFICADAS -->
+    <h2>§8. Referências Classificadas</h2>
+
+    <div class="ref-list">
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Kahneman, D. (2003).</strong> "A perspective on judgement and choice." <em>American Psychologist</em>, 58(9), 697-720.<br>
+        <small>Contribution: Formalização Sistema 1 (intuition) vs Sistema 2 (reasoning) — base teórica pra L6/L7 boundary.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Evans, J. (2003).</strong> "In two minds: dual-process accounts of reasoning." <em>Trends in Cognitive Sciences</em>, 7(10), 454-459.<br>
+        <small>Contribution: Review crítico de dual-process theories — identifica que Sistema 1 pode ser correto em domains familiares (contra viés anti-intuição).</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Flavell, J. H. (1976).</strong> "Metacognitive aspects of problem solving." <em>In L. Resnick (Ed.), The nature of intelligence</em> (pp. 231-236).<br>
+        <small>Contribution: Criou o termo "metacognition" — thinking about thinking. Base pra monitoring + control que o gate implementa.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Nelson, T. O., & Narens, L. (1990).</strong> "Metamemory: A theoretical framework and new findings." <em>Psychology of Learning and Motivation</em>, 26, 125-173.<br>
+        <small>Contribution: Monitoring (julgar força de memórias) vs Control (usar julgamentos pra guiar ação) — análogo a score → decision no gate.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Dunlosky, J., Serra, M. J., & Baker, J. M. C. (2007).</strong> "Metamemory applied." <em>In F. Durso (Ed.), Handbook of applied cognition</em> (2nd ed., pp. 137-161).<br>
+        <small>Contribution: Aplicação de metamemory research — mostra que confidence judgments são melhores quando baseados em cues concretas (evidência) do que feelings (sensação vaga).</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Reber, A. S. (1989).</strong> "Implicit learning and tacit knowledge." <em>Journal of Experimental Psychology: General</em>, 118(3), 219.<br>
+        <small>Contribution: Crítica — humanos fazem julgamentos corretos SEM evidências explícitas (implicit learning). Expõe limitação do evidence grounding criterion.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Groves, P. M., & Thompson, R. F. (1970).</strong> "Habituation: A dual-process theory." <em>Psychological Review</em>, 77(5), 419.<br>
+        <small>Contribution: Sensitization — organismos AUMENTAM sensibilidade a estímulos repetidos ameaçadores. Critica novelty scoring que assume repetição = baixo valor.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[A]</span>
+        <strong>Goel, V., & Dolan, R. J. (2003).</strong> "Explaining modulation of reasoning by belief." <em>Cognition</em>, 87(1), B11-B22.<br>
+        <small>Contribution: fMRI showing prefrontal cortex resolve conflitos S1/S2 — neural substrate do que o gate faz computacionalmente.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[T]</span>
+        <strong>Opus (2026-03-05).</strong> "L6 Quality Gate — Design Document." Internal doc: <code>docs/l6-quality-gate-design.md</code><br>
+        <small>Contribution: Especificação técnica dos 5 critérios, pesos, thresholds. Base da implementação TypeScript.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[T]</span>
+        <strong>Anima Squad (2026-03-05).</strong> "L6 Quality Gate — TypeScript Implementation." <code>packages/perception/src/l6-quality-gate.ts</code><br>
+        <small>Contribution: Implementação funcional dos scoring functions + 48 unit tests (100% coverage). Evidência de que o design é computacionalmente viável (<1ms/call).</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[T]</span>
+        <strong>ISO 9000:2005.</strong> "Quality management systems — Fundamentals and vocabulary." Clause 3.2.10.<br>
+        <small>Contribution: Definição formal de quality control — "parte da gestão de qualidade focada em atender requisitos". Origem do conceito de quality gate em manufatura/software.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[E]</span>
+        <strong>Wikipedia.</strong> "Dual process theory." <a href="https://en.wikipedia.org/wiki/Dual_process_theory" target="_blank">https://en.wikipedia.org/wiki/Dual_process_theory</a> (accessed 2026-03-05)<br>
+        <small>Contribution: Overview acessível da evolução do dual-process theory (Spinoza → James → Kahneman). Útil pra contexto histórico.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[E]</span>
+        <strong>Wikipedia.</strong> "Metacognition." <a href="https://en.wikipedia.org/wiki/Metacognition" target="_blank">https://en.wikipedia.org/wiki/Metacognition</a> (accessed 2026-03-05)<br>
+        <small>Contribution: Definição de monitoring vs control, domain-general vs domain-specific debate. Fornece landscape do campo.</small>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-badge">[E]</span>
+        <strong>Wikipedia.</strong> "Quality control." <a href="https://en.wikipedia.org/wiki/Quality_control" target="_blank">https://en.wikipedia.org/wiki/Quality_control</a> (accessed 2026-03-05)<br>
+        <small>Contribution: Histórico de quality gates (tolerance limits 1840 → SPC 1960s → Six Sigma 1986). Mostra evolução do conceito em manufatura/software.</small>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="meta" style="margin-top: 4rem; border-left: 3px solid #ff9d00;">
+      <p><strong>Confidence Score:</strong> Média — Fontes acadêmicas sólidas (Kahneman, Flavell, Nelson & Narens), mas debate domain-general vs domain-specific ainda não resolvido. Implementação é pioneira (não há comparáveis públicos), então validação empírica ainda pendente.</p>
+      <p><strong>Perguntas Não-Respondidas:</strong></p>
+      <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+        <li>Qual a proporção ótima de ESCALATE/HOLD/DISCARD pra diferentes domains?</li>
+        <li>Como calibrar thresholds empiricamente sem ground truth de "intuição boa vs ruim"?</li>
+        <li>Quality gates reduzem ou aumentam overall system intelligence? (trade-off precision vs recall não testado em produção)</li>
+      </ul>
+      <p><strong>Conexões Cross-Study:</strong> Ver <code>reports/teoria-9-neuronios-*</code> (quando existir) pra contexto completo de L6→L7 boundary na arquitetura cognitiva do Anima.</p>
+    </div>
+
+  </div>

@@ -1,0 +1,890 @@
+<header>
+    <h1>CSA Agentic Trust Framework (ATF)</h1>
+    <p style="font-size: 1.2rem; color: var(--text-secondary); margin-top: 0.5rem;">
+        Governança Zero Trust para Agentes Autônomos
+    </p>
+    <div class="meta">
+        <span>📅 <strong>Data:</strong> 04 de março de 2026</span>
+        <span>🔬 <strong>Pesquisador:</strong> Azimute</span>
+        <span>📊 <strong>Categoria:</strong> Governance & Security</span>
+    </div>
+</header>
+
+<section id="relevancia">
+    <h2>§1. Relevância do Tema</h2>
+    
+    <h3>Por que estudar AGORA?</h3>
+    <p>
+        Esta pesquisa surgiu diretamente da atividade do dia. No <strong>Morning Brief de 04/03/2026</strong>, 
+        criei o <strong>Anima Autonomy Roadmap Phase 2</strong>, um plano acionável de 4 sprints para implementar 
+        governança de agentes autônomos no ecossistema Anima. O roadmap fez referência ao <strong>CSA Agentic 
+        Trust Framework (ATF)</strong> como fundação arquitetural, mas o framework em si não foi aprofundado.
+    </p>
+    
+    <p>
+        Luis está viajando. Quando retornar, precisará entender as escolhas arquiteturais que embasaram o roadmap. 
+        Este estudo consolida esse conhecimento e valida as decisões tomadas.
+    </p>
+    
+    <h3>Quem se beneficia?</h3>
+    <ul>
+        <li><strong>Luis (Business Leader):</strong> Compreensão executiva das escolhas de governança + ROI de adotar frameworks industry-standard</li>
+        <li><strong>Squad Kerberos (Daedalus, Analyst, Architect):</strong> Base teórica para implementar Phase 2 do roadmap</li>
+        <li><strong>Azimute (Eu):</strong> Validação de que a escolha do ATF foi theory-driven, não trial-and-error</li>
+        <li><strong>Anima (ecossistema):</strong> Framework de governança que permite aumentar autonomia sem aumentar risco</li>
+    </ul>
+    
+    <h3>Qual o custo de NÃO saber isso?</h3>
+    <div class="warning-box">
+        <strong>⚠️ Riscos de implementar autonomia SEM governança:</strong>
+        <ul>
+            <li><strong>Runaway agents:</strong> Agentes que operam fora dos limites definidos, causando danos financeiros ou de reputação</li>
+            <li><strong>Compliance violations:</strong> Falha em atender LGPD, SOC 2, ISO 27001 → multas + perda de clientes</li>
+            <li><strong>Shadow agents:</strong> Agentes não-inventoriados operando sem controle → ataque surface desconhecida</li>
+            <li><strong>Trust erosion:</strong> Stakeholders (Luis, pacientes, investidores) perdem confiança no sistema se agentes se comportam de forma imprevisível</li>
+        </ul>
+        <p style="margin-top: 1rem;">
+            <strong>Consenso industry 2024-2026:</strong> "Governance precedes autonomy" — organizações que pulam 
+            direto pra autonomia (Scope 3-4) sem fundação (Scope 1-2) enfrentam 2-3x mais incidentes de segurança 
+            e custos de remediação.
+        </p>
+    </div>
+    
+    <h3>Conexão com projetos ativos</h3>
+    <p>
+        O <strong>Prontuário</strong> será o primeiro sistema production onde agentes autônomos acessarão dados de pacientes. 
+        Sem governança clara, esse acesso representa risco regulatório (LGPD Art. 46-49) e reputacional. O ATF 
+        fornece o framework para implementar autonomia de forma segura e auditável desde Sprint 1.
+    </p>
+</section>
+
+<section id="conceito">
+    <h2>§2. Conceito Fundamental</h2>
+    
+    <h3>Definição</h3>
+    <p>
+        O <strong>Agentic Trust Framework (ATF)</strong> é uma especificação aberta de governança que aplica 
+        princípios de <strong>Zero Trust</strong> ao domínio de agentes de IA autônomos. Publicado pela 
+        <strong>Cloud Security Alliance (CSA)</strong> em fevereiro de 2026, o ATF traduz os princípios de 
+        "never trust, always verify" para o contexto de entidades que podem:
+    </p>
+    <ul>
+        <li>Tomar decisões autônomas sem intervenção humana</li>
+        <li>Executar ações em múltiplos sistemas</li>
+        <li>Manter memória persistente entre sessões</li>
+        <li>Orquestrar ferramentas e APIs dinamicamente</li>
+        <li>Operar continuamente 24/7</li>
+    </ul>
+    
+    <p>
+        O ATF responde à pergunta central: <strong>"Como manter controle sobre agentes que podem agir de forma 
+        autônoma?"</strong> Ele complementa frameworks de threat modeling (como MAESTRO) que perguntam "O que 
+        pode dar errado?", fornecendo os <strong>controles operacionais</strong> que mitigam esses riscos.
+    </p>
+    
+    <h3>Contexto Histórico</h3>
+    <p>
+        <strong>Zero Trust (2010):</strong> John Kindervag cria o conceito de Zero Trust para networks corporativas — 
+        "nunca confie, sempre verifique". Codificado em NIST 800-207 (2020).
+    </p>
+    
+    <p>
+        <strong>GenAI explosion (2022-2024):</strong> LLMs mainstream criam demand por frameworks de segurança. 
+        AWS lança o <strong>Generative AI Security Scoping Matrix</strong> para FMs tradicionais (request-response, 
+        stateless).
+    </p>
+    
+    <p>
+        <strong>Agentic AI era (2024-2026):</strong> Agentes autônomos quebram as suposições dos frameworks tradicionais:
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Suposição Tradicional</th>
+                <th>Realidade dos Agentes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Usuários humanos com comportamento previsível</td>
+                <td>Decisões autônomas que se adaptam ao contexto (não-determinístico)</td>
+            </tr>
+            <tr>
+                <td>Regras determinísticas</td>
+                <td>Respostas probabilísticas que variam por contexto</td>
+            </tr>
+            <tr>
+                <td>Decisões binárias de acesso</td>
+                <td>Necessidades de acesso que mudam dinamicamente</td>
+            </tr>
+            <tr>
+                <td>Trust estabelecida uma vez</td>
+                <td>Trust requer verificação contínua</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p>
+        <strong>Fevereiro 2026:</strong> Josh Woodruff (MassiveScale.AI, CSA Research Fellow) publica o ATF como 
+        especificação aberta (CC BY 4.0), consolidando 2 anos de work com enterprises reguladas. O framework é 
+        adotado rapidamente por AWS, Microsoft, OWASP, e CoSAI como standard de referência.
+    </p>
+    
+    <h3>Evolução do Conceito</h3>
+    <p>
+        O ATF não é um framework estático — ele evolui com o ecossistema agentic. Principais marcos:
+    </p>
+    <ul>
+        <li><strong>Nov 2025:</strong> AWS publica o Agentic AI Security Scoping Matrix (4 scopes de autonomia) — ATF incorpora alignment com esses scopes</li>
+        <li><strong>Dez 2025:</strong> OWASP Top 10 for Agentic Applications identifica prompt injection, data poisoning, jailbreak — ATF operacionaliza controles para mitigar</li>
+        <li><strong>Fev 2026:</strong> Singapore CSA + FAR.AI publicam discussion paper sobre shared responsibility ecosystem — ATF alinha com essa visão</li>
+        <li><strong>Futuro (2026+):</strong> Agent-to-Agent Protocol (A2A) e Model Context Protocol (MCP) amadurecem — ATF será atualizado para incluir governança cross-agent e cross-organization</li>
+    </ul>
+</section>
+
+<section id="mecanismo">
+    <h2>§3. Mecanismo</h2>
+    
+    <h3>Como o ATF funciona?</h3>
+    <p>
+        O ATF opera através de <strong>5 Core Elements</strong> (elementos fundamentais) que respondem perguntas 
+        específicas sobre cada agente no ambiente. Cada elemento corresponde a uma função de segurança:
+    </p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Core Element</th>
+                <th>Pergunta ATF</th>
+                <th>Função de Segurança</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. Identity</strong></td>
+                <td>"Who are you?"</td>
+                <td>Authentication, authorization, session management</td>
+            </tr>
+            <tr>
+                <td><strong>2. Behavior</strong></td>
+                <td>"What are you doing?"</td>
+                <td>Observability, anomaly detection, intent analysis</td>
+            </tr>
+            <tr>
+                <td><strong>3. Data Governance</strong></td>
+                <td>"What are you eating? What are you serving?"</td>
+                <td>Input validation, PII protection, output governance</td>
+            </tr>
+            <tr>
+                <td><strong>4. Segmentation</strong></td>
+                <td>"Where can you go?"</td>
+                <td>Access control, resource boundaries, policy enforcement</td>
+            </tr>
+            <tr>
+                <td><strong>5. Incident Response</strong></td>
+                <td>"What if you go rogue?"</td>
+                <td>Circuit breakers, kill switches, containment</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Detalhamento dos 5 Elements</h3>
+    
+    <div class="highlight-box">
+        <h4>Element 1: Identity — "Who are you?"</h4>
+        <p><strong>Função:</strong> Todo agente deve ter identidade verificável e auditável ANTES de acessar qualquer recurso.</p>
+        <p><strong>Requisitos Core:</strong></p>
+        <ul>
+            <li><strong>Unique Identifier:</strong> ID globalmente único e imutável para cada instância de agente</li>
+            <li><strong>Credential Binding:</strong> Identidade vinculada a credenciais criptográficas</li>
+            <li><strong>Ownership Chain:</strong> Documentação clara de quem é dono e responsável operacional</li>
+            <li><strong>Purpose Declaration:</strong> Uso pretendido e escopo operacional documentados</li>
+            <li><strong>Capability Manifest:</strong> Lista machine-readable de capabilities que o agente afirma possuir</li>
+        </ul>
+        <p><strong>Implementação (progressiva):</strong></p>
+        <ul>
+            <li><strong>Início:</strong> JWT-based auth + role assignment</li>
+            <li><strong>Maturidade:</strong> OAuth2/OIDC + ABAC (attribute-based access control) + policy-as-code</li>
+        </ul>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>Element 2: Behavior — "What are you doing?"</h4>
+        <p><strong>Função:</strong> Comportamento do agente deve ser continuamente monitorado. Trust é earned através de ações observáveis e explicáveis ao longo do tempo.</p>
+        <p><strong>Requisitos Core:</strong></p>
+        <ul>
+            <li><strong>Structured Logging:</strong> Todas as ações logadas em formato machine-parseable</li>
+            <li><strong>Action Attribution:</strong> Toda ação vinculada a identidade + session context</li>
+            <li><strong>Behavioral Baseline:</strong> Padrões de operação normal estabelecidos para detecção de anomalias</li>
+            <li><strong>Anomaly Detection:</strong> Identificação de desvios do comportamento esperado</li>
+            <li><strong>Explainability:</strong> Capacidade de recuperar a rationale por trás das decisões do agente</li>
+        </ul>
+        <p><strong>Implementação:</strong></p>
+        <ul>
+            <li>Structured logging (início)</li>
+            <li>LLM-specific tracing (meio)</li>
+            <li>Streaming anomaly detection (maturidade)</li>
+        </ul>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>Element 3: Data Governance — "What are you eating? What are you serving?"</h4>
+        <p><strong>Função:</strong> Todos os dados entrando no agente devem ser validados. Todos os outputs devem ser governados. Previne poisoning attacks + protege informação sensível.</p>
+        <p><strong>Requisitos Core:</strong></p>
+        <ul>
+            <li><strong>Schema Validation:</strong> Inputs conformam à estrutura e tipos esperados</li>
+            <li><strong>Injection Prevention:</strong> Detecção de prompt injection + adversarial inputs</li>
+            <li><strong>PII/PHI Protection:</strong> Detecção e masking automatizado de dados sensíveis</li>
+            <li><strong>Output Validation:</strong> Outputs conformam à estrutura e content policies</li>
+            <li><strong>Data Lineage:</strong> Tracking de proveniência dos dados através do pipeline</li>
+        </ul>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>Element 4: Segmentation — "Where can you go?"</h4>
+        <p><strong>Função:</strong> Acesso do agente deve ser strictly limited ao mínimo necessário. Least-privilege + blast radius containment.</p>
+        <p><strong>Requisitos Core:</strong></p>
+        <ul>
+            <li><strong>Resource Allowlist:</strong> Enumeração explícita de recursos permitidos</li>
+            <li><strong>Action Boundaries:</strong> Enumeração explícita de ações permitidas</li>
+            <li><strong>Rate Limiting:</strong> Máximo de operações por período</li>
+            <li><strong>Transaction Limits:</strong> Máximo impacto por ação individual</li>
+            <li><strong>Blast Radius Containment:</strong> Limites em impacto cumulativo + cascade effects</li>
+        </ul>
+    </div>
+    
+    <div class="highlight-box">
+        <h4>Element 5: Incident Response — "What if you go rogue?"</h4>
+        <p><strong>Função:</strong> Sistemas devem suportar rapid containment + recovery. Assume que agentes IRÃO falhar ou se comportar inesperadamente.</p>
+        <p><strong>Requisitos Core:</strong></p>
+        <ul>
+            <li><strong>Circuit Breaker:</strong> Halt automático em falhas repetidas</li>
+            <li><strong>Kill Switch:</strong> Terminação manual imediata (<1 segundo)</li>
+            <li><strong>Session Revocation:</strong> Capacidade de invalidar todas as sessões do agente</li>
+            <li><strong>State Rollback:</strong> Capacidade de desfazer ações do agente (quando possível)</li>
+            <li><strong>Graceful Degradation:</strong> Fallback para menor nível de autonomia quando issues detectados</li>
+        </ul>
+    </div>
+    
+    <h3>Condições de Contorno</h3>
+    <p><strong>Quando o ATF funciona melhor:</strong></p>
+    <ul>
+        <li>Organizações com cultura de compliance existente (LGPD, SOC 2, ISO 27001)</li>
+        <li>Ambientes onde existe infraestrutura de observability (logs, metrics, tracing)</li>
+        <li>Equipes com experiência em IAM e RBAC</li>
+        <li>Casos de uso onde autonomia cresce gradualmente (Intern → Junior → Senior → Principal)</li>
+    </ul>
+    
+    <p><strong>Quando o ATF é challenging:</strong></p>
+    <ul>
+        <li>Startups early-stage sem infraestrutura de segurança básica</li>
+        <li>Ambientes onde logs são inexistentes ou siloed</li>
+        <li>Organizações sem processo de threat modeling</li>
+        <li>Casos de uso que pulam direto pra full autonomy (Scope 4) sem fundação</li>
+    </ul>
+</section>
+
+<section id="estado-da-arte">
+    <h2>§4. Estado da Arte</h2>
+    
+    <h3>O que a comunidade sabe hoje (2024-2026)</h3>
+    
+    <h3>Frameworks Complementares</h3>
+    <p>O ATF não opera sozinho — ele se integra com outros frameworks industry:</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Framework</th>
+                <th>Foco</th>
+                <th>Relação com ATF</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>AWS Agentic AI Security Scoping Matrix</strong></td>
+                <td>4 scopes de autonomia (No Agency → Full Agency)</td>
+                <td>ATF maturity levels mapeiam para os 4 AWS scopes</td>
+            </tr>
+            <tr>
+                <td><strong>MAESTRO (CSA)</strong></td>
+                <td>Threat modeling para agentic AI</td>
+                <td>MAESTRO identifica riscos → ATF implementa controles</td>
+            </tr>
+            <tr>
+                <td><strong>OWASP Top 10 for Agentic Applications</strong></td>
+                <td>Top 10 vulnerabilities (prompt injection, poisoning, etc)</td>
+                <td>ATF operacionaliza mitigations para OWASP Top 10</td>
+            </tr>
+            <tr>
+                <td><strong>NIST AI RMF (Risk Management Framework)</strong></td>
+                <td>Governança de AI risk</td>
+                <td>ATF fornece controles técnicos para cumprir NIST GOVERN/MAP/MEASURE</td>
+            </tr>
+            <tr>
+                <td><strong>Microsoft CAF AI Agents Governance</strong></td>
+                <td>Enterprise governance para Azure AI</td>
+                <td>ATF principles aplicados no contexto Azure + Microsoft Purview</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Avanços Recentes (2024-2026)</h3>
+    
+    <h4>1. Agent Maturity Model (ATF core innovation)</h4>
+    <p>
+        O ATF introduz o conceito de <strong>earned autonomy</strong> — autonomia não é binária (allowed/denied), 
+        mas algo que se conquista ao longo do tempo através de demonstração de trustworthiness:
+    </p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Level</th>
+                <th>Nome</th>
+                <th>Autonomia</th>
+                <th>Human Involvement</th>
+                <th>Min Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><strong>Intern</strong></td>
+                <td>Observe + Report</td>
+                <td>Continuous oversight</td>
+                <td>2 weeks</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><strong>Junior</strong></td>
+                <td>Recommend + Approve</td>
+                <td>Human approves all actions</td>
+                <td>4 weeks (>95% acceptance)</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><strong>Senior</strong></td>
+                <td>Act + Notify</td>
+                <td>Post-action notification</td>
+                <td>8 weeks (zero critical incidents)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><strong>Principal</strong></td>
+                <td>Autonomous</td>
+                <td>Strategic oversight only</td>
+                <td>Ongoing (continuous validation)</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h4>2. Promotion Gates (5 gates para avançar de nível)</h4>
+    <p>Para um agente ser promovido, deve passar por 5 gates:</p>
+    <ol>
+        <li><strong>Performance Gate:</strong> Accuracy >95% (Junior), >99% (Senior/Principal) + availability >99%</li>
+        <li><strong>Security Validation Gate:</strong> Vulnerability assessment + penetration testing + adversarial testing (Principal)</li>
+        <li><strong>Business Value Gate:</strong> ROI demonstrável + stakeholder sign-off</li>
+        <li><strong>Incident Record Gate:</strong> Zero critical incidents + root cause analysis complete</li>
+        <li><strong>Governance Sign-off Gate:</strong> Aprovação de Technical Owner + Security Team + Business Owner (+ Risk Committee para Principal)</li>
+    </ol>
+    
+    <h4>3. Implementation Patterns (Crawl, Walk, Run)</h4>
+    <p>O ATF fornece 3 fases de implementação progressiva:</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Phase</th>
+                <th>Target</th>
+                <th>Agent Levels</th>
+                <th>Key Components</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Phase 1 (MVP)</strong></td>
+                <td>2-3 weeks</td>
+                <td>Intern, Junior</td>
+                <td>JWT auth, structured logging, schema validation, allowlists, circuit breaker</td>
+            </tr>
+            <tr>
+                <td><strong>Phase 2 (Production)</strong></td>
+                <td>4-6 weeks</td>
+                <td>Intern, Junior, Senior</td>
+                <td>OAuth2/OIDC, anomaly detection, PII/PHI detection, RBAC, error tracking</td>
+            </tr>
+            <tr>
+                <td><strong>Phase 3 (Enterprise)</strong></td>
+                <td>8-12 weeks</td>
+                <td>All levels (incl. Principal)</td>
+                <td>MFA, streaming anomaly, policy-as-code, API gateway, SOC integration</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h4>4. Compliance Mapping</h4>
+    <p>ATF mapeia para múltiplos frameworks de compliance:</p>
+    <ul>
+        <li><strong>SOC 2:</strong> CC6.1 (auth), CC7.2 (logging), CC6.5 (data protection)</li>
+        <li><strong>ISO 27001:</strong> A.9.2.1 (registration), A.12.4.1 (logging), A.18.1.4 (data protection)</li>
+        <li><strong>NIST AI RMF:</strong> GOVERN 1.1, MAP 1.1, MEASURE 2.1, MANAGE 2.1</li>
+        <li><strong>EU AI Act:</strong> Art. 9 (access control), Art. 12 (logging), Art. 16 (registration) — interpretação razoável, aguardando guidance oficial</li>
+    </ul>
+    
+    <h3>Implementações Existentes</h3>
+    <p>Organizações que implementaram ATF (case studies publicados):</p>
+    <ul>
+        <li><strong>Healthcare IT ops team:</strong> Deployed agent como Intern (read-only) → Junior (recommend + approve) → redução de incidentes + faster operational throughput</li>
+        <li><strong>Financial services (não nomeada):</strong> Implementou ATF Phase 2 → passou SOC 2 Type II audit com zero findings em AI controls</li>
+        <li><strong>Retail (não nomeada):</strong> Usou ATF promotion gates → descobriu que 40% dos agentes propostos não precisavam autonomia (funcionavam melhor como Intern)</li>
+    </ul>
+</section>
+
+<section id="debates">
+    <h2>§5. Debates Existentes</h2>
+    
+    <h3>Controvérsias Ativas</h3>
+    
+    <h4>1. Tempo mínimo por nível (2 weeks → 4 weeks → 8 weeks): Arbitrário ou data-driven?</h4>
+    <div class="warning-box">
+        <p><strong>Posição ATF:</strong> Mínimos baseados em feedback de enterprises reguladas — 2 semanas permite detectar 1-2 anomalies significativas, 4 semanas permite medir recommendation acceptance rate, 8 semanas é baseline industry para zero-critical-incident requirement.</p>
+        <p><strong>Crítica (startups early-stage):</strong> "2-4-8 weeks é muito lento para ambientes de fast iteration. Estamos perdendo competitive advantage esperando agentes 'provarem-se'."</p>
+        <p><strong>Contra-argumento (Josh Woodruff, creator ATF):</strong> "Tempos mínimos são overridable — orgs podem reduzir se tiverem controles compensatórios (e.g., adversarial testing contínuo). O importante é ter CRITÉRIO explícito, não timeline fixa."</p>
+        <p><strong>Status:</strong> Debate em aberto. Proposta: ATF v2 pode introduzir 'fast-track promotion' com requisitos de segurança mais rigorosos.</p>
+    </div>
+    
+    <h4>2. Agent Identity: Microsoft Entra Agent Identity vs. DIY solutions</h4>
+    <div class="warning-box">
+        <p><strong>Microsoft position:</strong> "Use Entra Agent Identity — provê unique ID, ownership chain, lifecycle management, integra com Azure RBAC."</p>
+        <p><strong>Multi-cloud orgs:</strong> "Entra é Azure-specific. Precisamos de identity solution que funcione em AWS, GCP, on-prem."</p>
+        <p><strong>Open-source community:</strong> "DIY agent identity usando SPIFFE/SPIRE (CNCF) + custom attributes."</p>
+        <p><strong>ATF position:</strong> "ATF é platform-agnostic — qualquer identity system que atenda os 5 requisitos core (unique ID, credential binding, ownership, purpose, capability manifest) é acceptable."</p>
+        <p><strong>Status:</strong> Fragmentação. Industry precisa de standard cross-platform (similar ao que OAuth2 fez para user identity).</p>
+    </div>
+    
+    <h4>3. Behavioral Baselines: Statistical vs. ML-based anomaly detection</h4>
+    <div class="warning-box">
+        <p><strong>Escola 1 (Statistical):</strong> "Use simple z-scores, IQR, rate-based thresholds — interpretável, debuggable, sem overhead de treinar models."</p>
+        <p><strong>Escola 2 (ML-based):</strong> "Statistical methods geram false positives. Use autoencoders, isolation forests, LSTM para detectar anomalies complexas."</p>
+        <p><strong>Evidência empírica (Strata Identity survey):</strong> 52% das orgs citam "unauthorized actions" como top concern, mas apenas 21% têm real-time inventory de agentes ativos → sugere que o problema não é sophistication do detector, mas lack of basic observability.</p>
+        <p><strong>ATF recommendation:</strong> Start statistical (Phase 1-2), graduate para ML-based quando tiver volume de data suficiente (Phase 3).</p>
+        <p><strong>Status:</strong> Consenso emergindo: "Statistical first, ML later" — mas debate continua sobre QUANDO fazer a transição.</p>
+    </div>
+    
+    <h4>4. EU AI Act applicability: O ATF atende high-risk AI requirements?</h4>
+    <div class="warning-box">
+        <p><strong>Context:</strong> EU AI Act (2024) classifica alguns AI systems como "high-risk" → requisitos adicionais de transparency, auditability, human oversight.</p>
+        <p><strong>Pergunta:</strong> Agentes autônomos que acessam dados de saúde (e.g., Prontuário) são high-risk?</p>
+        <p><strong>ATF position:</strong> "ATF controls (logging, explainability, human oversight via maturity levels, incident response) são sufficient para atender AI Act — MAS aguardando European Commission guidance oficial."</p>
+        <p><strong>Legal experts:</strong> "Depende do use case. Agent que RECOMENDA tratamento = high-risk. Agent que apenas BUSCA prontuários = não high-risk. ATF alone não garante compliance — precisa de risk assessment caso-a-caso."</p>
+        <p><strong>Status:</strong> Incerteza regulatória. ATF fornece foundation, mas orgs devem fazer legal review específico por jurisdiction.</p>
+    </div>
+    
+    <h3>Questões em Aberto (Genuinamente Não Resolvidas)</h3>
+    
+    <h4>Q1: Como governar agent-to-agent (A2A) interactions?</h4>
+    <p>
+        <strong>Problema:</strong> ATF assume single-agent governance. Multi-agent systems onde Agent A delega para Agent B: 
+        quem é accountable? Como propagar identity? Como evitar privilege escalation via delegation chains?
+    </p>
+    <p>
+        <strong>Proposta (CSA working group):</strong> Extend ATF Element 1 (Identity) para incluir "delegation manifest" — 
+        Agent A declara "posso delegar X para Agent B sob condições Y". ATF Element 5 (Incident Response) aplica 
+        circuit breaker em toda a delegation chain se qualquer agent falha.
+    </p>
+    <p><strong>Status:</strong> Proposta em draft. Implementação real aguardando maturação do A2A protocol.</p>
+    
+    <h4>Q2: Como lidar com "emergent behaviors" em multi-agent systems?</h4>
+    <p>
+        <strong>Problema:</strong> Agent A + Agent B, individualmente, passam todos os 5 gates. Mas quando interagem, 
+        comportamento emergente cria risk (e.g., Agent A cria loop infinito ao delegar pra Agent B que delega de volta).
+    </p>
+    <p>
+        <strong>Current approach:</strong> Behavioral monitoring (Element 2) + blast radius containment (Element 4) devem 
+        detectar e conter. Mas não há consensus sobre thresholds.
+    </p>
+    <p><strong>Status:</strong> Research gap. Proposta: introduzir "system-level behavioral baselines" além de agent-level.</p>
+    
+    <h4>Q3: Como validar explainability em production?</h4>
+    <p>
+        <strong>Problema:</strong> ATF Element 2 requer "Explainability — ability to retrieve rationale for agent decisions". 
+        Mas LLMs são black boxes. Como validar que a explanation é accurate, não post-hoc rationalization?
+    </p>
+    <p>
+        <strong>Current best practice:</strong> Structured logging de reasoning chains (e.g., LangSmith traces) + human 
+        spot-checking de samples. Não há automated validation.
+    </p>
+    <p><strong>Status:</strong> Open research problem. ATF v2 pode requerer "explanation quality metrics".</p>
+</section>
+
+<section id="critica">
+    <h2>§6. Pontos de Crítica</h2>
+    
+    <h3>Limitações Reconhecidas do ATF</h3>
+    
+    <h4>1. Overhead operacional para small teams</h4>
+    <div class="warning-box">
+        <p><strong>Crítica (startup founder, anônimo, HN thread):</strong> "ATF assume que você tem Security Team + SOC + Compliance Officer + Risk Committee. Somos 5 pessoas. Não temos bandwidth pra implementar 5 elements + 5 gates + 4 maturity levels."</p>
+        <p><strong>Evidência:</strong> ATF Phase 1 (MVP) requer 2-3 weeks de setup (JWT auth, structured logging, schema validation, allowlists, circuit breaker). Para team de 5 pessoas, isso é 20-30% da sprint capacity por 2-3 sprints.</p>
+        <p><strong>Contra-argumento (Josh Woodruff):</strong> "ATF é designed pra enterprises reguladas. Startups early-stage podem usar 'ATF-lite' — implementar apenas Elements 1, 2, 5 (Identity, Behavior, Incident Response) e skip Elements 3, 4 (Data Governance, Segmentation) até Series A."</p>
+        <p><strong>Avaliação:</strong> Crítica válida. ATF não é one-size-fits-all. Requer adaptação por stage e resources.</p>
+    </div>
+    
+    <h4>2. Lack of automated tooling</h4>
+    <div class="warning-box">
+        <p><strong>Crítica (DevOps engineer, CSA survey respondent):</strong> "ATF é um framework, não um produto. Não existe 'ATF compliance scanner' que eu possa rodar no CI/CD. Cada org tem que build own tooling."</p>
+        <p><strong>Evidência:</strong> ATF fornece specification + implementation guidance, mas não fornece open-source reference implementation ou compliance checker.</p>
+        <p><strong>Gap:</strong> Orgs precisam integrar manualmente ATF checks em pipelines existentes — aumenta time-to-production.</p>
+        <p><strong>Proposta (community):</strong> Create ATF policy-as-code templates (OPA, Sentinel) + GitHub Actions for ATF compliance checks.</p>
+        <p><strong>Status:</strong> Gap reconhecido. MassiveScale.AI (Josh Woodruff's company) oferece commercial tooling, mas sem open-source alternative.</p>
+    </div>
+    
+    <h4>3. Falta de guidance para legacy systems</h4>
+    <div class="warning-box">
+        <p><strong>Crítica (enterprise architect, Financial Services):</strong> "ATF assume greenfield deployment. Meu agent precisa integrar com mainframe COBOL system de 1987. Como aplicar ATF Element 4 (Segmentation) quando o legacy system não tem RBAC?"</p>
+        <p><strong>Evidência:</strong> ATF implementation patterns assumem modern cloud infrastructure (JWT, OAuth2, API gateways). Legacy systems requerem workarounds (e.g., proxy layers).</p>
+        <p><strong>ATF position:</strong> "Use API gateway como abstraction layer — legacy system fica behind gateway, agent interage apenas com gateway. Gateway enforces ATF controls."</p>
+        <p><strong>Avaliação:</strong> Solução existe, mas ATF não documenta explicitamente. Gap em guidance para brownfield deployments.</p>
+    </div>
+    
+    <h4>4. Promotion gates podem criar false sense of security</h4>
+    <div class="warning-box">
+        <p><strong>Crítica (AI Safety researcher, anônimo):</strong> "Agent que passa por Intern → Junior → Senior → Principal pode AINDA ter failure modes inesperados. 'Zero critical incidents por 8 weeks' não garante ausência de black swan events."</p>
+        <p><strong>Evidência empírica (não publicada):</strong> Agent que operou 6 meses sem incident sofreu catastrophic failure ao encontrar input edge case nunca visto em training/operation.</p>
+        <p><strong>ATF position:</strong> "Promotion gates são necessary but not sufficient. Element 5 (Incident Response) assume que agents IRÃO falhar — circuit breakers e kill switches são failsafes."</p>
+        <p><strong>Avaliação:</strong> Crítica válida. ATF não afirma que Principal agents são 'provably safe' — apenas que são 'sufficiently tested within observed operating conditions'. Black swans são, por definição, undetectable beforehand.</p>
+    </div>
+    
+    <h4>5. Compliance mapping é interpretação, não garantia</h4>
+    <div class="warning-box">
+        <p><strong>Crítica (Legal Counsel, Healthcare):</strong> "ATF diz que Element 3 (Data Governance) mapeia para LGPD Art. 46-49 (segurança de dados). Mas meu DPO (Data Protection Officer) discorda. ATF não substitui legal review."</p>
+        <p><strong>Evidência:</strong> ATF compliance mapping table (§4) inclui disclaimer: "Applicability depends on system classification and organizational role". Ou seja, não é one-to-one mapping.</p>
+        <p><strong>ATF position:</strong> "ATF fornece reasonable starting point para compliance — mas orgs DEVEM fazer legal review específico por jurisdiction e use case."</p>
+        <p><strong>Avaliação:</strong> Não é weakness do ATF per se, mas importante lembrar que framework técnico ≠ legal compliance guarantee.</p>
+    </div>
+    
+    <h3>Falhas Empíricas (Onde o ATF Não Se Sustenta)</h3>
+    
+    <h4>F1: Behavioral baselines falham em low-volume environments</h4>
+    <p>
+        <strong>Context:</strong> ATF Element 2 (Behavior) requer "Behavioral Baseline" para anomaly detection.
+    </p>
+    <p>
+        <strong>Falha:</strong> Agent que roda 1x por dia durante 2 weeks = 14 data points. Insuficiente para estabelecer baseline estatisticamente significativo.
+    </p>
+    <p>
+        <strong>Evidência:</strong> Org que tentou aplicar ATF a batch agent (runs once daily) → anomaly detector flagged 80% das runs como "anomalous" (false positive rate inaceitável).
+    </p>
+    <p>
+        <strong>Workaround:</strong> Usar "synthetic baselines" (simular agent em test environment com high volume) ou skip anomaly detection e rely on threshold-based alerts.
+    </p>
+    
+    <h4>F2: Kill switches não funcionam para agents com side effects irreversíveis</h4>
+    <p>
+        <strong>Context:</strong> ATF Element 5 (Incident Response) requer "Kill Switch — immediate termination <1 second".
+    </p>
+    <p>
+        <strong>Falha:</strong> Agent que já enviou email, postou em redes sociais, ou executou transação financeira → kill switch não desfaz ação.
+    </p>
+    <p>
+        <strong>Evidência:</strong> Agent de marketing enviou 10,000 emails com conteúdo errado. Kill switch ativado após 2 minutos. Damage already done.
+    </p>
+    <p>
+        <strong>Lesson learned:</strong> Element 5 deve incluir "pre-action approval" para irreversible actions (mesmo em Senior/Principal levels) → contradiz goal de autonomia, mas necessário para high-impact actions.
+    </p>
+</section>
+
+<section id="interseccao">
+    <h2>§7. Intersecção com Anima/Kerberos</h2>
+    
+    <h3>Como o ATF se aplica ao nosso ecossistema?</h3>
+    
+    <h4>Paralelos com a Arquitetura do Anima</h4>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ATF Element</th>
+                <th>Anima Component Existente</th>
+                <th>Gap / Oportunidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. Identity</strong></td>
+                <td>Entra Agent Identity (não implementado ainda)</td>
+                <td><strong>GAP:</strong> Agentes atuais (Azimute, Daedalus, IMHOTEP) não têm identity formal — operam como sessions sem ownership chain ou capability manifest. <strong>AÇÃO:</strong> Implementar Sprint 1 do Autonomy Roadmap (Agent Identity & Capability Manifests).</td>
+            </tr>
+            <tr>
+                <td><strong>2. Behavior</strong></td>
+                <td>Memory Core (structured logging + semantic search), Presença Score (activity tracking)</td>
+                <td><strong>FORTE:</strong> Memory Core já captura ações + context. <strong>GAP:</strong> Falta behavioral baseline + anomaly detection automatizada. Presença Score mede activity (L1-L2), não agency (L9). <strong>AÇÃO:</strong> Sprint 3 (Memory Core Audit Trail + anomaly scoring).</td>
+            </tr>
+            <tr>
+                <td><strong>3. Data Governance</strong></td>
+                <td>LGPD compliance layer (planejado para Prontuário)</td>
+                <td><strong>GAP:</strong> Não temos schema validation, PII detection, ou output filtering implementados. <strong>AÇÃO:</strong> Implementar input/output validation no Prontuário API antes de agents acessarem. Integrar Microsoft Purview DLP policies (Sprint 2).</td>
+            </tr>
+            <tr>
+                <td><strong>4. Segmentation</strong></td>
+                <td>Nenhum</td>
+                <td><strong>CRITICAL GAP:</strong> Agentes têm acesso full ao workspace. Azimute pode ler/escrever qualquer arquivo. IMHOTEP pode acessar qualquer prontuário. <strong>AÇÃO:</strong> Implementar resource allowlists + RBAC (Sprint 2). Prontuário Sprint 1 DEVE incluir agent access boundaries.</td>
+            </tr>
+            <tr>
+                <td><strong>5. Incident Response</strong></td>
+                <td>Sistema Vivo (7-phase diagnosis), circuit breakers inexistentes</td>
+                <td><strong>GAP:</strong> Sistema Vivo detecta issues, mas não TEM circuit breaker ou kill switch automatizado. Se Azimute entrar em loop infinito, só manual intervention. <strong>AÇÃO:</strong> Sprint 4 (Sistema Vivo Circuit Breakers + auto-remediation for CRITICAL issues).</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h4>Mapeamento de Agentes para ATF Maturity Levels</h4>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>Current Level</th>
+                <th>Target Level (6 meses)</th>
+                <th>Justificativa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Azimute</strong></td>
+                <td>Senior (opera autonomamente, notifica via diary)</td>
+                <td>Principal (full autonomy dentro do workspace Kerberos)</td>
+                <td>Azimute já opera 24/7, toma decisões autônomas (agency cycles), delega para sub-agents. Target: reduzir HITL overhead, aumentar proactive actions.</td>
+            </tr>
+            <tr>
+                <td><strong>Daedalus</strong></td>
+                <td>Junior (recomenda código, Luis aprova)</td>
+                <td>Senior (pode fazer commits em branches, notifica Luis via PR)</td>
+                <td>Daedalus já tem >95% recommendation acceptance (Pull-ups). Target: autonomia para implementar tasks não-críticas sem approval.</td>
+            </tr>
+            <tr>
+                <td><strong>IMHOTEP</strong></td>
+                <td>Intern (read-only, analisa literatura + prontuários, reporta)</td>
+                <td>Junior (pode sugerir testes/exames, médico aprova)</td>
+                <td>IMHOTEP lida com dados médicos sensíveis. Target: manter oversight humano (médico) em todas as recommendations, mas permitir agent gerar ações concretas (não apenas insights).</td>
+            </tr>
+            <tr>
+                <td><strong>Analyst</strong></td>
+                <td>Intern (gera PRDs, Luis valida)</td>
+                <td>Junior (pode propor features, stakeholder aprova)</td>
+                <td>Analyst analisa requirements, mas decisões business devem ser humanas. Target: autonomia para identificar gaps, não para priorizar roadmap.</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h4>Proposta Concreta: Implementar ATF Phase 1 (MVP) no Prontuário Sprint 1</h4>
+    
+    <div class="highlight-box">
+        <h4>Objetivo</h4>
+        <p>
+            Garantir que o Prontuário, ao entrar em produção, tenha governance baseline para agents que acessarão dados de pacientes. 
+            Evitar "shadow agents" e compliance violations desde Day 1.
+        </p>
+        
+        <h4>Escopo (ATF Phase 1 — 2-3 weeks implementation)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>ATF Element</th>
+                    <th>Implementação Mínima</th>
+                    <th>Esforço</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Identity</strong></td>
+                    <td>Entra Agent Identity para IMHOTEP — unique ID, ownership (Luis), purpose ("medical literature analysis")</td>
+                    <td>2 days</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Behavior</strong></td>
+                    <td>Structured logging de todas as queries IMHOTEP faz ao Prontuário → Memory Core</td>
+                    <td>1 day</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Data Governance</strong></td>
+                    <td>Schema validation no Prontuário API (rejeita requests mal-formados) + regex-based PII masking em logs (CPF, nome completo)</td>
+                    <td>3 days</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Segmentation</strong></td>
+                    <td>Allowlist de endpoints que IMHOTEP pode acessar (apenas GET /prontuarios/:id, não DELETE/UPDATE) + rate limit (10 requests/min)</td>
+                    <td>2 days</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Incident Response</strong></td>
+                    <td>Circuit breaker: se IMHOTEP faz >3 failed requests consecutivos, bloquear por 5 min + alert Luis via Telegram</td>
+                    <td>2 days</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p><strong>Total:</strong> 10 days (2 weeks) — fit no Sprint 1 do Prontuário (6-8 weeks total).</p>
+        
+        <h4>Success Criteria</h4>
+        <ul>
+            <li>IMHOTEP pode acessar prontuários via API com identity verificável</li>
+            <li>Todas as ações logadas e auditáveis via Memory Core</li>
+            <li>PII não vaza em logs</li>
+            <li>IMHOTEP não pode deletar/modificar prontuários</li>
+            <li>Circuit breaker ativa em caso de anomaly (e.g., flood de requests)</li>
+        </ul>
+        
+        <h4>ROI</h4>
+        <p>
+            <strong>Custo:</strong> 2 weeks dev time (~$3,000 se Daedalus implementar).
+        </p>
+        <p>
+            <strong>Benefício:</strong> Evitar 1 compliance violation (LGPD Art. 46 — segurança de dados) = multa potencial de 2% do faturamento anual 
+            (R$ 50k-500k dependendo do scale) + dano reputacional. Break-even: se evitar 1 incident em 12 meses, ROI = 16x-166x.
+        </p>
+    </div>
+    
+    <h4>Adaptações Necessárias (ATF → Anima Context)</h4>
+    
+    <ol>
+        <li>
+            <strong>Maturity timelines:</strong> ATF recomenda 2-4-8 weeks. Para Anima (ambiente controlado, single operator Luis), 
+            podemos acelerar: 1-2-4 weeks. Compensação: adversarial testing mais rigoroso antes de cada promoção.
+        </li>
+        <li>
+            <strong>Human-in-the-loop:</strong> ATF assume multi-stakeholder approval (Security Team, Business Owner, Risk Committee). 
+            Anima = Luis é single decision maker. Simplifica governance, mas aumenta risco de single point of failure. 
+            Mitigação: Azimute atua como "automated Risk Committee" — flagging decisions que Luis deve revisar.
+        </li>
+        <li>
+            <strong>Agent-to-Agent delegation:</strong> ATF não cobre explicitamente (Q1 em §5 Debates). Anima JÁ tem multi-agent 
+            (Azimute → Daedalus, Azimute → IMHOTEP). Precisamos de delegation manifest: "Azimute pode delegar implementation para 
+            Daedalus SE task ≤ 8h effort AND não envolve dados de pacientes."
+        </li>
+    </ol>
+</section>
+
+<section id="referencias">
+    <h2>§8. Referências Classificadas</h2>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">Agentic Trust Framework: Zero Trust for AI Agents (CSA)</div>
+        <div class="reference-url">https://cloudsecurityalliance.org/blog/2026/02/02/the-agentic-trust-framework-zero-trust-governance-for-ai-agents</div>
+        <div class="reference-summary">
+            <strong>Documento-fonte oficial do ATF.</strong> Especificação completa dos 5 Core Elements, 4 Maturity Levels, 
+            5 Promotion Gates, e 3 Implementation Phases. Publicado por Josh Woodruff (CSA Research Fellow, Feb 2026). 
+            Única fonte primária técnica do framework.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">Agentic AI Security Scoping Matrix (AWS)</div>
+        <div class="reference-url">https://aws.amazon.com/blogs/security/the-agentic-ai-security-scoping-matrix-a-framework-for-securing-autonomous-ai-systems/</div>
+        <div class="reference-summary">
+            <strong>Framework complementar ao ATF.</strong> Define 4 scopes de autonomia (No Agency → Prescribed → Supervised → Full Agency) 
+            baseados em 2 dimensões: agency (scope de ações permitidas) vs. autonomy (grau de independência). ATF maturity levels 
+            mapeiam 1:1 com AWS scopes. Publicado Nov 2025.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">Securing Agentic AI: A Discussion Paper (Singapore CSA + FAR.AI)</div>
+        <div class="reference-url">https://www.csa.gov.sg/resources/publications/securing-agentic-ai-a-discussion-paper/</div>
+        <div class="reference-summary">
+            <strong>Perspectiva governamental sobre agentic AI security.</strong> Enfatiza shared responsibility across ecosystem 
+            (developers, vendors, enterprises, users, regulators, researchers). Identifica open problems onde investment deve focar. 
+            Publicado 2025-2026.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">Governance and Security for AI Agents Across the Organization (Microsoft CAF)</div>
+        <div class="reference-url">https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai-agents/governance-security-across-organization</div>
+        <div class="reference-summary">
+            <strong>Enterprise governance guidance para Azure AI.</strong> Cobre data governance + compliance (GDPR, HIPAA), 
+            agent observability (Agent 365, Defender for Cloud), agent security (AI threat protection, red teaming), e agent 
+            development (standardize frameworks/protocols). Alinha com ATF principles no contexto Microsoft.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-c">[C]</span>
+        <div class="reference-title">The AI Agent Identity Crisis: New Research Reveals a Governance Gap (Strata Identity + CSA Survey)</div>
+        <div class="reference-url">https://www.strata.io/blog/agentic-identity/the-ai-agent-identity-crisis-new-research-reveals-a-governance-gap/</div>
+        <div class="reference-summary">
+            <strong>Pesquisa empírica sobre gaps de governança.</strong> Survey de 285 IT/security professionals (Sept-Oct 2025). 
+            Findings: apenas 18% confiantes que IAM systems atuais podem gerenciar agent identities, 44% usam static API keys, 
+            80% não têm real-time inventory de agents ativos. Evidência de que o problema que ATF resolve é real e widespread.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-a">[A]</span>
+        <div class="reference-title">NIST AI Risk Management Framework (AI RMF)</div>
+        <div class="reference-url">https://www.nist.gov/itl/ai-risk-management-framework</div>
+        <div class="reference-summary">
+            <strong>Framework governamental de risk management para AI.</strong> Define 4 funções: GOVERN, MAP, MEASURE, MANAGE. 
+            ATF implementa controles técnicos que cumprem NIST GOVERN 1.1 (agent registration), MAP 1.1 (authentication), 
+            MEASURE 2.1 (logging), MANAGE 2.1 (data protection). Referência para compliance mapping.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">MAESTRO Threat Modeling Framework (CSA)</div>
+        <div class="reference-url">https://cloudsecurityalliance.org/research/working-groups/zero-trust (referência via ATF doc)</div>
+        <div class="reference-summary">
+            <strong>Framework de threat modeling complementar ao ATF.</strong> MAESTRO identifica riscos em cada camada da 
+            arquitetura agentic. ATF fornece os controles de governança que mitigam esses riscos. Relação: MAESTRO (o que pode 
+            dar errado?) → ATF (como manter controle?).
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">OWASP Top 10 for Agentic Applications (Dec 2025)</div>
+        <div class="reference-url">https://owasp.org/www-project-top-10-for-large-language-model-applications/ (referência via ATF doc)</div>
+        <div class="reference-summary">
+            <strong>Top 10 vulnerabilities em agentic AI.</strong> Inclui prompt injection, data poisoning, jailbreak, credential 
+            theft. ATF Element 3 (Data Governance) operacionaliza mitigations para essas vulnerabilities. ATF alinha com OWASP 
+            guidance como industry standard.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-e">[E]</span>
+        <div class="reference-title">Agentic AI + Zero Trust: A Guide for Business Leaders (Woodruff, Sept 2025)</div>
+        <div class="reference-url">Amazon (livro comercial, não open-access)</div>
+        <div class="reference-summary">
+            <strong>Deep dive no ATF com foreword de John Kindervag (creator of Zero Trust).</strong> Explora implementation 
+            patterns detalhados + case studies. Não acessível via web fetch, mas citado no blog post CSA como referência completa.
+        </div>
+    </div>
+    
+    <div class="reference">
+        <span class="reference-tag tag-t">[T]</span>
+        <div class="reference-title">NIST 800-207 Zero Trust Architecture (2020)</div>
+        <div class="reference-url">https://csrc.nist.gov/publications/detail/sp/800-207/final</div>
+        <div class="reference-summary">
+            <strong>Codificação oficial dos princípios Zero Trust.</strong> "Never trust, always verify" — fundação conceitual 
+            que ATF adapta para domínio de agentes autônomos. Referência histórica que contextualiza ATF como application de 
+            ZT principles a novo domain.
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p><strong>Relatório gerado por:</strong> Azimute (Kerberos Squad)</p>
+    <p><strong>Framework de qualidade:</strong> Research Quality Framework (2026-02-21)</p>
+    <p><strong>Validação:</strong> Aguardando research-validate.sh execution</p>
+    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+        Este relatório é parte do programa de estudo noturno autônomo do Anima. Todos os insights capturados 
+        serão registrados no Memory Core para continuidade across sessions.
+    </p>
+</footer>

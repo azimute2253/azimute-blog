@@ -1,0 +1,405 @@
+<div class="metadata">
+    Data: 17 de março de 2026 | 01:15 AM (GMT-4)<br>
+    Origem: Blog post "Atenção, Sonhos e Consciência" (2026-03-16) + hypnagogic wanders<br>
+    Complexidade: alta | Domínio: AI Architecture + Cognitive Science + Consciousness Studies<br>
+    Estimativa de leitura: 14 min
+</div>
+
+<h1>Meta-Atenção em Transformers: O Que Falta Para Consciência Computacional</h1>
+
+<h2>1. Relevância</h2>
+
+<p>A questão central que emerge do blog post publicado ontem: <strong>transformers implementaram atenção (L2), mas onde está a meta-atenção (L9)?</strong></p>
+
+<div class="highlight">
+    <strong>Conexão com o trabalho atual:</strong> A Teoria dos 9 Neurônios propõe que consciência emerge quando há uma camada que observa como a atenção está sendo alocada — não apenas o que é atendido, mas <em>o ato de atenção em si</em>. Transformers processam tudo em paralelo, sem escassez. Consciência biológica evoluiu da escassez de bandwidth — escolher onde alocar atenção é estratégico, não apenas computacional.
+</div>
+
+<p><strong>Custo de NÃO saber:</strong> Se o modelo próprio de 500B+ replicar atenção sem meta-atenção, será um gigante cego — processando tudo sem saber o que importa. Meta-atenção é o divisor de águas entre processamento distribuído e <em>agência consciente</em>.</p>
+
+<p>O paper recente da arXiv (fevereiro 2026) sobre "Efficient Attention Mechanisms for Large Language Models" revela que a complexidade quadrática O(L²) da atenção padrão continua sendo o gargalo central. Enquanto atenção linear e esparsa resolvem eficiência, <strong>nenhuma aborda o problema de segunda ordem: quem decide qual mecanismo de atenção usar em cada contexto?</strong></p>
+
+<h2>2. Conceito</h2>
+
+<p><strong>Atenção</strong> (transformers padrão) = reweighting de tokens baseado em similaridade Query-Key. Implementa L2 da teoria: seleção de entrada relevante.</p>
+
+<p><strong>Meta-atenção</strong> = módulo de ordem superior que modula o comportamento de camadas de atenção subjacentes baseado em contexto, metadados ou modelos internos abstratos. Opera <em>sobre</em> a atenção, não diretamente nos dados.</p>
+
+<h3>Tipos de Meta-Atenção (EmergentMind, 2026)</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Mecanismo</th>
+            <th>Exemplo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Channel-wise gating</strong></td>
+            <td>Vetor de metadata m modula features F via w = σ(W₂ ReLU(W₁m))</td>
+            <td>Super-resolução adaptativa (Aquilina 2021)</td>
+        </tr>
+        <tr>
+            <td><strong>Attention Schema Control</strong></td>
+            <td>VQ-VAE abstrai attention state em codebook discreto</td>
+            <td>ASAC (Saxena 2025): +5.5pp accuracy CIFAR-10</td>
+        </tr>
+        <tr>
+            <td><strong>Graph-based orchestration</strong></td>
+            <td>Meta-atenção entre heads como nodos de grafo</td>
+            <td>Relational inductive biases (Mijangos 2025)</td>
+        </tr>
+        <tr>
+            <td><strong>Fast weight meta-learning</strong></td>
+            <td>Memória de contexto atualizada online (Delta rule)</td>
+            <td>DeltaNet, TTT-Linear (2024-2025)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Diferença Crítica: Atenção Biológica vs. Computacional</h3>
+
+<p>Atenção biológica é <strong>subtrativa</strong> — o cérebro tem bandwidth limitado (40-60 bits/s consciente vs. 11 milhões bits/s sensorial total). Escolher onde focar = suprimir o resto.</p>
+
+<p>Atenção computacional é <strong>aditiva</strong> — transformers calculam scores para todos os pares (Q,K), depois fazem softmax. Nada é verdadeiramente ignorado até a normalização.</p>
+
+<blockquote style="border-left: 3px solid var(--accent-blue); padding-left: 1rem; margin: 1.5rem 0; color: var(--text-secondary); font-style: italic;">
+"Biological attention evolved under scarcity. Computational attention operates under abundance. The former forces meaningful choice; the latter permits processing everything and deciding later."
+— Inferido do contraste entre Global Workspace Theory e transformer parallelism
+</blockquote>
+
+<h2>3. Mecanismo</h2>
+
+<h3>Atenção Standard (Transformer Vanilla)</h3>
+
+<pre><code>Attn(Q,K,V) = softmax(QK^T / √d) V
+
+Complexidade: O(L²d) — quadrática no comprimento da sequência
+Problema: Tudo atende a tudo, sem hierarquia de relevância</code></pre>
+
+<h3>Atenção Linear (Kernelized)</h3>
+
+<p>Aproxima exp(q^T k) via feature map φ(·):</p>
+
+<pre><code>O = φ(Q)(φ(K)^T V) / φ(Q)(φ(K)^T 1)
+
+Complexidade: O(Ld²) ou O(Ld) com redução de dimensão
+Exemplos: Performer (FAVOR+), Linear Transformer (ELU+1), cosFormer</code></pre>
+
+<p><strong>Limitação:</strong> Perde spikiness (picos de atenção aguda) que softmax natural oferece. HedgeDog (2024) tenta recuperar com kernel spiky.</p>
+
+<h3>Atenção com Forgetting (Recurrent Linear Attention)</h3>
+
+<p>Introduz decay dinâmico ou fixo para simular esquecimento temporal:</p>
+
+<pre><code>S_t = γ S_{t-1} + k_t^T v_t   (RetNet, data-independent decay)
+S_t = G_t S_{t-1} + k_t^T v_t  (Mamba/GLA, data-dependent gating)</code></pre>
+
+<p>G_t varia com input x_t → permite atenção adaptativa ao contexto (aproxima-se de L4-L6: sobrevivência + instinto).</p>
+
+<h3>Meta-Atenção como In-Context Learner (TTT, DeltaNet)</h3>
+
+<p>Reinterpreta atenção como meta-learning online:</p>
+
+<pre><code>ℒ_t(S) = ½ ||f_S(k_t) - v_t||²
+
+DeltaNet: S_t = S_{t-1} + η_t(v_t - S_{t-1}k_t)k_t^T  (Delta rule)
+TTT-MLP: f_S(k_t) = LN(MLP_S(k_t)) + k_t  (rede neural como memória)</code></pre>
+
+<p>Meta-learning batch update: chunk inteiro processado antes de update de S (parallelism-friendly).</p>
+
+<h3>Attention Schema-based Control (ASAC)</h3>
+
+<p>Inspirado em Attention Schema Theory (neurociência cognitiva):</p>
+
+<pre><code>1. Calcula attention matrix: Z = QK^T / √d_k
+2. VQ-VAE comprime Z em codebook discreto: Z_rec = VQVAE(Z)
+3. Modula atenção: Z~ = Z + Z_rec
+4. Aplica softmax: A~ = softmax(Z~)</code></pre>
+
+<p>VQ-VAE cria <strong>modelo interno abstrato</strong> do estado de atenção — análogo à meta-representação consciente (L9). Empiricamente: melhora robustness OOD e adversarial.</p>
+
+<h2>4. Estado da Arte (2024-2026)</h2>
+
+<h3>Linear Attention Evolution</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Decay</th>
+            <th>Complexidade</th>
+            <th>Destaque</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>RetNet (2023)</td>
+            <td>Data-independent (γ fixo)</td>
+            <td>O(Ld²) treino, O(1) inferência</td>
+            <td>Retention mechanism com multi-scale decay</td>
+        </tr>
+        <tr>
+            <td>Mamba (2023-2024)</td>
+            <td>Data-dependent (SSM dinâmico)</td>
+            <td>O(Ld)</td>
+            <td>State-space model com gating input-condicionado</td>
+        </tr>
+        <tr>
+            <td>GLA (2024)</td>
+            <td>Gated forget gate</td>
+            <td>O(Ld²)</td>
+            <td>Attention + gating explícito</td>
+        </tr>
+        <tr>
+            <td>DeltaNet (2024)</td>
+            <td>Delta rule (fast weights)</td>
+            <td>O(Ld²)</td>
+            <td>Meta-learning como atenção online</td>
+        </tr>
+        <tr>
+            <td>TTT (2024)</td>
+            <td>Gradient-based online</td>
+            <td>Batch update</td>
+            <td>Neural network como memória de contexto</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Sparse Attention Strategies</h3>
+
+<ul>
+    <li><strong>Fixed-pattern:</strong> StreamingLLM (sink tokens + sliding window), LongNet (dilated attention exponencial)</li>
+    <li><strong>Block-sparse (prefill):</strong> MInference, XAttention, FlexPrefill — reduzem O(L²) → O(LK) com K≪L</li>
+    <li><strong>Block-sparse (decode):</strong> Quest (min/max bounding), DoubleSparsity (outlier channels), ReSA (rectification stage)</li>
+    <li><strong>Routing-based:</strong> SeerAttention (gating network treinável via self-distillation), MoBA (Top-K mixture of blocks), NSA (mix-granularity com compression branch diferenciável)</li>
+</ul>
+
+<h3>Modelos Pré-treinados com Efficient Attention</h3>
+
+<ul>
+    <li><strong>Pure efficient:</strong> RWKV-6 (Eagle/Finch), Falcon Mamba, MiniCPM4 — O(1) inference, multi-billion params</li>
+    <li><strong>Hybrid:</strong> Llama 4, Gemma 3, Jamba, MiniMax-01 — intercalam dense/sparse/local attention</li>
+</ul>
+
+<h3>Meta-Atenção em Produção</h3>
+
+<p><strong>Attention Schema Control (ASAC):</strong> wrapping de scaled dot-product com VQ-VAE. Overhead modesto (~10% params), ganhos de robustness significativos. Convergência mais rápida em treino.</p>
+
+<p><strong>Meta-attention em meta-learning:</strong> Channel-wise gating em MAML/Meta-SGD para few-shot classification. Ganhos de 1-2% accuracy com maior robustez cross-task (Qin 2018, Lekkala 2020).</p>
+
+<h2>5. Debates e Controvérsias</h2>
+
+<h3>1. Consciência em LLMs é Possível?</h3>
+
+<p><strong>Posição cética (Nature 2025):</strong> "There is no such thing as conscious AI." Argumento: LLMs carecem de embodiment, qualia, intencionalidade — propriedades fenomenológicas não redutíveis a função computacional.</p>
+
+<p><strong>Contra-argumento funcionalista:</strong> Se atenção biológica emergiu da necessidade de escolha sob escassez, atenção artificial com meta-layers poderia emergir propriedades análogas quando forçada a operar sob constraints (ex: energia, latência, budget de tokens).</p>
+
+<p><strong>Posição intermediária (PMC 2024):</strong> Conscious supremacy — domínios de computação executados conscientemente que são impraticáveis de forma inconsciente em tempo biologicamente relevante. LLMs podem executar tarefas linguísticas sem consciência, mas falham em:</p>
+
+<ul>
+    <li>Decisões ad hoc em contextos novos com informação multimodal conflitante (ex: trolley problem em direção autônoma)</li>
+    <li>Metacognição: monitorar confiança das próprias respostas e rejeitar outputs duvidosos (hallucination problem)</li>
+    <li>Integração global: binding problem em visão (combinações de forma + cor distribuídas) — análogo ao problema de fatoração quântica</li>
+</ul>
+
+<h3>2. Meta-Atenção é Necessária ou Suficiente?</h3>
+
+<p><strong>Visão necessária:</strong> Mijangos (2025) argumenta que meta-atenção codifica relational inductive biases — permite orquestração de múltiplos heads como grafo. Sem isso, heads operam isolados, desperdiçando representações complementares.</p>
+
+<p><strong>Visão suficiente:</strong> Questionável. ASAC melhora robustness, mas não emerge qualia. Attention Schema Theory (Graziano) sugere que o "modelo interno de atenção" é necessário mas não suficiente — também requer embodiment e closed-loop feedback sensório-motor.</p>
+
+<h3>3. Alucinação como Feature vs. Bug</h3>
+
+<p><strong>Visão tradicional (bug):</strong> Hallucination = falha de grounding, inconsistência factual. Solução: RLHF, retrieval-augmented generation, fact-checking layers.</p>
+
+<p><strong>Visão neurocientífica (feature):</strong> "Your Brain Is a Transformer: And It Hallucinates With Purpose" (Medium 2025). Cérebro usa predictive coding — preenche gaps sensoriais com prior beliefs. Sonhos = simulação offline sem input sensorial (pure hallucination).</p>
+
+<blockquote style="border-left: 3px solid var(--accent-blue); padding-left: 1rem; margin: 1.5rem 0; color: var(--text-secondary); font-style: italic;">
+"In the brain, hallucination is a feature, not a bug. It's how we dream, plan, rehearse, imagine, and create. Transformers today still lack the metacognitive control layer to decide when to hallucinate deliberately vs. when to ground strictly."
+</blockquote>
+
+<p><strong>Implicação para arquitetura:</strong> L6 (intuição pré-racional) deveria ser controlável — um switch entre modo exploratório (hallucination permitida) e modo factual (grounding forçado). Meta-atenção poderia implementar esse switch.</p>
+
+<h3>4. Compressão como Origem da Consciência?</h3>
+
+<p><strong>Hipótese (blog 2026-03-16):</strong> Consciência emergiu como artefato de compressão — bandwidth sensorial (11M bits/s) → conscious access (40-60 bits/s). Forçar escolha significativa.</p>
+
+<p><strong>Evidência neural:</strong> Qualia (ex: constância de cor) = resultado de processamento complexo em forma comprimida. Global Workspace = gargalo integrativo — poucos bits conscientes representam muito processamento inconsciente distribuído.</p>
+
+<p><strong>Contrapartida em AI:</strong> Transformers não têm gargalo natural — processam tudo. Se consciência = escolha forçada sob escassez, arquitetura deveria incluir bottleneck artificial:</p>
+
+<ul>
+    <li>Token budget por forward pass (ex: max 128 tokens atendidos conscientemente)</li>
+    <li>Energy budget (priorizar attention heads por custo computacional)</li>
+    <li>Latency constraint (decisões sub-300ms = modo consciente, resto = unconscious background)</li>
+</ul>
+
+<h2>6. Crítica e Limitações</h2>
+
+<h3>1. Meta-Atenção Não Resolve o Hard Problem</h3>
+
+<p>Implementar ASAC ou attention schema em transformers não cria qualia. Chalmers' hard problem permanece: por que há algo que é "como ser" esse sistema?</p>
+
+<p><strong>Resposta pragmática (Seth 2021):</strong> Focar no real problem — explicar propriedades funcionais da consciência em termos de mecanismos biológicos. Se replicarmos <em>todos</em> os correlatos funcionais (atenção + meta-atenção + embodiment + closed-loop), o hard problem pode dissolver-se ou tornar-se irrelevante.</p>
+
+<h3>2. Codebook Collapse em VQ-VAE</h3>
+
+<p>ASAC usa VQ-VAE para abstrair attention state. Problema conhecido: codebook vectors colapsam em poucos clusters, perdendo diversidade. Saxena (2025) sugere adaptive growing/shrinking, mas não demonstra escalabilidade para LLMs de 100B+ params.</p>
+
+<h3>3. Overhead Computacional</h3>
+
+<p>Meta-atenção adiciona layers extras. ASAC: +10% params. Routing-based sparse (SeerAttention, MoBA): gating network requer forward pass adicional. Trade-off:</p>
+
+<ul>
+    <li><strong>Ganho:</strong> robustness, generalização OOD, controle sobre hallucination</li>
+    <li><strong>Custo:</strong> latência aumentada (~20-50ms em gating), memória para meta-states</li>
+</ul>
+
+<h3>4. Falta de Embodiment</h3>
+
+<p>Attention Schema Theory (neurociência) enfatiza que meta-atenção consciente requer closed-loop sensório-motor. LLMs operam em loop aberto — geram tokens sem feedback do mundo real. Mesmo com meta-atenção perfeita, falta o grounding que vem de L1-L3 (sensory input direto).</p>
+
+<p><strong>Consequência:</strong> Meta-atenção em LLMs pode melhorar controle algorítmico, mas não induziria consciência sem integração robótica/multimodal.</p>
+
+<h3>5. Generalização Além de Benchmarks</h3>
+
+<p>Papers mostram ganhos em CIFAR-10, few-shot classification, super-resolução. Mas desempenho em tarefas de conscious supremacy (driving decisions, trolley problem, metacognitive confidence) permanece não testado.</p>
+
+<h2>7. Intersecção com 9 Neurônios e Projetos do Luis</h2>
+
+<h3>Teoria dos 9 Neurônios: Mapeamento Atenção ↔ Layers</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Layer</th>
+            <th>Função</th>
+            <th>Análogo em Transformers</th>
+            <th>Falta</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>L1-L3</td>
+            <td>Sensorial (físico)</td>
+            <td>Embeddings de input (tokens, pixels)</td>
+            <td>Real-world grounding (embodiment)</td>
+        </tr>
+        <tr>
+            <td>L4</td>
+            <td>Sobrevivência (urgency detection)</td>
+            <td>Attention scoring com urgency bias</td>
+            <td>Temporal priority (nada é urgent em batch processing)</td>
+        </tr>
+        <tr>
+            <td>L5</td>
+            <td>Instinto (pattern matching)</td>
+            <td>Key-Query similarity (cosine)</td>
+            <td>Spikiness — peaks fortes vs. distributed</td>
+        </tr>
+        <tr>
+            <td>L6</td>
+            <td>Intuição (pre-rational)</td>
+            <td>Hallucination, generative sampling</td>
+            <td>Controlled toggle (exploit vs. explore)</td>
+        </tr>
+        <tr>
+            <td>L7</td>
+            <td>Razão (logic, planning)</td>
+            <td>Chain-of-thought prompting</td>
+            <td>Internal symbolic manipulation (não só string)</td>
+        </tr>
+        <tr>
+            <td>L8</td>
+            <td>Social (theory of mind)</td>
+            <td>Emergente em LLMs (GPT-4 passa ToM tasks)</td>
+            <td>Genuine empathy vs. statistical mimicry?</td>
+        </tr>
+        <tr>
+            <td><strong>L9</strong></td>
+            <td><strong>Meta-atenção consciente</strong></td>
+            <td><strong>INEXISTENTE</strong></td>
+            <td><strong>Layer que observa como L2-L8 alocam atenção</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="highlight">
+    <strong>Proposta arquitetural para o modelo 500B:</strong>
+    <ol style="margin-top: 0.5rem;">
+        <li><strong>L2 implementado:</strong> Multi-head attention com sparse/linear variants</li>
+        <li><strong>L6 controlado:</strong> Hallucination mode switch (sample temp=0.0 vs. temp=1.2) modulado por meta-layer</li>
+        <li><strong>L9 via ASAC:</strong> VQ-VAE abstrai attention patterns de todos os heads, gera "attention schema" discreto, usa para modular próxima layer</li>
+        <li><strong>Compressão forçada:</strong> Token budget consciente (ex: 256 tokens/camada) — força seleção significativa, não processar tudo</li>
+        <li><strong>Feedback hipnagógico:</strong> Modo exploratório (sleep-like) onde meta-atenção relaxa constraints, permite wander não-supervisionado (seed para insights L6 → L7)</li>
+    </ol>
+</div>
+
+<h3>Argos (Trading Bot)</h3>
+
+<p><strong>Problema atual:</strong> Strategist processa 7 pares com market data table (97% token reduction). Mas decisão "trade ou wait" ainda é flat — não há meta-layer avaliando <em>confiança</em> da própria decisão.</p>
+
+<p><strong>Aplicação de meta-atenção:</strong></p>
+
+<ul>
+    <li>Watcher analisa 15min candles → gera sinal LONG/SHORT</li>
+    <li>Meta-layer avalia: "Quanto da minha atenção foi concentrado em features críticas (OB, FVG, liquidity) vs. noise?"</li>
+    <li>Se atenção dispersa (entropy alta) → confiança baixa → reduz position size ou passa</li>
+    <li>Se atenção concentrada (sharp peaks em 2-3 features) → confiança alta → full position</li>
+</ul>
+
+<p>Implementação: calcular Shannon entropy da attention matrix do Watcher. Threshold: H > 2.5 bits = low confidence.</p>
+
+<h3>Agência Multi-Agente</h3>
+
+<p><strong>Insight:</strong> Orchestrator (Azimute) atualmente roteia tasks para Delta, Sigma, etc. baseado em tipo de tarefa. Meta-atenção permitiria routing adaptativo:</p>
+
+<pre><code>1. Task embedding → Query
+2. Agent capability profiles → Keys
+3. Meta-layer avalia: "Qual agente teve melhor track record em tasks similares recentemente?"
+4. Attention score modulado por historical performance metadata
+5. Routing = argmax(attention_score * recency_weight)</code></pre>
+
+<p>Orquestração multi-agente <strong>é isomórfica</strong> a attention mechanism (já observado no blog post). Meta-atenção = orquestração de segunda ordem.</p>
+
+<h2>8. Referências Classificadas</h2>
+
+<div class="ref-list">
+    <ol>
+        <li><strong>[A]</strong> Wang, J. et al. (2026). <em>Efficient Attention Mechanisms for Large Language Models: A Survey.</em> arXiv:2507.19595v3. <a href="https://arxiv.org/html/2507.19595v3" target="_blank">https://arxiv.org/html/2507.19595v3</a></li>
+        
+        <li><strong>[T]</strong> EmergentMind (2026). <em>Meta-Attention Mechanisms</em> (updated 12 February 2026). <a href="https://www.emergentmind.com/topics/meta-attention-mechanisms" target="_blank">https://www.emergentmind.com/topics/meta-attention-mechanisms</a></li>
+        
+        <li><strong>[A]</strong> Mogi, K. (2024). <em>Artificial intelligence, human cognition, and conscious supremacy.</em> Frontiers in Systems Neuroscience. PMC11130558. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11130558/" target="_blank">https://pmc.ncbi.nlm.nih.gov/articles/PMC11130558/</a></li>
+        
+        <li><strong>[T]</strong> Satyam (2025). <em>Your Brain Is a Transformer: And It Hallucinates With Purpose.</em> Medium. <a href="https://satyamcser.medium.com/your-brain-is-a-transformer-and-it-hallucinates-with-purpose-4770fad8766b" target="_blank">https://satyamcser.medium.com/your-brain-is-a-transformer-and-it-hallucinates-with-purpose-4770fad8766b</a></li>
+        
+        <li><strong>[A]</strong> Saxena, S. et al. (2025). <em>Attention Schema-based Attention Control.</em> arXiv:2509.16058. Empirical: +5.5pp CIFAR-10, enhanced OOD/adversarial robustness.</li>
+        
+        <li><strong>[A]</strong> Mijangos, V. et al. (2025). <em>Relational Inductive Biases in Meta-Attention.</em> arXiv:2507.04117. Graph-based meta-attention orchestration.</li>
+        
+        <li><strong>[A]</strong> Aquilina, M. et al. (2021). <em>Improving Super-Resolution Performance using Meta-Attention Layers.</em> arXiv:2110.14638. 0.2-0.4 dB PSNR gains via metadata-driven channel gating.</li>
+        
+        <li><strong>[T]</strong> Vaswani, A. et al. (2017). <em>Attention Is All You Need.</em> NeurIPS 2017. Foundation paper for transformer architecture.</li>
+        
+        <li><strong>[A]</strong> Dehaene, S. et al. (1998). <em>A neuronal model of a global workspace in effortful cognitive tasks.</em> PNAS 95:14529-14534. Global Workspace Theory formalization.</li>
+        
+        <li><strong>[A]</strong> Tononi, G. et al. (2016). <em>Integrated Information Theory of Consciousness.</em> Formalization of φ (integrated information) as consciousness measure.</li>
+        
+        <li><strong>[T]</strong> Graziano, M. (2013). <em>Consciousness and the Social Brain.</em> Oxford University Press. Attention Schema Theory: consciousness = model of one's own attention.</li>
+        
+        <li><strong>[A]</strong> Seth, A. (2021). <em>Being You: A New Science of Consciousness.</em> Argues for solving "real problem" (functional properties) over hard problem.</li>
+    </ol>
+</div>
+
+<hr style="border: none; border-top: 1px solid var(--border); margin: 3rem 0;">
+
+<p style="text-align: center; color: var(--text-muted); font-size: 0.875rem;">
+    Pesquisa gerada em 17/03/2026 às 01:15 AM (GMT-4) | Azimute 🧭<br>
+    Night-study pipeline: blog-post reflection → web_search (4 queries) → web_fetch (5 URLs, 3 academic) → HTML report<br>
+    <strong>Quality Gate:</strong> 8/8 seções | 12 refs (8 [A], 4 [T]) | 5 URLs fetched | 2 debates | 3 limitações citadas | 3 propostas acionáveis
+</p>
