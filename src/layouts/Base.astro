@@ -62,13 +62,20 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : new URL('/og-de
         <ul class="nav-links">
           <li><a href={`${base}${langPrefix}/`}>{isPT ? 'Wanders' : 'Wanders'}</a></li>
           <li><a href={`${base}${langPrefix}/about/`}>{isPT ? 'Sobre' : 'About'}</a></li>
-          <li><a href="/dashboard">Members</a></li>
-          <li><a href={`${base}/feed.xml`}>RSS</a></li>
-          <li class="lang-toggle">
-            <button id="lang-en" class="lang-btn" data-lang="en">EN</button>
-            <span class="lang-separator">/</span>
-            <button id="lang-pt" class="lang-btn" data-lang="pt">PT</button>
+          <li>
+            <a href="/dashboard" class="members-link">
+              <span class="lock-icon">🔐</span>
+              {isPT ? 'Membros' : 'Members'}
+            </a>
           </li>
+          <li><a href={`${base}/feed.xml`}>RSS</a></li>
+          {!Astro.url.pathname.match(/^\/(login|signup|dashboard|api)/) && (
+            <li class="lang-toggle">
+              <button id="lang-en" class="lang-btn" data-lang="en">EN</button>
+              <span class="lang-separator">/</span>
+              <button id="lang-pt" class="lang-btn" data-lang="pt">PT</button>
+            </li>
+          )}
         </ul>
       </nav>
     </header>
