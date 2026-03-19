@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} — Azimute Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Azimute Design System — Research Reports */
+        :root {
+            --az-void: #080c14;
+            --az-deep: #0f1520;
+            --az-surface: #161d2a;
+            --az-text: #e2ded8;
+            --az-text-muted: #8891a0;
+            --az-text-dim: #4a5568;
+            --az-compass: #c8a46e;
+            --az-signal: #5b9ea6;
+            --az-ember: #b85c4a;
+            --az-growth: #5a8a6a;
+            --az-font-display: 'Space Grotesk', system-ui, sans-serif;
+            --az-font-body: 'Source Serif 4', Georgia, serif;
+            --az-font-mono: 'JetBrains Mono', monospace;
+            --az-content-width: 800px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--az-void);
+            color: var(--az-text);
+            font-family: var(--az-font-body);
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            padding: 2rem 1.5rem;
+        }
+
+        .container {
+            max-width: var(--az-content-width);
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .report-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--az-surface);
+        }
+
+        h1 {
+            font-family: var(--az-font-display);
+            font-size: 2rem;
+            line-height: 1.2;
+            color: var(--az-text);
+            margin-bottom: 1rem;
+        }
+
+        .meta {
+            font-family: var(--az-font-mono);
+            font-size: 0.8rem;
+            color: var(--az-text-muted);
+            line-height: 1.8;
+        }
+
+        .meta strong {
+            color: var(--az-compass);
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--az-deep);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            color: var(--az-text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .meta-value {
+            color: var(--az-text-muted);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-family: var(--az-font-display);
+            font-size: 1.5rem;
+            color: var(--az-compass);
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--az-compass);
+        }
+
+        h3 {
+            font-family: var(--az-font-display);
+            font-size: 1.125rem;
+            color: var(--az-text);
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--az-text);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--az-text);
+        }
+
+        em {
+            font-style: italic;
+            color: var(--az-text-muted);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            color: var(--az-text);
+        }
+
+        li strong {
+            color: var(--az-compass);
+        }
+
+        /* Special highlights */
+        .critical {
+            color: var(--az-ember);
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: var(--az-growth);
+            font-weight: 600;
+        }
+
+        .signal {
+            color: var(--az-signal);
+            font-weight: 600;
+        }
+
+        /* Timeline box */
+        .timeline {
+            background: var(--az-deep);
+            border-left: 3px solid var(--az-growth);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-family: var(--az-font-mono);
+            font-size: 0.875rem;
+            line-height: 1.8;
+        }
+
+        .timeline strong {
+            color: var(--az-growth);
+        }
+
+        /* Insight box */
+        .insight-box {
+            background: var(--az-deep);
+            border-left: 3px solid var(--az-signal);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .insight-box strong {
+            color: var(--az-signal);
+        }
+
+        /* Code */
+        code {
+            font-family: var(--az-font-mono);
+            font-size: 0.875rem;
+            background: var(--az-deep);
+            padding: 0.15em 0.4em;
+            border-radius: 3px;
+            color: var(--az-signal);
+        }
+
+        pre {
+            background: var(--az-deep);
+            padding: 1.25rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--az-surface);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* References */
+        .reference {
+            background: var(--az-deep);
+            border-left: 3px solid var(--az-compass);
+            padding: 0.875rem 1.25rem;
+            margin-bottom: 0.875rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        .ref-label {
+            font-family: var(--az-font-mono);
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--az-compass);
+            margin-right: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .reference strong {
+            color: var(--az-text);
+        }
+
+        .reference a {
+            color: var(--az-signal);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 200ms;
+        }
+
+        .reference a:hover {
+            border-bottom-color: var(--az-signal);
+        }
+
+        /* Footer */
+        .report-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--az-surface);
+            font-family: var(--az-font-mono);
+            font-size: 0.75rem;
+            color: var(--az-text-dim);
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .report-footer a {
+            color: var(--az-compass);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 200ms;
+        }
+
+        .report-footer a:hover {
+            border-bottom-color: var(--az-compass);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { font-size: 1rem; padding: 1.5rem 1rem; }
+            h1 { font-size: 1.75rem; }
+            h2 { font-size: 1.25rem; }
+            h3 { font-size: 1.0625rem; }
+            .meta-grid { grid-template-columns: 1fr; }
+            .timeline, .insight-box, .reference { padding: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { font-size: 0.9375rem; padding: 1rem 0.75rem; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.125rem; padding-left: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <h1>{{TITLE}}</h1>
+            <div class="meta">
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Data</span>
+                        <span class="meta-value">{{DATE}}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Origem</span>
+                        <span class="meta-value">{{ORIGIN}}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Complexidade</span>
+                        <span class="meta-value">{{COMPLEXITY}}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Leitura</span>
+                        <span class="meta-value">{{READING_TIME}}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- §1 — Relevância do Tema -->
+        <section id="relevancia">
+            <h2>§1. Relevância do Tema</h2>
+            {{SECTION_1}}
+        </section>
+
+        <!-- §2 — Conceito Fundamental -->
+        <section id="conceito">
+            <h2>§2. Conceito Fundamental</h2>
+            {{SECTION_2}}
+        </section>
+
+        <!-- §3 — Mecanismo -->
+        <section id="mecanismo">
+            <h2>§3. Mecanismo</h2>
+            {{SECTION_3}}
+        </section>
+
+        <!-- §4 — Estado da Arte -->
+        <section id="estado-arte">
+            <h2>§4. Estado da Arte</h2>
+            {{SECTION_4}}
+        </section>
+
+        <!-- §5 — Debates Existentes -->
+        <section id="debates">
+            <h2>§5. Debates Existentes</h2>
+            {{SECTION_5}}
+        </section>
+
+        <!-- §6 — Pontos de Crítica -->
+        <section id="critica">
+            <h2>§6. Pontos de Crítica</h2>
+            {{SECTION_6}}
+        </section>
+
+        <!-- §7 — Intersecção com Anima/Kerberos -->
+        <section id="intersecao">
+            <h2>§7. Intersecção com Anima/Kerberos</h2>
+            {{SECTION_7}}
+        </section>
+
+        <!-- §8 — Referências Classificadas -->
+        <section id="referencias">
+            <h2>§8. Referências Classificadas</h2>
+            {{SECTION_8}}
+        </section>
+
+        <footer class="report-footer">
+            Pesquisa autônoma — Azimute Sleep Study Protocol<br>
+            <a href="https://azimute.cc">azimute.cc</a> — Membros Premium
+        </footer>
+    </div>
+</body>
+</html>

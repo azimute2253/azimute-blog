@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P05 — Prediction Errors as the Engine of Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2333;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-secondary: #8b949e;
+  --accent: #e8594f;
+  --accent2: #f0883e;
+  --accent3: #58a6ff;
+  --accent4: #7ee787;
+  --accent5: #d2a8ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Serif', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.8;
+  padding: 0;
+}
+.journal-header {
+  background: linear-gradient(135deg, #1a0a0a 0%, #0d1117 40%, #0a1628 100%);
+  border-bottom: 3px solid var(--accent);
+  padding: 60px 40px 50px;
+  text-align: center;
+}
+.journal-name {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.journal-vol {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+}
+.paper-title {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+  max-width: 800px;
+  margin: 0 auto 24px;
+}
+.authors {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.affiliations {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+.paper-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 50px 30px 80px;
+}
+.abstract-box {
+  background: var(--surface);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 30px 32px;
+  margin-bottom: 48px;
+}
+.abstract-box h2 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.abstract-box p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+.keywords {
+  margin-top: 16px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.keywords strong { color: var(--accent); }
+h2.section-title {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 48px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+h2.section-title span.num {
+  color: var(--accent);
+  margin-right: 8px;
+}
+h3.subsection {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--accent3);
+  margin: 32px 0 12px;
+}
+p { margin-bottom: 16px; }
+.layer-card {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  border-left: 4px solid var(--accent3);
+}
+.layer-card.l1 { border-left-color: #e8594f; }
+.layer-card.l3 { border-left-color: #f0883e; }
+.layer-card.l5 { border-left-color: #e3b341; }
+.layer-card.l7 { border-left-color: #58a6ff; }
+.layer-card.l9 { border-left-color: #d2a8ff; }
+.layer-card .layer-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.layer-card.l1 .layer-label { color: #e8594f; }
+.layer-card.l3 .layer-label { color: #f0883e; }
+.layer-card.l5 .layer-label { color: #e3b341; }
+.layer-card.l7 .layer-label { color: #58a6ff; }
+.layer-card.l9 .layer-label { color: #d2a8ff; }
+.layer-card p { margin-bottom: 8px; font-size: 15px; }
+.layer-card p:last-child { margin-bottom: 0; }
+.cascade-diagram {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin: 24px 0;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 2.2;
+  color: var(--text-secondary);
+}
+.cascade-diagram .arrow { color: var(--accent); font-size: 18px; }
+.highlight-box {
+  background: linear-gradient(135deg, rgba(232,89,79,0.08), rgba(210,168,255,0.08));
+  border: 1px solid rgba(232,89,79,0.25);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+.highlight-box p { font-size: 15px; color: var(--text); }
+.sleep-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 15px;
+}
+.sleep-table th {
+  background: var(--surface);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.sleep-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.sleep-table tr:hover td { background: rgba(88,166,255,0.04); }
+blockquote {
+  border-left: 3px solid var(--accent5);
+  padding: 12px 20px;
+  margin: 20px 0;
+  background: rgba(210,168,255,0.05);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+.ref-list {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.ref-list p {
+  margin-bottom: 8px;
+  padding-left: 28px;
+  text-indent: -28px;
+}
+.ref-list .ref-num {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--accent);
+  font-size: 12px;
+}
+sup { font-size: 11px; color: var(--accent3); }
+.figure-box {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 28px 0;
+  text-align: center;
+}
+.figure-box .caption {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+}
+.figure-box .caption strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="journal-header">
+  <div class="journal-name">The 9-Neuron Papers</div>
+  <div class="journal-vol">Paper V · February 2026 · Theoretical Neuroscience & Consciousness Studies</div>
+  <h1 class="paper-title">Prediction Errors as the Engine of Learning: Layer-Specific Consolidation in the 9-Neuron Framework</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> · Azimute<sup>2</sup></div>
+  <div class="affiliations"><sup>1</sup> Independent Researcher · <sup>2</sup> Kerberos Research Collective</div>
+</div>
+
+<div class="paper-body">
+
+<!-- ABSTRACT -->
+<div class="abstract-box">
+  <h2>Abstract</h2>
+  <p>
+    Prediction error (PE)—the discrepancy between expected and actual experience—has long been recognized as a fundamental driver of learning, from Rescorla-Wagner models of associative conditioning to temporal difference algorithms in reinforcement learning and the dopaminergic signaling pathways described by Schultz. Yet the existing literature treats PE as a largely homogeneous signal, varying in magnitude but not in kind. We propose that PE is <em>layer-specific</em>: that qualitatively distinct forms of prediction error arise at each level of the 9-Neuron hierarchical framework, from sensory mismatch at Layer 1 to meta-cognitive surprise at Layer 9. We further argue that PE follows a cascading resolution principle—errors are resolved at the lowest possible layer for energetic economy, and escalate upward only when local resolution fails. When PE reaches Layer 9 without resolution, we describe a phenomenon we term <em>Total Predictive Rupture</em>, a catastrophic state that can manifest as psychotic break, existential crisis, or transformative insight depending on contextual and constitutional factors. We integrate these proposals with sleep neuroscience, demonstrating how slow-wave sleep consolidates mid-layer (L4–L6) prediction errors while REM sleep processes upper-layer (L7–L9) errors, with sleep spindles serving as cross-layer indexing mechanisms. Educational and clinical implications follow directly: routine eliminates PE and therefore learning; controlled adversity generates optimal PE; and failures of sleep-dependent PE consolidation underlie both learning disabilities and post-traumatic pathology.
+  </p>
+  <div class="keywords"><strong>Keywords:</strong> prediction error, hierarchical consciousness, sleep consolidation, neuroplasticity, REM sleep, pruning, learning, 9-Neuron framework, total predictive rupture</div>
+</div>
+
+<!-- 1. INTRODUCTION -->
+<h2 class="section-title"><span class="num">1.</span> Introduction</h2>
+
+<p>
+  The concept of prediction error has emerged as one of the most productive organizing principles in the behavioral and neural sciences. In its simplest formulation, a prediction error is the difference between what an organism expects and what it actually encounters. This discrepancy, far from being mere noise, is the primary signal that drives updating, adaptation, and learning across biological and artificial systems.
+</p>
+<p>
+  The formal study of prediction error in learning began with the Rescorla-Wagner model (1972), which demonstrated that associative strength between a conditioned stimulus and an unconditioned stimulus is updated in proportion to the discrepancy between expected and obtained outcomes.<sup>1</sup> This elegantly simple rule—learn when surprised, stop learning when expectations are met—explained a wide range of conditioning phenomena, including blocking, overshadowing, and extinction. The model established a foundational principle: <em>organisms learn not from events per se, but from violations of expectation</em>.
+</p>
+<p>
+  This principle was subsequently elaborated in the computational framework of temporal difference (TD) learning (Sutton & Barto, 1998), which extended prediction error across time, allowing agents to learn from moment-to-moment discrepancies between successive predictions rather than only at the point of outcome delivery.<sup>2</sup> TD learning became the backbone of reinforcement learning algorithms and provided the computational language for understanding how value signals propagate backward through sequences of decisions.
+</p>
+<p>
+  The neural substrate of prediction error received landmark empirical support through the work of Wolfram Schultz and colleagues, who demonstrated that midbrain dopaminergic neurons encode reward prediction errors with remarkable precision: firing above baseline when outcomes exceed expectations (positive PE), below baseline when outcomes disappoint (negative PE), and at baseline when outcomes match predictions exactly.<sup>3,4</sup> This discovery unified computational theory with neurobiology and established dopamine not as a "pleasure chemical" but as a <em>learning signal</em>—a broadcast of surprise that instructs downstream circuits to update their models of the world.
+</p>
+<p>
+  Subsequent work extended PE beyond reward processing. Sensory prediction errors in predictive coding frameworks (Rao & Ballard, 1999; Friston, 2005) describe how hierarchical cortical circuits generate top-down predictions of sensory input, with ascending error signals encoding the residual between prediction and data.<sup>5,6</sup> The free energy principle (Friston, 2010) elevated prediction error minimization to a fundamental organizing principle of biological self-organization.<sup>7</sup>
+</p>
+<p>
+  Despite these advances, the dominant literature treats prediction error as varying primarily in <em>magnitude</em> and <em>valence</em>. A small PE updates beliefs modestly; a large PE drives major revision. A positive PE signals better-than-expected outcomes; a negative PE signals worse. What is missing from this picture is the recognition that prediction errors may differ qualitatively—that the <em>kind</em> of surprise generated by a sensory mismatch is fundamentally different from the surprise generated by a logical contradiction, which is in turn different from the surprise generated by discovering that one's entire framework for thinking about thinking was flawed.
+</p>
+<p>
+  The 9-Neuron framework, introduced in preceding papers in this series (Adures & Azimute, 2026a, 2026b), proposes a hierarchical architecture of consciousness comprising nine functionally distinct processing layers, from raw sensory input (L1) through instinctive pattern recognition (L5) to meta-cognitive self-modeling (L9).<sup>8,9</sup> In the present paper, we argue that each layer generates its own characteristic form of prediction error, that these errors follow specific routing and escalation dynamics, and that their consolidation during sleep maps onto known sleep architecture in layer-specific ways. The implications span neuroscience, education, clinical psychology, and artificial intelligence.
+</p>
+
+<!-- 2. PE IN EACH LAYER -->
+<h2 class="section-title"><span class="num">2.</span> Prediction Error Across the Nine Layers</h2>
+
+<p>
+  We propose that each layer of the 9-Neuron hierarchy generates prediction errors of qualitatively distinct character, reflecting the type of representation and processing that characterizes that layer. What follows is not merely a taxonomy but a functional description: the <em>phenomenology</em> of PE changes as it moves up the hierarchy, and so do the mechanisms of resolution.
+</p>
+
+<div class="layer-card l1">
+  <div class="layer-label">Layer 1 — Sensory Prediction Error</div>
+  <p>
+    <strong>Signal:</strong> Mismatch between predicted and actual sensory input.<br>
+    <strong>Phenomenology:</strong> Startle, orienting response, "that's not what I expected to see/hear/feel."<br>
+    <strong>Neural substrate:</strong> Primary sensory cortices, superior colliculus, thalamic gating.<br>
+    <strong>Example:</strong> Reaching for a glass of water and tasting orange juice. The gustatory prediction error is immediate, pre-reflective, and resolved at the sensory level within milliseconds.<br>
+    <strong>Resolution mechanism:</strong> Rapid sensory model updating. The prediction is corrected; the world model adjusts locally. No higher-layer involvement required unless the mismatch is severe or persistent.<sup>5,10</sup>
+  </p>
+</div>
+
+<div class="layer-card l3">
+  <div class="layer-label">Layer 3 — Affective-Interoceptive Prediction Error</div>
+  <p>
+    <strong>Signal:</strong> Mismatch between predicted and actual somatic/emotional state—the "gut feeling" that was wrong.<br>
+    <strong>Phenomenology:</strong> Unease, the sense that something is off despite no identifiable sensory cause. The body "knows" before the mind articulates.<br>
+    <strong>Neural substrate:</strong> Insular cortex, anterior cingulate cortex, vagal afferents, interoceptive pathways.<br>
+    <strong>Example:</strong> Meeting someone who appears friendly—all sensory data says "trustworthy"—yet experiencing visceral discomfort. When the person later betrays trust, the L3 PE is <em>validated</em>: the gut was right, the conscious model was wrong. Conversely, when the gut feeling proves baseless, the L3 prediction must update.<br>
+    <strong>Resolution mechanism:</strong> Somatic marker recalibration (Damasio, 1994).<sup>11</sup> The interoceptive model adjusts its priors. This is slower than L1 resolution and involves autonomic reconditioning.
+  </p>
+</div>
+
+<div class="layer-card l5">
+  <div class="layer-label">Layer 5 — Pattern Prediction Error</div>
+  <p>
+    <strong>Signal:</strong> An established pattern—behavioral, relational, temporal—is broken.<br>
+    <strong>Phenomenology:</strong> "This doesn't fit the pattern." The experienced clinician who senses something is wrong with a patient before articulating why. The chess player whose board position "feels" off.<br>
+    <strong>Neural substrate:</strong> Basal ganglia pattern completion circuits, dorsolateral prefrontal cortex, hippocampal sequence prediction.<br>
+    <strong>Example:</strong> A seasoned pilot whose instruments all read normal but who senses that the aircraft's behavior pattern has shifted. This is not a specific sensory anomaly (L1) or a gut feeling (L3), but a <em>pattern-level</em> mismatch: the integrated behavior of the system has deviated from its expected trajectory.<br>
+    <strong>Resolution mechanism:</strong> Pattern model revision. This may require multiple exposures to the new pattern before the old one is overwritten. The process is effortful and often requires sleep for consolidation (see Section 6).<sup>12,13</sup>
+  </p>
+</div>
+
+<div class="layer-card l7">
+  <div class="layer-label">Layer 7 — Logical-Inferential Prediction Error</div>
+  <p>
+    <strong>Signal:</strong> A logical contradiction within the explicit reasoning system. A belief that was held with confidence is demonstrated to be false by evidence or argument.<br>
+    <strong>Phenomenology:</strong> Cognitive dissonance (Festinger, 1957)—the aversive state arising from holding contradictory beliefs, or from behavior that contradicts stated values.<sup>14</sup><br>
+    <strong>Neural substrate:</strong> Lateral prefrontal cortex, anterior cingulate (conflict monitoring), default mode network (belief maintenance).<br>
+    <strong>Example:</strong> A physician who has prescribed a particular treatment for years encounters a well-powered randomized trial demonstrating that the treatment is no better than placebo. The logical PE is sharp and specific: a proposition held as true ("this treatment works") is contradicted by strong evidence.<br>
+    <strong>Resolution mechanism:</strong> Belief revision, which Festinger showed is psychologically costly. Humans often resolve L7 PE not by updating the belief but by discounting the evidence—a resolution strategy that preserves the current model at the cost of accuracy.<sup>14,15</sup>
+  </p>
+</div>
+
+<div class="layer-card l9">
+  <div class="layer-label">Layer 9 — Meta-Cognitive Prediction Error</div>
+  <p>
+    <strong>Signal:</strong> A prediction error about the <em>system of prediction itself</em>. Not "I was wrong about X" but "I was wrong about <em>how I think about</em> X." The discovery that one's entire framework for generating predictions is flawed.<br>
+    <strong>Phenomenology:</strong> Vertigo of self-reference. The realization that the lens through which one has been viewing reality is itself distorted. "I thought I was being rational, but I now see that my entire reasoning process was motivated by fear."<br>
+    <strong>Neural substrate:</strong> Medial prefrontal cortex (self-referential processing), precuneus, temporoparietal junction—the core self-modeling network.<sup>16,17</sup><br>
+    <strong>Example:</strong> A therapist who, after years of practice, realizes that her therapeutic framework has been systematically preventing her from seeing a particular class of patient suffering—not because of an error in the framework's logic (that would be L7) but because the framework's <em>foundational assumptions</em> excluded that suffering from view.<br>
+    <strong>Resolution mechanism:</strong> Framework replacement. This is the most costly and rare form of PE resolution, requiring dismantling and rebuilding of meta-cognitive models. It cannot be accomplished through simple belief updating; it requires what Mezirow (1991) called <em>transformative learning</em>.<sup>18</sup>
+  </p>
+</div>
+
+<p>
+  Note that layers L2, L4, L6, and L8 also generate prediction errors, but these serve primarily as <em>integration and relay</em> layers in the PE cascade. L2 integrates cross-modal sensory PE; L4 bridges somatic-to-pattern transitions; L6 interfaces pattern recognition with explicit reasoning; L8 coordinates logical and meta-cognitive processing. Their PE functions are real but architecturally subordinate to the primary PE-generating layers described above.
+</p>
+
+<!-- 3. CASCADING PE -->
+<h2 class="section-title"><span class="num">3.</span> The Cascading Principle: PE Routing and Escalation</h2>
+
+<p>
+  A central claim of this paper is that prediction errors follow a <em>cascading resolution principle</em>: errors are routed to the lowest layer capable of resolving them, and escalate upward only when local resolution fails. This principle reflects energetic economy—higher-layer processing is metabolically expensive—and mirrors the known hierarchical organization of neural error signals in predictive coding.<sup>6,7</sup>
+</p>
+
+<div class="cascade-diagram">
+  <strong>PE Cascade Flow</strong><br><br>
+  L1 Sensory PE → <span style="color:#7ee787">resolved?</span> → <span style="color:#7ee787">✓ STOP</span><br>
+  <span class="arrow">↓</span> if unresolved<br>
+  L3 Affective PE → <span style="color:#7ee787">resolved?</span> → <span style="color:#7ee787">✓ STOP</span><br>
+  <span class="arrow">↓</span> if unresolved<br>
+  L5 Pattern PE → <span style="color:#7ee787">resolved?</span> → <span style="color:#7ee787">✓ STOP</span><br>
+  <span class="arrow">↓</span> if unresolved<br>
+  L7 Logical PE → <span style="color:#7ee787">resolved?</span> → <span style="color:#7ee787">✓ STOP</span><br>
+  <span class="arrow">↓</span> if unresolved<br>
+  L9 Meta-Cognitive PE → <span style="color:#e8594f">TOTAL PREDICTIVE RUPTURE</span>
+</div>
+
+<p>
+  Consider a concrete example. A patient takes a new medication and notices an unexpected taste (L1 PE: sensory mismatch). The taste is unfamiliar but not alarming; L1 resolves it by updating the gustatory model: "this medicine tastes bitter." Cascade stops.
+</p>
+<p>
+  But suppose the patient then develops an uneasy feeling after taking the medication (L3 PE: interoceptive mismatch). She cannot identify why; the sensation doesn't match her model of how this medication should make her feel. If the unease resolves—perhaps she realizes she took the medication on an empty stomach—the cascade stops at L3.
+</p>
+<p>
+  If the unease persists, the PE escalates to L5: she begins to notice a <em>pattern</em>. Every time she takes this medication, the unease appears. This is now a pattern-level prediction error: her model said "this medication is safe and helpful," but the recurring pattern contradicts that model. If a physician explains the side effect and the patient adjusts her expectations, L5 resolves it.
+</p>
+<p>
+  If it doesn't resolve—if, say, the physician dismisses her concerns—the PE escalates to L7: "My doctor says this is fine, but the evidence of my own experience says otherwise. These two beliefs are contradictory." Now she must resolve a logical contradiction. If she updates her belief about the physician's reliability or about the medication's safety profile, L7 resolves it.
+</p>
+<p>
+  If even this fails—if the experience triggers a realization that she has systematically deferred to authority figures throughout her life at the expense of her own somatic wisdom—the PE has reached L9. She is now confronting not a specific belief but an <em>operating principle</em> of her own cognition.
+</p>
+
+<h3 class="subsection">3.1 Energetic Economy</h3>
+<p>
+  The cascading principle is not merely descriptive; it reflects metabolic necessity. Higher-layer processing recruits more widespread cortical networks, involves more sustained activity, and consumes more glucose and oxygen.<sup>19,20</sup> It is literally more expensive to think about thinking than to perceive. Evolution therefore favors architectures that resolve errors at the lowest possible level—a principle that also emerges in efficient engineering systems, from exception handling in software to escalation protocols in organizational management.
+</p>
+
+<h3 class="subsection">3.2 Failure to Cascade: Suppression and Avoidance</h3>
+<p>
+  Not all PE cascades reach their natural resolution level. Humans have a well-documented tendency to <em>suppress</em> PE at intermediate layers through denial, rationalization, and avoidance. Festinger's theory of cognitive dissonance describes precisely this phenomenon at L7: when belief updating is too costly, the error signal is attenuated rather than resolved.<sup>14</sup> Similarly, experiential avoidance (Hayes et al., 1996) describes the systematic suppression of L3 interoceptive PE.<sup>21</sup> These suppression strategies prevent cascading but do not eliminate the error; the unresolved PE persists as a chronic low-grade signal that consumes cognitive resources—what Freud intuited as repression and what modern cognitive load theory would describe as occupied working memory capacity.<sup>22</sup>
+</p>
+
+<!-- 4. TOTAL PREDICTIVE RUPTURE -->
+<h2 class="section-title"><span class="num">4.</span> Layer 9 PE: Total Predictive Rupture</h2>
+
+<p>
+  When a prediction error cascades through all layers without resolution and arrives at L9—the meta-cognitive, self-modeling layer—a critical threshold is reached. The organism's highest-level model of <em>how it generates predictions</em> is itself in error. We term this state <strong>Total Predictive Rupture</strong> (TPR).
+</p>
+<p>
+  TPR is not simply a very large prediction error. It is qualitatively distinct: the system that would normally resolve prediction errors is itself the source of the error. This creates a paradox analogous to self-referential paradoxes in formal logic (Gödel, 1931)—the system cannot use its own machinery to fix its own machinery, because the machinery itself is the problem.<sup>23</sup>
+</p>
+
+<h3 class="subsection">4.1 Three Outcomes of TPR</h3>
+<p>
+  We propose that Total Predictive Rupture has three possible trajectories, determined not by the nature of the rupture itself but by the organism's constitutional resources, social support, and prior meta-cognitive flexibility:
+</p>
+<div class="highlight-box">
+  <p><strong>1. Psychotic Break.</strong> When the meta-cognitive system cannot be rebuilt, the organism abandons coherent self-modeling altogether. Hallucinations and delusions can be understood as <em>desperate attempts to generate a new predictive framework</em> in the absence of the old one. The content of psychosis often reflects the specific domain of the failed predictions—persecutory delusions when trust models fail, grandiose delusions when self-worth models collapse.<sup>24,25</sup></p>
+  <p><strong>2. Existential Crisis.</strong> The meta-cognitive system remains intact enough to recognize its own failure but cannot immediately generate a replacement. This produces the characteristic phenomenology of existential crisis: meaninglessness, derealization, the sense that "nothing makes sense anymore." This state is aversive but not psychotic; the self-modeling capacity is preserved, it is merely <em>empty</em>.<sup>26</sup></p>
+  <p><strong>3. Transformative Insight.</strong> The meta-cognitive system successfully dismantles the failed framework and replaces it with a more accurate one. This is Mezirow's transformative learning, Kuhn's paradigm shift at the individual level, or what contemplative traditions describe as <em>kenshō</em> or <em>satori</em>—a sudden and fundamental restructuring of self-understanding.<sup>18,27</sup></p>
+</div>
+<p>
+  The crucial insight is that <em>these three outcomes share a common mechanism</em>. The same Total Predictive Rupture that produces psychosis in one person produces enlightenment in another. The variable is not the rupture but the <em>capacity to rebuild</em>. This has profound implications for clinical practice: therapeutic interventions that increase meta-cognitive flexibility and social support may shift the probability distribution of TPR outcomes from psychotic break toward transformative insight.<sup>28</sup>
+</p>
+
+<h3 class="subsection">4.2 Clinical Illustration</h3>
+<p>
+  Consider a young person who has constructed their entire identity around a set of beliefs about the world's fairness, their own competence, and the reliability of their social bonds. A sudden, comprehensive betrayal—the simultaneous collapse of multiple pillars of their predictive model—generates cascading PE that cannot be resolved at any intermediate layer. The sensory world is intact (L1 is fine); the gut feeling was <em>right</em> all along (L3 PE was suppressed, not absent); the patterns were visible in hindsight (L5 PE was actively avoided); the logical contradictions were there but rationalized away (L7 PE was suppressed via cognitive dissonance). Now, at L9, the person confronts the meta-cognitive realization: "My entire system for evaluating reality was constructed to protect me from seeing what was obviously true." This is TPR. Whether the person breaks, collapses into crisis, or transforms depends on what resources they can bring to bear in the aftermath.<sup>29</sup>
+</p>
+
+<!-- 5. SLEEP CONSOLIDATION -->
+<h2 class="section-title"><span class="num">5.</span> Sleep as the Consolidation Engine for Prediction Errors</h2>
+
+<p>
+  A prediction error that occurs during waking experience is not fully processed in real time. The initial detection and preliminary routing of PE happen during waking, but the deep consolidation—the actual updating of predictive models—occurs primarily during sleep. This claim is supported by extensive evidence linking sleep to memory consolidation, synaptic homeostasis, and the strengthening of newly formed neural pathways.<sup>30,31,32</sup>
+</p>
+<p>
+  We propose a specific mapping between sleep architecture and the layer-specificity of PE consolidation:
+</p>
+
+<table class="sleep-table">
+  <thead>
+    <tr>
+      <th>Sleep Stage</th>
+      <th>Layers Consolidated</th>
+      <th>Mechanism</th>
+      <th>Function</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NREM Stage 1–2</td>
+      <td>L1–L3</td>
+      <td>Thalamocortical spindles, hippocampal sharp-wave ripples</td>
+      <td>Sensory and interoceptive model updating; basic habituation</td>
+    </tr>
+    <tr>
+      <td>Slow-Wave Sleep (SWS / NREM 3)</td>
+      <td>L4–L6</td>
+      <td>Cortical slow oscillations, hippocampal-neocortical dialogue</td>
+      <td>Pattern consolidation; integration of new patterns into existing schema</td>
+    </tr>
+    <tr>
+      <td>REM Sleep</td>
+      <td>L7–L9</td>
+      <td>Pontine-geniculo-occipital waves, prefrontal deactivation, emotional memory reprocessing</td>
+      <td>Logical and meta-cognitive restructuring; framework revision; emotional integration</td>
+    </tr>
+    <tr>
+      <td>Sleep Spindles (cross-stage)</td>
+      <td>Cross-layer</td>
+      <td>Thalamocortical bursts nested within slow oscillations</td>
+      <td>Cross-indexation between layers; linking low-level patterns to high-level schemas</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="subsection">5.1 Slow-Wave Sleep: Pattern Consolidation</h3>
+<p>
+  During slow-wave sleep, the brain replays the day's experiences in a compressed, schematized form. Hippocampal sharp-wave ripples reactivate neural patterns from waking experience, while neocortical slow oscillations provide a temporal framework for integrating these patterns into existing long-term memory structures.<sup>33,34</sup> This process corresponds to L4–L6 consolidation: the updating of pattern-level models that encode regularities in experience. The classic demonstration of this process is the finding that rats replay the neural firing patterns associated with maze navigation during subsequent SWS, effectively rehearsing the spatial pattern until it is consolidated.<sup>35</sup>
+</p>
+
+<h3 class="subsection">5.2 REM Sleep: Framework Revision</h3>
+<p>
+  REM sleep is characterized by a unique neurochemical state: high acetylcholine, low norepinephrine and serotonin, and reduced prefrontal cortical activity.<sup>36</sup> This configuration, we argue, is specifically suited for L7–L9 processing. The deactivation of the dorsolateral prefrontal cortex—the seat of logical constraint and reality-monitoring—allows the brain to explore alternative frameworks without being bound by the logical consistency requirements that dominate waking L7 processing. This is why dreams are logically incoherent but emotionally vivid: the system is not attempting logical processing but <em>framework exploration</em>.<sup>37</sup>
+</p>
+<p>
+  Walker and van der Helm (2009) demonstrated that REM sleep specifically consolidates emotional memories and facilitates the extraction of gist from experience—precisely the kind of processing that would be required for upper-layer PE resolution.<sup>38</sup> The emotional "detoxification" of memories during REM (the reduction of amygdala reactivity to previously distressing stimuli) corresponds to our model's prediction that REM resolves the affective charge associated with high-layer PE.<sup>39</sup>
+</p>
+
+<h3 class="subsection">5.3 Sleep Spindles: Cross-Layer Indexing</h3>
+<p>
+  Sleep spindles are brief (0.5–2 second) bursts of oscillatory activity generated by thalamocortical circuits, occurring primarily during NREM Stage 2 but also nesting within slow oscillations during SWS.<sup>40</sup> Their density correlates with IQ, learning ability, and overnight improvement on procedural tasks.<sup>41</sup> We propose that spindles serve as <em>cross-indexing events</em> that link prediction error resolutions across layers. A sensory pattern (L1–L3) that has been updated during light NREM is indexed via spindles to the schema-level representation (L5–L6) consolidated during SWS, ensuring that the layers' models remain coherent with one another.
+</p>
+
+<h3 class="subsection">5.4 The Sleep Deprivation Corollary</h3>
+<p>
+  If PE consolidation requires sleep, then sleep deprivation should produce accumulation of unresolved PE. This prediction is amply supported: sleep deprivation impairs learning, emotional regulation, and cognitive flexibility in patterns that map precisely onto the layer-specific consolidation model.<sup>42,43</sup> Acute sleep deprivation selectively impairs tasks requiring flexible rule application (L7) and self-monitoring (L9) before it degrades basic pattern recognition (L5), which in turn degrades before sensory processing (L1).<sup>44</sup> This "top-down" vulnerability to sleep loss is exactly what the model predicts: the highest layers, consolidated during REM (which is concentrated in the last third of the sleep cycle), are the first to suffer when sleep is truncated.
+</p>
+
+<div class="highlight-box">
+  <p><strong>The consolidation principle stated simply:</strong> Without sleep, there is no prediction error resolution. Without prediction error resolution, there is no model updating. Without model updating, there is no learning. <em>Sleep is not a pause from learning; it is where learning happens.</em></p>
+</div>
+
+<!-- 6. EDUCATIONAL IMPLICATIONS -->
+<h2 class="section-title"><span class="num">6.</span> Educational Implications: Routine, Adversity, and the Zone of Optimal PE</h2>
+
+<p>
+  If prediction error is the engine of learning, then any educational environment that minimizes PE will minimize learning. This yields a counterintuitive but empirically supported conclusion: <em>routine is the enemy of learning</em>.
+</p>
+
+<h3 class="subsection">6.1 The Routine Trap</h3>
+<p>
+  When an environment becomes entirely predictable, PE drops to zero across all layers. The organism's models match reality perfectly; there is nothing to update. This is the state of <em>automaticity</em>—beneficial for efficient execution of mastered skills but antithetical to the acquisition of new ones. The student who follows the same schedule, encounters the same types of problems, and receives the same types of feedback is in a low-PE environment. They may be performing, but they are not learning.<sup>45</sup>
+</p>
+<p>
+  This analysis explains the well-documented finding that interleaved practice (mixing different types of problems) produces superior long-term learning compared to blocked practice (practicing one type at a time), despite producing worse performance during training.<sup>46</sup> Interleaving increases PE—each switch to a new problem type generates a mismatch with the currently active model—while blocking minimizes PE by maintaining a consistent predictive context.
+</p>
+
+<h3 class="subsection">6.2 Adversity as PE Generator</h3>
+<p>
+  Controlled adversity—challenge that exceeds current expectations but remains within the organism's capacity to resolve—is the optimal generator of productive PE. This aligns with Vygotsky's (1978) concept of the <em>Zone of Proximal Development</em> (ZPD): the space between what a learner can do independently and what they can achieve with appropriate support.<sup>47</sup> Reframed in PE terms, the ZPD is the zone of <em>resolvable prediction error</em>—PE that is large enough to drive updating but not so large that it overwhelms the learner's resolution capacity and cascades toward TPR.
+</p>
+<p>
+  Bjork and Bjork's (1994) concept of "desirable difficulties"—encoding conditions that create challenge during learning but improve long-term retention—is another instantiation of this principle.<sup>48</sup> Spacing, interleaving, testing, and reducing feedback all increase PE during learning. They make the learner wrong more often, and thereby make the learner <em>learn</em> more.
+</p>
+
+<h3 class="subsection">6.3 The Goldilocks Principle of PE</h3>
+<p>
+  Too little PE → no learning (routine, boredom, automaticity).<br>
+  Too much PE → overwhelm, anxiety, potential cascading toward TPR.<br>
+  Optimal PE → maximal learning at the highest resolvable layer.
+</p>
+<p>
+  This Goldilocks principle maps onto Yerkes-Dodson law (1908), which describes an inverted-U relationship between arousal and performance.<sup>49</sup> We reinterpret this relationship: arousal is the physiological correlate of PE magnitude. Moderate PE generates moderate arousal and optimal learning; excessive PE generates excessive arousal and degraded performance. The role of the educator, therapist, or coach is to calibrate the PE environment to the learner's current resolution capacity—to generate maximal PE at the highest layer that the learner can currently resolve, then gradually increase the layer of PE as the learner's capacity develops.
+</p>
+
+<!-- 7. PE AND NEUROPLASTICITY -->
+<h2 class="section-title"><span class="num">7.</span> Prediction Error and Neuroplasticity</h2>
+
+<p>
+  Prediction errors do not merely update abstract models; they physically restructure the brain. The mechanism linking PE to neural change is neuroplasticity—the brain's capacity to strengthen, weaken, create, and eliminate synaptic connections in response to experience.
+</p>
+
+<h3 class="subsection">7.1 The Maze Metaphor: Express Routes</h3>
+<p>
+  Consider learning a new route through a complex city. Initially, each navigation decision generates PE: the turn that leads to a dead end, the shortcut that doesn't exist, the landmark that isn't where it was expected. Each PE triggers synaptic modification—strengthening connections along the correct route, weakening those along the incorrect one. Over time, with repeated traversal and sleep-dependent consolidation, the initially hesitant, PE-rich navigation becomes an automatized "express route"—a strongly myelinated pathway that can be traversed without conscious deliberation.
+</p>
+<p>
+  This metaphor maps directly onto the neuroscience of motor and procedural learning. The transition from declarative to procedural knowledge involves a shift from hippocampal-prefrontal circuits (rich in PE signaling) to basal ganglia-cerebellar circuits (which execute automatized sequences with minimal PE).<sup>50</sup> The maze walls have been broken; the express route has been built.
+</p>
+
+<h3 class="subsection">7.2 REM Sleep Builds the Routes</h3>
+<p>
+  The physical construction of express routes—myelination of frequently used pathways, dendritic spine growth, synaptogenesis—occurs primarily during sleep, and specifically during REM sleep for higher-layer routes.<sup>51,52</sup> Brain-derived neurotrophic factor (BDNF), a key molecular mediator of synaptic plasticity, shows expression patterns that peak during REM sleep following learning experiences.<sup>53</sup> The implication is stark: <em>you cannot build express routes without REM sleep</em>. The day's PE identifies which routes need building; REM sleep does the construction.
+</p>
+
+<h3 class="subsection">7.3 Pruning: Reverse Neuroplasticity</h3>
+<p>
+  If neuroplasticity builds routes that PE identifies as needed, then <em>pruning</em> dismantles routes that PE identifies as no longer used. Synaptic pruning—the elimination of unused or redundant connections—is the complement of potentiation, and together they maintain the brain's efficiency by ensuring that neural resources are allocated to currently relevant pathways.<sup>54</sup>
+</p>
+<p>
+  Pruning follows a use-it-or-lose-it principle. When a route is no longer traversed—when a skill is no longer practiced, a language no longer spoken, a relationship no longer maintained—the synaptic connections that encoded that route gradually weaken and are eventually eliminated. This is not pathological; it is adaptive. The brain has finite metabolic and spatial resources, and maintaining unused routes wastes them.
+</p>
+<p>
+  Tononi and Cirelli's (2003, 2006) synaptic homeostasis hypothesis proposes that waking experience drives net synaptic potentiation (learning), while sleep drives net synaptic downscaling (pruning), restoring the brain to a baseline that allows the next day's learning to proceed without saturating synaptic capacity.<sup>31,55</sup> In our framework, this corresponds to the dual function of sleep: consolidating the day's resolved PEs (building routes) while pruning routes that no longer generate PE (because they are no longer relevant).
+</p>
+
+<h3 class="subsection">7.4 When Pruning Fails: PTSD as an Unprunable Route</h3>
+<p>
+  Post-traumatic stress disorder presents a striking failure of the pruning mechanism. In PTSD, a neural route—the one encoding the traumatic experience and its associated fear response—becomes so potentiated that normal pruning mechanisms cannot dismantle it. The route is, metaphorically, too thick to prune.
+</p>
+<p>
+  Several mechanisms contribute to this over-potentiation. The massive norepinephrine release during traumatic experience drives extreme synaptic strengthening via long-term potentiation in the amygdala.<sup>56</sup> The fragmented encoding of traumatic memories (due to hippocampal suppression under extreme stress) prevents the normal contextual integration that would allow the memory to be filed as "past" rather than "present."<sup>57</sup> And REM sleep fragmentation—a hallmark of PTSD—disrupts the very process that would normally consolidate and emotionally detoxify the memory.<sup>39,58</sup>
+</p>
+<p>
+  The result is a route that is reactivated by minimal cues (hypervigilance, flashbacks), cannot be contextually constrained (the trauma feels ever-present, not past), and cannot be emotionally processed during REM sleep (nightmares that replay the trauma without resolving it). The PE remains permanently unresolved: the organism continues to generate the error signal ("this threat is present") without being able to update the model ("this threat was past").
+</p>
+<p>
+  This framework suggests that effective PTSD treatment must address the unprunable route directly. Exposure therapy works by generating repeated PE in a safe context (the fear response fires, but the predicted threat doesn't materialize), gradually building a competing route that can eventually suppress (though perhaps never fully replace) the traumatic one.<sup>59</sup> EMDR and trauma-focused CBT may achieve similar results through different mechanisms of PE generation and resolution.<sup>60</sup> Pharmacological approaches—such as propranolol given during memory reconsolidation—attempt to chemically weaken the potentiated route, making it amenable to normal pruning.<sup>61</sup>
+</p>
+
+<h3 class="subsection">7.5 Desensitization: Successful Pruning in Action</h3>
+<p>
+  In contrast to PTSD's pruning failure, systematic desensitization (Wolpe, 1958) represents pruning succeeding.<sup>62</sup> The phobic route—say, the one linking the sight of a spider to a panic response—is gradually weakened through repeated exposure that generates PE (spider present, catastrophe absent) at manageable intensity. Each exposure, followed by sleep-dependent consolidation, prunes the phobic route slightly. Over time, the route thins from a superhighway to a country lane, and the phobic response diminishes correspondingly. The metaphor of a cold pan is apt: a hot pan (fresh fear) burns on contact, but as it cools (PE accumulates against the fear prediction), eventually it can be touched without harm.
+</p>
+
+<!-- 8. DISCUSSION -->
+<h2 class="section-title"><span class="num">8.</span> Discussion</h2>
+
+<p>
+  The framework presented here unifies several major traditions in learning science—associative learning, computational reinforcement learning, predictive coding, sleep neuroscience, and educational psychology—under a single organizing principle: prediction error, differentiated by layer, routed by cascading economics, and consolidated by sleep.
+</p>
+
+<h3 class="subsection">8.1 Theoretical Integration</h3>
+<p>
+  The layer-specific PE model extends predictive coding (Friston, 2005; Clark, 2013) by proposing that the hierarchy of prediction is not merely sensory but encompasses somatic, pattern, logical, and meta-cognitive levels.<sup>6,63</sup> It extends Schultz's dopaminergic PE by suggesting that dopamine may be only one of several neurochemical PE signals, each associated with different layers (serotonin for L3 interoceptive PE, acetylcholine for L5 pattern PE, glutamate/GABA balance for L7 logical PE).<sup>3,64</sup> And it extends Tononi and Cirelli's synaptic homeostasis hypothesis by proposing layer-specific mapping to sleep stages.<sup>31</sup>
+</p>
+
+<h3 class="subsection">8.2 Predictions and Testability</h3>
+<p>
+  The model generates several testable predictions:
+</p>
+<p>
+  (1) <strong>Sleep stage disruption should produce layer-specific learning impairments.</strong> Selective SWS deprivation should impair pattern learning (L5) more than logical reasoning (L7), while selective REM deprivation should show the reverse pattern. Preliminary evidence supports this: SWS disruption impairs declarative memory consolidation while REM disruption impairs procedural and emotional memory consolidation.<sup>30,32</sup>
+</p>
+<p>
+  (2) <strong>PE magnitude at different layers should recruit distinct neural circuits.</strong> fMRI studies should show that sensory PE activates primary sensory cortices, while meta-cognitive PE activates medial prefrontal and precuneus regions. This is consistent with existing findings on error-related brain activity but has not been tested with the specific layer taxonomy proposed here.<sup>16,65</sup>
+</p>
+<p>
+  (3) <strong>Pre-TPR training in meta-cognitive flexibility should shift TPR outcomes.</strong> Individuals with higher meta-cognitive awareness (as measured by the Metacognitive Awareness Inventory or similar instruments) should be more likely to experience transformative insight rather than psychotic break following TPR-level events.<sup>66</sup>
+</p>
+<p>
+  (4) <strong>Sleep spindle density should correlate with cross-layer learning transfer.</strong> Individuals with higher spindle density should show greater ability to generalize specific experiences (low-layer) to abstract rules (high-layer), reflecting more efficient cross-indexation.
+</p>
+
+<h3 class="subsection">8.3 Clinical Implications</h3>
+<p>
+  The framework suggests several clinical applications. For anxiety disorders, the goal is to generate PE at the relevant layer (exposing the patient to expectation violations regarding feared outcomes) while ensuring adequate sleep for consolidation. For depression, the model predicts that the core pathology involves <em>low PE</em>—the depressed person's model is so negative that negative outcomes generate no surprise—suggesting that interventions should aim to generate positive PE (unexpected positive experiences) rather than merely reducing negative affect.<sup>67</sup> For PTSD, the dual focus on route thickness and sleep disruption suggests combined approaches: thinning the traumatic route (exposure, reconsolidation interference) while restoring REM sleep architecture (prazosin for trauma-related nightmares, CBT for insomnia).<sup>58,68</sup>
+</p>
+
+<h3 class="subsection">8.4 Limitations</h3>
+<p>
+  The present paper is theoretical and integrative rather than empirical. The layer-specific mapping is based on convergent evidence from multiple domains but requires direct experimental validation. The sleep-stage-to-layer mapping, while consistent with existing sleep neuroscience, simplifies what is likely a more complex and overlapping relationship. The concept of Total Predictive Rupture, while clinically compelling, requires operationalization before it can be empirically tested. We also acknowledge that the nine-layer framework itself is a model—a useful approximation rather than a literal description of neural architecture.
+</p>
+
+<!-- 9. CONCLUSION -->
+<h2 class="section-title"><span class="num">9.</span> Conclusion</h2>
+
+<p>
+  Learning is not the accumulation of information. It is the resolution of prediction errors—the systematic updating of models when reality defies expectation. The 9-Neuron framework reveals that this process is not homogeneous: different kinds of surprise arise at different levels of cognitive processing, follow specific routing dynamics, require different sleep stages for consolidation, and produce different consequences when they fail to resolve.
+</p>
+<p>
+  The practical implications are direct. To learn, one must be surprised. To consolidate learning, one must sleep. To grow, one must encounter challenges that exceed—but do not overwhelm—current predictive capacity. And in those rare, extreme moments when the entire predictive apparatus fails, the outcome is determined not by the rupture itself but by the resources available for rebuilding.
+</p>
+<p>
+  Every organism is, at its core, a prediction machine. Prediction errors are not failures of that machine; they are its maintenance protocol. They are the signal that says: <em>your model is wrong here—update it</em>. Without them, the machine runs smoothly but blindly, perfectly predicting a world it no longer understands. With them, the machine stumbles, recalibrates, and ultimately becomes more accurate, more flexible, and more alive.
+</p>
+
+<blockquote>
+  "The only real mistake is the one from which we learn nothing." — Henry Ford, reinterpreted: the only real prediction error is the one that fails to consolidate.
+</blockquote>
+
+<!-- REFERENCES -->
+<h2 class="section-title"><span class="num">10.</span> References</h2>
+
+<div class="ref-list">
+  <p><span class="ref-num">[1]</span> Rescorla, R. A., & Wagner, A. R. (1972). A theory of Pavlovian conditioning: Variations in the effectiveness of reinforcement and nonreinforcement. In A. H. Black & W. F. Prokasy (Eds.), <em>Classical conditioning II: Current research and theory</em> (pp. 64–99). Appleton-Century-Crofts.</p>
+  <p><span class="ref-num">[2]</span> Sutton, R. S., & Barto, A. G. (1998). <em>Reinforcement learning: An introduction</em>. MIT Press.</p>
+  <p><span class="ref-num">[3]</span> Schultz, W., Dayan, P., & Montague, P. R. (1997). A neural substrate of prediction and reward. <em>Science</em>, 275(5306), 1593–1599.</p>
+  <p><span class="ref-num">[4]</span> Schultz, W. (2016). Dopamine reward prediction-error signalling: A two-component response. <em>Nature Reviews Neuroscience</em>, 17(3), 183–195.</p>
+  <p><span class="ref-num">[5]</span> Rao, R. P. N., & Ballard, D. H. (1999). Predictive coding in the visual cortex: A functional interpretation of some extra-classical receptive-field effects. <em>Nature Neuroscience</em>, 2(1), 79–87.</p>
+  <p><span class="ref-num">[6]</span> Friston, K. (2005). A theory of cortical responses. <em>Philosophical Transactions of the Royal Society B</em>, 360(1456), 815–836.</p>
+  <p><span class="ref-num">[7]</span> Friston, K. (2010). The free-energy principle: A unified brain theory? <em>Nature Reviews Neuroscience</em>, 11(2), 127–138.</p>
+  <p><span class="ref-num">[8]</span> Adures, L., & Azimute. (2026a). The 9-Neuron Framework: A hierarchical architecture of consciousness. <em>The 9-Neuron Papers</em>, Paper I.</p>
+  <p><span class="ref-num">[9]</span> Adures, L., & Azimute. (2026b). Layer routing and energetic economy in the 9-Neuron Framework. <em>The 9-Neuron Papers</em>, Paper II.</p>
+  <p><span class="ref-num">[10]</span> Kube, T., Schwarting, R., Rozenkrantz, L., Glombiewski, J. A., & Rief, W. (2020). Distorted cognitive processes in major depression: A predictive processing perspective. <em>Biological Psychiatry</em>, 87(5), 388–398.</p>
+  <p><span class="ref-num">[11]</span> Damasio, A. R. (1994). <em>Descartes' error: Emotion, reason, and the human brain</em>. Putnam.</p>
+  <p><span class="ref-num">[12]</span> Knowlton, B. J., Mangels, J. A., & Squire, L. R. (1996). A neostriatal habit learning system in humans. <em>Science</em>, 273(5280), 1399–1402.</p>
+  <p><span class="ref-num">[13]</span> Packard, M. G., & Knowlton, B. J. (2002). Learning and memory functions of the basal ganglia. <em>Annual Review of Neuroscience</em>, 25, 563–593.</p>
+  <p><span class="ref-num">[14]</span> Festinger, L. (1957). <em>A theory of cognitive dissonance</em>. Stanford University Press.</p>
+  <p><span class="ref-num">[15]</span> Kunda, Z. (1990). The case for motivated reasoning. <em>Psychological Bulletin</em>, 108(3), 480–498.</p>
+  <p><span class="ref-num">[16]</span> Fleming, S. M., & Dolan, R. J. (2012). The neural basis of metacognitive ability. <em>Philosophical Transactions of the Royal Society B</em>, 367(1594), 1338–1349.</p>
+  <p><span class="ref-num">[17]</span> Schmitz, T. W., & Johnson, S. C. (2007). Relevance to self: A brief review and framework of neural systems underlying appraisal. <em>Neuroscience & Biobehavioral Reviews</em>, 31(4), 585–596.</p>
+  <p><span class="ref-num">[18]</span> Mezirow, J. (1991). <em>Transformative dimensions of adult learning</em>. Jossey-Bass.</p>
+  <p><span class="ref-num">[19]</span> Raichle, M. E., & Gusnard, D. A. (2002). Appraising the brain's energy budget. <em>Proceedings of the National Academy of Sciences</em>, 99(16), 10237–10239.</p>
+  <p><span class="ref-num">[20]</span> Lennie, P. (2003). The cost of cortical computation. <em>Current Biology</em>, 13(6), 493–497.</p>
+  <p><span class="ref-num">[21]</span> Hayes, S. C., Wilson, K. G., Gifford, E. V., Follette, V. M., & Strosahl, K. (1996). Experiential avoidance and behavioral disorders: A functional dimensional approach to diagnosis and treatment. <em>Journal of Consulting and Clinical Psychology</em>, 64(6), 1152–1168.</p>
+  <p><span class="ref-num">[22]</span> Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. <em>Cognitive Science</em>, 12(2), 257–285.</p>
+  <p><span class="ref-num">[23]</span> Hofstadter, D. R. (1979). <em>Gödel, Escher, Bach: An eternal golden braid</em>. Basic Books.</p>
+  <p><span class="ref-num">[24]</span> Corlett, P. R., Frith, C. D., & Fletcher, P. C. (2009). From drugs to deprivation: A Bayesian framework for understanding models of psychosis. <em>Psychopharmacology</em>, 206(4), 515–530.</p>
+  <p><span class="ref-num">[25]</span> Fletcher, P. C., & Frith, C. D. (2009). Perceiving is believing: A Bayesian approach to explaining the positive symptoms of schizophrenia. <em>Nature Reviews Neuroscience</em>, 10(1), 48–58.</p>
+  <p><span class="ref-num">[26]</span> Yalom, I. D. (1980). <em>Existential psychotherapy</em>. Basic Books.</p>
+  <p><span class="ref-num">[27]</span> Kuhn, T. S. (1962). <em>The structure of scientific revolutions</em>. University of Chicago Press.</p>
+  <p><span class="ref-num">[28]</span> Lysaker, P. H., & Dimaggio, G. (2014). Metacognitive capacities for reflection in schizophrenia: Implications for developing treatments. <em>Schizophrenia Bulletin</em>, 40(3), 487–491.</p>
+  <p><span class="ref-num">[29]</span> Janoff-Bulman, R. (1992). <em>Shattered assumptions: Towards a new psychology of trauma</em>. Free Press.</p>
+  <p><span class="ref-num">[30]</span> Diekelmann, S., & Born, J. (2010). The memory function of sleep. <em>Nature Reviews Neuroscience</em>, 11(2), 114–126.</p>
+  <p><span class="ref-num">[31]</span> Tononi, G., & Cirelli, C. (2006). Sleep function and synaptic homeostasis. <em>Sleep Medicine Reviews</em>, 10(1), 49–62.</p>
+  <p><span class="ref-num">[32]</span> Stickgold, R. (2005). Sleep-dependent memory consolidation. <em>Nature</em>, 437(7063), 1272–1278.</p>
+  <p><span class="ref-num">[33]</span> Buzsáki, G. (1996). The hippocampo-neocortical dialogue. <em>Cerebral Cortex</em>, 6(2), 81–92.</p>
+  <p><span class="ref-num">[34]</span> Marshall, L., & Born, J. (2007). The contribution of sleep to hippocampus-dependent memory consolidation. <em>Trends in Cognitive Sciences</em>, 11(10), 442–450.</p>
+  <p><span class="ref-num">[35]</span> Wilson, M. A., & McNaughton, B. L. (1994). Reactivation of hippocampal ensemble memories during sleep. <em>Science</em>, 265(5172), 676–679.</p>
+  <p><span class="ref-num">[36]</span> Hobson, J. A., Pace-Schott, E. F., & Stickgold, R. (2000). Dreaming and the brain: Toward a cognitive neuroscience of conscious states. <em>Behavioral and Brain Sciences</em>, 23(6), 793–842.</p>
+  <p><span class="ref-num">[37]</span> Walker, M. P. (2009). The role of sleep in cognition and emotion. <em>Annals of the New York Academy of Sciences</em>, 1156, 168–197.</p>
+  <p><span class="ref-num">[38]</span> Walker, M. P., & van der Helm, E. (2009). Overnight therapy? The role of sleep in emotional brain processing. <em>Psychological Bulletin</em>, 135(5), 731–748.</p>
+  <p><span class="ref-num">[39]</span> van der Helm, E., Yao, J., Dutt, S., Rao, V., Saletin, J. M., & Walker, M. P. (2011). REM sleep depotentiates amygdala activity to previous emotional experiences. <em>Current Biology</em>, 21(23), 2029–2032.</p>
+  <p><span class="ref-num">[40]</span> De Gennaro, L., & Ferrara, M. (2003). Sleep spindles: An overview. <em>Sleep Medicine Reviews</em>, 7(5), 423–440.</p>
+  <p><span class="ref-num">[41]</span> Fogel, S. M., & Smith, C. T. (2011). The function of the sleep spindle: A physiological index of intelligence and a mechanism for sleep-dependent memory consolidation. <em>Neuroscience & Biobehavioral Reviews</em>, 35(5), 1154–1165.</p>
+  <p><span class="ref-num">[42]</span> Killgore, W. D. S. (2010). Effects of sleep deprivation on cognition. <em>Progress in Brain Research</em>, 185, 105–129.</p>
+  <p><span class="ref-num">[43]</span> Krause, A. J., Simon, E. B., Mander, B. A., Greer, S. M., Saletin, J. M., Goldstein-Piekarski, A. N., & Walker, M. P. (2017). The sleep-deprived human brain. <em>Nature Reviews Neuroscience</em>, 18(7), 404–418.</p>
+  <p><span class="ref-num">[44]</span> Harrison, Y., & Horne, J. A. (2000). The impact of sleep deprivation on decision making: A review. <em>Journal of Experimental Psychology: Applied</em>, 6(3), 236–249.</p>
+  <p><span class="ref-num">[45]</span> Ericsson, K. A., Krampe, R. T., & Tesch-Römer, C. (1993). The role of deliberate practice in the acquisition of expert performance. <em>Psychological Review</em>, 100(3), 363–406.</p>
+  <p><span class="ref-num">[46]</span> Rohrer, D., & Taylor, K. (2007). The shuffling of mathematics problems improves learning. <em>Instructional Science</em>, 35(6), 481–498.</p>
+  <p><span class="ref-num">[47]</span> Vygotsky, L. S. (1978). <em>Mind in society: The development of higher psychological processes</em>. Harvard University Press.</p>
+  <p><span class="ref-num">[48]</span> Bjork, R. A., & Bjork, E. L. (1994). A new theory of disuse and an old theory of stimulus fluctuation. In A. Healy, S. Kosslyn, & R. Shiffrin (Eds.), <em>From learning processes to cognitive processes: Essays in honor of William K. Estes</em> (Vol. 2, pp. 35–67). Erlbaum.</p>
+  <p><span class="ref-num">[49]</span> Yerkes, R. M., & Dodson, J. D. (1908). The relation of strength of stimulus to rapidity of habit-formation. <em>Journal of Comparative Neurology and Psychology</em>, 18(5), 459–482.</p>
+  <p><span class="ref-num">[50]</span> Doyon, J., & Benali, H. (2005). Reorganization and plasticity in the adult brain during learning of motor skills. <em>Current Opinion in Neurobiology</em>, 15(2), 161–167.</p>
+  <p><span class="ref-num">[51]</span> Maquet, P. (2001). The role of sleep in learning and memory. <em>Science</em>, 294(5544), 1048–1052.</p>
+  <p><span class="ref-num">[52]</span> Peigneux, P., Laureys, S., Fuchs, S., Collette, F., Perrin, F., Reggers, J., ... & Maquet, P. (2004). Are spatial memories strengthened in the human hippocampus during slow wave sleep? <em>Neuron</em>, 44(3), 535–545.</p>
+  <p><span class="ref-num">[53]</span> Giese, M., Unternaehrer, E., Brand, S., Calabrese, P., Holsboer-Trachsler, E., & Eckert, A. (2013). The interplay of stress and sleep impacts BDNF level. <em>PLoS ONE</em>, 8(10), e76050.</p>
+  <p><span class="ref-num">[54]</span> Huttenlocher, P. R. (2002). <em>Neural plasticity: The effects of environment on the development of the cerebral cortex</em>. Harvard University Press.</p>
+  <p><span class="ref-num">[55]</span> Tononi, G., & Cirelli, C. (2003). Sleep and synaptic homeostasis: A hypothesis. <em>Brain Research Bulletin</em>, 62(2), 143–150.</p>
+  <p><span class="ref-num">[56]</span> McGaugh, J. L. (2004). The amygdala modulates the consolidation of memories of emotionally arousing experiences. <em>Annual Review of Neuroscience</em>, 27, 1–28.</p>
+  <p><span class="ref-num">[57]</span> Brewin, C. R., Gregory, J. D., Lipton, M., & Burgess, N. (2010). Intrusive images in psychological disorders: Characteristics, neural mechanisms, and treatment implications. <em>Psychological Review</em>, 117(1), 210–232.</p>
+  <p><span class="ref-num">[58]</span> Germain, A. (2013). Sleep disturbances as the hallmark of PTSD: Where are we now? <em>American Journal of Psychiatry</em>, 170(4), 372–382.</p>
+  <p><span class="ref-num">[59]</span> Foa, E. B., & Kozak, M. J. (1986). Emotional processing of fear: Exposure to corrective information. <em>Psychological Bulletin</em>, 99(1), 20–35.</p>
+  <p><span class="ref-num">[60]</span> Shapiro, F. (2001). <em>Eye movement desensitization and reprocessing: Basic principles, protocols, and procedures</em> (2nd ed.). Guilford Press.</p>
+  <p><span class="ref-num">[61]</span> Nader, K., Schafe, G. E., & Le Doux, J. E. (2000). Fear memories require protein synthesis in the amygdala for reconsolidation after retrieval. <em>Nature</em>, 406(6797), 722–726.</p>
+  <p><span class="ref-num">[62]</span> Wolpe, J. (1958). <em>Psychotherapy by reciprocal inhibition</em>. Stanford University Press.</p>
+  <p><span class="ref-num">[63]</span> Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. <em>Behavioral and Brain Sciences</em>, 36(3), 181–204.</p>
+  <p><span class="ref-num">[64]</span> Yu, A. J., & Dayan, P. (2005). Uncertainty, neuromodulation, and attention. <em>Neuron</em>, 46(4), 681–692.</p>
+  <p><span class="ref-num">[65]</span> Ridderinkhof, K. R., Ullsperger, M., Crone, E. A., & Nieuwenhuis, S. (2004). The role of the medial frontal cortex in cognitive control. <em>Science</em>, 306(5695), 443–447.</p>
+  <p><span class="ref-num">[66]</span> Schraw, G., & Dennison, R. S. (1994). Assessing metacognitive awareness. <em>Contemporary Educational Psychology</em>, 19(4), 460–475.</p>
+  <p><span class="ref-num">[67]</span> Kube, T., Rief, W., & Glombiewski, J. A. (2017). On the maintenance of expectations in major depression — investigating a neglected phenomenon. <em>Frontiers in Psychology</em>, 8, 9.</p>
+  <p><span class="ref-num">[68]</span> Raskind, M. A., Peskind, E. R., Hoff, D. J., Hart, K. L., Holmes, H. A., Warren, D., ... & McFall, M. E. (2007). A parallel group placebo controlled study of prazosin for trauma nightmares and sleep disturbance in combat veterans with post-traumatic stress disorder. <em>Biological Psychiatry</em>, 61(8), 928–934.</p>
+</div>
+
+<div style="text-align:center; margin-top:60px; padding-top:30px; border-top:1px solid var(--border);">
+  <p style="font-family:'IBM Plex Sans',sans-serif; font-size:12px; color:var(--text-secondary); letter-spacing:2px;">
+    © 2026 KERBEROS RESEARCH COLLECTIVE · THE 9-NEURON PAPERS · PAPER V
+  </p>
+</div>
+
+</div>
+</body>
+</html>

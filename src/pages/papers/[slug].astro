@@ -1,0 +1,107 @@
+---
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import fs from 'fs';
+import path from 'path';
+
+const { slug } = Astro.params;
+
+// Read HTML from public/papers/
+const htmlPath = path.join(process.cwd(), 'public', 'papers', `${slug}.html`);
+
+if (!fs.existsSync(htmlPath)) {
+  return Astro.redirect('/dashboard/papers?error=not-found');
+}
+
+const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+
+// Extract title from HTML
+const titleMatch = htmlContent.match(/<h1[^>]*>(.*?)<\/h1>/);
+const title = titleMatch ? titleMatch[1] : 'Academic Paper';
+---
+<Base title={title}>
+  <article class="research-report" set:html={htmlContent} />
+</Base>
+
+<style is:global>
+  .research-report {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .research-report h1 {
+    font-family: var(--az-font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--az-compass);
+    border-bottom: 2px solid var(--az-surface);
+    padding-bottom: 1rem;
+  }
+
+  .research-report h2 {
+    font-family: var(--az-font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: var(--az-text);
+  }
+
+  .research-report h3 {
+    font-family: var(--az-font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .research-report p, .research-report li {
+    color: var(--az-text-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .research-report ul, .research-report ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .research-report .metadata {
+    background: var(--az-deep);
+    border: 1px solid var(--az-surface);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    font-family: var(--az-font-mono);
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+  }
+
+  .research-report .highlight {
+    background: var(--az-surface);
+    border-left: 3px solid var(--az-compass);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+
+  .research-report code {
+    font-family: var(--az-font-mono);
+    background: var(--az-surface);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .research-report a {
+    color: var(--az-compass);
+    text-decoration: none;
+  }
+
+  .research-report a:hover {
+    text-decoration: underline;
+  }
+</style>

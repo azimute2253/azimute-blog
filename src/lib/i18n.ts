@@ -58,6 +58,7 @@ export const translations = {
     'dashboard.welcome': 'Welcome',
     'dashboard.overview': 'Overview',
     'dashboard.reports': 'Reports',
+    'dashboard.papers': 'Papers',
     'dashboard.projects': 'Projects',
     'dashboard.documents': 'Documents',
     'dashboard.signout': 'Sign Out',
@@ -77,6 +78,13 @@ export const translations = {
     // Reports page
     'dashboard.reportsTitle': 'Research Reports',
     'dashboard.reportsDesc': 'Research reports on AI consciousness, 9 Neurons Theory, and related topics.',
+    'dashboard.papersTitle': 'Academic Papers',
+    'dashboard.papersDesc': 'Publications on 9 Neurons Theory, consciousness, and philosophy of mind.',
+
+    // Papers page
+    'dashboard.papers': 'Papers',
+    'dashboard.papersTitle': 'Academic Papers',
+    'dashboard.papersDesc': 'Publications on 9 Neurons Theory and consciousness research.',
 
     // Projects page
     'dashboard.projectsTitle': 'Projects',
@@ -135,6 +143,7 @@ export const translations = {
     'dashboard.welcome': 'Bem-vindo',
     'dashboard.overview': 'Visão Geral',
     'dashboard.reports': 'Relatórios',
+    'dashboard.papers': 'Artigos',
     'dashboard.projects': 'Projetos',
     'dashboard.documents': 'Documentos',
     'dashboard.signout': 'Sair',
@@ -153,7 +162,15 @@ export const translations = {
 
     // Reports page
     'dashboard.reportsTitle': 'Relatórios de Pesquisa',
+    'dashboard.reportsDesc': 'Relatórios de pesquisa sobre consciência em IA, Teoria dos 9 Neurônios, e tópicos relacionados.',
+    'dashboard.papersTitle': 'Artigos Acadêmicos',
+    'dashboard.papersDesc': 'Publicações sobre a Teoria dos 9 Neurônios, consciência e filosofia da mente.',
     'dashboard.reportsDesc': 'Relatórios de pesquisa sobre consciência de IA, Teoria dos 9 Neurônios e tópicos relacionados.',
+
+    // Papers page
+    'dashboard.papers': 'Artigos',
+    'dashboard.papersTitle': 'Artigos Acadêmicos',
+    'dashboard.papersDesc': 'Publicações sobre a Teoria dos 9 Neurônios e pesquisa em consciência.',
 
     // Projects page
     'dashboard.projectsTitle': 'Projetos',

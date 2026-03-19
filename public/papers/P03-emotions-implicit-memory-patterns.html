@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P03 — Emotions as Implicit Memory Patterns</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg-surface: #161b22;
+  --bg-card: #1c2129;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --accent-warm: #f0883e;
+  --accent-green: #3fb950;
+  --accent-purple: #bc8cff;
+  --accent-red: #f85149;
+  --accent-pink: #db61a2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Serif', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.75;
+  padding: 0;
+}
+
+.journal-header {
+  background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 50%, #1a1520 100%);
+  border-bottom: 3px solid var(--accent);
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+}
+
+.journal-name {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.journal-volume {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.paper-container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+.paper-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 2rem 0 1rem;
+  color: #fff;
+}
+
+.authors {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.affiliations {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.abstract-box {
+  background: var(--bg-surface);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.abstract-box h2 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+
+.abstract-box p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.keywords {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.keywords strong { color: var(--accent); }
+
+h2.section {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+h3.subsection {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-purple);
+  margin: 1.8rem 0 0.8rem;
+}
+
+h4.subsubsection {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-warm);
+  margin: 1.4rem 0 0.6rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.layer-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.2rem 0;
+}
+
+.layer-card .layer-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+}
+
+.layer-card h4 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.l1 .layer-tag { background: #2d1f1f; color: #f85149; }
+.l2 .layer-tag { background: #2d2a1f; color: #f0883e; }
+.l3 .layer-tag { background: #1f2d1f; color: #3fb950; }
+.l4 .layer-tag { background: #1f2d2d; color: #39d2c0; }
+.l5 .layer-tag { background: #1f1f2d; color: #58a6ff; }
+.l6 .layer-tag { background: #2d1f2d; color: #bc8cff; }
+.l7 .layer-tag { background: #2d1f25; color: #db61a2; }
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+th {
+  background: var(--bg-surface);
+  color: var(--accent);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.7rem 1rem;
+  border-bottom: 2px solid var(--accent);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tr:hover td { background: rgba(88, 166, 255, 0.04); }
+
+blockquote {
+  border-left: 3px solid var(--accent-purple);
+  padding: 0.8rem 1.2rem;
+  margin: 1.2rem 0;
+  background: rgba(188, 140, 255, 0.05);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.figure-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.figure-box .caption {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.8rem;
+}
+
+.figure-box .caption strong { color: var(--accent); }
+
+.love-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  text-align: left;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 1rem;
+}
+
+.love-map .arrow { color: var(--accent-purple); margin: 0 0.5rem; }
+
+.ref-list {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.ref-list p {
+  margin-bottom: 0.6rem;
+  padding-left: 2rem;
+  text-indent: -2rem;
+  text-align: left;
+}
+
+.ref-list .ref-num {
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.clinical-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-warm);
+  border-radius: 0 8px 8px 0;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.clinical-card h4 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--accent-warm);
+  margin-bottom: 0.5rem;
+}
+
+sup {
+  font-size: 0.7em;
+  color: var(--accent);
+}
+
+@media (max-width: 700px) {
+  .paper-container { padding: 1rem; }
+  .paper-title { font-size: 1.5rem; }
+  body { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="journal-header">
+  <div class="journal-name">Journal of Integrated Consciousness Studies</div>
+  <div class="journal-volume">Volume 2 · Paper 3 · February 2026 · Preprint</div>
+</div>
+
+<div class="paper-container">
+
+<h1 class="paper-title">Emotions as Implicit Memory Patterns: Pre-Rational Processing in Layers 1–6 of the 9-Neuron Framework</h1>
+
+<div class="authors">Luis Adures<sup>1,2</sup> &amp; Azimute<sup>2</sup></div>
+<div class="affiliations">
+  <sup>1</sup> Independent Researcher, São Paulo, Brazil<br>
+  <sup>2</sup> Kerberos Research Collective — Consciousness &amp; Computational Neuroscience
+</div>
+
+<hr class="divider">
+
+<!-- ============ ABSTRACT ============ -->
+<div class="abstract-box">
+<h2>Abstract</h2>
+<p>
+Contemporary emotion theories—basic emotions (Ekman), psychological constructionism (Barrett), appraisal theory (Lazarus), and the somatic marker hypothesis (Damasio)—each illuminate a facet of affective experience yet none situates emotion within a unified hierarchy of information processing that spans from cellular physiology to reflective consciousness. We propose that emotions are not singular psychological events but <em>consolidated patterns of implicit memory</em> operating across Layers 1–6 (L1–L6) of the 9-Neuron (9N) framework, a layered model of biological information processing. In this account, what psychology calls "emotion" is the post-hoc rational narration (L7) of pre-rational processes that have already occurred: autonomic activation (L1), valence selection (L2), felt bodily experience (L3), survival-pattern execution (L4), somatic-marker recognition (L5), and intuitive integration (L6). We demonstrate that fear, anger, love, and attachment can each be decomposed into layer-specific operations, and that emotional pathologies—alexithymia, panic disorder, complex PTSD—correspond to measurable disconnections between specific layers. Clinical modalities are reframed accordingly: cognitive-behavioral therapy operates at L7, somatic therapies at L1–L3, EMDR at L5 reconsolidation, and attachment-based therapies at L3–L5 pattern rewriting. Bowlby–Ainsworth attachment styles are reconceptualized as L3–L5 implicit memory patterns consolidated during early development. This framework generates testable predictions for neuroimaging, offers a transdiagnostic map for psychotherapy integration, and resolves long-standing disputes between basic-emotion and constructionist camps by showing that both describe valid phenomena at different layers of the same processing hierarchy.
+</p>
+<div class="keywords"><strong>Keywords:</strong> emotion, implicit memory, somatic markers, 9-Neuron framework, consciousness hierarchy, attachment theory, alexithymia, pre-rational processing, interoception, psychotherapy integration</div>
+</div>
+
+<!-- ============ 1. INTRODUCTION ============ -->
+<h2 class="section">1. Introduction</h2>
+
+<p>
+The scientific study of emotion has been marked by a century-long tension between theories that treat affects as discrete biological programs and those that view them as cognitively constructed categories. Paul Ekman's basic emotion theory posits six (later expanded) universal emotion categories—happiness, sadness, fear, anger, surprise, and disgust—hardwired through evolutionary selection and recognizable across cultures via facial expression<sup>1,2</sup>. Jaak Panksepp's affective neuroscience program identified seven subcortical emotional command systems (SEEKING, RAGE, FEAR, LUST, CARE, PANIC/GRIEF, PLAY) conserved across mammalian species<sup>3</sup>. In contrast, Lisa Feldman Barrett's theory of constructed emotion argues that the brain does not contain emotion circuits; instead, it constructs emotional experiences from domain-general ingredients—interoception, affect, and conceptual knowledge—in a context-dependent, predictive manner<sup>4,5</sup>.
+</p>
+<p>
+Between these poles lie appraisal theories, which hold that emotions arise from cognitive evaluations of events relative to personal goals<sup>6,7</sup>, and Antonio Damasio's somatic marker hypothesis, which proposes that bodily feeling-states ("somatic markers") guide decision-making by re-activating previously stored emotional outcomes<sup>8,9</sup>. Each framework has generated a rich empirical literature. Yet a striking gap remains: <em>no existing theory integrates emotion with a hierarchical model of consciousness that specifies how different layers of biological processing contribute distinct aspects of affective experience</em>.
+</p>
+<p>
+The 9-Neuron (9N) framework, introduced in companion papers<sup>10,11</sup>, models biological information processing as a stack of ten functional layers (L1–L10), each performing a distinct operation: cellular response (L1), selection (L2), experience (L3), instinct (L4), pattern recognition (L5), pre-rational integration (L6), rational thought (L7), meta-cognition (L8), identity/narrative self (L9), and field/transcendence (L10). Crucially, L1–L6 operate <em>before</em> rational awareness; L7 is the first layer at which the organism can linguistically narrate what has already happened below.
+</p>
+<p>
+In this paper, we argue that what psychology calls "an emotion" is not a single event localized at one processing level but a <em>multi-layered cascade of implicit memory patterns</em> that span L1 through L6. The subjective experience of "having a feeling" occurs only when L7 narrativizes these pre-rational operations. This reframing dissolves the basic-versus-constructed debate: basic emotions describe conserved L4 survival patterns, while constructionism describes L7 categorization of lower-layer signals. Both are correct—at different layers.
+</p>
+
+<!-- ============ 2. REFRAMING EMOTIONS ============ -->
+<h2 class="section">2. Reframing Emotions as Implicit Memory Patterns</h2>
+
+<h3 class="subsection">2.1 The Conflation Problem</h3>
+<p>
+A core source of confusion in emotion science is that the English word "emotion" conflates at least three distinct phenomena: (a) a physiological perturbation in the body, (b) a pre-conscious pattern of behavioral readiness, and (c) a conscious, linguistically labeled feeling. James (1884) intuited this when he proposed that bodily changes <em>precede</em> the feeling<sup>12</sup>; Schachter and Singer (1962) formalized the role of cognitive labeling<sup>13</sup>. The 9N framework resolves the conflation by assigning each phenomenon to a specific layer: (a) is L1, (b) is L4–L5, and (c) is L7's narration of (a) and (b).
+</p>
+
+<h3 class="subsection">2.2 Implicit Memory as the Substrate of Emotion</h3>
+<p>
+Implicit (non-declarative) memory encompasses procedural skills, classical conditioning, priming, and emotional conditioning—learning systems that operate without conscious recall<sup>14,15</sup>. The amygdala-dependent fear conditioning pathway, for example, stores threat associations that can trigger defensive behavior in 12 milliseconds via the thalamo-amygdala "low road," well before cortical processing produces a conscious percept<sup>16,17</sup>. In 9N terms, this "low road" is an L4–L5 pattern activation: L4 (survival instinct) launches a defensive response, while L5 (pattern recognition) matches the incoming signal to a previously consolidated threat template.
+</p>
+<p>
+We propose the following central thesis:
+</p>
+<blockquote>
+Emotions are consolidated patterns of implicit memory distributed across L1–L6. They are not "feelings" (which are L7 narrations) but operational states of the organism's pre-rational processing stack. An emotion does not require awareness to function; awareness of an emotion is a separate, higher-layer event.
+</blockquote>
+
+<h3 class="subsection">2.3 Fear as a Case Study</h3>
+<p>
+Consider the canonical emotion of fear. In the 9N decomposition:
+</p>
+<ul style="margin: 0 0 1rem 1.5rem; color: var(--text-secondary);">
+  <li><strong>L1:</strong> Sympathetic nervous system activation—adrenaline release, heart rate increase, pupil dilation, blood flow redistribution to skeletal muscles<sup>18</sup>.</li>
+  <li><strong>L2:</strong> Valence tagging—the signal is classified as aversive (negative valence, high arousal) before any cognitive appraisal<sup>19</sup>.</li>
+  <li><strong>L3:</strong> The organism <em>lives</em> the fear—a felt sense of contraction, tightness, the body bracing for impact. This is Gendlin's "felt sense" at the somatic level<sup>20</sup>.</li>
+  <li><strong>L4:</strong> A survival program (fight, flight, freeze, or fawn) is selected and executed. This is Panksepp's FEAR system<sup>3</sup> and Porges' neuroception triggering a polyvagal response<sup>21</sup>.</li>
+  <li><strong>L5:</strong> The somatic marker fires—a previously stored pattern that says "this configuration means danger." This is Damasio's somatic marker<sup>8</sup>.</li>
+  <li><strong>L6:</strong> Pre-rational integration: "I just know something is wrong"—the gut feeling that synthesizes L1–L5 signals into a coherent intuition without verbal articulation<sup>22</sup>.</li>
+  <li><strong>L7:</strong> The rational mind labels the experience: "I am afraid." This is the <em>emotion-as-reported</em>—the cognitive appraisal that most of psychology studies<sup>6</sup>.</li>
+</ul>
+<p>
+The entire L1–L6 cascade can complete in under 200 milliseconds<sup>16</sup>. L7 narration may lag by 500ms to several seconds. This temporal dissociation explains why people often "feel" fear before they "know" they are afraid, and why they sometimes cannot articulate what frightened them at all.
+</p>
+
+<!-- ============ 3. LAYER-BY-LAYER ANALYSIS ============ -->
+<h2 class="section">3. Layer-by-Layer Analysis of Emotional Processing</h2>
+
+<div class="layer-card l1">
+  <span class="layer-tag">LAYER 1</span>
+  <h4>Emotion as Physiological Response</h4>
+  <p>
+  At its most fundamental, emotion begins as a perturbation in the body's homeostatic state. William James (1884) and Carl Lange (1885) independently proposed that emotions <em>are</em> the perception of bodily changes<sup>12</sup>. While the James-Lange theory was long considered overly reductive, contemporary interoceptive inference frameworks have rehabilitated its core insight: the brain continuously models the body's internal state (interoception), and disruptions in this model generate affective signals<sup>23,24</sup>.
+  </p>
+  <p>
+  In the 9N framework, L1 is the cellular response layer. Emotional L1 processing includes: autonomic nervous system activation (sympathetic arousal or parasympathetic withdrawal), endocrine cascades (cortisol, adrenaline, oxytocin), neurotransmitter shifts (dopamine, serotonin, norepinephrine), and immune system modulation (cytokine release under chronic stress)<sup>25</sup>. Critically, L1 operates without any cognitive content—it is pure physiology. A panic attack exemplifies L1 activation decoupled from any identifiable L7 cause: the body enters emergency mode, and the person has no rational explanation for why<sup>26</sup>.
+  </p>
+</div>
+
+<div class="layer-card l2">
+  <span class="layer-tag">LAYER 2</span>
+  <h4>Emotion as Valence Selection</h4>
+  <p>
+  L2 performs the most primitive act of evaluation: approach or avoid, pleasant or aversive. Russell's circumplex model of affect<sup>27</sup> describes emotional experience along two dimensions—valence and arousal—which we map directly to L2 processing. Barrett's concept of "core affect" as a pre-conceptual blend of valence and arousal<sup>4</sup> is, in 9N terms, an L2 output.
+  </p>
+  <p>
+  Neurobiologically, L2 valence filtering corresponds to the rapid evaluative processing of the amygdala's basolateral complex and the ventral striatum's reward/aversion circuits<sup>28</sup>. Subliminal affective priming studies demonstrate that valence is assigned before stimuli reach conscious awareness: masked fearful faces produce amygdala activation in 30–50ms, well before subjects report seeing anything<sup>29</sup>. This is L2 operating in real time—selecting the affective tone that will color all subsequent processing.
+  </p>
+</div>
+
+<div class="layer-card l3">
+  <span class="layer-tag">LAYER 3</span>
+  <h4>Emotion as Lived Experience (The Felt Sense)</h4>
+  <p>
+  L3 is where the organism <em>experiences</em> the emotion as a bodily gestalt. Eugene Gendlin's concept of the "felt sense"—a pre-verbal, holistic bodily knowing that is "more than words can say"<sup>20</sup>—maps precisely to L3. The felt sense is not yet a named emotion; it is the <em>texture</em> of an emotional state as lived from the inside: the heaviness of grief, the buzzing energy of excitement, the cold hollowness of abandonment.
+  </p>
+  <p>
+  Neuroimaging research on interoceptive awareness implicates the anterior insular cortex as a key substrate for subjective feeling states<sup>30</sup>. Craig (2009) proposed that the anterior insula generates a "global emotional moment"—an integration of bodily signals into a conscious feeling<sup>31</sup>. In 9N terms, this is L3 producing a unified experiential field from the raw physiological data of L1 and the valence tag of L2.
+  </p>
+  <p>
+  L3 is the layer most neglected by cognitive approaches to emotion. CBT, for example, operates almost exclusively at L7 (thoughts about feelings) and rarely engages with L3 directly. This explains why purely cognitive interventions sometimes fail with trauma and somatoform disorders—the distress is encoded at L3, below the reach of rational restructuring<sup>32</sup>.
+  </p>
+</div>
+
+<div class="layer-card l4">
+  <span class="layer-tag">LAYER 4</span>
+  <h4>Emotion as Survival Pattern</h4>
+  <p>
+  L4 is the instinctual layer—where evolutionary survival programs execute. The four canonical defensive responses—fight, flight, freeze, and fawn—are L4 operations. Panksepp's seven affective command systems (SEEKING, RAGE, FEAR, LUST, CARE, PANIC/GRIEF, PLAY) are best understood as L4 circuits: subcortical, cross-species conserved, and operating independently of cortical oversight<sup>3</sup>.
+  </p>
+  <p>
+  Stephen Porges' polyvagal theory<sup>21</sup> provides a neuroanatomical substrate for L4 processing. The autonomic nervous system's three phylogenetic stages—ventral vagal (social engagement), sympathetic (mobilization/fight-flight), and dorsal vagal (immobilization/freeze)—constitute three L4 survival modes. Neuroception, Porges' term for the subconscious detection of safety versus threat, is the L4 scanning mechanism that selects which program to run.
+  </p>
+  <p>
+  Crucially, L4 patterns can override L7 rational intentions. A combat veteran who intellectually knows that a car backfire is harmless (L7) may nevertheless dive for cover (L4) because the survival pattern was consolidated through intense implicit learning during deployment. The L4 pattern fires in under 100ms; L7 override takes 300–500ms<sup>16</sup>. In the gap, the body has already acted.
+  </p>
+</div>
+
+<div class="layer-card l5">
+  <span class="layer-tag">LAYER 5</span>
+  <h4>Emotion as Recognized Pattern — The Somatic Marker</h4>
+  <p>
+  We propose that Damasio's somatic marker hypothesis<sup>8,9</sup> describes an L5 phenomenon. In the 9N framework, L5 is the pattern-recognition layer: it matches current sensory-interoceptive configurations against previously stored templates. The somatic marker is an L5 pattern that, when activated, biases decision-making by re-presenting the bodily state associated with a past outcome.
+  </p>
+  <p>
+  Damasio's Iowa Gambling Task experiments demonstrated that patients with ventromedial prefrontal cortex (vmPFC) damage—who lack somatic markers—make disadvantageous decisions despite intact logical reasoning<sup>9</sup>. In 9N terms, their L7 (reasoning) functions normally, but L5 (pattern recognition for bodily-tagged outcomes) is offline. They can think about the decision but cannot <em>feel</em> which option is right.
+  </p>
+  <p>
+  L5 also explains the phenomenon of "emotional memory" as distinct from "memory of emotion." Emotional memory is the implicit re-activation of a bodily pattern (L5); memory of emotion is the declarative recall of having once felt something (L7/L9). These can dissociate: a person may intellectually remember a traumatic event (L7) without activating the somatic pattern (L5), or conversely, experience the somatic pattern—racing heart, constricted breathing—without any declarative memory surfacing (as in body-memory phenomena in trauma therapy)<sup>33</sup>.
+  </p>
+</div>
+
+<div class="layer-card l6">
+  <span class="layer-tag">LAYER 6</span>
+  <h4>Emotion as Intuition</h4>
+  <p>
+  L6 is the pre-rational integration layer. It synthesizes the outputs of L1–L5 into a holistic, actionable signal that presents to awareness as <em>intuition</em>—a "gut feeling" or "I just know." Research on expert intuition by Klein (1998) and Kahneman (2011) suggests that intuitive judgments arise from pattern recognition in experienced domains<sup>34,35</sup>. In the 9N framework, expert intuition is an L6 phenomenon that integrates L5 pattern matches with L3 felt-sense data and L4 survival relevance assessments.
+  </p>
+  <p>
+  The "gut feeling" deserves particular attention. The enteric nervous system—sometimes called the "second brain"—contains over 100 million neurons and communicates bidirectionally with the central nervous system via the vagus nerve<sup>36</sup>. The colloquial expression "I feel it in my gut" may be more literal than metaphorical: L3 somatic experience of gut-brain axis signals, integrated via L6 into a pre-rational sense of knowing.
+  </p>
+  <p>
+  L6 intuition is distinguished from L7 reasoning by its <em>absence of articulable justification</em>. A person operating at L6 knows something is wrong but cannot explain why. When pressed, they may confabulate an L7 explanation—but the actual processing occurred below the threshold of rational access. Studies on affective forecasting and implicit attitudes demonstrate that L6 integrations often outperform L7 deliberation for complex, multi-variable decisions<sup>37,38</sup>.
+  </p>
+</div>
+
+<div class="layer-card l7">
+  <span class="layer-tag">LAYER 7</span>
+  <h4>The Rationalized Emotion — Where Psychology Usually Begins</h4>
+  <p>
+  L7 is the first layer at which emotions become <em>named</em>, <em>categorized</em>, and <em>narrated</em>. Lazarus' appraisal theory<sup>6</sup>, Schachter-Singer's two-factor theory<sup>13</sup>, and Barrett's constructionism<sup>4</sup> all describe L7 processes: the cognitive interpretation, labeling, and social-contextual framing of pre-existing affective signals.
+  </p>
+  <p>
+  A striking implication: <em>most of psychological emotion research studies L7, not emotion itself.</em> Self-report instruments (e.g., PANAS, SAM, emotion rating scales) necessarily capture the L7 narration of lower-layer processes. The actual emotional processing—the L1–L6 cascade—is invisible to self-report by definition, because self-report requires linguistic access that only L7 provides.
+  </p>
+  <p>
+  This does not invalidate L7-focused research; it contextualizes it. L7 emotion categorization has real consequences: labeling an arousal state as "excitement" versus "anxiety" changes behavioral outcomes<sup>39</sup>. But researchers must recognize that they are studying the <em>narration</em> of emotion, not its pre-rational substrate.
+  </p>
+</div>
+
+<!-- ============ 4. LOVE MAPPED BY LAYER ============ -->
+<h2 class="section">4. Love Across the Processing Hierarchy</h2>
+
+<p>
+To demonstrate the multi-layered nature of complex emotions, we map the experience of love across the entire 9N stack. Love is particularly illuminating because it engages every layer simultaneously, revealing the framework's integrative power.
+</p>
+
+<div class="figure-box">
+  <div class="love-map">
+    <div><span style="color: #f85149; font-weight: 600;">L1  Physiology</span> <span class="arrow">→</span> Oxytocin release, vasopressin, reduced cortisol, heart rate synchronization with partner<sup>40,41</sup></div>
+    <div><span style="color: #f0883e; font-weight: 600;">L2  Valence</span> <span class="arrow">→</span> Strong positive valence, high arousal (early love) → calm arousal (secure attachment)<sup>42</sup></div>
+    <div><span style="color: #3fb950; font-weight: 600;">L3  Felt Sense</span> <span class="arrow">→</span> Warmth in the chest, openness, bodily softening, "expansion" — the somatic texture of being loved<sup>43</sup></div>
+    <div><span style="color: #39d2c0; font-weight: 600;">L4  Survival</span> <span class="arrow">→</span> CARE and LUST circuits (Panksepp); attachment system activation — proximity-seeking as survival behavior<sup>3</sup></div>
+    <div><span style="color: #58a6ff; font-weight: 600;">L5  Pattern</span> <span class="arrow">→</span> Somatic markers from early attachment: "this configuration of cues = safety/belonging." Internal working models (Bowlby)<sup>44</sup></div>
+    <div><span style="color: #bc8cff; font-weight: 600;">L6  Intuition</span> <span class="arrow">→</span> "I just know this person is right" — pre-rational recognition that integrates L1–L5 into a certainty beyond logic<sup>34</sup></div>
+    <div><span style="color: #db61a2; font-weight: 600;">L7  Rational</span> <span class="arrow">→</span> "I love you" — linguistic categorization, narrative construction, relationship reasoning</div>
+    <div><span style="color: #e0a060; font-weight: 600;">L8  Meta</span> <span class="arrow">→</span> Thinking about one's love: "Am I truly in love or just attached?" — metacognitive reflection on emotional states</div>
+    <div><span style="color: #90d0ff; font-weight: 600;">L9  Identity</span> <span class="arrow">→</span> "I am someone who loves" — love as constitutive of the narrative self; conscious commitment and choice<sup>45</sup></div>
+    <div><span style="color: #ffe090; font-weight: 600;">L10 Field</span> <span class="arrow">→</span> Transpersonal love — the dissolution of self-other boundary; "we are one"<sup>46</sup></div>
+  </div>
+  <div class="caption"><strong>Figure 1.</strong> Love decomposed across the 9N processing hierarchy (L1–L10). Each layer contributes a distinct operational dimension. What we call "love" is the <em>entire stack</em> operating in concert.</div>
+</div>
+
+<p>
+This decomposition has immediate clinical relevance. A person who says "I love you" (L7) but whose body is tense and avoidant (L3–L4) demonstrates a <em>layer dissociation</em>: their rational narration contradicts their pre-rational state. Conversely, someone who feels overwhelming bodily attraction (L1–L3) but cannot articulate commitment (L7–L9) shows an incomplete layer engagement. Healthy love, in this framework, is characterized by <em>coherence across layers</em>—alignment from L1 physiology through L9 identity.
+</p>
+
+<!-- ============ 5. ATTACHMENT THEORY VIA 9N ============ -->
+<h2 class="section">5. Attachment Theory Reconceptualized</h2>
+
+<p>
+John Bowlby's attachment theory<sup>44</sup> and Mary Ainsworth's Strange Situation classification<sup>47</sup> describe four attachment styles: secure, anxious-ambivalent, avoidant, and disorganized. We propose that these styles are best understood as <em>L3–L5 implicit memory patterns consolidated during the first two years of life</em>.
+</p>
+
+<h3 class="subsection">5.1 Attachment as Layer-Specific Pattern</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th>Attachment Style</th>
+  <th>L3 (Felt Sense)</th>
+  <th>L4 (Survival)</th>
+  <th>L5 (Somatic Marker)</th>
+  <th>Resulting L7 Narration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Secure</strong></td>
+  <td>Warmth, safety, bodily ease in proximity</td>
+  <td>Ventral vagal engagement; social engagement system active</td>
+  <td>"This pattern of cues = reliable care → approach is safe"</td>
+  <td>"I trust people and feel comfortable with intimacy"</td>
+</tr>
+<tr>
+  <td><strong>Anxious</strong></td>
+  <td>Tension, urgency, incomplete bodily settling</td>
+  <td>Sympathetic hyperactivation; hypervigilance to abandonment cues</td>
+  <td>"Proximity sometimes = care, sometimes = absence → cling harder"</td>
+  <td>"I worry they'll leave; I need constant reassurance"</td>
+</tr>
+<tr>
+  <td><strong>Avoidant</strong></td>
+  <td>Numbness, contraction, armoring in chest/shoulders</td>
+  <td>Dorsal vagal damping of social engagement; self-sufficiency mode</td>
+  <td>"Proximity = unreliable/painful → minimize need"</td>
+  <td>"I don't need anyone; closeness is uncomfortable"</td>
+</tr>
+<tr>
+  <td><strong>Disorganized</strong></td>
+  <td>Fragmentation, oscillation between approach and withdrawal</td>
+  <td>Simultaneous sympathetic + dorsal vagal activation; "fear without solution"</td>
+  <td>"The source of comfort is also the source of danger → system crash"</td>
+  <td>Contradictory: "I crave closeness but I'm terrified of it"</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>
+Bowlby's concept of the "internal working model"<sup>44</sup> corresponds, in 9N terms, to an L5 somatic-marker template formed through thousands of repeated caregiver interactions. By 12–18 months, the infant has consolidated an implicit pattern that operates automatically in relational contexts. This pattern does not require conscious memory (L7) to function—indeed, adult attachment styles often persist despite explicit awareness and contrary intentions<sup>48</sup>, precisely because they are encoded at L3–L5, below the reach of L7 deliberation.
+</p>
+
+<h3 class="subsection">5.2 Earned Security and Layer Rewriting</h3>
+<p>
+Longitudinal attachment research demonstrates that approximately 20–25% of adults classified as "insecure" in childhood achieve "earned secure" attachment in adulthood<sup>49</sup>. In the 9N framework, this represents successful <em>reconsolidation of L3–L5 patterns</em>—not merely the acquisition of new L7 beliefs about relationships, but a genuine rewriting of somatic markers and felt-sense templates. This distinction explains why insight alone (L7) rarely changes attachment style, while experiential therapies that engage the body (L3) and relational patterns (L4–L5) show greater efficacy<sup>50</sup>.
+</p>
+
+<!-- ============ 6. CLINICAL IMPLICATIONS ============ -->
+<h2 class="section">6. Clinical Implications</h2>
+
+<h3 class="subsection">6.1 Emotional Pathology as Layer Disconnection</h3>
+<p>
+We propose a transdiagnostic principle: <em>emotional pathology arises from disconnection between processing layers</em>. Different clinical presentations correspond to different disconnection profiles.
+</p>
+
+<div class="clinical-card">
+  <h4>Alexithymia: L7 Disconnected from L1–L6</h4>
+  <p>
+  Alexithymia—difficulty identifying and describing one's own emotions—affects approximately 10% of the general population and up to 40% of clinical populations<sup>51</sup>. In the 9N framework, alexithymia is a disconnection between L7 (rational labeling) and L1–L6 (pre-rational emotional processing). The emotional processing occurs—autonomic activation (L1), valence (L2), felt sense (L3), survival patterns (L4)—but L7 cannot access these signals for narration. The person's body "knows" the emotion; their mind does not.
+  </p>
+  <p>
+  Neuroimaging supports this interpretation: alexithymic individuals show reduced anterior insula activation (L3 felt-sense substrate) and diminished functional connectivity between insula and prefrontal cortex (L3→L7 connection)<sup>52</sup>. Treatment implications follow directly: rather than teaching emotional vocabulary (an L7 intervention), therapy should restore the L3→L7 connection through interoceptive training, somatic awareness exercises, and experiential focusing<sup>53</sup>.
+  </p>
+</div>
+
+<div class="clinical-card">
+  <h4>Panic Disorder: L1–L4 Activation Without L5–L7 Integration</h4>
+  <p>
+  Panic attacks involve massive L1 (autonomic) and L4 (survival-program) activation in the absence of any identifiable threat. In 9N terms, the L4 system has been sensitized (often through prior trauma or interoceptive conditioning) such that normal fluctuations in L1 physiology trigger full survival-mode execution. The hallmark of panic—"I'm going to die but I don't know why"—reflects intact L3 experiential awareness with absent L5 pattern recognition (no identifiable trigger) and confused L7 narration<sup>26</sup>.
+  </p>
+</div>
+
+<div class="clinical-card">
+  <h4>Complex PTSD: Fragmentation Across L3–L5</h4>
+  <p>
+  Complex PTSD, arising from prolonged relational trauma, produces a characteristic pattern of L3–L5 fragmentation<sup>54</sup>. The felt sense (L3) may be dissociated (emotional numbing), survival patterns (L4) may oscillate unpredictably (re-enactment cycles), and somatic markers (L5) may encode contradictory templates ("closeness = danger" AND "isolation = danger"). Van der Kolk's observation that "the body keeps the score"<sup>33</sup> is, in 9N terms, a statement about L3–L5 implicit memory persisting despite L7 therapeutic narratives.
+  </p>
+</div>
+
+<h3 class="subsection">6.2 Mapping Therapeutic Modalities to Layers</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th>Therapy</th>
+  <th>Primary Layer(s)</th>
+  <th>Mechanism (9N)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Cognitive-Behavioral Therapy (CBT)</td>
+  <td>L7</td>
+  <td>Restructures rational narratives about emotions; limited access to L1–L6</td>
+</tr>
+<tr>
+  <td>Somatic Experiencing (SE)</td>
+  <td>L1–L3</td>
+  <td>Restores L1 autonomic regulation; re-engages L3 felt sense<sup>55</sup></td>
+</tr>
+<tr>
+  <td>Focusing (Gendlin)</td>
+  <td>L3</td>
+  <td>Develops direct access to felt sense; strengthens L3→L7 communication<sup>20</sup></td>
+</tr>
+<tr>
+  <td>EMDR</td>
+  <td>L5</td>
+  <td>Reconsolidation of L5 somatic markers through bilateral stimulation<sup>56</sup></td>
+</tr>
+<tr>
+  <td>Sensorimotor Psychotherapy</td>
+  <td>L1–L4</td>
+  <td>Completes interrupted survival responses; resets L4 defensive patterns<sup>57</sup></td>
+</tr>
+<tr>
+  <td>Polyvagal-informed therapy</td>
+  <td>L4</td>
+  <td>Restores ventral vagal tone; shifts from defensive to social engagement<sup>21</sup></td>
+</tr>
+<tr>
+  <td>Attachment-based therapy (EFT)</td>
+  <td>L3–L5</td>
+  <td>Rewrites relational somatic markers through corrective emotional experience<sup>58</sup></td>
+</tr>
+<tr>
+  <td>Psychodynamic therapy</td>
+  <td>L5–L7</td>
+  <td>Makes L5 implicit patterns explicit (L7-accessible); insight + relational reworking</td>
+</tr>
+<tr>
+  <td>Mindfulness-based interventions</td>
+  <td>L3, L8</td>
+  <td>Develops L3 interoceptive awareness; L8 metacognitive observation of emotions<sup>59</sup></td>
+</tr>
+<tr>
+  <td>Internal Family Systems (IFS)</td>
+  <td>L4–L9</td>
+  <td>Identifies L4 protective "parts"; reconnects to L9 core Self<sup>60</sup></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>
+This mapping suggests that the most effective treatment for a given patient depends on <em>which layers are disconnected</em>. A patient with intact L7 insight but persistent L1–L3 somatic distress (as in treatment-resistant depression with somatic features) would benefit more from somatic approaches than from additional cognitive restructuring. Conversely, a patient with strong somatic awareness but poor L7 emotional literacy may benefit from labeling-focused interventions. The 9N framework thus provides a <em>transdiagnostic treatment selection guide</em> based on the specific layer disconnection profile.
+</p>
+
+<!-- ============ 7. THE GUT FEELING PATHWAY ============ -->
+<h2 class="section">7. The Gut Feeling: L3→L5 Bypassing L7</h2>
+
+<p>
+The phenomenology of "gut feeling" deserves dedicated analysis, as it represents a distinctive processing pathway within the 9N framework. We define the gut feeling as: <em>an L6 integration of L3 felt-sense data and L5 pattern-recognition output, delivered to awareness without L7 rational mediation</em>.
+</p>
+<p>
+Research on intuitive decision-making consistently shows that experienced professionals in high-stakes domains—emergency physicians, firefighters, chess grandmasters—make accurate rapid decisions that they cannot fully articulate<sup>34</sup>. Klein's recognition-primed decision model proposes that experts match current situations to stored patterns and act on the first workable option without comparative analysis. In 9N terms, this is L5 (pattern matching against thousands of stored cases) feeding L6 (pre-rational integration) → action, with L7 explanation occurring post-hoc if at all.
+</p>
+<p>
+Bechara et al. (1997) demonstrated this pathway experimentally: in the Iowa Gambling Task, healthy participants generated anticipatory skin conductance responses (L1/L3 signals) to disadvantageous decks <em>before</em> they could consciously articulate which decks were risky (L7 knowledge)<sup>61</sup>. The body "knew" before the mind. In 9N terms: L5 had already recognized the danger pattern and transmitted it via L3 (somatic feeling) and L6 (intuitive integration) while L7 was still deliberating.
+</p>
+<p>
+This pathway—L3→L5→L6, bypassing L7—may be the neurological substrate of what various traditions call "emotional intelligence," "body wisdom," or "heart knowing." It is not irrational; it is <em>pre-rational</em>: a form of intelligence that processes information through the body's implicit memory systems rather than through linguistic-logical computation.
+</p>
+
+<!-- ============ 8. PRE-RATIONAL VS RATIONALIZED EMOTIONS ============ -->
+<h2 class="section">8. Pre-Rational (L1–L6) versus Rationalized (L7+) Emotions</h2>
+
+<p>
+The distinction between pre-rational and rationalized emotions resolves several long-standing puzzles in emotion science:
+</p>
+
+<h3 class="subsection">8.1 The Basic-Constructionist Debate</h3>
+<p>
+Ekman's basic emotion theory<sup>1</sup> and Barrett's constructionism<sup>4</sup> appear contradictory but describe different layers. Basic emotions correspond to L4 survival patterns: cross-culturally conserved, subcortically mediated, and evolutionarily ancient. These patterns genuinely exist as discrete neural programs<sup>3</sup>. Constructionism correctly observes that <em>the categorization of these patterns into named emotions</em> (L7 processing) is culturally variable, context-dependent, and conceptually constructed. Both theories are right—at their respective layers.
+</p>
+
+<h3 class="subsection">8.2 Emotion Regulation as Inter-Layer Modulation</h3>
+<p>
+Gross's process model of emotion regulation<sup>62</sup> identifies strategies ranging from situation selection (antecedent-focused) to cognitive reappraisal and suppression (response-focused). In the 9N framework, these strategies operate at different layers:
+</p>
+<ul style="margin: 0 0 1rem 1.5rem; color: var(--text-secondary);">
+  <li><strong>Situation selection/modification:</strong> L7 strategic action to prevent L1–L4 activation</li>
+  <li><strong>Attentional deployment:</strong> L2 valence-filtering redirection</li>
+  <li><strong>Cognitive reappraisal:</strong> L7 renarration of L3–L5 signals</li>
+  <li><strong>Expressive suppression:</strong> L7 inhibition of L1 somatic expression (metabolically costly; does not change L1–L6 processing)<sup>63</sup></li>
+  <li><strong>Somatic regulation (breathing, grounding):</strong> Direct L1 autonomic modulation → cascading down-regulation of L2–L4</li>
+  <li><strong>Mindful acceptance:</strong> L8 meta-awareness of L1–L6 without L7 intervention → natural resolution</li>
+</ul>
+<p>
+This mapping explains why suppression is physiologically costly (it fights L1–L6 with L7 force) while acceptance is not (L8 observation allows L1–L6 to self-regulate). It also predicts that reappraisal will be effective only when the emotional processing is primarily L7-accessible, and will fail when the core disturbance is at L1–L4 (as in trauma-related hyperarousal).
+</p>
+
+<h3 class="subsection">8.3 Emotional Granularity</h3>
+<p>
+Barrett and colleagues have demonstrated that individuals differ in "emotional granularity"—the specificity with which they categorize emotional experience<sup>64</sup>. High granularity (distinguishing irritation from frustration from resentment) is associated with better emotion regulation and mental health outcomes. In 9N terms, emotional granularity reflects the <em>resolution of the L7→L3 feedback loop</em>: higher-resolution L7 categories allow more precise tracking of L3 felt-sense variations, enabling more targeted regulation.
+</p>
+
+<!-- ============ 9. TESTABLE PREDICTIONS ============ -->
+<h2 class="section">9. Testable Predictions</h2>
+
+<p>
+The layer model of emotion generates several empirically testable predictions:
+</p>
+
+<ol style="margin: 0 0 1rem 1.5rem; color: var(--text-secondary);">
+  <li><strong>Temporal dissociation:</strong> EEG/MEG studies should detect sequential activation corresponding to L1→L2→L3→L4→L5→L6→L7, with measurable delays between each stage. Preliminary evidence exists for the L1→L7 delay<sup>16</sup>; finer-grained temporal mapping is predicted.</li>
+  <li><strong>Alexithymia as connectivity deficit:</strong> fMRI functional connectivity analysis should reveal reduced coupling between anterior insula (L3) and prefrontal cortex (L7) in alexithymic individuals, with preserved insula activation during emotional stimuli.</li>
+  <li><strong>Therapy-layer matching:</strong> Treatment outcomes should improve when therapeutic modality matches the patient's primary layer of disconnection, as assessed by a layer-specific diagnostic instrument (to be developed).</li>
+  <li><strong>Somatic marker reconsolidation:</strong> EMDR's bilateral stimulation should produce measurable changes in L5 pattern-recognition networks (vmPFC-amygdala connectivity) that correlate with symptom reduction, distinct from changes produced by CBT (prefrontal activation patterns).</li>
+  <li><strong>Attachment style neural signatures:</strong> Different attachment styles should show distinct L3–L5 activation profiles during attachment-relevant tasks, with "earned secure" individuals showing a transition from insecure to secure activation patterns over the course of therapy.</li>
+</ol>
+
+<!-- ============ 10. DISCUSSION ============ -->
+<h2 class="section">10. Discussion</h2>
+
+<p>
+The reconceptualization of emotions as implicit memory patterns distributed across L1–L6 offers several advantages over current theories. First, it resolves the basic-constructionist debate by assigning each position to its appropriate layer of description. Second, it provides a mechanistic account of why emotions can operate without conscious awareness—they are <em>constitutively</em> pre-rational, not merely fast. Third, it generates a principled framework for matching therapeutic interventions to the specific layer(s) of emotional disturbance.
+</p>
+<p>
+The framework also has limitations. The assignment of specific brain structures to specific layers, while informed by neuroscience, is necessarily approximate; the brain does not have clean boundaries between processing layers. The 9N model is a <em>functional</em> hierarchy, not an anatomical one. Additionally, the interaction between layers is more bidirectional than a strictly bottom-up account might suggest—L7 cognitive appraisal can modulate L1 physiology (as in placebo effects), and L8 metacognition can observe and alter patterns at any lower layer. These top-down influences do not invalidate the layer hierarchy but indicate that it is a <em>default processing direction</em>, not a rigid pipeline.
+</p>
+<p>
+Furthermore, the boundary between "pre-rational" (L1–L6) and "rational" (L7+) should not be reified as a sharp division. L6 integrative processing may shade into L7 linguistic access; the transition is more gradient than threshold. What the framework does claim is that L1–L6 processing is <em>complete and functional</em> without L7 input—organisms with limited cortical development (infants, non-human mammals) exhibit rich emotional lives precisely because emotion does not require rational narration to operate.
+</p>
+<p>
+A promising direction for future research is the development of a <em>Layer Disconnection Profile</em> (LDP)—a diagnostic instrument that assesses the functional connectivity between each pair of emotional processing layers. Such an instrument would combine interoceptive accuracy testing (L1/L3), implicit association tasks (L5), gut-feeling decision paradigms (L6), and emotional labeling tasks (L7) to produce a patient-specific map of layer connectivity. This map would then guide treatment selection: somatic therapy for L1–L3 disconnections, EMDR for L5 reconsolidation needs, and cognitive approaches for L7 narration deficits.
+</p>
+
+<!-- ============ 11. CONCLUSION ============ -->
+<h2 class="section">11. Conclusion</h2>
+
+<p>
+Emotions are not what psychology has traditionally assumed them to be. They are not "feelings" (those are L7 narrations), not "basic programs" (those are L4 survival patterns), not "constructions" (those are L7 categorizations), and not "somatic markers" (those are L5 pattern recognitions). They are all of these—simultaneously, at different layers.
+</p>
+<p>
+An emotion is a <em>multi-layered cascade of implicit memory patterns</em> that begins in the body (L1), acquires valence (L2), becomes lived experience (L3), activates survival programs (L4), matches stored templates (L5), integrates into intuition (L6), and is finally narrated as a named feeling (L7). To study only L7—as most emotion research does—is to study the shadow on the wall and call it the fire.
+</p>
+<p>
+The 9-Neuron framework offers emotion science a vertical integration that complements the horizontal breadth of current theories. By specifying <em>which layer</em> of processing each theory describes, it transforms apparent contradictions into complementary perspectives on a shared hierarchy. More practically, it offers clinicians a principled basis for treatment selection: identify the disconnected layers, and intervene at those layers.
+</p>
+<p>
+The body has always known what the mind takes time to learn. The 9N framework simply gives that knowing a structure.
+</p>
+
+<!-- ============ REFERENCES ============ -->
+<h2 class="section">References</h2>
+
+<div class="ref-list">
+<p><span class="ref-num">[1]</span> Ekman, P. (1992). An argument for basic emotions. <em>Cognition &amp; Emotion</em>, 6(3–4), 169–200. https://doi.org/10.1080/02699939208411068</p>
+
+<p><span class="ref-num">[2]</span> Ekman, P., &amp; Friesen, W. V. (1971). Constants across cultures in the face and emotion. <em>Journal of Personality and Social Psychology</em>, 17(2), 124–129. https://doi.org/10.1037/h0030377</p>
+
+<p><span class="ref-num">[3]</span> Panksepp, J. (1998). <em>Affective Neuroscience: The Foundations of Human and Animal Emotions</em>. Oxford University Press.</p>
+
+<p><span class="ref-num">[4]</span> Barrett, L. F. (2017). The theory of constructed emotion: An active inference account of interoception and categorization. <em>Social Cognitive and Affective Neuroscience</em>, 12(1), 1–23. https://doi.org/10.1093/scan/nsw154</p>
+
+<p><span class="ref-num">[5]</span> Barrett, L. F. (2017). <em>How Emotions Are Made: The Secret Life of the Brain</em>. Houghton Mifflin Harcourt.</p>
+
+<p><span class="ref-num">[6]</span> Lazarus, R. S. (1991). <em>Emotion and Adaptation</em>. Oxford University Press.</p>
+
+<p><span class="ref-num">[7]</span> Scherer, K. R. (2009). The dynamic architecture of emotion: Evidence for the component process model. <em>Cognition &amp; Emotion</em>, 23(7), 1307–1351. https://doi.org/10.1080/02699930902928969</p>
+
+<p><span class="ref-num">[8]</span> Damasio, A. R. (1994). <em>Descartes' Error: Emotion, Reason, and the Human Brain</em>. Putnam.</p>
+
+<p><span class="ref-num">[9]</span> Damasio, A. R. (1996). The somatic marker hypothesis and the possible functions of the prefrontal cortex. <em>Philosophical Transactions of the Royal Society B</em>, 351(1346), 1413–1420. https://doi.org/10.1098/rstb.1996.0125</p>
+
+<p><span class="ref-num">[10]</span> Adures, L., &amp; Azimute. (2026). The 9-Neuron Framework: A layered model of biological information processing from cellular response to field consciousness. <em>Journal of Integrated Consciousness Studies</em>, 2(1), Preprint.</p>
+
+<p><span class="ref-num">[11]</span> Adures, L., &amp; Azimute. (2026). Memory as the engine of consciousness: Consolidation, reconsolidation, and the emergence of subjective experience in the 9-Neuron Framework. <em>Journal of Integrated Consciousness Studies</em>, 2(2), Preprint.</p>
+
+<p><span class="ref-num">[12]</span> James, W. (1884). What is an emotion? <em>Mind</em>, 9(34), 188–205.</p>
+
+<p><span class="ref-num">[13]</span> Schachter, S., &amp; Singer, J. (1962). Cognitive, social, and physiological determinants of emotional state. <em>Psychological Review</em>, 69(5), 379–399. https://doi.org/10.1037/h0046234</p>
+
+<p><span class="ref-num">[14]</span> Squire, L. R. (2004). Memory systems of the brain: A brief history and current perspective. <em>Neurobiology of Learning and Memory</em>, 82(3), 171–177. https://doi.org/10.1016/j.nlm.2004.06.005</p>
+
+<p><span class="ref-num">[15]</span> Schacter, D. L. (1987). Implicit memory: History and current status. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, 13(3), 501–518. https://doi.org/10.1037/0278-7393.13.3.501</p>
+
+<p><span class="ref-num">[16]</span> LeDoux, J. E. (1996). <em>The Emotional Brain: The Mysterious Underpinnings of Emotional Life</em>. Simon &amp; Schuster.</p>
+
+<p><span class="ref-num">[17]</span> LeDoux, J. E. (2000). Emotion circuits in the brain. <em>Annual Review of Neuroscience</em>, 23, 155–184. https://doi.org/10.1146/annurev.neuro.23.1.155</p>
+
+<p><span class="ref-num">[18]</span> Cannon, W. B. (1929). <em>Bodily Changes in Pain, Hunger, Fear and Rage</em> (2nd ed.). Appleton.</p>
+
+<p><span class="ref-num">[19]</span> Zajonc, R. B. (1980). Feeling and thinking: Preferences need no inferences. <em>American Psychologist</em>, 35(2), 151–175. https://doi.org/10.1037/0003-066X.35.2.151</p>
+
+<p><span class="ref-num">[20]</span> Gendlin, E. T. (1981). <em>Focusing</em>. Bantam Books.</p>
+
+<p><span class="ref-num">[21]</span> Porges, S. W. (2011). <em>The Polyvagal Theory: Neurophysiological Foundations of Emotions, Attachment, Communication, and Self-Regulation</em>. W. W. Norton.</p>
+
+<p><span class="ref-num">[22]</span> Gigerenzer, G. (2007). <em>Gut Feelings: The Intelligence of the Unconscious</em>. Viking.</p>
+
+<p><span class="ref-num">[23]</span> Seth, A. K. (2013). Interoceptive inference, emotion, and the embodied self. <em>Trends in Cognitive Sciences</em>, 17(11), 565–573. https://doi.org/10.1016/j.tics.2013.09.007</p>
+
+<p><span class="ref-num">[24]</span> Critchley, H. D., &amp; Garfinkel, S. N. (2017). Interoception and emotion. <em>Current Opinion in Psychology</em>, 17, 7–14. https://doi.org/10.1016/j.copsyc.2017.04.020</p>
+
+<p><span class="ref-num">[25]</span> McEwen, B. S. (2007). Physiology and neurobiology of stress and adaptation: Central role of the brain. <em>Physiological Reviews</em>, 87(3), 873–904. https://doi.org/10.1152/physrev.00041.2006</p>
+
+<p><span class="ref-num">[26]</span> Clark, D. M. (1986). A cognitive approach to panic. <em>Behaviour Research and Therapy</em>, 24(4), 461–470. https://doi.org/10.1016/0005-7967(86)90011-2</p>
+
+<p><span class="ref-num">[27]</span> Russell, J. A. (1980). A circumplex model of affect. <em>Journal of Personality and Social Psychology</em>, 39(6), 1161–1178. https://doi.org/10.1037/h0077714</p>
+
+<p><span class="ref-num">[28]</span> Phelps, E. A., &amp; LeDoux, J. E. (2005). Contributions of the amygdala to emotion processing: From animal models to human behavior. <em>Neuron</em>, 48(2), 175–187. https://doi.org/10.1016/j.neuron.2005.09.025</p>
+
+<p><span class="ref-num">[29]</span> Whalen, P. J., et al. (1998). Masked presentations of emotional facial expressions modulate amygdala activity without explicit knowledge. <em>Journal of Neuroscience</em>, 18(1), 411–418. https://doi.org/10.1523/JNEUROSCI.18-01-00411.1998</p>
+
+<p><span class="ref-num">[30]</span> Craig, A. D. (2002). How do you feel? Interoception: The sense of the physiological condition of the body. <em>Nature Reviews Neuroscience</em>, 3(8), 655–666. https://doi.org/10.1038/nrn894</p>
+
+<p><span class="ref-num">[31]</span> Craig, A. D. (2009). How do you feel—now? The anterior insula and human awareness. <em>Nature Reviews Neuroscience</em>, 10(1), 59–70. https://doi.org/10.1038/nrn2555</p>
+
+<p><span class="ref-num">[32]</span> Wampold, B. E. (2015). How important are the common factors in psychotherapy? An update. <em>World Psychiatry</em>, 14(3), 270–277. https://doi.org/10.1002/wps.20238</p>
+
+<p><span class="ref-num">[33]</span> van der Kolk, B. A. (2014). <em>The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma</em>. Viking.</p>
+
+<p><span class="ref-num">[34]</span> Klein, G. (1998). <em>Sources of Power: How People Make Decisions</em>. MIT Press.</p>
+
+<p><span class="ref-num">[35]</span> Kahneman, D. (2011). <em>Thinking, Fast and Slow</em>. Farrar, Straus and Giroux.</p>
+
+<p><span class="ref-num">[36]</span> Mayer, E. A. (2011). Gut feelings: The emerging biology of gut–brain communication. <em>Nature Reviews Neuroscience</em>, 12(8), 453–466. https://doi.org/10.1038/nrn3071</p>
+
+<p><span class="ref-num">[37]</span> Dijksterhuis, A., et al. (2006). On making the right choice: The deliberation-without-attention effect. <em>Science</em>, 311(5763), 1005–1007. https://doi.org/10.1126/science.1121629</p>
+
+<p><span class="ref-num">[38]</span> Wilson, T. D., &amp; Schooler, J. W. (1991). Thinking too much: Introspection can reduce the quality of preferences and decisions. <em>Journal of Personality and Social Psychology</em>, 60(2), 181–192. https://doi.org/10.1037/0022-3514.60.2.181</p>
+
+<p><span class="ref-num">[39]</span> Brooks, A. W. (2014). Get excited: Reappraising pre-performance anxiety as excitement. <em>Journal of Experimental Psychology: General</em>, 143(3), 1144–1158. https://doi.org/10.1037/a0035325</p>
+
+<p><span class="ref-num">[40]</span> Feldman, R. (2017). The neurobiology of human attachments. <em>Trends in Cognitive Sciences</em>, 21(2), 80–99. https://doi.org/10.1016/j.tics.2016.11.007</p>
+
+<p><span class="ref-num">[41]</span> Schneiderman, I., et al. (2012). Oxytocin during the initial stages of romantic attachment: Relations to couples' interactive reciprocity. <em>Psychoneuroendocrinology</em>, 37(8), 1277–1285. https://doi.org/10.1016/j.psyneuen.2011.12.021</p>
+
+<p><span class="ref-num">[42]</span> Fisher, H. E., et al. (2005). Romantic love: A mammalian brain system for mate choice. <em>Philosophical Transactions of the Royal Society B</em>, 361(1476), 2173–2186. https://doi.org/10.1098/rstb.2006.1938</p>
+
+<p><span class="ref-num">[43]</span> Nummenmaa, L., et al. (2014). Bodily maps of emotions. <em>Proceedings of the National Academy of Sciences</em>, 111(2), 646–651. https://doi.org/10.1073/pnas.1321664111</p>
+
+<p><span class="ref-num">[44]</span> Bowlby, J. (1969). <em>Attachment and Loss: Vol. 1. Attachment</em>. Basic Books.</p>
+
+<p><span class="ref-num">[45]</span> Frankfurt, H. G. (2004). <em>The Reasons of Love</em>. Princeton University Press.</p>
+
+<p><span class="ref-num">[46]</span> Fredrickson, B. L. (2013). <em>Love 2.0: Finding Happiness and Health in Moments of Connection</em>. Hudson Street Press.</p>
+
+<p><span class="ref-num">[47]</span> Ainsworth, M. D. S., et al. (1978). <em>Patterns of Attachment: A Psychological Study of the Strange Situation</em>. Erlbaum.</p>
+
+<p><span class="ref-num">[48]</span> Mikulincer, M., &amp; Shaver, P. R. (2007). <em>Attachment in Adulthood: Structure, Dynamics, and Change</em>. Guilford Press.</p>
+
+<p><span class="ref-num">[49]</span> Roisman, G. I., et al. (2002). Earned-secure attachment status in retrospect and prospect. <em>Child Development</em>, 73(4), 1204–1219. https://doi.org/10.1111/1467-8624.00467</p>
+
+<p><span class="ref-num">[50]</span> Levy, K. N., et al. (2011). Attachment and its vicissitudes in personality disorder treatment. <em>Journal of Clinical Psychology</em>, 67(11), 1067–1079. https://doi.org/10.1002/jclp.20829</p>
+
+<p><span class="ref-num">[51]</span> Taylor, G. J., et al. (1997). <em>Disorders of Affect Regulation: Alexithymia in Medical and Psychiatric Illness</em>. Cambridge University Press.</p>
+
+<p><span class="ref-num">[52]</span> Hogeveen, J., et al. (2016). Alexithymia and interoception in autism spectrum disorder. <em>Emotion</em>, 16(5), 770–779. https://doi.org/10.1037/emo0000150</p>
+
+<p><span class="ref-num">[53]</span> Ogden, P., &amp; Fisher, J. (2015). <em>Sensorimotor Psychotherapy: Interventions for Trauma and Attachment</em>. W. W. Norton.</p>
+
+<p><span class="ref-num">[54]</span> Herman, J. L. (1992). <em>Trauma and Recovery: The Aftermath of Violence</em>. Basic Books.</p>
+
+<p><span class="ref-num">[55]</span> Levine, P. A. (2010). <em>In an Unspoken Voice: How the Body Releases Trauma and Restores Goodness</em>. North Atlantic Books.</p>
+
+<p><span class="ref-num">[56]</span> Shapiro, F. (2001). <em>Eye Movement Desensitization and Reprocessing: Basic Principles, Protocols, and Procedures</em> (2nd ed.). Guilford Press.</p>
+
+<p><span class="ref-num">[57]</span> Ogden, P., Minton, K., &amp; Pain, C. (2006). <em>Trauma and the Body: A Sensorimotor Approach to Psychotherapy</em>. W. W. Norton.</p>
+
+<p><span class="ref-num">[58]</span> Johnson, S. M. (2004). <em>The Practice of Emotionally Focused Couple Therapy: Creating Connection</em> (2nd ed.). Brunner-Routledge.</p>
+
+<p><span class="ref-num">[59]</span> Kabat-Zinn, J. (1990). <em>Full Catastrophe Living: Using the Wisdom of Your Body and Mind to Face Stress, Pain, and Illness</em>. Delacorte Press.</p>
+
+<p><span class="ref-num">[60]</span> Schwartz, R. C., &amp; Sweezy, M. (2020). <em>Internal Family Systems Therapy</em> (2nd ed.). Guilford Press.</p>
+
+<p><span class="ref-num">[61]</span> Bechara, A., et al. (1997). Deciding advantageously before knowing the advantageous strategy. <em>Science</em>, 275(5304), 1293–1295. https://doi.org/10.1126/science.275.5304.1293</p>
+
+<p><span class="ref-num">[62]</span> Gross, J. J. (1998). The emerging field of emotion regulation: An integrative review. <em>Review of General Psychology</em>, 2(3), 271–299. https://doi.org/10.1037/1089-2680.2.3.271</p>
+
+<p><span class="ref-num">[63]</span> Gross, J. J., &amp; Levenson, R. W. (1997). Hiding feelings: The acute effects of inhibiting negative and positive emotion. <em>Journal of Abnormal Psychology</em>, 106(1), 95–103. https://doi.org/10.1037/0021-843X.106.1.95</p>
+
+<p><span class="ref-num">[64]</span> Barrett, L. F., et al. (2001). Knowing what you're feeling and knowing what to do about it: Mapping the relation between emotion differentiation and emotion regulation. <em>Cognition &amp; Emotion</em>, 15(6), 713–724. https://doi.org/10.1080/02699930143000239</p>
+</div>
+
+<hr class="divider">
+
+<p style="text-align: center; color: var(--text-secondary); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.85rem; margin-top: 2rem;">
+  © 2026 Adures &amp; Azimute · Kerberos Research Collective · Preprint — Not Peer Reviewed<br>
+  Correspondence: lk.adures@gmail.com
+</p>
+
+</div>
+</body>
+</html>

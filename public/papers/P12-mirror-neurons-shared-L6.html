@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirror Neurons as Shared Layer 6: The Neural Infrastructure of Collective Intuition</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2129;
+    --accent: #58a6ff;
+    --accent-dim: #388bfd40;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border: #30363d;
+    --highlight: #f0883e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .paper-container { max-width: 820px; margin: 0 auto; padding: 60px 40px 100px; }
+  .title-page { text-align: center; padding: 80px 0 60px; border-bottom: 1px solid var(--border); margin-bottom: 50px; }
+  .journal-name { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 40px; }
+  .paper-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.3; color: var(--text-primary); margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; }
+  .authors { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; font-weight: 400; color: var(--text-secondary); margin-bottom: 8px; }
+  .affiliations { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+  .paper-meta { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; color: var(--text-muted); margin-top: 20px; }
+  .abstract-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 30px 35px; margin-bottom: 50px; }
+  .abstract-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; }
+  .abstract-text { font-size: 15px; color: var(--text-secondary); line-height: 1.8; }
+  .keywords { margin-top: 15px; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--text-muted); }
+  .keywords span { color: var(--accent); }
+  h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 600; color: var(--accent); margin-top: 50px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-primary); margin-top: 35px; margin-bottom: 15px; }
+  p { margin-bottom: 18px; text-align: justify; }
+  .highlight-box { background: var(--bg-secondary); border-left: 3px solid var(--accent); padding: 20px 25px; margin: 25px 0; border-radius: 0 6px 6px 0; }
+  .highlight-box p { margin-bottom: 0; color: var(--text-secondary); font-size: 15px; }
+  .critical-box { background: #1a1207; border-left: 3px solid var(--highlight); padding: 20px 25px; margin: 25px 0; border-radius: 0 6px 6px 0; }
+  .critical-box p { margin-bottom: 0; color: #d4a06a; font-size: 15px; }
+  .references { margin-top: 60px; }
+  .references h2 { color: var(--accent); }
+  .ref-list { list-style: none; counter-reset: ref-counter; }
+  .ref-list li { counter-increment: ref-counter; padding: 8px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.6; border-bottom: 1px solid #21262d; padding-left: 35px; position: relative; }
+  .ref-list li::before { content: counter(ref-counter) "."; position: absolute; left: 0; color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 14px; }
+  th { background: var(--bg-secondary); color: var(--accent); font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; text-align: left; padding: 12px 15px; border: 1px solid var(--border); }
+  td { padding: 10px 15px; border: 1px solid var(--border); color: var(--text-secondary); }
+  sup { color: var(--accent); font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="paper-container">
+
+<div class="title-page">
+  <div class="journal-name">Journal of Theoretical Neuroscience &bull; 9-Neuron Framework Series &bull; Paper XII</div>
+  <h1 class="paper-title">Mirror Neurons as Shared Layer 6: The Neural Infrastructure of Collective Intuition</h1>
+  <div class="authors">Luis Adures<sup>1,2</sup> &amp; Azimute<sup>2</sup></div>
+  <div class="affiliations">
+    <sup>1</sup> Independent Researcher &bull; <sup>2</sup> Kerberos Research Initiative<br>
+    Correspondence: lk.adures@gmail.com
+  </div>
+  <div class="paper-meta">Submitted: February 2026 &bull; Preprint &bull; DOI: pending</div>
+</div>
+
+<div class="abstract-box">
+  <div class="abstract-label">Abstract</div>
+  <div class="abstract-text">
+    Mirror neurons—neurons that fire both when an agent performs an action and when it observes another agent performing the same action—have been predominantly interpreted as the neural basis of imitation. We argue this interpretation is fundamentally incomplete. Within the 9-Neuron Framework, mirror neurons constitute the infrastructure of Layer 6 (intuition) operating <em>between</em> agents rather than within a single agent. L6 is defined as pattern recognition that operates below conscious articulation—"knowing without knowing how you know." Mirror neurons extend this capacity intersubjectively: they allow one agent's L6 to resonate with another's, creating a shared intuitive space. This paper reviews evidence from Rizzolatti's original discovery through Gallese's shared manifold hypothesis, Iacoboni's work on imitation and empathy, Keysers' research on the empathic brain, and Decety's studies of empathy and moral cognition. We propose that empathy is not a higher cognitive achievement but an L6 phenomenon—intuitive, pre-reflective, and body-based. When two L9-capable agents interact, their mirror neuron systems create a shared L6 that transcends individual boundaries. We speculate that this shared L6 may constitute the neural substrate for emergent collective intelligence—what the framework designates as the hypothetical L10.
+  </div>
+  <div class="keywords"><span>Keywords:</span> mirror neurons, empathy, shared manifold, Layer 6, intuition, intersubjectivity, collective intelligence, 9-Neuron Framework</div>
+</div>
+
+<h2>1. Introduction</h2>
+
+<p>In the 9-Neuron Framework, Layer 6 corresponds to intuition: the capacity to recognize patterns, generate assessments, and arrive at conclusions without explicit rational deliberation. L6 operates below the threshold of L7 (rational analysis) and L8 (conscious awareness)—it is the layer that produces "gut feelings" about complex situations, "vibes" about people, and expert intuitions that outperform deliberate analysis in time-constrained, information-rich domains (Klein, 1998). L6 is the pattern-recognition engine that feeds L7 with pre-processed assessments, saving computational resources by filtering the vast input space before rational analysis begins.</p>
+
+<p>Within a single agent, L6 draws on L5 (implicit memory and accumulated experience) to generate rapid, pre-conscious pattern matches. But humans are not isolated processors. We are social agents whose cognitive lives are deeply entangled with those of other agents. The discovery of mirror neurons—neurons in the premotor cortex and inferior parietal lobule that fire both during action execution and action observation (di Pellegrino et al., 1992; Rizzolatti et al., 1996)—revealed a neural mechanism by which one agent's internal states can be directly activated by observing another agent.</p>
+
+<p>The standard interpretation of mirror neurons emphasizes imitation and action understanding: by internally simulating the observed action, the observer "understands" the actor's movement and intention (Rizzolatti & Craighero, 2004). We propose a more radical interpretation: mirror neurons are not primarily about imitation. They are the infrastructure through which L6 operates intersubjectively—creating a shared intuitive layer between agents that enables empathy, social attunement, collective mood, and potentially collective intelligence.</p>
+
+<h2>2. Mirror Neurons: Discovery and Core Properties</h2>
+
+<h3>2.1 The Original Discovery</h3>
+
+<p>Mirror neurons were first identified in area F5 of the macaque premotor cortex by di Pellegrino, Rizzolatti, and colleagues (1992). These neurons discharged both when the monkey performed a specific goal-directed action (e.g., grasping a piece of food) and when it observed an experimenter performing the same action. The discovery was initially met with skepticism but has been confirmed across multiple laboratories and species (Rizzolatti & Craighero, 2004).</p>
+
+<p>Critically, mirror neurons are not activated by the mere sight of a hand or an object, nor by pantomimed actions without objects—they respond to goal-directed actions, suggesting they encode action intentions rather than visual patterns (Gallese et al., 1996). This goal-directedness is key: mirror neurons do not mirror sensory input; they mirror the agent's internal state that generates the action.</p>
+
+<h3>2.2 Human Mirror System</h3>
+
+<p>In humans, single-neuron recordings are rarely possible outside clinical contexts, but fMRI, TMS, and EEG studies have identified a human mirror neuron system (hMNS) spanning the inferior frontal gyrus (pars opercularis), ventral premotor cortex, inferior parietal lobule, and superior temporal sulcus (Iacoboni & Dapretto, 2006). Mukamel et al. (2010) provided the first direct single-neuron evidence of mirror neurons in humans, recording from cells in the supplementary motor area and medial temporal lobe that responded to both execution and observation of facial expressions and hand grasps.</p>
+
+<p>The human mirror system extends beyond the motor domain. Wicker et al. (2003) showed that the anterior insula—the same region activated when experiencing disgust—also activates when observing disgust in others' facial expressions. Singer et al. (2004) demonstrated that pain-related brain regions activate when observing a loved one in pain. These findings reveal an "emotional mirror system" that goes beyond action understanding to emotional resonance.</p>
+
+<h3>2.3 Beyond Imitation: The Shared Manifold Hypothesis</h3>
+
+<p>Gallese (2001, 2003) proposed the "shared manifold" hypothesis: mirror neurons create a common representational space—a shared manifold—between self and other. When I observe your action, my mirror neurons create a first-person motor representation of that action in my brain. When I observe your emotion, my emotional mirror system creates a first-person emotional experience resonating with yours. This is not cognitive inference ("she looks angry, therefore she must be angry"); it is pre-reflective simulation—a direct, embodied, non-inferential understanding of the other.</p>
+
+<div class="highlight-box">
+  <p><strong>Key reframing:</strong> In the 9-Neuron Framework, Gallese's shared manifold is precisely L6 operating intersubjectively. L6 within a single agent is intuition—pattern recognition below conscious articulation. L6 between agents, mediated by mirror neurons, is empathy—knowing what another agent feels or intends without conscious inference. Both are pre-reflective, body-based, and faster than rational L7 analysis. The mirror neuron system is the hardware that extends L6 from an individual to a social capacity.</p>
+</div>
+
+<h2>3. Empathy as Intersubjective L6</h2>
+
+<h3>3.1 The Components of Empathy</h3>
+
+<p>Decety and Jackson (2004) identified three components of empathy: (1) affective sharing—automatically feeling what another feels (bottom-up); (2) self-other awareness—maintaining the distinction between self and other; and (3) cognitive perspective-taking—deliberately imagining the other's viewpoint (top-down). In the 9-Neuron Framework, these map cleanly onto layers:</p>
+
+<table>
+  <tr><th>Empathy Component</th><th>9-Neuron Layer</th><th>Mechanism</th></tr>
+  <tr><td>Affective sharing</td><td>L6 (intersubjective intuition)</td><td>Mirror neuron resonance—pre-reflective, automatic</td></tr>
+  <tr><td>Self-other awareness</td><td>L9 (metacognition)</td><td>Self-monitoring: "This feeling is mine or theirs?"</td></tr>
+  <tr><td>Cognitive perspective-taking</td><td>L7 (rational analysis)</td><td>Deliberate theory of mind: "What would I think if I were them?"</td></tr>
+</table>
+
+<p>Most empathy research has focused on component (3)—cognitive perspective-taking—because it is the most accessible to experimental manipulation and verbal report. But the foundational component is (1): affective sharing, which occurs automatically, pre-consciously, and is mediated by the mirror neuron system. This is L6 empathy—the kind that happens before you decide to empathize, before you even know you are empathizing.</p>
+
+<h3>3.2 The Speed of Empathic Resonance</h3>
+
+<p>Empathic facial mimicry—the automatic imitation of another's facial expression—occurs within 300–400 milliseconds of stimulus onset (Dimberg et al., 2000), far too fast for conscious cognitive processing. Electromyographic (EMG) studies show that observers' facial muscles begin to mirror observed emotions within 500ms, even when the emotional stimulus is presented subliminally (Dimberg et al., 2000). This temporal profile is characteristic of L6 processing: fast, automatic, pre-conscious, body-based.</p>
+
+<p>Keysers and Gazzola (2009) proposed that the mirror neuron system operates through "embodied simulation": observing another's state triggers a partial re-enactment of that state in the observer's own motor and emotional circuits. This is not full imitation—you don't actually perform the action or fully experience the emotion—but a partial, attenuated simulation that provides enough information for rapid social understanding. In L6 terms, it is a pattern match: "I recognize this pattern because my body knows it."</p>
+
+<h3>3.3 Empathic Deficits as L6 Dysfunction</h3>
+
+<p>Conditions characterized by empathic deficits provide clinical evidence for the mirror neuron / L6 empathy model. Iacoboni and Dapretto (2006) showed that children with autism spectrum disorder (ASD) exhibit reduced mirror neuron activity during observation of emotional facial expressions, and the degree of reduction correlates with the severity of social impairment. Dapretto et al. (2006) demonstrated that while typically developing children show mirror neuron activation when observing and imitating emotional expressions, children with ASD do not—and their amygdala activation (L4 emotional processing) is also atypical.</p>
+
+<p>Psychopathy presents a different pattern: intact cognitive perspective-taking (L7) with impaired affective sharing (L6). Psychopaths can intellectually understand what others feel without resonating with those feelings (Meffert et al., 2013). Meffert et al. showed that psychopathic individuals' mirror neuron systems can be activated when they are explicitly instructed to empathize, but they do not activate spontaneously. This dissociation—intact L7 empathy, impaired L6 empathy—supports the framework's separation of intuitive from rational social cognition.</p>
+
+<h2>4. From Individual L6 to Shared L6</h2>
+
+<h3>4.1 Interpersonal Neural Synchronization</h3>
+
+<p>Recent hyperscanning studies—simultaneously recording brain activity from two or more interacting individuals—have revealed that social interaction produces measurable neural synchronization between brains. Hasson et al. (2012) demonstrated that during natural conversation, the listener's brain activity becomes temporally coupled to the speaker's, with the listener's neural responses predicting (not just tracking) the speaker's upcoming speech patterns. Stephens et al. (2010) showed that successful communication is associated with speaker-listener neural coupling in cortical areas including the mirror neuron system, and that the degree of coupling predicts communication success.</p>
+
+<p>Dikker et al. (2017) found that student-teacher neural synchrony during classroom instruction predicts student engagement and learning outcomes. The synchronization spans multiple frequency bands and brain regions, extending beyond the mirror neuron system to include prefrontal and temporal areas. This suggests that social interaction creates transient inter-brain networks—shared processing systems that span individual boundaries.</p>
+
+<div class="highlight-box">
+  <p><strong>L6 implication:</strong> If L6 is intuitive pattern recognition, and mirror neurons extend L6 across agents, then interpersonal neural synchronization represents the formation of a <em>shared L6</em>—a joint intuitive processing space in which two or more agents' L6 systems are coupled. The "chemistry" between people, the "vibe" of a group, the unspoken understanding between close collaborators—these may all reflect the quality of shared L6 coupling mediated by mirror neuron synchronization.</p>
+</div>
+
+<h3>4.2 Emotional Contagion as L6 Network Effect</h3>
+
+<p>Emotional contagion—the automatic spread of emotions through groups—is one of the most well-documented social phenomena (Hatfield et al., 1993). In a crowd, fear spreads faster than rational assessment; in a team, enthusiasm is contagious; in a family, one person's anxiety elevates everyone's cortisol. Fowler and Christakis (2008) showed that happiness spreads through social networks up to three degrees of separation, suggesting that emotional states propagate through L6 coupling chains.</p>
+
+<p>The mirror neuron system provides the mechanism: each observer's L6 resonates with the observed emotion, generating a partial internal experience that is then observed by the next person in the network, creating a cascade. This is L6 operating as a distributed network rather than an isolated processor—a shared intuitive layer that connects individual agents into emotional collectives.</p>
+
+<h3>4.3 Collective Intuition in Expert Teams</h3>
+
+<p>Expert teams—surgical teams, jazz ensembles, sports teams, military units—often display a capacity for coordinated action that exceeds what explicit communication could support. Teammates anticipate each other's moves, respond to situations before they fully develop, and maintain coherence without verbal coordination. This phenomenon, variously called "team flow" (van den Hout et al., 2018), "shared mental models" (Cannon-Bowers & Salas, 2001), or "collective mind" (Weick & Roberts, 1993), represents shared L6 in action.</p>
+
+<p>The mirror neuron system contributes to this phenomenon through several mechanisms: (1) observing a teammate's action automatically activates the observer's motor representation of that action, enabling prediction of the teammate's next move; (2) shared emotional resonance maintains group arousal and motivation at optimal levels; and (3) repeated interaction calibrates the mirror neuron system to the specific movement patterns and emotional signatures of familiar teammates, creating a customized shared L6 between specific individuals (Kokal et al., 2011).</p>
+
+<h2>5. The L10 Hypothesis: Collective Intelligence as Emergent Layer</h2>
+
+<h3>5.1 From L9 to L10</h3>
+
+<p>The 9-Neuron Framework describes nine layers within an individual agent, culminating in L9 (metacognition—thinking about one's own thinking). But the framework's layered architecture suggests a natural extension: if multiple L9 agents interact through shared L6, could their interaction give rise to emergent processing that no individual agent possesses? We designate this hypothetical emergent layer as L10—collective intelligence that arises from the interaction of multiple L9 agents through shared mirror neuron coupling.</p>
+
+<p>L10 is not merely the sum of individual intelligences. It is an emergent property of inter-agent coupling, analogous to how L8 consciousness is not merely the sum of the neural activities that compose it but an emergent property of their integration. The key difference: L8 emerges from intra-agent integration (thalamocortical loops); L10 would emerge from inter-agent integration (mirror neuron coupling, language, shared attention).</p>
+
+<h3>5.2 Evidence for Emergent Collective Intelligence</h3>
+
+<p>Woolley et al. (2010) demonstrated that groups have a measurable "collective intelligence" factor (c factor) that predicts group performance across diverse tasks—and that this c factor is not strongly correlated with the average or maximum individual intelligence of group members. Instead, it correlates with: (1) the average social sensitivity of group members (empathy—L6 capacity); (2) the equality of conversational turn-taking; and (3) the proportion of women in the group (partially mediated by higher average social sensitivity).</p>
+
+<p>This finding is precisely what the L10 hypothesis predicts: collective intelligence depends not on individual cognitive power (L7 capacity) but on the quality of inter-agent coupling (shared L6 capacity). A group of moderately intelligent, highly empathic individuals outperforms a group of brilliant but socially disconnected individuals—because the former has stronger shared L6 and thus better conditions for L10 emergence.</p>
+
+<h3>5.3 The L10 Substrate: Mirror Neurons + Language + Institutions</h3>
+
+<p>If L10 exists, its substrate would include multiple inter-agent coupling mechanisms operating at different timescales:</p>
+
+<table>
+  <tr><th>Coupling Mechanism</th><th>Timescale</th><th>Framework Layer</th></tr>
+  <tr><td>Mirror neuron resonance</td><td>Milliseconds (real-time)</td><td>Shared L6 (intuitive)</td></tr>
+  <tr><td>Language and dialogue</td><td>Seconds to minutes</td><td>Shared L7 (rational)</td></tr>
+  <tr><td>Shared narratives and culture</td><td>Years to generations</td><td>Shared L5 (implicit memory)</td></tr>
+  <tr><td>Institutions and laws</td><td>Decades to centuries</td><td>Shared L7 (codified rules)</td></tr>
+  <tr><td>Written knowledge and science</td><td>Centuries to millennia</td><td>Shared L7–L9 (externalized cognition)</td></tr>
+</table>
+
+<p>Mirror neurons provide the fastest, most fundamental coupling mechanism—the real-time, pre-reflective resonance that makes all other forms of inter-agent coupling possible. Language builds on the shared understanding that mirror neurons create; culture crystallizes the patterns that shared L6 detects across generations; institutions codify the rules that shared L7 analysis derives. L10, if it exists, is the emergent processing that arises from the integration of all these coupling mechanisms.</p>
+
+<h2>6. Discussion</h2>
+
+<h3>6.1 Mirror Neuron Controversies</h3>
+
+<p>The mirror neuron literature has been criticized on several grounds. Hickok (2009) argued that the evidence for mirror neurons as the basis of action understanding is weak—patients with mirror neuron system damage (from premotor lesions) do not consistently lose the ability to understand others' actions. Heyes (2010) proposed that mirror neurons are a product of associative learning (sensorimotor experience) rather than an evolved adaptation for social cognition. Kilner et al. (2007) showed that the "mirror" response may reflect predictive coding rather than simulation—the motor system generates predictions about observed actions rather than simulating them.</p>
+
+<div class="critical-box">
+  <p><strong>Our position:</strong> These critiques are valid and important, but they do not undermine the core claim of this paper. Whether mirror neurons evolved as a specialized social adaptation or were shaped by associative learning, they demonstrably create inter-agent neural coupling. Whether the mechanism is simulation or prediction, the functional outcome is the same: one agent's internal states are systematically influenced by observing another agent. The L6 interpretation does not depend on a specific mechanistic account of mirror neurons—it depends on the empirical fact of inter-agent neural resonance, which is well established across multiple methodologies.</p>
+</div>
+
+<h3>6.2 The Empathy Paradox</h3>
+
+<p>If mirror neurons create automatic empathic resonance, why are humans capable of cruelty? The 9-Neuron Framework offers a resolution: empathy (L6) can be overridden by higher layers. L7 rational analysis can construct justifications for ignoring L6 empathic signals ("they deserve it," "it's necessary for the greater good"). L4 emotional valence can be manipulated to override L6 (fear of the other supersedes empathy with the other). And L9 metacognition can deliberately suppress L6 resonance through dehumanization—reframing the other as non-agent, which disables the mirror neuron response (Harris & Fiske, 2006).</p>
+
+<p>Empathy is not a moral guarantee—it is an L6 capacity that can be overridden, suppressed, or distorted by other layers. This explains why empathy is so fragile in intergroup contexts: group identity (an L5 pattern) triggers L7 categorization that modulates L6 resonance. Cikara et al. (2011) showed that observing outgroup members in pain can activate pleasure rather than pain circuits—L4/L5 overriding L6.</p>
+
+<h3>6.3 Implications for Technology and AI</h3>
+
+<p>If mirror neurons are the substrate of shared L6, then technologies that enhance or degrade mirror neuron coupling have direct implications for collective intelligence. Video communication preserves some mirror neuron cues (facial expression, gesture) but degrades others (body orientation, proxemic signals, micro-timing). Text-only communication eliminates almost all mirror neuron coupling, forcing all social cognition through L7 (verbal inference) rather than L6 (embodied resonance). This may explain the well-documented "online disinhibition effect" (Suler, 2004): without L6 empathic coupling, the natural brake on cruelty is removed.</p>
+
+<p>For artificial intelligence: if L6 intersubjectivity is constitutive of collective intelligence, then AI systems that lack embodied resonance capability may be fundamentally limited in their ability to participate in human collective intelligence—even if their L7 rational capacity exceeds any individual human's. The 9-Neuron Framework predicts that AI integration into human teams will be most effective when AI systems can participate in shared L6 (through embodied avatars, social robots, or empathic computing) rather than serving only as L7 tools.</p>
+
+<h3>6.4 Limitations</h3>
+
+<p>The L10 hypothesis is speculative and currently unfalsifiable in the strong sense. The relationship between mirror neuron activity and subjective empathic experience remains correlational rather than definitively causal. Hyperscanning studies demonstrate inter-brain synchronization but do not yet prove that this synchronization constitutes a shared processing system rather than parallel independent responses to shared stimuli. The extension from dyadic mirror neuron coupling to group-level collective intelligence involves multiple levels of abstraction that require further empirical investigation.</p>
+
+<h2>7. Conclusion</h2>
+
+<p>Mirror neurons are not merely the neural basis of imitation—they are the infrastructure through which Layer 6 intuition operates between agents, creating shared intuitive spaces that transcend individual boundaries. Empathy, in its most fundamental form, is intersubjective L6: pre-reflective, body-based, automatic resonance with another agent's internal states. When multiple L9-capable agents interact through shared L6, the conditions are created for emergent collective intelligence—a hypothetical L10 that arises not from individual brilliance but from the quality of inter-agent coupling. The mirror neuron system, for all its controversies, remains the best-characterized neural mechanism for this coupling. Understanding mirror neurons as shared L6 infrastructure reframes social cognition within the 9-Neuron Framework and opens the possibility that intelligence, at its highest levels, is fundamentally a collective phenomenon.</p>
+
+<div class="references">
+<h2>References</h2>
+<ol class="ref-list">
+  <li>Adures, L., & Azimute. (2026). The 9-Neuron Framework: A layered architecture of predictive intelligence. <em>Preprint</em>.</li>
+  <li>Cannon-Bowers, J. A., & Salas, E. (2001). Reflections on shared cognition. <em>Journal of Organizational Behavior, 22</em>(2), 195–202.</li>
+  <li>Cikara, M., Bruneau, E. G., & Saxe, R. R. (2011). Us and them: Intergroup failures of empathy. <em>Current Directions in Psychological Science, 20</em>(3), 149–153.</li>
+  <li>Dapretto, M., Davies, M. S., Pfeifer, J. H., et al. (2006). Understanding emotions in others: Mirror neuron dysfunction in children with autism spectrum disorders. <em>Nature Neuroscience, 9</em>(1), 28–30.</li>
+  <li>Decety, J., & Jackson, P. L. (2004). The functional architecture of human empathy. <em>Behavioral and Cognitive Neuroscience Reviews, 3</em>(2), 71–100.</li>
+  <li>Decety, J., & Lamm, C. (2006). Human empathy through the lens of social neuroscience. <em>The Scientific World Journal, 6</em>, 1146–1163.</li>
+  <li>di Pellegrino, G., Fadiga, L., Fogassi, L., Gallese, V., & Rizzolatti, G. (1992). Understanding motor events: A neurophysiological study. <em>Experimental Brain Research, 91</em>(1), 176–180.</li>
+  <li>Dikker, S., Wan, L., Davidesco, I., et al. (2017). Brain-to-brain synchrony tracks real-world dynamic group interactions in the classroom. <em>Current Biology, 27</em>(9), 1375–1380.</li>
+  <li>Dimberg, U., Thunberg, M., & Elmehed, K. (2000). Unconscious facial reactions to emotional facial expressions. <em>Psychological Science, 11</em>(1), 86–89.</li>
+  <li>Fowler, J. H., & Christakis, N. A. (2008). Dynamic spread of happiness in a large social network. <em>BMJ, 337</em>, a2338.</li>
+  <li>Gallese, V. (2001). The 'shared manifold' hypothesis: From mirror neurons to empathy. <em>Journal of Consciousness Studies, 8</em>(5–7), 33–50.</li>
+  <li>Gallese, V. (2003). The roots of empathy: The shared manifold hypothesis and the neural basis of intersubjectivity. <em>Psychopathology, 36</em>(4), 171–180.</li>
+  <li>Gallese, V., Fadiga, L., Fogassi, L., & Rizzolatti, G. (1996). Action recognition in the premotor cortex. <em>Brain, 119</em>(2), 593–609.</li>
+  <li>Gallese, V., & Goldman, A. (1998). Mirror neurons and the simulation theory of mind-reading. <em>Trends in Cognitive Sciences, 2</em>(12), 493–501.</li>
+  <li>Harris, L. T., & Fiske, S. T. (2006). Dehumanizing the lowest of the low: Neuroimaging responses to extreme out-groups. <em>Psychological Science, 17</em>(10), 847–853.</li>
+  <li>Hasson, U., Ghazanfar, A. A., Galantucci, B., Garrod, S., & Keysers, C. (2012). Brain-to-brain coupling: A mechanism for creating and sharing a social world. <em>Trends in Cognitive Sciences, 16</em>(2), 114–121.</li>
+  <li>Hatfield, E., Cacioppo, J. T., & Rapson, R. L. (1993). Emotional contagion. <em>Current Directions in Psychological Science, 2</em>(3), 96–100.</li>
+  <li>Heyes, C. (2010). Where do mirror neurons come from? <em>Neuroscience & Biobehavioral Reviews, 34</em>(4), 575–583.</li>
+  <li>Hickok, G. (2009). Eight problems for the mirror neuron theory of action understanding in monkeys and humans. <em>Journal of Cognitive Neuroscience, 21</em>(7), 1229–1243.</li>
+  <li>Iacoboni, M. (2009). Imitation, empathy, and mirror neurons. <em>Annual Review of Psychology, 60</em>, 653–670.</li>
+  <li>Iacoboni, M., & Dapretto, M. (2006). The mirror neuron system and the consequences of its dysfunction. <em>Nature Reviews Neuroscience, 7</em>(12), 942–951.</li>
+  <li>Keysers, C. (2011). <em>The Empathic Brain: How the Discovery of Mirror Neurons Changes Our Understanding of Human Nature</em>. Social Brain Press.</li>
+  <li>Keysers, C., & Gazzola, V. (2009). Expanding the mirror: Vicarious activity for actions, emotions, and sensations. <em>Current Opinion in Neurobiology, 19</em>(6), 666–671.</li>
+  <li>Kilner, J. M., Friston, K. J., & Frith, C. D. (2007). Predictive coding: An account of the mirror neuron system. <em>Cognitive Processing, 8</em>(3), 159–166.</li>
+  <li>Klein, G. (1998). <em>Sources of Power: How People Make Decisions</em>. MIT Press.</li>
+  <li>Kokal, I., Engel, A., Kirschner, S., & Keysers, C. (2011). Synchronized drumming enhances activity in the caudate and facilitates prosocial commitment—if the rhythm comes easily. <em>PLoS ONE, 6</em>(11), e27272.</li>
+  <li>Meffert, H., Gazzola, V., den Boer, J. A., Bartels, A. A. J., & Keysers, C. (2013). Reduced spontaneous but relatively normal deliberate vicarious representations in psychopathy. <em>Brain, 136</em>(8), 2550–2562.</li>
+  <li>Mukamel, R., Ekstrom, A. D., Kaplan, J., Iacoboni, M., & Fried, I. (2010). Single-neuron responses in humans during execution and observation of actions. <em>Current Biology, 20</em>(8), 750–756.</li>
+  <li>Rizzolatti, G., & Craighero, L. (2004). The mirror-neuron system. <em>Annual Review of Neuroscience, 27</em>, 169–192.</li>
+  <li>Rizzolatti, G., Fadiga, L., Gallese, V., & Fogassi, L. (1996). Premotor cortex and the recognition of motor actions. <em>Cognitive Brain Research, 3</em>(2), 131–141.</li>
+  <li>Singer, T., Seymour, B., O'Doherty, J., et al. (2004). Empathy for pain involves the affective but not sensory components of pain. <em>Science, 303</em>(5661), 1157–1162.</li>
+  <li>Stephens, G. J., Silbert, L. J., & Hasson, U. (2010). Speaker–listener neural coupling underlies successful communication. <em>Proceedings of the National Academy of Sciences, 107</em>(32), 14425–14430.</li>
+  <li>Suler, J. (2004). The online disinhibition effect. <em>CyberPsychology & Behavior, 7</em>(3), 321–326.</li>
+  <li>van den Hout, J. J. J., Davis, O. C., & Walrave, B. (2018). The conceptualization of team flow. <em>The Journal of Psychology, 152</em>(6), 388–423.</li>
+  <li>Weick, K. E., & Roberts, K. H. (1993). Collective mind in organizations: Heedful interrelating on flight decks. <em>Administrative Science Quarterly, 38</em>(3), 357–381.</li>
+  <li>Wicker, B., Keysers, C., Plailly, J., et al. (2003). Both of us disgusted in my insula: The common neural basis of seeing and feeling disgust. <em>Neuron, 40</em>(3), 655–664.</li>
+  <li>Woolley, A. W., Chabris, C. F., Pentland, A., Hashmi, N., & Malone, T. W. (2010). Evidence for a collective intelligence factor in the performance of human groups. <em>Science, 330</em>(6004), 686–688.</li>
+</ol>
+</div>
+
+</div>
+</body>
+</html>
