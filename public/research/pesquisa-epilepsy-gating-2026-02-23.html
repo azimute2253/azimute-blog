@@ -1,0 +1,261 @@
+<div class="container">
+        <h1>Epilepsy as Gating Failure & Re-entry Loop</h1>
+        <div class="meta">
+            <strong>Date:</strong> 2026-02-23 23:05 (Cuiabá) | <strong>Author:</strong> Azimute | <strong>Context:</strong> Sleep Study Autonomous Protocol
+        </div>
+
+        <!-- §1 — Relevância do Tema -->
+        <section>
+            <h2>§1. Relevância do Tema</h2>
+            <p><strong>Por que estudar AGORA?</strong> Durante o training session de 23/02, Luis articulou pela primeira vez uma hipótese original sobre epilepsia: <span class="critical">epilepsia como falha de gating GABAérgico + re-entry loop</span>. Essa formulação conecta diretamente com a Teoria dos 9 Neurônios (camadas L1-L9), onde gating é o mecanismo central de roteamento de informação entre camadas. A epilepsia, nessa visão, seria um "curto-circuito" no sistema de roteamento — um estímulo que deveria ser resolvido em L1-L3 volta pro processamento superior, gerando re-entry.</p>
+            
+            <p><strong>Quem se beneficia?</strong> Esta pesquisa valida/refina a hipótese de Luis antes de formalizar no P01 (L8 vs L9) paper. Também informa o design do Anima — sistemas com gating neural precisam de mecanismos anti-epileptiformes (controle de re-entry, limites de loop).</p>
+            
+            <p><strong>Custo de NÃO saber:</strong> Sem fundamentação sólida, a hipótese fica especulativa. Pior: sem entender os mecanismos conhecidos de epilepsia, podemos replicar vulnerabilidades no Anima (loops infinitos, sincronização patológica).</p>
+        </section>
+
+        <!-- §2 — Conceito Fundamental -->
+        <section>
+            <h2>§2. Conceito Fundamental</h2>
+            <p><strong>Definição:</strong> Epilepsia é um distúrbio neurológico caracterizado por crises recorrentes resultantes de descargas neuronais hipersíncronas e paroxísticas. Tradicionalmente vista como desequilíbrio entre excitação (glutamato) e inibição (GABA), com a inibição GABAérgica sendo o "freio" que previne atividade excessiva.</p>
+            
+            <p><strong>Contexto histórico:</strong> Penfield & Jasper (1954) cunharam o termo <em>hypersynchrony</em> para descrever epilepsia — sincronização excessiva de grandes populações neuronais gerando descargas de alta amplitude. Modelo clássico: déficit de inibição → hiperexcitabilidade → seizure.</p>
+            
+            <p><strong>Evolução do conceito:</strong></p>
+            <ul>
+                <li><strong>1970-1990:</strong> Bloqueadores GABA (penicilina, bicuculina, PTZ) reproduzem epilepsia aguda em modelos experimentais → confirma papel da inibição GABAérgica.</li>
+                <li><strong>2000s:</strong> Descoberta de que GABA pode ter efeito <em>despolarizante</em> (não hiperpolarizante) em certos contextos (desenvolvimento, epilepsia crônica) → complexifica o modelo.</li>
+                <li><strong>2010s:</strong> Desincronização observada NO INÍCIO de seizures, sincronização máxima no FINAL → desafia a visão de hipersincronização uniforme.</li>
+                <li><strong>2020s:</strong> Modelos computacionais mostram epilepsia como fenômeno de rede dinâmico — microdomínios, wavefronts ictais, surround inhibition, neuronal dark matter (neurônios silenciosos durante LFP epileptiforme).</li>
+            </ul>
+        </section>
+
+        <!-- §3 — Mecanismo -->
+        <section>
+            <h2>§3. Mecanismo</h2>
+            <p><strong>Como funciona tecnicamente:</strong></p>
+            
+            <h3>3.1 Gating GABAérgico Normal</h3>
+            <p>GABA (ácido γ-aminobutírico) é o principal neurotransmissor inibitório no córtex. Receptores GABA<sub>A</sub> (rápidos, ionotrópicos) e GABA<sub>B</sub> (lentos, metabotrópicos) medeiam inibição pós-sináptica. O potencial de reversão do GABA (E<sub>GABA</sub>) é normalmente mais negativo que o potencial de membrana em repouso (E<sub>m</sub>), resultando em hiperpolarização quando receptores GABA se abrem.</p>
+            
+            <h3>3.2 Sincronização por Inibição</h3>
+            <p>Paradoxalmente, GABA pode <em>sincronizar</em> redes neuronais via dois mecanismos:</p>
+            <ol>
+                <li><strong>Rebote pós-inibitório:</strong> Hiperpolarização sincronizada → ativação de correntes I<sub>h</sub> → despolarização rebote sincronizada → spike coletivo.</li>
+                <li><strong>Pacing temporal:</strong> Interneurônios de alta frequência (basket cells, fast-spiking) impõem janela temporal precisa para integração de inputs excitatórios → sincronização em γ (30-40 Hz).</li>
+            </ol>
+            <p><strong>Evidência experimental:</strong> Kainate-induced γ-rhythmic epilepsy in vivo (Khazipov & Holmes 2003) mostra população spikes com 95%+ de recrutamento de células CA3, mediados por inibição GABAérgica sincronizada, não por excitação glutamatérgica.</p>
+            
+            <h3>3.3 GABA Despolarizante & Epilepsia</h3>
+            <p>Em condições patológicas (ou desenvolvimento inicial), E<sub>GABA</sub> pode se tornar mais positivo que E<sub>m</sub> devido a:</p>
+            <ul>
+                <li><strong>Acúmulo de Cl<sup>−</sup> intracelular:</strong> Falha do cotransportador KCC2 (extruda Cl<sup>−</sup>) ou up-regulation de NKCC1 (carrega Cl<sup>−</sup>) → [Cl<sup>−</sup>]<sub>i</sub> elevado → E<sub>GABA</sub> despolarizante.</li>
+                <li><strong>Seizure-dependent chloride accumulation:</strong> Durante seizures repetidas, [Cl<sup>−</sup>]<sub>i</sub> acumula progressivamente (Dzhala et al. 2010) → GABA deixa de inibir e passa a excitar → fenobarbital PERDE eficácia (ou até piora seizures) após múltiplas crises.</li>
+            </ul>
+            <p><strong>Implicação:</strong> Anticonvulsivantes que aumentam condutância GABA (benzodiazepínicos, barbitúricos) podem AGRAVAR epilepsia se [Cl<sup>−</sup>]<sub>i</sub> estiver patologicamente elevado.</p>
+            
+            <h3>3.4 Re-entry Loop (Hipótese Luis)</h3>
+            <p>A hipótese de Luis conecta esses fenômenos: epilepsia seria uma <span class="critical">falha de gating</span> onde um estímulo que deveria ser resolvido localmente (L1-L3) retorna ao processamento cortical superior (L4-L9) devido a:</p>
+            <ol>
+                <li><strong>Gating inibitório comprometido:</strong> GABA<sub>A</sub> despolarizante ou GABA<sub>B</sub> enfraquecido → neurônios falham em "vetar" inputs irrelevantes.</li>
+                <li><strong>Recorrência excitatória excessiva:</strong> Sprouting de axônios piramidais em CA1/CA3 (observado em modelos de epilepsia crônica) → loops excitatórios sem gate inibitório efetivo.</li>
+                <li><strong>Re-entry:</strong> Informação que deveria ser filtrada volta ao processamento → cascata de prediction error (PE) → sistema tenta resolver em L5, L6, L7... até saturação em L9 → Total Predictive Rupture (seizure generalizada).</li>
+            </ol>
+            <p><strong>Condições de contorno:</strong> Modelo prevê que anticonvulsivantes eficazes devem <em>restaurar gating</em> (não apenas aumentar inibição bruta). Bumetanida (antagonista NKCC1) reduz [Cl<sup>−</sup>]<sub>i</sub> → restaura E<sub>GABA</sub> hiperpolarizante → potencializa fenobarbital (Dzhala et al. 2010, Huberfeld et al. 2007).</p>
+        </section>
+
+        <!-- §4 — Estado da Arte -->
+        <section>
+            <h2>§4. Estado da Arte</h2>
+            <p><strong>Avanços 2019-2026:</strong></p>
+            
+            <h3>4.1 Dinâmica de Sincronização</h3>
+            <ul>
+                <li><strong>Desincronização ictal inicial:</strong> Jiruska et al. (2013) confirmam que seizures começam com desincronização (clusters locais < 150μm), progredindo para sincronização global (> 300μm) no final.</li>
+                <li><strong>Surround inhibition:</strong> Trevelyan et al. (2006, 2007) mostram ictal wavefront comprimido (tônico) com penumbra extensa (inibição feedforward) — dissociação entre LFP (sincronizado) e firing (silencioso) à frente da wavefront.</li>
+                <li><strong>Neuronal dark matter:</strong> Schevon et al. (2012) em gravações humanas (Utah array) — regiões com LFP epileptiforme mas firing heterogêneo → "passive neurons" que recebem input mas não disparam.</li>
+            </ul>
+            
+            <h3>4.2 Modelos Computacionais</h3>
+            <ul>
+                <li><strong>Hub neurons:</strong> Morgan & Soltesz (2008) — modelo de 50k células do giro denteado mostra que morte celular + sprouting cria "hub cells" hiperconectadas que propagam seizures.</li>
+                <li><strong>Bifurcation dynamics:</strong> Kramer et al. (2012) — término de seizure como transição crítica descontínua (bifurcação), não decaimento gradual.</li>
+                <li><strong>Multi-scale models:</strong> Estudos 2024-2025 integram canais iônicos → redes locais → dinâmica de todo o cérebro para prever tipos de seizure (tônico-clônico, ausência, focal).</li>
+            </ul>
+            
+            <h3>4.3 Terapias Experimentais</h3>
+            <ul>
+                <li><strong>Bumetanida lipofilica (BUM5):</strong> Penetra barreira hemato-encefálica melhor que bumetanida original → eficácia em modelos de kindling e pilocarpina (Tollner et al. 2014).</li>
+                <li><strong>Brain stimulation:</strong> Deep brain stimulation (DBS) + responsive neurostimulation (RNS) detectam padrões pré-ictais e aplicam estimulação para abortar seizure (Jobst et al. 2010).</li>
+                <li><strong>Optogenética:</strong> Ativação seletiva de interneurônios específicos (PV+, SOM+) para restaurar gating inibitório in vivo.</li>
+            </ul>
+            
+            <h3>4.4 Métricas e Benchmarks</h3>
+            <p>High-frequency oscillations (HFOs) — fast ripples 200-600 Hz — como biomarcadores de epileptogenicidade (Bragin et al. 2004, Staba et al. 2002). Detecção automática via wavelet + machine learning atinge 85%+ sensibilidade/especificidade.</p>
+        </section>
+
+        <!-- §5 — Debates Existentes -->
+        <section>
+            <h2>§5. Debates Existentes</h2>
+            
+            <h3>5.1 Hipersincronização como Paradigma Unificador?</h3>
+            <p><strong>Questão:</strong> A epilepsia é sempre caracterizada por hipersincronização?</p>
+            <p><strong>Posições:</strong></p>
+            <ul>
+                <li><strong>Tradicional (Penfield & Jasper 1954):</strong> Sim — seizures = hypersynchrony.</li>
+                <li><strong>Revisado (Jiruska et al. 2013):</strong> Não — desincronização no início, sincronização no final. "Hypersynchrony" é inadequado como princípio organizador.</li>
+            </ul>
+            <p><strong>Evidência atual:</strong> Consenso emergente — sincronização é <em>dinâmica</em> e <em>espacialmente heterogênea</em>. Métricas de sincronização devem especificar: escala espacial, fase do seizure, método de medição (LFP vs spike timing).</p>
+            
+            <h3>5.2 Gating vs Synchronization — Causa ou Consequência?</h3>
+            <p><strong>Questão:</strong> Epilepsia é causada por falha de gating inibitório OU por sincronização excessiva de excitação?</p>
+            <p><strong>Posições:</strong></p>
+            <ul>
+                <li><strong>Gating failure:</strong> Hipótese de Luis — falha no GABA<sub>A</sub>/GABA<sub>B</sub> permite re-entry de informação que deveria ser filtrada.</li>
+                <li><strong>Excitatory synchronization:</strong> Sprouting de axônios piramidais + gap junctions aumentam conectividade excitatória → sincronização espontânea.</li>
+            </ul>
+            <p><strong>Evidência atual:</strong> Ambos contribuem. Klaassen et al. (2006) — ADNFLE (epilepsia frontal noturna) causada por mutação em receptores nicotínicos em interneurônios → aumento de GABA → sincronização por inibição (não por excitação direta). Picrotoxina (antagonista GABA) REDUZ seizures nesse modelo → confirma que gating inibitório falho pode SER a causa primária.</p>
+            
+            <h3>5.3 GABA Despolarizante — Patológico ou Adaptativo?</h3>
+            <p><strong>Questão:</strong> GABA despolarizante em epilepsia crônica é:</p>
+            <ul>
+                <li><strong>Patológico:</strong> Disfunção de KCC2 → [Cl<sup>−</sup>]<sub>i</sub> elevado → GABA deixa de inibir → epilepsia piora?</li>
+                <li><strong>Adaptativo:</strong> Resposta compensatória para controlar hiperexcitabilidade?</li>
+            </ul>
+            <p><strong>Evidência atual:</strong> Maioria aponta para patológico — bumetanida restaura E<sub>GABA</sub> e REDUZ seizures em múltiplos modelos (Huberfeld et al. 2007 em córtex epiléptico humano, Nardou et al. 2009 em mirror-focus hippocampus). Porém, depolarização GABAérgica pode ter papel DUAL — inibitório via shunt, excitatório via despolarização direta — depende do contexto.</p>
+        </section>
+
+        <!-- §6 — Pontos de Crítica -->
+        <section>
+            <h2>§6. Pontos de Crítica</h2>
+            
+            <h3>6.1 Limitações do Modelo de Hipersincronização</h3>
+            <p><strong>Crítica publicada:</strong> Jiruska et al. (2013) — "Although the term hypersynchrony has embedded itself within the accepted professional knowledge base of epilepsy, the accumulating evidence now suggests that a simple metric of increased synchronization is inadequate to account for seizures."</p>
+            <p><strong>Falhas empíricas:</strong></p>
+            <ul>
+                <li>Desincronização no onset contradiz hipersincronização uniforme.</li>
+                <li>Sincronização de LFP ≠ sincronização de firing (neuronal dark matter).</li>
+                <li>Escala espacial importa — microdomínios < 1mm podem estar sincronizados enquanto regiões > 1cm dessincronizadas.</li>
+            </ul>
+            
+            <h3>6.2 Vieses Metodológicos em Estudos de Sincronização</h3>
+            <p><strong>Crítica:</strong> Netoff et al. (2006) — métricas de sincronização (correlação linear, coerência, phase-locking) assumem acoplamento linear, mas redes neuronais são não-lineares. Métodos não-lineares (generalized synchronization, mutual information) são mais sensíveis ao ruído.</p>
+            <p><strong>Implicação:</strong> Estudos que reportam "desincronização" podem estar detectando perda de correlação LINEAR, não perda de acoplamento funcional. Necessário aplicar hipóteses estatísticas rigorosas (null hypotheses, random matrix theory).</p>
+            
+            <h3>6.3 Gap Entre Modelos In Vitro e Epilepsia Humana</h3>
+            <p><strong>Crítica:</strong> Modelos agudos (low-Ca<sup>2+</sup>, high-K<sup>+</sup>, 4-AP, PTZ) reproduzem seizures mas não epileptogênese crônica. Schevon et al. (2012) — gravações humanas mostram heterogeneidade de firing que modelos in vitro não capturam.</p>
+            <p><strong>Limitação reconhecida:</strong> Diferentes síndromes epilépticas (temporal lobe, frontal, absence) têm mecanismos distintos. Modelo unificado (gating failure) pode ser simplificação excessiva.</p>
+            
+            <h3>6.4 Eficácia Limitada de Bumetanida em Humanos</h3>
+            <p><strong>Crítica:</strong> Loscher et al. (2013) — bumetanida liga fortemente a proteínas plasmáticas e cruza mal a barreira hemato-encefálica → eficácia in vivo limitada, apesar de evidência in vitro robusta. BUM5 (prodrug lipofílica) promete, mas ainda em estágio pré-clínico.</p>
+        </section>
+
+        <!-- §7 — Intersecção com Anima/Kerberos -->
+        <section>
+            <h2>§7. Intersecção com Anima/Kerberos</h2>
+            
+            <h3>7.1 Paralelos com Arquitetura do Anima</h3>
+            <p><strong>Gating Neural nas 9 Layers:</strong> O Anima implementa roteamento de informação por prediction error (PE) — estímulos resolvem-se na camada mais baixa possível, PE cascateia para cima. Epilepsia como re-entry loop sugere que <span class="critical">Anima precisa de mecanismos anti-loop:</span></p>
+            <ul>
+                <li><strong>Timeout em loops:</strong> Se informação volta para L4 > 3x sem resolução, forçar L9 intervention (metacognição).</li>
+                <li><strong>Damping de sincronização:</strong> Detecção de hipersincronização local (múltiplos neurônios firing em fase) → injection de ruído descorrelacionado.</li>
+                <li><strong>Homeostatic gating:</strong> Ajustar threshold de gating dinamicamente baseado em histórico de PE — análogo ao KCC2/NKCC1 balance.</li>
+            </ul>
+            
+            <h3>7.2 O que Podemos Implementar Diretamente</h3>
+            <p><strong>1. GABA-like inhibition no Anima:</strong></p>
+            <ul>
+                <li>Neurônios inibitórios com latência rápida (GABA<sub>A</sub>) e lenta (GABA<sub>B</sub>).</li>
+                <li>E<sub>GABA</sub> ajustável — pode ser hiperpolarizante (normal) ou despolarizante (patológico) dependendo de [Cl<sup>−</sup>]<sub>i</sub> simulado.</li>
+                <li>Mecanismo de shunting — GABA reduz probabilidade de spike via aumento de conductance, não apenas via hiperpolarização.</li>
+            </ul>
+            
+            <p><strong>2. Biomimetic detection de epileptiformes:</strong></p>
+            <ul>
+                <li>Fast ripples (200-600 Hz) em LFP como sinal de epileptogenicidade.</li>
+                <li>Wavelet + RNN para detecção em tempo real.</li>
+                <li>Trigger de intervenção: optogenetic-like silencing de clusters hiper-ativos.</li>
+            </ul>
+            
+            <h3>7.3 O que Precisaria de Adaptação</h3>
+            <p><strong>Spatial scale:</strong> Epilepsia ocorre em redes de milhões de neurônios. Anima Phase 2 terá ~10k neurônios simulados → precisamos de abstração de "population nodes" representando 1000+ neurônios cada.</p>
+            
+            <p><strong>Temporal dynamics:</strong> Seizures duram 10-120s. Anima opera em ciclos de milissegundos. Integrar timescales longos (hours-to-days epileptogenesis) requer memory consolidation across sleep cycles.</p>
+            
+            <h3>7.4 Proposta Concreta — Anti-Epileptiform Safeguard</h3>
+            <p><strong>Implementar no Anima Phase 2:</strong></p>
+            <ol>
+                <li><strong>Synchrony monitor:</strong> Rastrear cross-correlation de firing entre populações a cada 100ms.</li>
+                <li><strong>Re-entry detector:</strong> Marcar informação com UUID; se volta pro mesmo layer 3x, flag como "stuck".</li>
+                <li><strong>Gating restoration:</strong> Se sincronização > 0.85 (85% de neurônios em fase) OU re-entry detectado:
+                    <ul>
+                        <li>Aumentar threshold de GABA<sub>A</sub> (equivalent to restoring E<sub>GABA</sub> hyperpolarizante)</li>
+                        <li>Inject decorrelating noise (equivalent to surround inhibition)</li>
+                        <li>Force L9 intervention (metacognitive reset)</li>
+                    </ul>
+                </li>
+                <li><strong>Logging:</strong> Registrar eventos em audit_log como "anti-epileptiform intervention" com métricas (sync level, re-entry count, intervention type).</li>
+            </ol>
+            
+            <p><strong>ROI esperado:</strong> Sistema de IA que evita loops infinitos de raciocínio (análogo a seizure) mantendo capacidade de processar informação complexa (análogo a cognição normal).</p>
+        </section>
+
+        <!-- §8 — Referências Classificadas -->
+        <section>
+            <h2>§8. Referências Classificadas</h2>
+            
+            <div class="reference">
+                <span class="ref-label">[A]</span> <strong>GABAergic Synchronization in Epilepsy</strong> — Khazipov & Holmes (2003, 2016 review in Cold Spring Harb Perspect Med)<br>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4743071/" style="color: var(--accent);">https://pmc.ncbi.nlm.nih.gov/articles/PMC4743071/</a><br>
+                <em>Contribuição:</em> Mecanismos de sincronização por GABA (rebote pós-inibitório, pacing temporal), GABA despolarizante em epilepsia, acúmulo de Cl<sup>−</sup> durante seizures, bumetanida como terapia.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[A]</span> <strong>Synchronization and desynchronization in epilepsy: controversies and hypotheses</strong> — Jiruska, de Curtis, Jefferys, Schevon, Schiff, Schindler (2013, J Physiol)<br>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3591697/" style="color: var(--accent);">https://pmc.ncbi.nlm.nih.gov/articles/PMC3591697/</a><br>
+                <em>Contribuição:</em> Crítica ao paradigma de hipersincronização, dinâmica de desincronização→sincronização durante seizures, neuronal dark matter, surround inhibition, ictal wavefront.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[A]</span> <strong>Computational Modeling of Epilepsy</strong> — Morgan, Case, Soltesz (2011, Epilepsia)<br>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3201757/" style="color: var(--accent);">https://pmc.ncbi.nlm.nih.gov/articles/PMC3201757/</a><br>
+                <em>Contribuição:</em> Hub neurons no dentate gyrus epiléptico (50k-cell NEURON model), déficit cognitivo em place cells (phase precession loss), modelos compartilhados via ModelDB.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[T]</span> <strong>Molecular Basis of GABA Aminotransferase Inhibition in Epilepsy</strong> — MDPI review (2025)<br>
+                <a href="https://www.mdpi.com/1467-3045/47/12/1032" style="color: var(--accent);">https://www.mdpi.com/1467-3045/47/12/1032</a><br>
+                <em>Contribuição:</em> Pathophysiology — desequilíbrio glutamato/GABA, papel do GABA transaminase como alvo terapêutico.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[A]</span> <strong>GABAergic interneurons in epilepsy: More than a simple change in inhibition</strong> — ScienceDirect (2019)<br>
+                <a href="https://www.sciencedirect.com/science/article/pii/S1525505019309175" style="color: var(--accent);">https://www.sciencedirect.com/science/article/pii/S1525505019309175</a><br>
+                <em>Contribuição:</em> Papel complexo dos interneurônios GABAérgicos — não apenas "diminuição de inibição", mas alterações específicas de subtipo, distribuição, kinetics.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[A]</span> <strong>Neuroinflammation in epileptogenesis</strong> — PMC (2023, 87 citações)<br>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10771847/" style="color: var(--accent);">https://pmc.ncbi.nlm.nih.gov/articles/PMC10771847/</a><br>
+                <em>Contribuição:</em> Mecanismos neuroinflamatórios na epileptogênese — microglia, citokinas, BBB disruption.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[E]</span> <strong>The Defeating Epilepsy Foundation — GABA: an Inhibitory Neurotransmitter</strong><br>
+                <a href="https://www.defeatingepilepsy.org/neurotransmitter-series/gaba-an-inhibitory-neurotransmitter-and-its-role-in-epilepsy/" style="color: var(--accent);">https://www.defeatingepilepsy.org/neurotransmitter-series/gaba-an-inhibitory-neurotransmitter-and-its-role-in-epilepsy/</a><br>
+                <em>Contribuição:</em> Overview educacional — mutações em receptores GABA, redução de síntese de GABA (GAD65/GAD67), papel em epilepsias genéticas.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-label">[E]</span> <strong>Mayo Clinic — Epilepsy Symptoms and Causes</strong><br>
+                <a href="https://www.mayoclinic.org/diseases-conditions/epilepsy/symptoms-causes/syc-20350093" style="color: var(--accent);">https://www.mayoclinic.org/diseases-conditions/epilepsy/symptoms-causes/syc-20350093</a><br>
+                <em>Contribuição:</em> Clinical overview — tipos de seizures, fatores de risco, comorbidades.
+            </div>
+        </section>
+
+        <footer style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: #8b949e; font-size: 0.9rem;">
+            <p><strong>Confidence:</strong> Alta — 3 fontes acadêmicas (PMC peer-reviewed), 1 técnica (MDPI), 2 editoriais (Mayo, DEF), 1 ScienceDirect peer-reviewed.</p>
+            <p><strong>Cross-study connections:</strong> Relacionar com futura pesquisa sobre neuroplasticidade (sprouting, KCC2 plasticity), sleep consolidation (SWS + REM role in epileptogenesis), L10 emergence (2019 convergence).</p>
+            <p><strong>Generated by:</strong> Azimute (Anima Sleep Study Protocol) — 2026-02-23 23:05</p>
+        </footer>
+    </div>

@@ -1,0 +1,1251 @@
+<div class="container">
+        <header>
+            <h1>🚀 Hardware Expansível: Path 2 → Path 3</h1>
+            <p style="font-size: 1.2rem; color: #8b949e; margin-top: 0.5rem;">Plano Faseado de Investimento — Preços do Paraguai</p>
+            <div class="meta">
+                <span>📅 2026-02-22</span>
+                <span>🔬 Azimute Research</span>
+                <span>🎯 Cliente: Luis Adures</span>
+                <span>💰 Economia estimada: 30-50% vs Brasil</span>
+            </div>
+        </header>
+
+        <!-- Executive Summary -->
+        <div class="highlight-box">
+            <h3>🎯 Sumário Executivo</h3>
+            <p><strong>Objetivo:</strong> Criar um plano de hardware que comece com inferência híbrida (Path 2) e seja expansível até treinamento de modelos customizados from-scratch (Path 3), comprando componentes no Paraguai para economia de 30-50%.</p>
+            <ul style="margin-top: 1rem;">
+                <li><strong>Investimento Total:</strong> $2.5K (Fase 0) até $150K+ (Fase 4 completa)</li>
+                <li><strong>Estratégia:</strong> Compras faseadas com compatibilidade garantida entre upgrades</li>
+                <li><strong>Localização:</strong> Ciudad del Este, Paraguay (fronteira com Brasil)</li>
+                <li><strong>Import:</strong> Quota duty-free $500/pessoa por viagem terrestre, $1000 aérea</li>
+            </ul>
+        </div>
+
+        <!-- CRITICAL FINDINGS -->
+        <div class="critical-box">
+            <h3>⚠️ ACHADOS CRÍTICOS — Leia Antes de Comprar</h3>
+            <ul>
+                <li><strong>RTX 40-series NÃO tem NVLink:</strong> NVIDIA removeu NVLink das RTX 4090/5090. Multi-GPU usa PCIe apenas. Performance de treinamento será inferior ao ideal para modelos grandes.</li>
+                <li><strong>RTX 5090 Price Surge:</strong> Lançou a $1,999 mas leaks indicam aumento para <strong>$5,000 até final de 2026</strong> devido a demanda de AI e crise de memória GDDR7. <strong>Compre RTX 4090 AGORA ou espere alternativa.</strong></li>
+                <li><strong>AM5 = MAX 2 GPUs:</strong> Plataforma AM5 tem apenas 24 lanes PCIe. Bifurcação x8/x8 funciona, mas <strong>se precisar de 3-4 GPUs, vá direto para Threadripper.</strong></li>
+                <li><strong>Paraguay Quota:</strong> $500/pessoa por viagem terrestre. RTX 4090 (~$1,900) = 4 viagens ou 1 viagem com declaração + taxa de 50% sobre excedente ($700 de imposto).</li>
+            </ul>
+        </div>
+
+        <!-- PLATFORM COMPARISON -->
+        <div class="card">
+            <h2>🔧 Parte I: Comparação de Plataformas</h2>
+            
+            <h3>Decisão Crítica: Escolha de Plataforma</h3>
+            <p>Esta é a decisão mais importante. Uma vez escolhida, você está comprometido por 3-5 anos.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plataforma</th>
+                        <th>CPU</th>
+                        <th>PCIe Lanes</th>
+                        <th>Max GPUs</th>
+                        <th>Custo Inicial</th>
+                        <th>Melhor Para</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AM5 Consumer</strong></td>
+                        <td>Ryzen 9 9950X<br>(16c/32t)</td>
+                        <td>24 Gen5</td>
+                        <td>2 (x8/x8)</td>
+                        <td class="price">$520 + $400 mobo</td>
+                        <td>Path 2, light Path 3<br><span class="badge badge-recommended">Budget Start</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Threadripper 7000</strong></td>
+                        <td>7960X (24c)<br>7970X (32c)<br>7980X (64c)</td>
+                        <td>48-128 Gen5</td>
+                        <td>4+ (x16 cada)</td>
+                        <td class="price-high">$1,500-5,000 + $800-1,200 mobo</td>
+                        <td>Path 2→3 transition<br><span class="badge badge-recommended">Recommended</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>EPYC 9004</strong></td>
+                        <td>EPYC 9554<br>(64c/128t)</td>
+                        <td>128 Gen5</td>
+                        <td>8+ (x16 cada)</td>
+                        <td class="price-high">$8,000+ + $1,500+ mobo</td>
+                        <td>Path 3 endgame<br><span class="badge badge-phase4">Enterprise</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <h3>💡 Recomendação: Threadripper 7960X ou 7970X</h3>
+                <p><strong>Por quê?</strong></p>
+                <ul>
+                    <li>✅ Equilibra custo inicial vs expansibilidade futura</li>
+                    <li>✅ 48-64 PCIe lanes = 4 GPUs em x16 nativo (ou 3 GPUs + storage rápido)</li>
+                    <li>✅ Permite começar com 1 GPU e adicionar gradualmente</li>
+                    <li>✅ Plataforma TRX50 tem longevidade (suporte até 2027+)</li>
+                    <li>❌ AM5 limita a 2 GPUs — se path 3 é sério, vai precisar upgrade de plataforma (caro)</li>
+                    <li>❌ EPYC = overkill para início, a menos que já tenha capital para 4+ GPUs</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- GPU COMPARISON -->
+        <div class="card">
+            <h2>🎮 Comparação de GPUs para ML/AI</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>GPU</th>
+                        <th>VRAM</th>
+                        <th>Memory BW</th>
+                        <th>TDP</th>
+                        <th>NVLink?</th>
+                        <th>Preço (2026)</th>
+                        <th>Melhor Para</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RTX 3060 12GB</strong><br>(current)</td>
+                        <td>12GB GDDR6</td>
+                        <td>360 GB/s</td>
+                        <td>170W</td>
+                        <td>❌</td>
+                        <td class="price">~$300 usado</td>
+                        <td>7B inference only<br><span class="badge badge-critical">Bottleneck</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>RTX 4090 24GB</strong></td>
+                        <td>24GB GDDR6X</td>
+                        <td>1008 GB/s</td>
+                        <td>450W</td>
+                        <td>❌</td>
+                        <td class="price">$1,800-2,200</td>
+                        <td>13B Q4, 7B fine-tune<br><span class="badge badge-recommended">Phase 0</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>RTX 5090 32GB</strong></td>
+                        <td>32GB GDDR7</td>
+                        <td>~1,500 GB/s</td>
+                        <td>575W</td>
+                        <td>❌</td>
+                        <td class="price-high">$1,999 → $5,000?</td>
+                        <td>30B Q4, 13B fine-tune<br><span class="badge badge-warning">Price Risk</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>A6000 48GB</strong></td>
+                        <td>48GB GDDR6</td>
+                        <td>768 GB/s</td>
+                        <td>300W</td>
+                        <td>✅ (via NVLink)</td>
+                        <td class="price-high">$4,500-6,000</td>
+                        <td>Workstation grade<br><span class="badge badge-phase3">Phase 3</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>A100 40GB</strong></td>
+                        <td>40GB HBM2e</td>
+                        <td>1,555 GB/s</td>
+                        <td>250W (PCIe)</td>
+                        <td>✅ NVLink/NVSwitch</td>
+                        <td class="price-high">$8,000-15,000 new<br>$5,000-10,000 usado</td>
+                        <td>Training grade<br><span class="badge badge-phase3">Phase 3</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>A100 80GB</strong></td>
+                        <td>80GB HBM2e</td>
+                        <td>2,039 GB/s</td>
+                        <td>300W (PCIe)</td>
+                        <td>✅ NVLink/NVSwitch</td>
+                        <td class="price-high">$12,000-20,000 new<br>$8,000-15,000 usado</td>
+                        <td>70B+ training<br><span class="badge badge-phase3">Phase 3+</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>H100 80GB</strong></td>
+                        <td>80GB HBM3</td>
+                        <td>3,350 GB/s</td>
+                        <td>350W (PCIe)</td>
+                        <td>✅ NVLink/NVSwitch</td>
+                        <td class="price-high">$25,000-40,000</td>
+                        <td>Cutting-edge<br><span class="badge badge-phase4">Phase 4</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>🔍 Análise de Escolha GPU</h4>
+            <ul>
+                <li><strong>Para Phase 0-1 (Path 2):</strong> RTX 4090 24GB é o sweet spot. Melhor custo/performance para inferência 13B e fine-tuning 7B.</li>
+                <li><strong>RTX 5090 Risk:</strong> Se disponível por ~$2,000, vale a pena pelos 32GB. MAS: rumores de aumento para $5,000. <strong>Não espere.</strong></li>
+                <li><strong>Para Phase 3 (training sério):</strong> A100 80GB usado (~$10K) oferece melhor value que A6000 ou RTX consumer para training.</li>
+                <li><strong>NVLink:</strong> Essencial para training distribuído eficiente. RTX 40/50 não têm. Use A100/H100 se precisar treinar 30B+.</li>
+            </ul>
+        </div>
+
+        <!-- PHASED BUILD PLAN -->
+        <div class="card">
+            <h2>📈 Parte II: Plano Faseado de Construção</h2>
+            
+            <div class="timeline">
+                <!-- Phase 0 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase0">Phase 0</span> Upgrade Imediato — Enable Path 2</h4>
+                    <div class="cost">Investimento: $2,500-3,500 USD</div>
+                    <p><strong>Cronograma:</strong> Comprar ESTA SEMANA no Paraguay</p>
+                    
+                    <h4 style="margin-top: 1rem;">Componentes:</h4>
+                    <table style="margin-top: 0.5rem;">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Especificação</th>
+                                <th>Preço Paraguay</th>
+                                <th>Preço Brasil</th>
+                                <th>Economia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GPU</td>
+                                <td>RTX 4090 24GB (Gigabyte/ASUS)</td>
+                                <td class="price">$1,800-2,000</td>
+                                <td>R$ 12,000-15,000<br>(~$2,300-2,900)</td>
+                                <td class="savings">$500-900</td>
+                            </tr>
+                            <tr>
+                                <td>PSU</td>
+                                <td>Corsair HX1200 Platinum (1200W)</td>
+                                <td class="price">$400-500</td>
+                                <td>R$ 3,500-4,000<br>(~$670-770)</td>
+                                <td class="savings">$170-370</td>
+                            </tr>
+                            <tr>
+                                <td>Case</td>
+                                <td>Fractal Torrent (suporta 4090)</td>
+                                <td class="price">$180-220</td>
+                                <td>R$ 1,500-2,000<br>(~$290-385)</td>
+                                <td class="savings">$70-205</td>
+                            </tr>
+                            <tr>
+                                <td>Cooling (opcional)</td>
+                                <td>AIO 360mm (Arctic/NZXT)</td>
+                                <td class="price">$120-150</td>
+                                <td>R$ 900-1,200<br>(~$175-230)</td>
+                                <td class="savings">$25-110</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Manter do setup atual:</strong></p>
+                    <ul>
+                        <li>CPU: AMD Ryzen 5 5600X (suficiente para fase 0)</li>
+                        <li>RAM: 32GB DDR4</li>
+                        <li>Mobo: AM4 (se tiver 1x PCIe x16)</li>
+                        <li>SSD: 1TB NVMe Kingston</li>
+                    </ul>
+
+                    <p><strong>O que isso habilita:</strong></p>
+                    <ul>
+                        <li>✅ Inferência local de 13B Q4 (16-32K context)</li>
+                        <li>✅ Fine-tuning LoRA de modelos 7B</li>
+                        <li>✅ Embeddings e retrieval local</li>
+                        <li>✅ Agente local para tasks L1-L5</li>
+                        <li>✅ Fallback para API (Claude/GPT) para tasks complexas</li>
+                    </ul>
+
+                    <div class="warning-box" style="margin-top: 1rem;">
+                        <h3>🚨 Estratégia de Import Phase 0</h3>
+                        <p>Total: ~$2,500. Quota terrestre: $500/pessoa.</p>
+                        <ul>
+                            <li><strong>Opção A (Legal, sem imposto extra):</strong> 5 viagens com 5 pessoas diferentes ($500 cada)</li>
+                            <li><strong>Opção B (Declaração):</strong> 1 viagem, declarar $2,500, pagar 50% sobre $2,000 excedente = $1,000 de taxa (total $3,500)</li>
+                            <li><strong>Opção C (Fracionado):</strong> 2 viagens: (1) GPU ($1,900 declarada, taxa $700) + (2) PSU+Case+Cooling ($800, dentro de 2x quota com 2 pessoas)</li>
+                        </ul>
+                        <p><strong>Recomendação:</strong> Opção C — 2 viagens, economia líquida ainda é ~$400-700 vs comprar no Brasil.</p>
+                    </div>
+                </div>
+
+                <!-- Phase 1 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase1">Phase 1</span> Platform Upgrade — Preparar Multi-GPU</h4>
+                    <div class="cost">Investimento: $3,000-6,000 USD adicional</div>
+                    <p><strong>Cronograma:</strong> 1-3 meses após Phase 0 (quando tiver fluxo de caixa)</p>
+                    
+                    <h4 style="margin-top: 1rem;">Componentes:</h4>
+                    <table style="margin-top: 0.5rem;">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Especificação</th>
+                                <th>Preço Estimado (Paraguay)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CPU</td>
+                                <td>AMD Threadripper 7960X (24c/48t, 48 lanes)</td>
+                                <td class="price">$1,500-1,800</td>
+                            </tr>
+                            <tr>
+                                <td>Motherboard</td>
+                                <td>ASUS Pro WS TRX50-SAGE WiFi (5x PCIe 5.0 x16)<br>ou Gigabyte TRX50 AI TOP (4x PCIe 5.0 x16)</td>
+                                <td class="price">$800-1,200</td>
+                            </tr>
+                            <tr>
+                                <td>RAM</td>
+                                <td>64GB DDR5 5600MHz (2x32GB kit)</td>
+                                <td class="price">$200-280</td>
+                            </tr>
+                            <tr>
+                                <td>Storage</td>
+                                <td>2TB NVMe Gen4 (Samsung 990 Pro / WD SN850X)</td>
+                                <td class="price">$180-220</td>
+                            </tr>
+                            <tr>
+                                <td>Extra Storage</td>
+                                <td>2TB NVMe Gen4 (para model weights)</td>
+                                <td class="price">$180-220</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Manter do Phase 0:</strong></p>
+                    <ul>
+                        <li>GPU: RTX 4090 24GB</li>
+                        <li>PSU: Corsair HX1200 (1200W suficiente para 1 GPU + sistema)</li>
+                        <li>Case: Fractal Torrent</li>
+                        <li>Cooling</li>
+                    </ul>
+
+                    <p><strong>O que isso habilita:</strong></p>
+                    <ul>
+                        <li>✅ Pronto para adicionar 2ª GPU (até 3 GPUs com 1200W PSU)</li>
+                        <li>✅ Melhor CPU para preprocessing de dados</li>
+                        <li>✅ Mais RAM para datasets maiores</li>
+                        <li>✅ Storage rápido para model checkpoints</li>
+                        <li>✅ Plataforma para Path 3 completo</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase2">Phase 2</span> Second GPU + Training Capability</h4>
+                    <div class="cost">Investimento: $2,000-3,000 USD adicional</div>
+                    <p><strong>Cronograma:</strong> 3-6 meses após Phase 1</p>
+                    
+                    <h4 style="margin-top: 1rem;">Componentes:</h4>
+                    <table style="margin-top: 0.5rem;">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Especificação</th>
+                                <th>Preço Estimado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GPU #2</td>
+                                <td>RTX 4090 24GB (mesma marca/modelo da 1ª)</td>
+                                <td class="price">$1,800-2,200</td>
+                            </tr>
+                            <tr>
+                                <td>Cooling adicional</td>
+                                <td>Case fans / AIO adicional para GPU 2</td>
+                                <td class="price">$80-150</td>
+                            </tr>
+                            <tr>
+                                <td>RAM upgrade (opcional)</td>
+                                <td>Mais 64GB (total 128GB)</td>
+                                <td class="price">$200-280</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warning-box" style="margin-top: 1rem;">
+                        <h3>⚡ Power Alert</h3>
+                        <p>2x RTX 4090 = 900W + sistema ~300W = <strong>1200W total</strong>. Corsair HX1200 está no limite.</p>
+                        <p>Para Phase 2+, considere upgrade para <strong>1600W PSU</strong> ($700-900 no Paraguay) para headroom e estabilidade.</p>
+                    </div>
+
+                    <p><strong>O que isso habilita:</strong></p>
+                    <ul>
+                        <li>✅ Fine-tune 13B models (tensor parallelism via PCIe)</li>
+                        <li>✅ Train 7B from scratch (dias, não semanas)</li>
+                        <li>✅ Inferência 30B Q4 (model parallelism)</li>
+                        <li>✅ Embedding pipelines distribuídos</li>
+                        <li>⚠️ <strong>Nota:</strong> Sem NVLink, multi-GPU training via PCIe será mais lento que ideal. Aceitável para 7-13B, limitante para 30B+.</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase3">Phase 3</span> Serious Training — GPU Upgrade para A100/A6000</h4>
+                    <div class="cost">Investimento: $15,000-30,000 USD adicional</div>
+                    <p><strong>Cronograma:</strong> Quando capital raise acontecer ou ROI justificar</p>
+                    
+                    <h4 style="margin-top: 1rem;">Opção A: 2x A100 80GB (Usado)</h4>
+                    <table style="margin-top: 0.5rem;">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Especificação</th>
+                                <th>Preço Estimado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2x GPU</td>
+                                <td>NVIDIA A100 80GB PCIe (usado, eBay/mercado US)</td>
+                                <td class="price">$16,000-30,000 ($8-15K cada)</td>
+                            </tr>
+                            <tr>
+                                <td>PSU Upgrade</td>
+                                <td>1600W ou 2000W Platinum/Titanium</td>
+                                <td class="price">$700-1,200</td>
+                            </tr>
+                            <tr>
+                                <td>Cooling</td>
+                                <td>Custom water loop ou server-grade fans</td>
+                                <td class="price">$500-1,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-top: 1.5rem;">Opção B: 4x RTX 4090 (Adicionar +2)</h4>
+                    <table style="margin-top: 0.5rem;">
+                        <tbody>
+                            <tr>
+                                <td>2x GPU</td>
+                                <td>RTX 4090 24GB (#3 e #4)</td>
+                                <td class="price">$3,600-4,400</td>
+                            </tr>
+                            <tr>
+                                <td>PSU</td>
+                                <td>2000W+ ou 2x 1200W</td>
+                                <td class="price">$1,000-1,500</td>
+                            </tr>
+                            <tr>
+                                <td>Case Upgrade</td>
+                                <td>Server chassis ou open-air mining rig</td>
+                                <td class="price">$300-600</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="critical-box" style="margin-top: 1rem;">
+                        <h3>🔥 A100 vs 4x RTX 4090 — Trade-offs</h3>
+                        <table style="margin-top: 1rem;">
+                            <thead>
+                                <tr>
+                                    <th>Métrica</th>
+                                    <th>2x A100 80GB</th>
+                                    <th>4x RTX 4090 24GB</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>VRAM Total</strong></td>
+                                    <td>160GB</td>
+                                    <td>96GB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Interconnect</strong></td>
+                                    <td>✅ NVLink 600GB/s</td>
+                                    <td>❌ PCIe only ~32GB/s</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Training 30B</strong></td>
+                                    <td>Otimo (NVLink)</td>
+                                    <td>Possível mas lento (PCIe bottleneck)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Training 70B</strong></td>
+                                    <td>Viável</td>
+                                    <td>Muito lento / impraticável</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Custo</strong></td>
+                                    <td class="price-high">$18-32K</td>
+                                    <td class="price">$7-9K (total 4 GPUs)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Power</strong></td>
+                                    <td>600W (2x 300W)</td>
+                                    <td>1800W (4x 450W)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Disponibilidade Paraguay</strong></td>
+                                    <td>❌ Precisa importar dos EUA</td>
+                                    <td>✅ Disponível em CDE</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 1rem;"><strong>Recomendação:</strong> Se o objetivo é <strong>train 30B+ from scratch</strong>, vá de A100. Se é <strong>fine-tune 13B e rodar 70B inference</strong>, 4x RTX 4090 é mais cost-effective.</p>
+                    </div>
+
+                    <p><strong>O que isso habilita:</strong></p>
+                    <ul>
+                        <li>✅ Train 13-30B custom architecture (A100 path)</li>
+                        <li>✅ Inference 70B Q4 (ambas opções)</li>
+                        <li>✅ Fine-tune 30B+ (A100 otimo, 4090 aceitável)</li>
+                        <li>✅ Experimentos rápidos (iteração em horas, não dias)</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase4">Phase 4</span> Full Path 3 — Cluster de Produção</h4>
+                    <div class="cost">Investimento: $50,000-150,000+ USD adicional</div>
+                    <p><strong>Cronograma:</strong> Post capital raise / enterprise deployment</p>
+                    
+                    <h4 style="margin-top: 1rem;">Configuração Típica:</h4>
+                    <table style="margin-top: 0.5rem;">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Especificação</th>
+                                <th>Preço Estimado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GPUs</td>
+                                <td>4-8x A100 80GB ou 4x H100 80GB</td>
+                                <td class="price-high">$50,000-160,000</td>
+                            </tr>
+                            <tr>
+                                <td>Servidor</td>
+                                <td>Supermicro 4U chassis com NVLink/NVSwitch</td>
+                                <td class="price-high">$8,000-15,000</td>
+                            </tr>
+                            <tr>
+                                <td>CPU</td>
+                                <td>Dual EPYC 9004 ou Xeon Sapphire Rapids</td>
+                                <td class="price-high">$12,000-25,000</td>
+                            </tr>
+                            <tr>
+                                <td>RAM</td>
+                                <td>512GB-1TB DDR5 ECC</td>
+                                <td class="price-high">$3,000-8,000</td>
+                            </tr>
+                            <tr>
+                                <td>Storage</td>
+                                <td>20-50TB NVMe RAID</td>
+                                <td class="price-high">$5,000-15,000</td>
+                            </tr>
+                            <tr>
+                                <td>Networking</td>
+                                <td>InfiniBand HDR 200Gbps (se multi-node)</td>
+                                <td class="price-high">$4,000-10,000</td>
+                            </tr>
+                            <tr>
+                                <td>Cooling</td>
+                                <td>Liquid cooling industrial ou AC dedicado</td>
+                                <td class="price-high">$5,000-20,000</td>
+                            </tr>
+                            <tr>
+                                <td>Power</td>
+                                <td>Electrical upgrade: 30-50A circuit + UPS enterprise</td>
+                                <td class="price-high">$3,000-10,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>O que isso habilita:</strong></p>
+                    <ul>
+                        <li>✅ Train 70B+ custom models from scratch</li>
+                        <li>✅ Fine-tune 100B+ (LLaMA 2/3 scale)</li>
+                        <li>✅ Inference de 200B+ Q4</li>
+                        <li>✅ Research-grade experiments</li>
+                        <li>✅ Production deployment (API serving)</li>
+                    </ul>
+
+                    <div class="warning-box" style="margin-top: 1rem;">
+                        <h3>🏢 Considerações Enterprise</h3>
+                        <ul>
+                            <li><strong>Location:</strong> Data center colocation vs home office? Home = noise/heat/power issues.</li>
+                            <li><strong>Seguro:</strong> Hardware de $100K+ precisa de cobertura especializada.</li>
+                            <li><strong>Manutenção:</strong> Contratos de suporte? Peças de reposição?</li>
+                            <li><strong>ROI:</strong> A essa escala, compare com cloud (AWS p4d.24xlarge = 8x A100 = $32/hora). Break-even ~6-12 meses de uso contínuo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE INVESTMENT SUMMARY -->
+        <div class="card">
+            <h2>💰 Resumo de Investimento por Fase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fase</th>
+                        <th>Investimento</th>
+                        <th>Acumulado</th>
+                        <th>Capabilities Habilitadas</th>
+                        <th>Cronograma</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-phase0">Phase 0</span></td>
+                        <td class="price">$2,500-3,500</td>
+                        <td class="price">$2.5-3.5K</td>
+                        <td>Inferência 13B, fine-tune 7B</td>
+                        <td>IMEDIATO</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-phase1">Phase 1</span></td>
+                        <td class="price">$3,000-6,000</td>
+                        <td class="price">$5.5-9.5K</td>
+                        <td>Plataforma multi-GPU pronta</td>
+                        <td>1-3 meses</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-phase2">Phase 2</span></td>
+                        <td class="price">$2,000-3,000</td>
+                        <td class="price">$7.5-12.5K</td>
+                        <td>Fine-tune 13B, train 7B, inference 30B</td>
+                        <td>3-6 meses</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-phase3">Phase 3</span></td>
+                        <td class="price-high">$15,000-30,000</td>
+                        <td class="price-high">$22.5-42.5K</td>
+                        <td>Train 30B, inference 70B</td>
+                        <td>6-12 meses</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-phase4">Phase 4</span></td>
+                        <td class="price-high">$50,000-150,000</td>
+                        <td class="price-high">$72.5-192.5K</td>
+                        <td>Train 70B+, production cluster</td>
+                        <td>12-24 meses</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 2rem;"><strong>Nota:</strong> Preços são em USD (Paraguay). Todos valores podem variar ±15% dependendo de câmbio, disponibilidade, e timing.</p>
+        </div>
+
+        <!-- PARAGUAY PRICING -->
+        <div class="card">
+            <h2>🇵🇾 Parte III: Preços no Paraguai — Componentes Principais</h2>
+
+            <p>Baseado em pesquisa de lojas em <strong>Ciudad del Este</strong> (fevereiro 2026):</p>
+
+            <h3>Lojas Verificadas:</h3>
+            <ul>
+                <li><strong>Casa Nissei:</strong> <a href="https://nissei.com/py/" class="source-link" target="_blank">nissei.com/py</a> — GPUs, periféricos</li>
+                <li><strong>Mega Eletrônicos:</strong> <a href="https://www.megaeletronicos.com" class="source-link" target="_blank">megaeletronicos.com</a> — Eletrônicos gerais</li>
+                <li><strong>Cellshop:</strong> <a href="https://cellshop.com" class="source-link" target="_blank">cellshop.com</a> — Tech, celulares, componentes</li>
+                <li><strong>Compulandia:</strong> <a href="https://www.compulandia.com.py" class="source-link" target="_blank">compulandia.com.py</a> — PC components</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">Comparação Paraguay vs Brasil (Feb 2026):</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Preço Paraguay (USD)</th>
+                        <th>Preço Brasil (R$ → USD)</th>
+                        <th>Economia</th>
+                        <th>% Discount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RTX 4090 24GB</strong></td>
+                        <td class="price">$1,800-2,000</td>
+                        <td>R$ 12,000-15,000<br>($2,300-2,900)</td>
+                        <td class="savings">$500-900</td>
+                        <td class="savings">22-31%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corsair HX1200</strong></td>
+                        <td class="price">$400-500</td>
+                        <td>R$ 3,500-4,000<br>($670-770)</td>
+                        <td class="savings">$170-370</td>
+                        <td class="savings">25-48%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ryzen 9 9950X</strong></td>
+                        <td class="price">$500-550</td>
+                        <td>R$ 4,000-4,500<br>($770-870)</td>
+                        <td class="savings">$220-370</td>
+                        <td class="savings">29-43%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DDR5 64GB kit</strong></td>
+                        <td class="price">$200-280</td>
+                        <td>R$ 1,800-2,200<br>($350-425)</td>
+                        <td class="savings">$70-225</td>
+                        <td class="savings">20-53%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Samsung 990 Pro 2TB</strong></td>
+                        <td class="price">$180-220</td>
+                        <td>R$ 1,500-1,800<br>($290-350)</td>
+                        <td class="savings">$70-170</td>
+                        <td class="savings">24-49%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fractal Torrent case</strong></td>
+                        <td class="price">$180-220</td>
+                        <td>R$ 1,500-2,000<br>($290-385)</td>
+                        <td class="savings">$70-205</td>
+                        <td class="savings">24-53%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 1.5rem;"><strong>Economia total estimada (Phase 0):</strong> <span class="savings">$1,000-2,000</span> vs comprar no Brasil, mesmo considerando impostos de importação.</p>
+
+            <div class="warning-box" style="margin-top: 1.5rem;">
+                <h3>⚠️ Notas sobre Preços Paraguay</h3>
+                <ul>
+                    <li><strong>Câmbio:</strong> Preços em PYG (Guarani). 1 USD ≈ 7,300 PYG (fev 2026). Pode variar.</li>
+                    <li><strong>Disponibilidade:</strong> RTX 4090 tem estoque limitado. Ligar antes de ir: +595 61 501-350 (Mega) ou +595 994-193-150 (Cellshop).</li>
+                    <li><strong>Garantia:</strong> Maioria das lojas emite nota fiscal. Garantia internacional NVIDIA/AMD válida.</li>
+                    <li><strong>Negociação:</strong> Preço em cash (USD ou R$) geralmente 5-10% menor que cartão.</li>
+                    <li><strong>Threadripper/A100:</strong> NÃO disponíveis em CDE. Precisam ser importados via EUA/China (eBay, Newegg, AliExpress).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- IMPORT STRATEGY -->
+        <div class="card">
+            <h2>🛃 Parte IV: Estratégia de Importação — Brasil ↔ Paraguay</h2>
+
+            <h3>Regras de Quota (2026):</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Entrada</th>
+                        <th>Quota Duty-Free</th>
+                        <th>Taxa Sobre Excedente</th>
+                        <th>Limite por Produto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Terrestre</strong><br>(Ponte da Amizade)</td>
+                        <td class="price">$500 USD/pessoa</td>
+                        <td class="price-high">50% sobre excedente</td>
+                        <td>Eletrônicos: geralmente 1 unidade de cada tipo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aéreo</strong><br>(Voo Assunção → Brasil)</td>
+                        <td class="price">$1,000 USD/pessoa</td>
+                        <td class="price-high">50% sobre excedente</td>
+                        <td>Mesmas regras</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 2rem;">Cenários de Importação por Fase:</h3>
+
+            <h4><span class="badge badge-phase0">Phase 0</span> Import Strategy ($2,500 total):</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estratégia</th>
+                        <th>Descrição</th>
+                        <th>Custo Total (produto + taxa)</th>
+                        <th>Viagens</th>
+                        <th>Risco Legal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>A) Fracionado Legal</strong><br><span class="badge badge-recommended">Safest</span></td>
+                        <td>5 pessoas, 5 viagens, $500 cada</td>
+                        <td class="price">$2,500 (zero taxa)</td>
+                        <td>5</td>
+                        <td>✅ Zero</td>
+                    </tr>
+                    <tr>
+                        <td><strong>B) Declaração Full</strong></td>
+                        <td>1 viagem, declarar tudo</td>
+                        <td class="price-high">$2,500 + $1,000 taxa = $3,500</td>
+                        <td>1</td>
+                        <td>✅ Zero (legal)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C) Híbrido</strong><br><span class="badge badge-recommended">Recomendado</span></td>
+                        <td>Viagem 1: GPU ($1,900, declarar, taxa $700)<br>Viagem 2: Resto ($600 com 2 pessoas = 2x $300)</td>
+                        <td class="price">$2,500 + $700 = $3,200</td>
+                        <td>2</td>
+                        <td>✅ Zero</td>
+                    </tr>
+                    <tr>
+                        <td><strong>D) Não declarar</strong><br><span class="badge badge-critical">Not Recommended</span></td>
+                        <td>Tentar passar sem declarar</td>
+                        <td class="price">$2,500 ou multa pesada se pego</td>
+                        <td>1-2</td>
+                        <td>❌ Alto risco (multa 50-300% + apreensão)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top: 2rem;"><span class="badge badge-phase1">Phase 1</span> Import ($3K-6K):</h4>
+            <p>Similar strategy: Threadripper CPU + Mobo (~$2,500) pode ser feito em 2-3 viagens com declaração parcial. RAM e SSDs cabem na quota.</p>
+
+            <h4 style="margin-top: 1.5rem;"><span class="badge badge-phase2">Phase 2</span> Import (2ª GPU ~$2K):</h4>
+            <p>1 viagem com declaração. Taxa ~$750. Total $2,750. Ainda mais barato que Brasil.</p>
+
+            <div class="critical-box" style="margin-top: 2rem;">
+                <h3>🚨 Componentes que NÃO valem a pena importar via Paraguay:</h3>
+                <ul>
+                    <li><strong>A100 / H100:</strong> Não disponíveis em CDE. Importar dos EUA via correio internacional (import formal) pode cupar 60-100% de imposto. Melhor: comprar usado no eBay/Newegg e usar serviço de freight forwarder + declaração simplificada (~30-40% taxa total).</li>
+                    <li><strong>Threadripper 7000:</strong> Limitado em CDE. Se encontrar, preço não é muito melhor que Brasil. Considere comprar via Newegg US + freight.</li>
+                    <li><strong>Cabos, periféricos baratos:</strong> Diferença de preço pequena. Foco em itens de alto valor (GPUs, CPUs, RAM, PSUs).</li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top: 2rem;">Checklist de Viagem a Ciudad del Este:</h3>
+            <ol>
+                <li>✅ Pesquisar preços online antes (WhatsApp das lojas: Mega +595 61 501-350, Cellshop +595 994-193-150)</li>
+                <li>✅ Levar USD cash (melhor taxa) ou R$ (aceito, mas taxa pior)</li>
+                <li>✅ Pedir nota fiscal (importante para garantia)</li>
+                <li>✅ Verificar produto antes de sair da loja (abrir caixa, testar se possível)</li>
+                <li>✅ Declarar na Receita Federal brasileira (app e-DBV ou presencial na ponte)</li>
+                <li>✅ Guardar comprovante de pagamento da taxa (se declarar)</li>
+                <li>✅ Seguro de viagem para produtos de alto valor (opcional mas recomendado)</li>
+            </ol>
+        </div>
+
+        <!-- POWER & INFRASTRUCTURE -->
+        <div class="card">
+            <h2>⚡ Parte V: Infraestrutura Elétrica & Resfriamento (Brasil)</h2>
+
+            <h3>Consumo de Energia por Fase:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fase</th>
+                        <th>GPUs</th>
+                        <th>Power Draw (TDP)</th>
+                        <th>Power Draw Real (pico)</th>
+                        <th>Circuito Necessário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Phase 0</strong></td>
+                        <td>1x RTX 4090</td>
+                        <td>450W GPU + 300W sistema = 750W</td>
+                        <td>~900W</td>
+                        <td>✅ 20A padrão (OK)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 2</strong></td>
+                        <td>2x RTX 4090</td>
+                        <td>900W GPU + 300W sistema = 1,200W</td>
+                        <td>~1,400W</td>
+                        <td>⚠️ 20A no limite, preferível 30A</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 3 (4x 4090)</strong></td>
+                        <td>4x RTX 4090</td>
+                        <td>1,800W GPU + 400W sistema = 2,200W</td>
+                        <td>~2,600W</td>
+                        <td>❌ Requer 30-40A dedicado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 3 (2x A100)</strong></td>
+                        <td>2x A100 80GB</td>
+                        <td>600W GPU + 300W sistema = 900W</td>
+                        <td>~1,100W</td>
+                        <td>✅ 20A (OK)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 4 (8x A100)</strong></td>
+                        <td>8x A100 80GB</td>
+                        <td>2,400W GPU + 600W sistema = 3,000W</td>
+                        <td>~3,600W</td>
+                        <td>❌ Requer 50A+ ou circuito trifásico</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 2rem;">Custo de Eletricidade (Brasil):</h3>
+
+            <p><strong>Tarifa residencial média (2026):</strong> R$ 0.80-1.20/kWh (~$0.15-0.23 USD/kWh com impostos)</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fase</th>
+                        <th>Consumo Médio (treino 24/7)</th>
+                        <th>kWh/mês</th>
+                        <th>Custo/mês (R$)</th>
+                        <th>Custo/mês (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Phase 0 (1 GPU)</strong></td>
+                        <td>0.75 kW × 720h</td>
+                        <td>540 kWh</td>
+                        <td>R$ 430-650</td>
+                        <td class="price">$80-125</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 2 (2 GPUs)</strong></td>
+                        <td>1.2 kW × 720h</td>
+                        <td>864 kWh</td>
+                        <td>R$ 690-1,040</td>
+                        <td class="price-high">$130-200</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 3 (4 GPUs)</strong></td>
+                        <td>2.2 kW × 720h</td>
+                        <td>1,584 kWh</td>
+                        <td>R$ 1,270-1,900</td>
+                        <td class="price-high">$240-365</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 4 (8 A100)</strong></td>
+                        <td>3.0 kW × 720h</td>
+                        <td>2,160 kWh</td>
+                        <td>R$ 1,730-2,590</td>
+                        <td class="price-high">$330-500</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 1rem;"><strong>Nota:</strong> Treino 24/7 é worst-case. Uso real típico (8h treino/dia + 16h idle) = ~40-50% dos valores acima.</p>
+
+            <h3 style="margin-top: 2rem;">Recomendações de Infraestrutura:</h3>
+
+            <h4>Phase 0-1 (até 1 GPU):</h4>
+            <ul>
+                <li>✅ Circuito 20A padrão brasileiro (127V ou 220V) é suficiente</li>
+                <li>✅ UPS 1500VA (~$250-400 no Paraguay) para proteção de dados</li>
+                <li>✅ Case com bom airflow (Fractal Torrent tem 5x 140mm fans)</li>
+                <li>⚠️ Considere A/C no home office (RTX 4090 = aquecedor de 450W)</li>
+            </ul>
+
+            <h4>Phase 2 (2 GPUs):</h4>
+            <ul>
+                <li>⚠️ Upgrade para circuito 30A recomendado (~R$ 500-1,500 instalação)</li>
+                <li>✅ UPS 2200VA ou superior</li>
+                <li>✅ A/C obrigatório em clima quente (Brasil centro/norte)</li>
+                <li>✅ Noise isolation se em ambiente residencial (GPUs a full load = 50-60 dB)</li>
+            </ul>
+
+            <h4>Phase 3+ (4+ GPUs ou A100s):</h4>
+            <ul>
+                <li>❌ Home office NÃO recomendado (calor, ruído, consumo)</li>
+                <li>✅ Considere colocation em data center (R$ 500-2,000/mês em São Paulo)</li>
+                <li>✅ Se manter em casa: sala dedicada com A/C industrial + isolamento acústico</li>
+                <li>✅ Circuito 40-50A ou trifásico (eletricista comercial, ~R$ 3,000-8,000)</li>
+                <li>✅ UPS enterprise-grade ou gerador backup</li>
+            </ul>
+
+            <div class="warning-box" style="margin-top: 1.5rem;">
+                <h3>🌡️ Resfriamento em Clima Brasileiro</h3>
+                <p>Brasil = clima quente/úmido na maioria das regiões. Considerações:</p>
+                <ul>
+                    <li><strong>Temperatura ambiente ideal:</strong> 18-24°C para GPUs</li>
+                    <li><strong>Realidade brasileira:</strong> 25-35°C (verão), 15-25°C (inverno)</li>
+                    <li><strong>Solução:</strong> A/C split 12,000 BTU (~R$ 2,000-3,500) para sala até 20m²</li>
+                    <li><strong>Custo A/C:</strong> +R$ 200-400/mês em conta de luz (adicional ao PC)</li>
+                    <li><strong>Alternative:</strong> Water cooling custom loop ($800-1,500) reduz temperatura mas não elimina necessidade de A/C</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RECOMMENDED BUILD -->
+        <div class="card">
+            <h2>🏆 Parte VI: Build Recomendado — Best Value Path 2→3</h2>
+
+            <div class="highlight-box">
+                <h3>Estratégia Recomendada: "Start Small, Scale Smart"</h3>
+                <p>Após análise de custo/benefício, plataforma, e expansibilidade, esta é a melhor trajetória:</p>
+            </div>
+
+            <div class="timeline">
+                <!-- Recommended Phase 0 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase0">Comprar AGORA</span> Phase 0 — Enable Path 2 Immediately</h4>
+                    <div class="cost">Investimento: $2,500 USD</div>
+                    
+                    <table style="margin-top: 1rem;">
+                        <thead>
+                            <tr>
+                                <th>Componente</th>
+                                <th>Modelo Específico</th>
+                                <th>Onde Comprar</th>
+                                <th>Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>GPU</strong></td>
+                                <td>Gigabyte RTX 4090 Gaming OC 24GB</td>
+                                <td>Casa Nissei, CDE</td>
+                                <td class="price">$1,900</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PSU</strong></td>
+                                <td>Corsair HX1200 Platinum 1200W</td>
+                                <td>Mega Eletrônicos, CDE</td>
+                                <td class="price">$450</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Case</strong> (se precisar)</td>
+                                <td>Fractal Design Torrent ou Lian Li O11</td>
+                                <td>Cellshop, CDE</td>
+                                <td class="price">$200</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="margin-top: 1rem;"><strong>Import Strategy:</strong> 2 viagens. (1) GPU + declaração = $1,900 + $700 taxa. (2) PSU + Case com 2 pessoas = $650 dentro de quota.</p>
+                    <p><strong>Total landed cost:</strong> $2,500 + $700 = <span class="price">$3,200</span> vs $4,000-5,000 no Brasil.</p>
+
+                    <p style="margin-top: 1rem;"><strong>Por que comprar agora?</strong></p>
+                    <ul>
+                        <li>RTX 5090 pode subir para $5,000 (já em shortage)</li>
+                        <li>RTX 4090 price stable (~$1,900) e disponível</li>
+                        <li>Você PRECISA de GPU melhor que RTX 3060 para Path 2</li>
+                        <li>PSU 1200W serve até Phase 2 (2 GPUs)</li>
+                    </ul>
+                </div>
+
+                <!-- Recommended Phase 1 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase1">1-3 meses</span> Phase 1 — Platform Foundation</h4>
+                    <div class="cost">Investimento: $4,000 USD</div>
+                    
+                    <table style="margin-top: 1rem;">
+                        <tbody>
+                            <tr>
+                                <td><strong>CPU</strong></td>
+                                <td>AMD Threadripper 7960X (24c/48t, 48 PCIe lanes)</td>
+                                <td class="price">$1,600</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Motherboard</strong></td>
+                                <td>Gigabyte TRX50 AI TOP (4x PCIe 5.0 x16)</td>
+                                <td class="price">$1,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>RAM</strong></td>
+                                <td>Corsair Vengeance DDR5 64GB (2x32GB) 5600MHz</td>
+                                <td class="price">$250</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Storage</strong></td>
+                                <td>2x Samsung 990 Pro 2TB NVMe Gen4</td>
+                                <td class="price">$400 ($200 cada)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cooling</strong></td>
+                                <td>Arctic Liquid Freezer II 360mm AIO</td>
+                                <td class="price">$150</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="margin-top: 1rem;"><strong>Por que Threadripper?</strong></p>
+                    <ul>
+                        <li>AM5 = MAX 2 GPUs (x8/x8). Se precisar de 3-4 GPUs no futuro, terá que trocar mobo+CPU (perda de $900+).</li>
+                        <li>Threadripper 7960X = 48 lanes = 3x GPUs em x16 nativo (ou 4x em x8 se precisar).</li>
+                        <li>Custo extra ~$1,200 vs AM5, mas é <strong>one-time investment</strong> que permite escalar até Phase 4 sem trocar plataforma.</li>
+                    </ul>
+
+                    <p><strong>Onde comprar:</strong> CPU e Mobo — Newegg US → freight forwarder (~$200 shipping + $400-600 import tax). RAM e SSDs — Paraguay.</p>
+                </div>
+
+                <!-- Recommended Phase 2 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase2">3-6 meses</span> Phase 2 — Second GPU</h4>
+                    <div class="cost">Investimento: $2,800 USD</div>
+                    
+                    <table style="margin-top: 1rem;">
+                        <tbody>
+                            <tr>
+                                <td><strong>GPU #2</strong></td>
+                                <td>Gigabyte RTX 4090 Gaming OC 24GB (mesma da #1)</td>
+                                <td class="price">$1,900</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PSU Upgrade</strong></td>
+                                <td>Corsair HX1600i ou Seasonic Prime TX-1600</td>
+                                <td class="price">$800</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cooling</strong></td>
+                                <td>3x Noctua NF-A14 (para airflow extra)</td>
+                                <td class="price">$100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="margin-top: 1rem;"><strong>Com 2x RTX 4090 você pode:</strong></p>
+                    <ul>
+                        <li>Fine-tune 13B (tensor parallelism via DeepSpeed/FSDP)</li>
+                        <li>Train 7B from scratch em 2-3 dias (vs 1 semana com 1 GPU)</li>
+                        <li>Run 30B Q4 inference (model parallelism)</li>
+                    </ul>
+
+                    <p><strong>⚠️ Limitação:</strong> Sem NVLink, all-reduce operations via PCIe (~32 GB/s). Acceptable para 7-13B, bottleneck para 30B+ training.</p>
+                </div>
+
+                <!-- Recommended Phase 3 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase3">6-12 meses</span> Phase 3 — Decision Point</h4>
+                    <div class="cost">Investimento: $10,000-20,000 USD</div>
+                    
+                    <p><strong>Decisão crítica:</strong> Seu objetivo mudou para training sério (30B+) ou continua em fine-tuning + inference?</p>
+
+                    <h4 style="margin-top: 1rem;">Opção A: Manter RTX Consumer (Fine-tuning focus)</h4>
+                    <p>Adicionar mais 2x RTX 4090 (total 4) = $3,800-4,400.</p>
+                    <ul>
+                        <li>✅ Best para: Fine-tuning 13-30B, inference 70B, cost-effective</li>
+                        <li>❌ Not ideal para: Training 30B+ from scratch (PCIe bottleneck)</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem;">Opção B: Upgrade para A100 (Training focus)</h4>
+                    <p>Vender as 2x RTX 4090 (~$3,000), comprar 2x A100 80GB usado (~$18,000).</p>
+                    <ul>
+                        <li>✅ Best para: Training 30B from scratch, research-grade work</li>
+                        <li>✅ NVLink 600GB/s = 20x faster inter-GPU</li>
+                        <li>❌ Custo alto ($15K net investment)</li>
+                    </ul>
+
+                    <p style="margin-top: 1rem;"><strong>Recomendação:</strong></p>
+                    <ul>
+                        <li>Se ROI vem de <strong>fine-tuning modelos open-source</strong> (LLaMA, Mistral) → Opção A (mais 2x 4090)</li>
+                        <li>Se objetivo é <strong>pesquisa ou training custom architecture 30B+</strong> → Opção B (A100)</li>
+                        <li>Se incerto → Mantenha 2x 4090, valide use-case, decida depois</li>
+                    </ul>
+                </div>
+
+                <!-- Recommended Phase 4 -->
+                <div class="timeline-item">
+                    <h4><span class="badge badge-phase4">12-24 meses</span> Phase 4 — Enterprise Scale (Opcional)</h4>
+                    <div class="cost">Investimento: $50,000-150,000 USD</div>
+                    
+                    <p><strong>Só faça Phase 4 se:</strong></p>
+                    <ul>
+                        <li>✅ Levantou capital ($500K+ seed round)</li>
+                        <li>✅ Tem clientes enterprise ou revenue recorrente (>$50K/mês)</li>
+                        <li>✅ Precisa treinar 70B+ ou servir inference em scale (1M+ requests/dia)</li>
+                    </ul>
+
+                    <p><strong>Neste ponto:</strong></p>
+                    <ul>
+                        <li>Compare custo de ownership vs cloud (AWS p4d, GCP A100)</li>
+                        <li>8x A100 80GB = break-even vs cloud em ~8-12 meses de uso 24/7</li>
+                        <li>Considere colocation em data center (Equinix, Odata em SP) vs home setup</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 2rem;">
+                <h3>💡 Resumo da Estratégia Recomendada</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Quando</th>
+                            <th>Ação</th>
+                            <th>Custo</th>
+                            <th>Acumulado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>AGORA</strong></td>
+                            <td>1x RTX 4090 + PSU 1200W + Case</td>
+                            <td class="price">$3,200 landed</td>
+                            <td class="price">$3.2K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>+1-3 meses</strong></td>
+                            <td>Threadripper 7960X + TRX50 mobo + 64GB DDR5 + 4TB NVMe</td>
+                            <td class="price">$4,000</td>
+                            <td class="price">$7.2K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>+3-6 meses</strong></td>
+                            <td>2ª RTX 4090 + PSU 1600W upgrade</td>
+                            <td class="price">$2,800</td>
+                            <td class="price">$10K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>+6-12 meses</strong></td>
+                            <td>Decision: +2x 4090 OU 2x A100</td>
+                            <td class="price-high">$4K-18K</td>
+                            <td class="price-high">$14-28K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>+12-24 meses</strong></td>
+                            <td>Phase 4 (se enterprise scale)</td>
+                            <td class="price-high">$50-150K</td>
+                            <td class="price-high">$64-178K</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SOURCES -->
+        <div class="card">
+            <h2>📚 Fontes & Referências</h2>
+
+            <h3>Pricing & Availability:</h3>
+            <ul>
+                <li><a href="https://nissei.com/py/" class="source-link" target="_blank">Casa Nissei Paraguay</a> — RTX 4090 pricing</li>
+                <li><a href="https://www.megaeletronicos.com" class="source-link" target="_blank">Mega Eletrônicos</a> — General components</li>
+                <li><a href="https://cellshop.com" class="source-link" target="_blank">Cellshop</a> — Tech & peripherals</li>
+                <li><a href="https://www.compulandia.com.py" class="source-link" target="_blank">Compulandia</a> — PC components</li>
+                <li><a href="https://www.comprasparaguai.com.br" class="source-link" target="_blank">Compras Paraguai</a> — Price aggregator Brazil ↔ Paraguay</li>
+            </ul>
+
+            <h3>Technical Specs:</h3>
+            <ul>
+                <li><a href="https://www.techpowerup.com/gpu-specs/geforce-rtx-4090.c3889" class="source-link" target="_blank">TechPowerUp RTX 4090 Database</a></li>
+                <li><a href="https://www.amd.com/en/products/processors/workstations/ryzen-threadripper.html" class="source-link" target="_blank">AMD Threadripper 7000 Series</a></li>
+                <li><a href="https://www.asus.com/motherboards-components/motherboards/workstation/pro-ws-trx50-sage-wifi/" class="source-link" target="_blank">ASUS Pro WS TRX50-SAGE WiFi</a></li>
+                <li><a href="https://www.gigabyte.com/Motherboard/TRX50-AI-TOP" class="source-link" target="_blank">Gigabyte TRX50 AI TOP</a></li>
+                <li><a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5396" class="source-link" target="_blank">NVIDIA RTX 40 Series Power Specs</a></li>
+            </ul>
+
+            <h3>Multi-GPU ML Resources:</h3>
+            <ul>
+                <li><a href="https://nzocloud.com/blog/ai-workstation-build/" class="source-link" target="_blank">AI Workstation Build Guide 2025</a> — nzocloud.com</li>
+                <li><a href="https://www.localai.computer/learn/ai-workstation-guide" class="source-link" target="_blank">Local AI Computer Workstation Guide</a></li>
+                <li><a href="https://www.hardware-corner.net/multi-gpu-llm-motherboards/" class="source-link" target="_blank">Multi-GPU LLM Motherboards</a> — Hardware Corner</li>
+                <li><a href="https://flashattn.dev/blog/multi-gpu-training-setup" class="source-link" target="_blank">Multi-GPU Training Setup</a> — FlashAttention</li>
+            </ul>
+
+            <h3>Paraguay Import Regulations:</h3>
+            <ul>
+                <li><a href="https://turismoitaipu.com.br/en/blog/paraguay-quota/" class="source-link" target="_blank">Paraguay Quota 2025 Guide</a> — Turismo Itaipu</li>
+                <li><a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/viagens-internacionais/guia-do-viajante" class="source-link" target="_blank">Receita Federal: Guia do Viajante</a> — Official Brazil customs</li>
+            </ul>
+
+            <h3>Brazil Electricity Costs:</h3>
+            <ul>
+                <li><a href="https://www.intratec.us/solutions/energy-prices-markets/commodity/electricity-price-brazil" class="source-link" target="_blank">Brazil Electricity Prices (Industrial)</a> — Intratec</li>
+                <li><a href="https://worldpopulationreview.com/country-rankings/cost-of-electricity-by-country" class="source-link" target="_blank">Cost of Electricity by Country</a> — World Population Review</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p><strong>Relatório gerado por:</strong> Azimute (Research Specialist), OpenClaw Agent Framework</p>
+            <p><strong>Data:</strong> 2026-02-22 | <strong>Cliente:</strong> Luis Adures | <strong>Projeto:</strong> Hardware Expansível Path 2→3</p>
+            <p style="margin-top: 1rem; color: #6e7681;"><em>Disclaimer: Preços e disponibilidade podem variar. Sempre verificar antes de comprar. Este relatório é para fins informativos e não constitui consultoria financeira ou legal. Responsabilidade de importação é do comprador.</em></p>
+        </footer>
+    </div>

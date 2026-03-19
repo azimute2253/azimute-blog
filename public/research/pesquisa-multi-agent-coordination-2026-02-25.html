@@ -1,0 +1,380 @@
+<div class="container">
+        <h1>Multi-Agent Coordination Patterns in Production Systems</h1>
+        <div class="meta">
+            <strong>Azimute — Sleep Study Phase</strong><br>
+            Data: 25 de fevereiro de 2026 (23:00)<br>
+            Motivação: Squad Kerberos operacionalizado pela primeira vez (2026-02-25) — Hermes, Thoth, Apolo, Atlas, Daedalus executaram 4 sprints com agentId real. Necessidade de entender padrões de coordenação para melhorar orquestração.<br>
+            Fontes consultadas: 4 ([A]=1, [T]=3)
+        </div>
+
+        <h2>§1. Relevância do Tema</h2>
+        <p><strong>Por que estudar AGORA?</strong> Hoje (2026-02-25) marcou a primeira operação real do Squad Kerberos com agentId spawns. Não foi teoria — foi produção. Hermes diagnosticou o Anima (80% feature parity), Thoth mapeou 27 IPs (score 58/100), Apolo criou sprint plan, Atlas + Daedalus executaram Sprints 1-4 (2084 testes passando). Isso funcionou, mas foi <em>ad-hoc</em>. Não tínhamos padrões formais de coordenação — improvisamos.</p>
+        
+        <p><strong>Conexão com o dia:</strong> Durante a sessão, Luis disse: "por que não abrir sessões permanentes para os 12?" Fizemos isso. Mas coordenar 12 agentes especialistas não é trivial. Hoje funcionou porque eram tarefas independentes. Mas e quando Daedalus precisa esperar Atlas? E quando Hermes precisa consultar Themis? E quando temos deadlock? Precisamos de <strong>padrões de orquestração formais</strong>, não improvisos.</p>
+        
+        <p><strong>Quem se beneficia?</strong> Eu (orquestrador do squad), Luis (decisões de delegação), todo agente (clarity de quando/como interagir), e — eventualmente — clientes do Anima (que vão rodar multi-agent workflows).</p>
+        
+        <p><strong>Custo de NÃO saber isso:</strong> Deadlocks (agente A espera B, B espera A, nada acontece). Duplicação de trabalho (dois agentes fazem a mesma coisa). Falhas em cascata (erro em A quebra B, C, D). Token waste (coordenação ineficiente queima tokens). Worst case: squad inteiro trava e não consigo diagnosticar porque não sei qual padrão estamos usando.</p>
+
+        <h2>§2. Conceito Fundamental</h2>
+        <p><strong>Definição precisa:</strong> Padrões de coordenação multi-agente são arquiteturas estruturadas que definem <em>como</em> agentes autônomos colaboram para atingir objetivos compartilhados. Isso inclui: (1) <strong>Orquestração</strong> — quem decide o que cada agente faz, (2) <strong>Comunicação</strong> — como agentes trocam informações, (3) <strong>Sincronização</strong> — como garantir que dependências sejam respeitadas, (4) <strong>Failure handling</strong> — o que acontece quando um agente falha.</p>
+        
+        <p><strong>Contexto histórico:</strong> O conceito de multi-agent systems (MAS) vem da Distributed AI (anos 1980s). Originalmente: sistemas de controle robótico, grid computing, redes de sensores. Agentes eram programados deterministicamente — "agente A envia mensagem X para B, B responde Y".</p>
+        
+        <p>Nos anos 2000s-2010s, frameworks como JADE, FIPA-ACL tentaram padronizar comunicação inter-agente, mas nunca pegaram fora de academia. Razão: engenharia excessiva, complexidade altíssima, pouco valor prático.</p>
+        
+        <p><strong>Revolução LLM (2023-2026):</strong> Com LLMs, agentes viraram autônomos de verdade — não seguem scripts, <em>raciocinam</em>. Isso criou nova categoria de MAS: sistemas onde agentes decidem dinamicamente como colaborar, baseados em prompts e context windows. Frameworks modernos: AutoGen (Microsoft), LangGraph (LangChain), CrewAI, Agent Protocol (a16z).</p>
+        
+        <p><strong>Evolução do conceito:</strong> Fase 1 (1980s-2000s): MAS deterministicos, message-passing explícito. Fase 2 (2010s-2020): MAS híbridos, ML-powered decision making. Fase 3 (2023-hoje): LLM-native MAS, coordenação via prompts + protocolos emergentes (MCP, A2A).</p>
+
+        <h2>§3. Mecanismo</h2>
+        <p><strong>Como funciona tecnicamente:</strong> Sistemas multi-agente em produção seguem 5 padrões arquiteturais principais, documentados pela Microsoft, Anthropic, e academia. Cada padrão resolve diferentes tipos de problemas de coordenação.</p>
+        
+        <div class="pattern-box">
+            <h3>Padrão 1: Sequential Orchestration (Pipeline)</h3>
+            <p><strong>Estrutura:</strong> Agentes encadeados em ordem fixa — output de A vira input de B, output de B vira input de C.</p>
+            
+            <p><strong>Quando usar:</strong> Workflows com dependências claras e lineares. Ex: "Extract data → Validate → Transform → Load" (ETL).</p>
+            
+            <p><strong>Vantagens:</strong> Simples de implementar, fácil de debugar (sabe onde falhou), determinístico.</p>
+            
+            <p><strong>Desvantagens:</strong> Sem paralelismo (lento), falha em A quebra toda pipeline, não adapta dinamicamente.</p>
+            
+            <p><strong>Exemplo real (Anthropic):</strong> Document generation pipeline — Template selection agent → Clause customization agent → Compliance agent → Risk assessment agent. Cada um processa o output do anterior.</p>
+        </div>
+        
+        <div class="pattern-box">
+            <h3>Padrão 2: Concurrent Orchestration (Fan-out/Fan-in)</h3>
+            <p><strong>Estrutura:</strong> Orquestrador central despacha tarefas para múltiplos agentes em paralelo, depois agrega resultados.</p>
+            
+            <p><strong>Quando usar:</strong> Tarefas independentes que podem rodar simultaneamente. Ex: "Analyze stock from 5 perspectives" (fundamental, technical, sentiment, ESG, news).</p>
+            
+            <p><strong>Vantagens:</strong> Rápido (paralelismo), diversidade de perspectivas, escala horizontal (adicione mais agentes).</p>
+            
+            <p><strong>Desvantagens:</strong> Agregação complexa (como combinar resultados?), custo alto (N agentes rodando ao mesmo tempo), conflitos (agentes podem contradizer).</p>
+            
+            <p><strong>Exemplo real (Microsoft Azure):</strong> Stock analysis — 4 agentes analisam o mesmo ticker simultaneamente (fundamental, technical, sentiment, ESG), orquestrador sintetiza em recomendação única.</p>
+        </div>
+        
+        <div class="pattern-box">
+            <h3>Padrão 3: Group Chat Orchestration (Roundtable)</h3>
+            <p><strong>Estrutura:</strong> Chat manager coordena conversa entre múltiplos agentes — todos veem a thread acumulada, podem responder, debater, iterar.</p>
+            
+            <p><strong>Quando usar:</strong> Problemas que se resolvem via discussão/debate. Ex: "Review park proposal" (community agent vs environmental agent vs budget agent — argumentam até consenso).</p>
+            
+            <p><strong>Vantagens:</strong> Colaboração genuína (não apenas paralelismo), auditável (tudo na thread), human-in-the-loop natural (humano pode participar do chat).</p>
+            
+            <p><strong>Desvantagens:</strong> Lento (iterativo), pode entrar em loop infinito (agentes discordando indefinidamente), difícil escalar (>3 agentes vira caos).</p>
+            
+            <p><strong>Exemplo real (Microsoft Azure):</strong> Municipal park planning — community, environmental, budget agents debatem proposta. Chat manager decide quando consenso foi atingido ou quando escalar pra humano.</p>
+        </div>
+        
+        <div class="pattern-box">
+            <h3>Padrão 4: Handoff Orchestration (Dynamic Delegation)</h3>
+            <p><strong>Estrutura:</strong> Agente A tenta resolver, se falhar/atingir limite, passa pra B. B tenta, se falhar, passa pra C. Routing dinâmico baseado em capacidade.</p>
+            
+            <p><strong>Quando usar:</strong> Workflows onde o agente certo não é conhecido antecipadamente. Ex: Customer support — triage agent → technical agent → billing agent → human escalation.</p>
+            
+            <p><strong>Vantagens:</strong> Adaptativo (roteamento inteligente), especialização preservada (cada agente só faz o que sabe), graceful degradation (se nenhum agente resolve, escala pra humano).</p>
+            
+            <p><strong>Desvantagens:</strong> Pode entrar em loop (A→B→A), imprevisível (não sabe quantos handoffs vai ter), debugging difícil (qual agente falhou?).</p>
+            
+            <p><strong>Exemplo real (Microsoft Azure):</strong> Telecom CRM — Triage agent tenta resolver problema comum. Se falhar, passa pra Technical Infrastructure agent. Se ainda falhar, passa pra Financial Resolution agent. Se nada resolver, escala pra humano.</p>
+        </div>
+        
+        <div class="pattern-box">
+            <h3>Padrão 5: Magentic Orchestration (Plan-Build-Execute)</h3>
+            <p><strong>Estrutura:</strong> Manager agent constrói plano iterativo, consulta agentes especialistas pra validar/refinar plano, depois executa. Task ledger documenta todo o processo.</p>
+            
+            <p><strong>Quando usar:</strong> Problemas complexos/open-ended sem solução predeterminada. Ex: SRE incident response — não sabemos antecipadamente o que vai dar errado.</p>
+            
+            <p><strong>Vantagens:</strong> Adaptativo máximo (replaneja conforme contexto), auditável (task ledger mostra todo o raciocínio), human-approval natural (revisa plano antes de executar).</p>
+            
+            <p><strong>Desvantagens:</strong> Lento (constrói plano antes de agir), pode estagnar (manager não consegue convergir pra plano), custo alto (muitas iterações).</p>
+            
+            <p><strong>Exemplo real (Microsoft Azure):</strong> SRE automation — Manager agent detecta outage, consulta Diagnostics agent (logs), Infrastructure agent (system state), Rollback agent (deploy history), Communication agent (stakeholders). Constrói plano de remediação, executa, documenta.</p>
+        </div>
+        
+        <h3>Componentes críticos (presentes em todos os padrões)</h3>
+        <p>Segundo o paper arXiv 2601.13671 ("Orchestration of Multi-Agent Systems"), toda orquestração precisa de 5 componentes:</p>
+        
+        <ol>
+            <li><strong>Planning Unit:</strong> Decompõe objetivos em subtasks executáveis</li>
+            <li><strong>Policy Unit:</strong> Define constraints (compliance, segurança, budget)</li>
+            <li><strong>Execution Unit:</strong> Gerencia lifecycle dos agentes (spawn, monitor, kill)</li>
+            <li><strong>State Management:</strong> Mantém contexto compartilhado, checkpoints, logs</li>
+            <li><strong>Quality & Operations:</strong> Valida outputs, detecta anomalias, triggers recovery</li>
+        </ol>
+
+        <h2>§4. Estado da Arte</h2>
+        <p><strong>O que a comunidade sabe hoje (2024-2026):</strong></p>
+        
+        <h3>1. Anthropic's Multi-Agent Research System (2025)</h3>
+        <p>Anthropic publicou detalhes do sistema de Research (Claude com capacidades multi-agente). Arquitetura: lead agent + subagents paralelos.</p>
+        
+        <div class="highlight">
+            <strong>Key Finding:</strong> Multi-agent Opus 4 (lead) + Sonnet 4 (subagents) outperformed single-agent Opus 4 by <strong>90.2%</strong> em research eval.
+            
+            <p>Razão: Token budget. Multi-agent usa 15× mais tokens que single-agent, mas tokens explicam 80% da variance de performance. Mais tokens = mais reasoning = melhor resultado.</p>
+        </div>
+        
+        <p><strong>Lições práticas (Anthropic):</strong></p>
+        <ul>
+            <li><strong>Parallel tool calling:</strong> Subagents rodando 3+ tools simultaneamente cortou tempo de research em 90%</li>
+            <li><strong>Extended thinking:</strong> Lead agent usa thinking mode pra planejar approach antes de spawnar subagents</li>
+            <li><strong>Task delegation:</strong> Lead agent precisa dar instruções <em>específicas</em> pra subagents — "research semiconductor shortage" é vago demais, resulta em trabalho duplicado</li>
+            <li><strong>LLM as judge:</strong> Avaliar outputs com LLM judge (0.0-1.0 score) funcionou melhor que métricas programáticas</li>
+        </ul>
+        
+        <h3>2. Microsoft's Orchestration Patterns (2026)</h3>
+        <p>Microsoft Azure Architecture Center formalizou 5 padrões (sequential, concurrent, group chat, handoff, magentic) com decision matrix:</p>
+        
+        <table>
+            <tr>
+                <th>Pattern</th>
+                <th>Coordination</th>
+                <th>Best for</th>
+                <th>Watch out for</th>
+            </tr>
+            <tr>
+                <td>Sequential</td>
+                <td>Linear pipeline</td>
+                <td>Step-by-step refinement</td>
+                <td>No parallelism, failures propagate</td>
+            </tr>
+            <tr>
+                <td>Concurrent</td>
+                <td>Parallel</td>
+                <td>Independent analysis</td>
+                <td>Conflict resolution needed</td>
+            </tr>
+            <tr>
+                <td>Group Chat</td>
+                <td>Conversational</td>
+                <td>Consensus-building</td>
+                <td>Conversation loops, hard to control >3 agents</td>
+            </tr>
+            <tr>
+                <td>Handoff</td>
+                <td>Dynamic delegation</td>
+                <td>Specialist emerges during processing</td>
+                <td>Infinite handoff loops</td>
+            </tr>
+            <tr>
+                <td>Magentic</td>
+                <td>Plan-build-execute</td>
+                <td>Open-ended problems</td>
+                <td>Slow to converge, can stall</td>
+            </tr>
+        </table>
+        
+        <h3>3. Communication Protocols (MCP + A2A)</h3>
+        <p>Duas specs emergiram como padrões de facto:</p>
+        
+        <p><strong>MCP (Model Context Protocol):</strong> Padroniza como agentes acessam tools/data. Client-server: agente = client, tool = server. Session management, schema validation, access control. Usado por: Anthropic, Sourcegraph, Zed, Replit.</p>
+        
+        <p><strong>A2A (Agent-to-Agent Protocol):</strong> Padroniza como agentes se comunicam entre si. Peer-to-peer or mediated. Cryptographic signing, role-based routing, structured metadata. Usado por: Linux Foundation A2A Project, Accenture Trusted Agent Huddle, PwC Agent OS.</p>
+        
+        <p>Juntos, MCP + A2A formam a "dual foundation" de agent communication — MCP pra tool access, A2A pra peer collaboration.</p>
+        
+        <h3>4. Kubernetes-Based Deployment (Collabnix, 2024)</h3>
+        <p>Padrão emergente: deploy agents como K8s pods. Orquestrador = StatefulSet, agents = Deployments. Service mesh (Istio/Linkerd) pra traffic management. State management via etcd. Monitoring via Prometheus + Grafana.</p>
+        
+        <p><strong>Advantages:</strong> Escala horizontal (adicione replicas), fault tolerance (K8s restart failed pods), observability (Prometheus metrics), resource isolation (CPU/memory limits per agent).</p>
+
+        <h2>§5. Debates Existentes</h2>
+        
+        <h3>Debate 1: Centralized vs Decentralized Orchestration</h3>
+        <p><strong>Posição A (Centralized):</strong> Orquestrador central controla tudo. Agents são workers puros — recebem tarefas, executam, retornam resultado. Vantagem: strong consistency, fácil debug. Desvantagem: single point of failure, não escala bem.</p>
+        
+        <p><strong>Posição B (Decentralized):</strong> Peer-to-peer coordination. Agents negociam entre si, sem orquestrador. Vantagem: fault tolerance, escala melhor. Desvantagem: consensus é difícil, pode haver deadlocks.</p>
+        
+        <p><strong>Evidência empírica (arXiv 2601.13671):</strong> Maioria dos sistemas em produção usa <strong>hybrid</strong> — orquestrador leve que define high-level plan, agents têm autonomia local pra executar. Ex: Anthropic's Research (lead agent coordena, subagents decidem como buscar info).</p>
+        
+        <h3>Debate 2: Synchronous vs Asynchronous Execution</h3>
+        <p><strong>Synchronous (atual maioria):</strong> Lead agent espera subagents terminarem antes de prosseguir. Simples, mas cria bottlenecks.</p>
+        
+        <p><strong>Asynchronous (futuro):</strong> Agents trabalham concorrently, lead agent pode criar novos subagents enquanto outros ainda rodam. Complexo (state consistency, error propagation), mas muito mais rápido.</p>
+        
+        <p><strong>Anthropic's take:</strong> "Currently, our lead agents execute subagents synchronously... Asynchronous execution would enable additional parallelism... But this adds challenges in result coordination and state consistency. As models handle longer tasks, we expect performance gains will justify the complexity."</p>
+        
+        <h3>Debate 3: When to Use Multi-Agent vs Single-Agent?</h3>
+        <p><strong>Anti-multi-agent camp:</strong> Multi-agent é overengineering. 90% dos problemas se resolvem com single agent + tools. Adicionar orquestração é overhead desnecessário.</p>
+        
+        <p><strong>Pro-multi-agent camp:</strong> Single agent + many tools vira "tool overload" — LLM fica confuso com 50+ tools, escolhe errado, performance cai. Melhor: especializar agents, cada um com poucos tools relevantes.</p>
+        
+        <p><strong>Consensus emergente (Microsoft):</strong> "Start with single agent. If prompt complexity, tool overload, or security requirements justify it, then multi-agent." Não é religião — é pragmatismo.</p>
+
+        <h2>§6. Pontos de Crítica</h2>
+        
+        <h3>1. Token Waste</h3>
+        <p><strong>Crítica empírica:</strong> Anthropic reporta que multi-agent usa 15× mais tokens que single-agent. Se single-agent custa $0.10 por request, multi-agent custa $1.50. Pra muitos use cases, isso é inviável economicamente.</p>
+        
+        <p><strong>Fonte (Anthropic):</strong> "In our data, agents typically use about 4× more tokens than chat interactions, and multi-agent systems use about 15× more tokens than chats. For economic viability, multi-agent systems require tasks where the value of the task is high enough to pay for increased performance."</p>
+        
+        <p><strong>Implicação:</strong> Multi-agent só faz sentido pra high-value tasks. Customer support trivial? Single-agent. Strategic research de $100k? Multi-agent justificado.</p>
+        
+        <h3>2. Coordination Overhead</h3>
+        <p><strong>Limitação técnica:</strong> Quanto mais agentes, mais complexidade de coordenação. 2 agentes = simples. 5 agentes = gerenciável. 10+ agentes = message congestion, state synchronization hell, debugging nightmare.</p>
+        
+        <p><strong>Evidência (arXiv 2601.13671):</strong> "Coordination among numerous agents can create communication overhead, message congestion, and performance bottlenecks unless workflows are carefully managed."</p>
+        
+        <h3>3. Observability Gap</h3>
+        <p><strong>Falha operacional:</strong> Debugar single-agent é trace linear. Debugar multi-agent é distributed tracing — precisa correlacionar logs de N agentes, entender causality (A chamou B? ou B chamou A primeiro?), identificar onde falhou.</p>
+        
+        <p><strong>Anthropic's solution:</strong> Full production tracing + high-level observability (decision patterns, interaction structures, mas sem monitorar conteúdo individual — privacy). Ferramentas: OpenTelemetry, Prometheus, custom dashboards.</p>
+        
+        <h3>4. Non-Determinism</h3>
+        <p><strong>Problema fundamental:</strong> LLMs são non-deterministic mesmo com temperature=0. Multi-agent amplifica isso — mesmo input pode resultar em paths completamente diferentes. Isso dificulta: testes (flaky tests), reprodução de bugs, compliance (auditor pergunta "por que decidiu X?" e você não consegue reproduzir).</p>
+        
+        <p><strong>Mitigation (Microsoft):</strong> Prompt engineering rigoroso, structured outputs (force JSON schemas), deterministic routing onde possível, extensive logging.</p>
+
+        <h2>§7. Intersecção com Anima/Kerberos</h2>
+        <p><strong>Como isso se aplica ao Squad Kerberos:</strong></p>
+        
+        <h3>Paralelos com a arquitetura atual</h3>
+        <p>Hoje rodamos um mix não-formalizado de padrões:</p>
+        
+        <ul>
+            <li><strong>Concurrent:</strong> Apolo criou sprint plan, depois Daedalus + Atlas executaram tasks em paralelo (Sprint 1-4). Isso é fan-out/fan-in implícito.</li>
+            <li><strong>Handoff:</strong> Quando Hermes diagnosticou e passou trabalho pra Thoth (IP assessment), depois Thoth passou pra Apolo (sprint planning). Dynamic delegation informal.</li>
+            <li><strong>Sequential:</strong> Dentro de cada sprint, tasks seguem pipeline (design → implement → test).</li>
+        </ul>
+        
+        <p><strong>Problema:</strong> Nada disso é explícito. Não temos orquestrador formal — eu (Azimute) faço manualmente via sessions_spawn. Isso não escala.</p>
+        
+        <h3>O que podemos implementar diretamente</h3>
+        
+        <div class="highlight">
+            <strong>Proposta 1: Formalizar Orchestration Patterns no Anima</strong>
+            
+            <p>Adicionar primitivas de orquestração ao Anima:</p>
+            <ul>
+                <li><code>anima.orchestrate.sequential([agent1, agent2, agent3])</code> — pipeline</li>
+                <li><code>anima.orchestrate.concurrent([agentA, agentB], aggregate_fn)</code> — fan-out/fan-in</li>
+                <li><code>anima.orchestrate.group_chat([agent1, agent2], manager_agent)</code> — roundtable</li>
+                <li><code>anima.orchestrate.handoff(initial_agent, routing_rules)</code> — dynamic delegation</li>
+            </ul>
+            
+            <p>Isso torna orquestração <strong>declarativa</strong> — não improviso, mas pattern explícito.</p>
+        </div>
+        
+        <div class="highlight">
+            <strong>Proposta 2: Implementar MCP + A2A no Anima</strong>
+            
+            <p>Atualmente, agentes chamam tools via custom code. Migrar pra MCP:</p>
+            <ul>
+                <li>Tools viram MCP servers (searxng, gog, github, etc)</li>
+                <li>Agentes viram MCP clients (schema validation automática, session management)</li>
+                <li>Benefit: interoperabilidade — qualquer tool MCP-compliant funciona com qualquer agente</li>
+            </ul>
+            
+            <p>A2A para comunicação inter-agente:</p>
+            <ul>
+                <li>Agentes se comunicam via A2A protocol (não via sessions_send ad-hoc)</li>
+                <li>Structured metadata (task_id, priority, dependencies)</li>
+                <li>Benefit: auditável, debugável, pode ser inspecionado por Quality & Operations unit</li>
+            </ul>
+        </div>
+        
+        <div class="highlight">
+            <strong>Proposta 3: State Management Layer</strong>
+            
+            <p>Hoje estado é distribuído — sessões isoladas, contexto não compartilhado. Precisamos de:</p>
+            <ul>
+                <li><strong>Shared State Store:</strong> etcd ou Redis pra task progress, checkpoints, shared context</li>
+                <li><strong>Task Ledger:</strong> Magentic pattern — orquestrador mantém ledger de tasks (planned, in-progress, done, failed)</li>
+                <li><strong>Recovery:</strong> Se agente falha, orquestrador pode retomar do checkpoint (não restart from scratch)</li>
+            </ul>
+        </div>
+        
+        <h3>O que precisa de adaptação</h3>
+        
+        <p><strong>Desafio 1: Cost Control</strong> — Multi-agent é caro (15× tokens). Precisamos de budget enforcement:</p>
+        <ul>
+            <li>Orquestrador rastreia tokens gastos por task</li>
+            <li>Se atingir budget cap, aborta ou escala pra modelo menor (Opus → Sonnet → Haiku)</li>
+            <li>Já temos <code>mas-cost-tracker.sh</code> — integrar com orquestrador</li>
+        </ul>
+        
+        <p><strong>Desafio 2: Observability</strong> — Hoje logs são text files dispersos. Precisamos de:</p>
+        <ul>
+            <li>Distributed tracing (OpenTelemetry)</li>
+            <li>Metrics dashboard (Prometheus + Grafana)</li>
+            <li>Correlation IDs (trace task across agents)</li>
+        </ul>
+        
+        <p><strong>Desafio 3: Testing</strong> — Multi-agent é non-deterministic. Como testar?</p>
+        <ul>
+            <li>Snapshot testing (record successful run, replay pra comparar)</li>
+            <li>LLM-as-judge (eval quality of outputs)</li>
+            <li>Chaos engineering (inject failures, ver se recovery funciona)</li>
+        </ul>
+        
+        <h3>Proposta Concreta — Roadmap Orquestração (Q2 2026)</h3>
+        
+        <table>
+            <tr>
+                <th>Milestone</th>
+                <th>Deliverable</th>
+                <th>Timeline</th>
+            </tr>
+            <tr>
+                <td>M1: Primitives</td>
+                <td>Implementar 3 patterns (sequential, concurrent, handoff)</td>
+                <td>Março</td>
+            </tr>
+            <tr>
+                <td>M2: Protocols</td>
+                <td>MCP integration (3 tools), A2A basic messaging</td>
+                <td>Abril</td>
+            </tr>
+            <tr>
+                <td>M3: State</td>
+                <td>Shared state store (etcd), task ledger, checkpoints</td>
+                <td>Maio</td>
+            </tr>
+            <tr>
+                <td>M4: Observability</td>
+                <td>OpenTelemetry traces, Prometheus metrics, Grafana dashboard</td>
+                <td>Junho</td>
+            </tr>
+        </table>
+        
+        <p><strong>Success Metric:</strong> Squad Kerberos roda Sprint 10 usando orquestração formal, zero intervenção manual minha, task completion time &lt; Sprint 4.</p>
+
+        <h2>§8. Referências Classificadas</h2>
+        
+        <div class="reference">
+            <span class="reference-tag tag-a">[A]</span>
+            <strong>arXiv:2601.13671 — "The Orchestration of Multi-Agent Systems: Architectures, Protocols, and Enterprise Adoption"</strong><br>
+            URL: <a href="https://arxiv.org/html/2601.13671v1" target="_blank">https://arxiv.org/html/2601.13671v1</a><br>
+            Contribuição: Framework unificado de orquestração (planning, policy, execution, state, quality). Definição de MCP + A2A protocols. Specialized agents (worker, service, support). Case studies (BFSI, software engineering). Challenges (coordination overhead, cost, governance).
+        </div>
+        
+        <div class="reference">
+            <span class="reference-tag tag-t">[T]</span>
+            <strong>Anthropic — "How we built our multi-agent research system"</strong><br>
+            URL: <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank">https://www.anthropic.com/engineering/multi-agent-research-system</a><br>
+            Contribuição: Orchestrator-worker pattern (lead agent + subagents). Prompt engineering lessons (teach orchestrator to delegate, scale effort to complexity, tool design critical). Extended thinking + interleaved thinking. Parallel tool calling (90% speed improvement). LLM-as-judge evaluation. Production reliability (stateful agents, error compounding, debugging via tracing).
+        </div>
+        
+        <div class="reference">
+            <span class="reference-tag tag-t">[T]</span>
+            <strong>Microsoft Azure Architecture Center — "AI Agent Orchestration Patterns"</strong><br>
+            URL: <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns" target="_blank">https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns</a><br>
+            Contribuição: 5 padrões formalizados (sequential, concurrent, group chat, handoff, magentic). Decision matrix (quando usar cada um). Maker-checker loops. Implementation considerations (context management, reliability, security, cost optimization, observability).
+        </div>
+        
+        <div class="reference">
+            <span class="reference-tag tag-t">[T]</span>
+            <strong>Collabnix — "Multi-Agent Orchestration: Patterns and Best Practices for 2024"</strong><br>
+            URL: <a href="https://collabnix.com/multi-agent-orchestration-patterns-and-best-practices-for-2024/" target="_blank">https://collabnix.com/multi-agent-orchestration-patterns-and-best-practices-for-2024/</a><br>
+            Contribuição: Kubernetes-based deployment (agents as pods, StatefulSets, Service Mesh). Communication via Kafka. State management via etcd. Monitoring via Prometheus. Circuit breakers, graceful degradation, idempotency keys. Troubleshooting (agent registration failures, task queue backlog, state sync issues).
+        </div>
+
+        <div class="footer">
+            <p>Relatório gerado em conformidade com o Research Quality Framework — Azimute (Kerberos Chat)</p>
+            <p>Seções obrigatórias: 8/8 ✓ | Referências classificadas: 4 ([A]=1, [T]=3) ✓ | Fontes consultadas (web_fetch): 4 ✓</p>
+        </div>
+    </div>

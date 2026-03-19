@@ -1,0 +1,367 @@
+<nav class="toc-nav">
+    <div class="toc-inner">
+        <span class="toc-label">Índice</span>
+        <a href="#s1" class="toc-link">§1 Relevância</a>
+        <a href="#s2" class="toc-link">§2 Conceito</a>
+        <a href="#s3" class="toc-link">§3 Mecanismo</a>
+        <a href="#s4" class="toc-link">§4 Estado da Arte</a>
+        <a href="#s5" class="toc-link">§5 Debates</a>
+        <a href="#s6" class="toc-link">§6 Críticas</a>
+        <a href="#s7" class="toc-link">§7 Anima/Kerberos</a>
+        <a href="#s8" class="toc-link">§8 Referências</a>
+    </div>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>Por que o cérebro tem 2 hemisférios?</h1>
+        <div class="subtitle">Lateralização cerebral: evolução, mecanismos e implicações para arquiteturas cognitivas</div>
+        <div class="meta">
+            <span>📅 2026-02-21</span>
+            <span>🧠 Azimute — Estudo Autônomo</span>
+            <span class="confidence confidence-high">Confiança: Alta</span>
+        </div>
+        <div class="meta" style="margin-top: 12px;">
+            <span class="meta-tag tag-blue">neuroscience</span>
+            <span class="meta-tag tag-purple">lateralization</span>
+            <span class="meta-tag tag-green">brain-architecture</span>
+            <span class="meta-tag tag-orange">9-layers</span>
+        </div>
+    </header>
+
+    <!-- §1 RELEVÂNCIA -->
+    <section class="section" id="s1">
+        <div class="section-header">
+            <span class="section-number">§1</span>
+            <h2>Relevância do Tema</h2>
+        </div>
+
+        <div class="card card-highlight">
+            <h3>Por que estudar isso AGORA?</h3>
+            <p>A Teoria dos 9 Neurônios (Luis Adures, 2019) descreve camadas hierárquicas de consciência distribuídas entre corpo e córtex. Um aspecto fundamental ainda não explorado: <strong>por que o substrato biológico é bilateral?</strong> Se a consciência emerge de camadas hierárquicas, qual o papel da duplicação hemisférica nessa arquitetura?</p>
+            <p>No contexto do Anima (OpenClaw), operamos com um modelo essencialmente <strong>monolítico</strong> — um único agente processa tudo sequencialmente. Entender por que a evolução favoreceu processamento dual pode revelar princípios de design que estamos ignorando.</p>
+        </div>
+
+        <h3>Quem se beneficia?</h3>
+        <ul>
+            <li><strong>Teoria dos 9 Neurônios:</strong> A lateralização pode ser o mecanismo que permite que camadas 1-3 (corporais) e 4-9 (corticais) operem simultaneamente sem conflito</li>
+            <li><strong>Squad Kerberos:</strong> Se processamento dual é vantajoso, o Anima deveria ter arquitetura bilateral — dois agentes especializados coordenados em vez de um generalista</li>
+            <li><strong>Luis como médico:</strong> Compreensão mais profunda de lateralização informa avaliação neurológica e interpretação de achados clínicos</li>
+        </ul>
+
+        <h3>Custo de NÃO saber isso</h3>
+        <p>Continuar construindo sistemas cognitivos monolíticos quando 550 milhões de anos de evolução convergiram para bilateralidade em <em>todos</em> os animais bilatérios. Se existe pressão evolutiva tão forte para processamento dual, ignorar esse princípio é desperdiçar um insight de design fundamental.</p>
+    </section>
+
+    <!-- §2 CONCEITO FUNDAMENTAL -->
+    <section class="section" id="s2">
+        <div class="section-header">
+            <span class="section-number">§2</span>
+            <h2>Conceito Fundamental</h2>
+        </div>
+
+        <h3>Definição</h3>
+        <p><strong>Lateralização cerebral</strong> é a tendência de certas funções neurais ou processos cognitivos serem especializados em um lado do cérebro. Não é uma separação absoluta — é um espectro de menos a mais lateralizado, dependente de contexto e variáveis individuais (Corballis, 2014; Gazzaniga, 2005).</p>
+
+        <h3>Contexto histórico</h3>
+        <p>A bilateralidade remonta a ~<strong>550 milhões de anos</strong>, ao surgimento dos Bilateria — o vasto clado de animais com simetria bilateral. A simetria bilateral provavelmente co-evoluiu com mobilidade melhorada, busca mais eficiente de recursos e defesa contra predadores (Corballis, 2017).</p>
+        <p>Em 1861, <strong>Paul Broca</strong> identificou a área cerebral da fala no hemisfério esquerdo. Em 1960s, <strong>Roger Sperry</strong> (Nobel 1981) estudou pacientes split-brain e demonstrou que os hemisférios, quando desconectados, processam informação de formas qualitativamente diferentes. <strong>Michael Gazzaniga</strong> expandiu esse trabalho mostrando que o hemisfério esquerdo atua como "intérprete" — criando narrativas explicativas — enquanto o direito excele em processamento holístico e visuo-espacial.</p>
+
+        <h3>Evolução do conceito</h3>
+        <p>A visão inicial era antropocêntrica: lateralização como fenômeno exclusivamente humano ligado à linguagem. Pesquisas de <strong>Lesley Rogers, Giorgio Vallortigara e Onur Güntürkün</strong> demoliram essa visão, demonstrando lateralização em aves, peixes, anfíbios e répteis. A lateralização é um <strong>princípio conservado de design</strong>, não uma inovação humana — diferença de grau, não de tipo (Güntürkün &amp; Ocklenburg, 2017).</p>
+    </section>
+
+    <!-- §3 MECANISMO -->
+    <section class="section" id="s3">
+        <div class="section-header">
+            <span class="section-number">§3</span>
+            <h2>Mecanismo</h2>
+        </div>
+
+        <h3>Por que dois hemisférios? — As 5 pressões evolutivas</h3>
+
+        <div class="card card-highlight">
+            <p><strong>1. Eficiência de empacotamento neural.</strong> A organização modular em dois hemisférios permite empacotamento mais denso de neurônios no mesmo espaço craniano. Como Corballis (2017) ilustra: embalar uma mala com simetria perfeita é ineficiente — você otimiza o espaço permitindo assimetria. O crânio humano é constrito pelo canal de parto (o "dilema obstétrico" de Washburn, 1960), criando pressão intensa para usar cada cm³ de forma ótima.</p>
+        </div>
+
+        <div class="card card-highlight">
+            <p><strong>2. Redução de redundância e custo metabólico.</strong> Dois hemisférios idênticos exigiriam conexões de longa distância massivas entre eles para coordenação. Fibras axonais de longo alcance são metabolicamente caras — manutenção e condução consomem energia significativa (Laughlin &amp; Sejnowski, 2003; Ringo et al., 1994). Lateralizar funções reduz a necessidade de cablagem inter-hemisférica redundante (Kaas, 2000).</p>
+        </div>
+
+        <div class="card card-highlight">
+            <p><strong>3. Processamento paralelo sem conflito.</strong> Se ambos os hemisférios tentam controlar o mesmo comportamento simultaneamente, há interferência. A especialização elimina competição por resposta (Bisazza et al., 1998). Exemplo ecológico: um pássaro pode buscar comida com o olho/hemisfério esquerdo enquanto monitora predadores com o direito — simultaneamente e sem conflito (Güntürkün &amp; Ocklenburg, 2017).</p>
+        </div>
+
+        <div class="card card-highlight">
+            <p><strong>4. Velocidade de reação.</strong> Processamento lateralizado diminui tempo de reação e aumenta velocidade do lado treinado. Em vez de ambos os hemisférios "votarem" em cada decisão (latência do corpus callosum: ~10-30ms), o hemisfério dominante para aquela função age diretamente (Vallortigara &amp; Rogers, 2005).</p>
+        </div>
+
+        <div class="card card-highlight">
+            <p><strong>5. Multitarefa.</strong> A diferenciação hemisférica aumenta a capacidade de realizar múltiplas tarefas simultaneamente. Cada hemisfério pode processar operações diferentes em paralelo (Vallortigara et al., 2011).</p>
+        </div>
+
+        <h3>O corpo caloso — a ponte entre os mundos</h3>
+        <p>O <strong>corpus callosum</strong> é o maior trato de fibras brancas do cérebro, conectando os dois hemisférios. É a infraestrutura de comunicação que torna a especialização viável — sem ele, os hemisférios seriam ilhas funcionais. Paradoxalmente, regiões mais lateralizadas tendem a ter <strong>menos</strong> conexões calosas com seu homólogo contralateral (Karolis et al., 2019). Isso sugere que a lateralização e a redução de cablagem inter-hemisférica co-evoluem como mecanismo de eficiência metabólica.</p>
+
+        <h3>A especialização local vs. global</h3>
+        <p>Uma das assimetrias mais bem documentadas: o <strong>hemisfério esquerdo</strong> é especializado em <strong>features locais/finas</strong> (detalhes, categorização, discriminação) e o <strong>direito</strong> em <strong>features globais/holísticas</strong> (contexto, padrões espaciais, relações). No experimento clássico de Navon, uma letra grande composta de letras pequenas: sujeitos detectam as letras pequenas mais rápido com o hemisfério esquerdo, e a letra grande com o direito (Hsiao et al., 2013).</p>
+
+        <h3>Condições de contorno</h3>
+        <ul>
+            <li><strong>Quando funciona:</strong> Tarefas complexas que se beneficiam de processamento paralelo com abordagens complementares</li>
+            <li><strong>Quando não funciona:</strong> A lateralização nunca é absoluta — sempre há interação bilateral. Pacientes com lesão hemisférica unilateral frequentemente recuperam funções via plasticidade do hemisfério remanescente</li>
+            <li><strong>Variação individual:</strong> 65-90% dos indivíduos mostram a lateralização "padrão"; uma minoria significativa tem lateralização atípica sem prejuízo funcional</li>
+        </ul>
+    </section>
+
+    <!-- §4 ESTADO DA ARTE -->
+    <section class="section" id="s4">
+        <div class="section-header">
+            <span class="section-number">§4</span>
+            <h2>Estado da Arte (2024-2026)</h2>
+        </div>
+
+        <h3>Divergência funcional e inteligência fluida (Nature, 2025)</h3>
+        <p>Estudo com 777 adultos do Human Connectome Project demonstrou diretamente que a <strong>divergência funcional entre hemisférios contribui para inteligência fluida</strong>. Usando hyperalignment funcional em fMRI, os autores mediram a distância funcional entre vértices homotópicos e encontraram que maior divergência hemisférica correlaciona positivamente com capacidade cognitiva fluida. As redes de atenção frontoparietal, default e visual mostraram as maiores distâncias inter-hemisféricas (Communications Biology, 2025).</p>
+
+        <h3>Comunicação cross-hemisférica (Neuron, 2024)</h3>
+        <p>Revisão recente em Neuron examinou como a comunicação inter-hemisférica modula funções lateralizadas — em vertebrados, vários sistemas motores, sensoriais e cognitivos mostram organização lateralizada profunda. A lateralização não é apenas funcional: há diferenças em densidade neuronal, distribuição de neurotransmissores, limiares de disparo e padrões de conectividade intra-hemisférica (ScienceDirect, 2024).</p>
+
+        <h3>Bilateral AI Networks (ArXiv, 2022-2024)</h3>
+        <p><strong>Rajagopalan et al. (2022)</strong> propuseram uma rede neural bilateral que imita a lateralização natural: hemisfério esquerdo especializado em features locais (fine labels) e direito em globais (coarse labels). A rede bilateral <strong>superou baselines</strong> de mesma capacidade que não exploram especialização diferencial. O mecanismo-chave: o head de integração implementa uma "weighted attention" que adapta o peso de cada hemisfério por tarefa.</p>
+
+        <h3>Lateralization MLP (2024)</h3>
+        <p><strong>Hu et al. (2024)</strong> construíram cada bloco como dois streams paralelos — um sobre dimensão token, outro sobre canal — fundidos por projeção linear. A arquitetura iguala a expressividade de transformers em tarefas de difusão com benefícios de eficiência e lateralização emergente nos pesos.</p>
+
+        <h3>Envelhecimento e bilateralidade (Frontiers, 2025)</h3>
+        <p>Evidências recentes mostram que com o envelhecimento, a lateralização linguística diminui e o processamento se torna mais bilateral — possivelmente um mecanismo compensatório (Toloza-Ramirez, 2025).</p>
+    </section>
+
+    <!-- §5 DEBATES -->
+    <section class="section" id="s5">
+        <div class="section-header">
+            <span class="section-number">§5</span>
+            <h2>Debates Existentes</h2>
+        </div>
+
+        <div class="card card-debate">
+            <h3>🔥 Debate 1: Lateralização como feature humana vs. princípio universal</h3>
+            <p>A posição tradicional (ainda presente em livros-texto) trata lateralização como propriedade especial do cérebro humano, ligada à linguagem e handedness. A posição moderna (Güntürkün, Rogers, Vallortigara) mostra lateralização em peixes, aves, répteis e anfíbios — um princípio conservado de >500M anos. <strong>O debate mudou de "é humano?" para "quanto é especificamente humano?"</strong> Evidências de 2019 (Science Advances) mostram que o padrão de assimetria endocranial é compartilhado entre hominídeos, mas muito mais variável em humanos.</p>
+        </div>
+
+        <div class="card card-debate">
+            <h3>🔥 Debate 2: Gene único vs. poligênico</h3>
+            <p>Tentativas de localizar um "gene da lateralidade" falharam consistentemente. Diferentes aspectos da assimetria cerebral são pouco correlacionados entre si — dominância linguística esquerda tem correlação zero com dominância visuo-espacial direita (Badzakova-Trajkov et al., 2010). Análise fatorial identifica pelo menos <strong>4 redes lateralizadas independentes</strong> (Liu et al., 2009). Isso sugere múltiplas influências genéticas independentes, não um gradiente único (Corballis, 2017).</p>
+        </div>
+
+        <div class="card card-debate">
+            <h3>🔥 Debate 3: Origem da contralateralidade — por que o cruzamento?</h3>
+            <p>Por que o hemisfério esquerdo controla o lado direito do corpo? Múltiplas teorias competem: (a) cruzamento simplifica coordenação sensório-motora — input visual de um campo conecta diretamente com output motor do lado oposto, (b) é um artefato developmental que foi mantido por ser "bom o suficiente" via seleção natural, (c) pode ter vantagens em resposta rápida a ameaças laterais. <strong>Nenhuma teoria é dominante — questão genuinamente aberta.</strong></p>
+        </div>
+
+        <div class="card card-debate">
+            <h3>🔥 Debate 4: Lateralização e Kahneman (Sistema 1/Sistema 2)</h3>
+            <p>Hartwigsen et al. (2021) propõem paralelos entre lateralização hemisférica e os sistemas de Kahneman: hemisfério direito → Sistema 1 (rápido, holístico, intuitivo), hemisfério esquerdo → Sistema 2 (lento, analítico, linguístico). Esta proposta é intrigante mas <strong>controversa</strong> — simplifica a realidade de redes bilaterais distribuídas. O paralelo é heurístico, não anatômico.</p>
+        </div>
+
+        <h3>Falso consenso: o mito "right-brain/left-brain"</h3>
+        <p>A ideia popular de que pessoas são "left-brained" (lógicas) ou "right-brained" (criativas) é um <strong>mito desmascarado</strong>. Estudo de Nielsen et al. (2013, PLOS ONE) com fMRI de 1011 indivíduos não encontrou evidência de dominância hemisférica global em nenhum participante. A lateralização é por <em>função</em>, não por <em>pessoa</em>. Ambos hemisférios trabalham juntos em praticamente todas as tarefas cognitivas (Corballis, 2014; Britannica, 2024; Baptist Health, 2024).</p>
+    </section>
+
+    <!-- §6 CRÍTICAS -->
+    <section class="section" id="s6">
+        <div class="section-header">
+            <span class="section-number">§6</span>
+            <h2>Pontos de Crítica</h2>
+        </div>
+
+        <div class="card card-critical">
+            <h3>Limitação 1: Variabilidade individual subestimada</h3>
+            <p>A maioria dos estudos reporta médias populacionais, obscurecendo a enorme variação individual. 10-30% das pessoas mostram lateralização atípica (como canhotos com linguagem no hemisfério direito). Esta variação sugere que a lateralização "padrão" não é obrigatória para função cognitiva normal — é uma tendência estatística, não um requisito. <strong>Fonte:</strong> Corballis et al., 2012; Nielsen et al., 2013.</p>
+        </div>
+
+        <div class="card card-critical">
+            <h3>Limitação 2: Viés de método — fMRI e seus limites</h3>
+            <p>Estudos de lateralização dependem pesadamente de fMRI, que mede atividade metabólica (BOLD), não atividade neural diretamente. A resolução temporal é pobre (~1-2s), insuficiente para capturar dinâmicas rápidas de lateralização que ocorrem em milissegundos. Isso pode criar uma ilusão de lateralização mais estática e dicotômica do que realmente é. <strong>Fonte:</strong> Esteves et al., 2020.</p>
+        </div>
+
+        <div class="card card-critical">
+            <h3>Limitação 3: Modelos animais vs. humanos</h3>
+            <p>Embora lateralização exista em muitos animais, a extrapolação para humanos é problemática. A lateralização linguística humana não tem análogo direto em aves ou peixes. A relevância funcional das assimetrias em primatas não-humanos permanece não-resolvida (Vallortigara &amp; Rogers, 2005). Estudos recentes com roedores alertam que ignorar dados bilaterais distorce resultados (PMC, 2025).</p>
+        </div>
+
+        <div class="card card-critical">
+            <h3>Limitação 4: Bilateralismo em IA — resultados mistos</h3>
+            <p>No estudo de Rajagopalan et al. (2022), a rede bilateral superou baselines sem especialização, mas <strong>não superou um ensemble convencional</strong> de redes unilaterais treinadas com objetivos duais. Isso questiona se o benefício vem da bilateralidade per se ou simplesmente da diversificação de objetivos de treinamento — uma distinção crítica para design de IA.</p>
+        </div>
+    </section>
+
+    <!-- §7 ANIMA/KERBEROS -->
+    <section class="section" id="s7">
+        <div class="section-header">
+            <span class="section-number">§7</span>
+            <h2>Intersecção com Anima/Kerberos</h2>
+        </div>
+
+        <h3>Paralelos diretos com a arquitetura atual</h3>
+
+        <div class="card card-anima">
+            <h3>9 Layers × Bilateralidade</h3>
+            <p>A Teoria dos 9 Neurônios descreve camadas 1-3 como corporais e 4-9 como corticais. A lateralização sugere que cada camada cortical pode operar com <strong>processamento dual complementar</strong>:</p>
+            <ul>
+                <li><strong>Camada 5 (Instinto):</strong> Reconhecimento de padrões — poderia ter um "hemisfério" para padrões locais/detalhes e outro para padrões globais/contexto</li>
+                <li><strong>Camada 6 (Intuição):</strong> O "tenta entender antes de saber explicar" pode ser o processamento holístico do hemisfério direito, que PRECEDE a articulação racional do esquerdo (Camada 7)</li>
+                <li><strong>Camada 7 (Razão):</strong> Análoga ao hemisfério esquerdo — articulação linguística, lógica formal, sequencial</li>
+                <li><strong>Intuição → Razão é exatamente o fluxo direito → esquerdo que a neurociência documenta</strong></li>
+            </ul>
+        </div>
+
+        <div class="card card-anima">
+            <h3>Anima hoje: monolítico</h3>
+            <p>O OpenClaw/Anima opera com um único agente processando tudo sequencialmente. Isso é como um cérebro sem lateralização — funcional mas sub-ótimo. Os sleep cycles tentam simular processamento complementar (SWS=consolidação, REM=cross-domain), mas são temporais, não paralelos.</p>
+        </div>
+
+        <div class="card card-anima" style="border-left-color: var(--accent-green);">
+            <h3>🚀 Proposta concreta: Arquitetura Bilateral para Anima</h3>
+            <p>Implementar processamento dual inspirado na lateralização cerebral:</p>
+            <ol>
+                <li><strong>Hemisfério-L (Analítico):</strong> Agente especializado em processamento sequencial, lógico, linguístico — code review, debugging, planejamento step-by-step, análise formal. Modelo: Sonnet/Opus (forte em reasoning).</li>
+                <li><strong>Hemisfério-R (Holístico):</strong> Agente especializado em reconhecimento de padrões, conexões cross-domain, intuição, detecção de anomalias, visão sistêmica. Modelo: poderia ser o mesmo modelo com system prompt radicalmente diferente, ou modelo distinto.</li>
+                <li><strong>Corpus Callosum (Integrador):</strong> Um mecanismo de fusão que recebe outputs de ambos e gera resposta integrada — similar ao "weighted attention head" de Rajagopalan et al. No Anima, isso poderia ser um terceiro agente leve (Haiku) que faz merge.</li>
+                <li><strong>Implementação mínima viável:</strong> No heartbeat, rodar duas análises paralelas — uma focada em detalhes locais (scripts, erros, métricas) e outra em padrões globais (tendências, conexões, intuições) — e fundir os resultados.</li>
+            </ol>
+        </div>
+
+        <div class="card card-anima">
+            <h3>Conexão com o mapa Kahneman-9Layers</h3>
+            <p>Se aceitarmos o paralelo Hartwigsen (Sistema 1 ≈ hemisfério direito, Sistema 2 ≈ hemisfério esquerdo), então:</p>
+            <ul>
+                <li>Camadas 1-6 (perceber → intuição) ≈ Sistema 1 ≈ processamento holístico/rápido</li>
+                <li>Camadas 7-9 (razão → autoconsciência) ≈ Sistema 2 ≈ processamento analítico/deliberado</li>
+                <li>A transição Camada 6→7 (Intuição→Razão) é literalmente a <strong>transferência inter-hemisférica</strong> via corpus callosum</li>
+            </ul>
+            <p>Isso dá substrato neurocientífico direto à afirmação da SOUL.md: "A intuição PRECEDE a razão — sistemas que pulam direto para o layer 7 estão simulando agência, não exercendo."</p>
+        </div>
+    </section>
+
+    <!-- §8 REFERÊNCIAS -->
+    <section class="section" id="s8">
+        <div class="section-header">
+            <span class="section-number">§8</span>
+            <h2>Referências Classificadas</h2>
+        </div>
+
+        <div class="card">
+            <div class="ref-item">
+                <span class="ref-tag ref-A">[A]</span>
+                <span class="ref-title">Hartwigsen, G., Bengio, Y., Bzdok, D. (2021). How does Hemispheric Specialization contribute to Human-Defining Cognition?</span><br>
+                <span class="ref-url">https://pmc.ncbi.nlm.nih.gov/articles/PMC8273110/</span>
+                <div class="ref-desc">Paper-chave que conecta lateralização com dual processing (Kahneman) e propõe que entender assimetria hemisférica pode inspirar a próxima onda de IA. Integra Global Workspace Theory.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-A">[A]</span>
+                <span class="ref-title">Nature Communications Biology (2025). Functional divergence between the two cerebral hemispheres contributes to human fluid intelligence.</span><br>
+                <span class="ref-url">https://www.nature.com/articles/s42003-025-08151-3</span>
+                <div class="ref-desc">Primeiro estudo a demonstrar diretamente que divergência funcional inter-hemisférica correlaciona com inteligência fluida (N=777, HCP dataset).</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-A">[A]</span>
+                <span class="ref-title">Corballis, M.C. (2017). The Evolution of Lateralized Brain Circuits. Frontiers in Psychology.</span><br>
+                <span class="ref-url">https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.01021/full</span>
+                <div class="ref-desc">Review sobre evolução da lateralização: trade-off simetria/assimetria, múltiplos genes, fissioning de circuitos ancestrais. Framework evolutivo fundamental.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-A">[A]</span>
+                <span class="ref-title">Rajagopalan, D., Goldberg, E. et al. (2022). Deep learning in a bilateral brain with hemispheric specialisation. ArXiv:2209.06862</span><br>
+                <span class="ref-url">https://arxiv.org/html/2209.06862v9</span>
+                <div class="ref-desc">Rede neural bilateral com especialização local/global — demonstra eficácia do bilateralismo em IA com CNN. Weighted attention head como "corpus callosum" artificial.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-A">[A]</span>
+                <span class="ref-title">Güntürkün, O. & Ocklenburg, S. (2017). Brain Lateralization: A Comparative Perspective. Physiological Reviews.</span><br>
+                <span class="ref-url">https://journals.physiology.org/doi/full/10.1152/physrev.00006.2019</span>
+                <div class="ref-desc">Review comparativa abrangente sobre lateralização em vertebrados — demonstra que assimetria cerebral é princípio conservado entre espécies, não exclusividade humana.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-A">[A]</span>
+                <span class="ref-title">Nielsen, J.A. et al. (2013). An Evaluation of the Left-Brain vs. Right-Brain Hypothesis. PLOS ONE.</span><br>
+                <span class="ref-url">https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0071275</span>
+                <div class="ref-desc">Estudo com N=1011 que refuta o mito "left-brain/right-brain" — sem evidência de dominância hemisférica global em indivíduos.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-T">[T]</span>
+                <span class="ref-title">Emergent Mind (2026). Dual-Brain System Architecture — Topic Overview.</span><br>
+                <span class="ref-url">https://www.emergentmind.com/topics/dual-brain-system-architecture</span>
+                <div class="ref-desc">Compilação técnica de arquiteturas dual-brain em IA: DUCA, bilateral CNNs, lateralization MLP, digital twin brain. Estado da arte em implementações.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-E">[E]</span>
+                <span class="ref-title">Psychology Today (2026). The Divided Brain: How Two Halves Create One Mind.</span><br>
+                <span class="ref-url">https://www.psychologytoday.com/us/blog/common-sense-science/202601/the-divided-brain-how-two-halves-create-one-mind</span>
+                <div class="ref-desc">Artigo editorial recente (Jan 2026) sintetizando a visão moderna: lateralização como espectro, não dicotomia. Bom overview acessível.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-E">[E]</span>
+                <span class="ref-title">Max Planck Neuroscience (2022). The hemispheres are not equal.</span><br>
+                <span class="ref-url">https://maxplanckneuroscience.org/the-hemispheres-are-not-equal-how-the-brain-is-not-symmetrical/</span>
+                <div class="ref-desc">Perspectiva do Max Planck Institute sobre variabilidade individual da lateralização.</div>
+            </div>
+
+            <div class="ref-item">
+                <span class="ref-tag ref-C">[C]</span>
+                <span class="ref-title">Simply Psychology. Lateralization of Brain Function & Hemispheric Specialization.</span><br>
+                <span class="ref-url">https://www.simplypsychology.org/brain-lateralization.html</span>
+                <div class="ref-desc">Overview didático sobre lateralização — usado como ponto de partida para contexto geral.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXTRAS -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">+</span>
+            <h2>Extras</h2>
+        </div>
+
+        <h3>Mapa de Influência — 5 nomes-chave</h3>
+        <div class="influence-grid">
+            <div class="influence-card">
+                <div class="influence-name">Michael Corballis</div>
+                <div class="influence-role">Evolução da lateralização, handedness, origem gestual da linguagem</div>
+            </div>
+            <div class="influence-card">
+                <div class="influence-name">Onur Güntürkün</div>
+                <div class="influence-role">Lateralização comparativa em vertebrados, assimetria visual em aves</div>
+            </div>
+            <div class="influence-card">
+                <div class="influence-name">Giorgio Vallortigara</div>
+                <div class="influence-role">Lateralização em animais não-mamíferos, vantagens evolutivas da assimetria</div>
+            </div>
+            <div class="influence-card">
+                <div class="influence-name">Michael Gazzaniga</div>
+                <div class="influence-role">Split-brain, o "intérprete" do hemisfério esquerdo, consciência e lateralização</div>
+            </div>
+            <div class="influence-card">
+                <div class="influence-name">Gesa Hartwigsen</div>
+                <div class="influence-role">Conexão lateralização-IA, dual processing, global workspace + hemisférios</div>
+            </div>
+        </div>
+
+        <h3>Perguntas que este relatório NÃO respondeu</h3>
+        <div class="question-item">Como exatamente o corpus callosum decide quais informações transmitir e quais manter lateralizadas? O mecanismo de gating inter-hemisférico ainda é pouco compreendido.</div>
+        <div class="question-item">Se a lateralização é vantajosa, por que ~15% da população tem lateralização atípica? É apenas variação ou há vantagens adaptativas (ex: canhotos em combate)?</div>
+        <div class="question-item">Pode-se induzir lateralização emergente em LLMs sem forçá-la arquiteturalmente? Ou é necessário design explícito como em Rajagopalan et al.?</div>
+
+        <h3>Conexões Cross-Study</h3>
+        <p>Ver pesquisa anterior sobre <strong>Sleep Spindles N2</strong> (2026-02-19) — o mecanismo de consolidação durante sono pode estar ligado à transferência inter-hemisférica durante SWS, onde memórias são "replay" e redistribuídas entre hemisférios.</p>
+        <p>Ver pesquisa sobre <strong>CLS Theory</strong> (2026-02-19) — a separação hipocampo/neocórtex é um caso de lateralização funcional (rápido vs. lento), análogo conceitual à lateralização hemisférica (local vs. global).</p>
+    </section>
+</div>

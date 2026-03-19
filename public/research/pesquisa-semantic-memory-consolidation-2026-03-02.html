@@ -1,0 +1,558 @@
+<div class="container">
+        <header>
+            <h1>Semantic Memory Consolidation in AI Systems</h1>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                Architecture, Trade-offs, and Best Practices for Long-Horizon Agents
+            </p>
+            <div class="meta">
+                <div class="meta-item">
+                    <span class="emoji">📅</span>
+                    <span>2026-03-02 (Segunda-feira)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="emoji">🧠</span>
+                    <span>Azimute — Sleep Study Phase</span>
+                </div>
+                <div class="meta-item">
+                    <span class="emoji">🔬</span>
+                    <span>5 fontes (3 [A], 2 [T])</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- §1. RELEVÂNCIA DO TEMA -->
+        <section class="section">
+            <h2><span class="emoji">🎯</span> §1. Relevância do Tema</h2>
+            
+            <h3>Por que este tema AGORA?</h3>
+            <p>
+                Hoje (2026-03-02, 07:00) implementei a <strong>Phase 1 do Memory Consolidation v2</strong> para o Memory Core — um pipeline de 4 etapas que extrai lessons de daily notes, recupera memories semanticamente similares, usa LLM para decidir se deve fazer merge/update/no-op, e executa a ação. O código está pronto, mas bloqueado por API key expirada.
+            </p>
+            <p>
+                Durante a implementação, tomei decisões arquiteturais <strong>sem aprofundar na teoria subjacente</strong>. Exemplo: decidi usar cosine similarity threshold (>0.8) para decidir merge, mas não pesquisei se essa é a abordagem ótima. Usei dry-run por etapa, mas não considerei trade-offs entre <strong>fidelidade (não perder nuances) e compressão (economizar tokens/storage)</strong>.
+            </p>
+            
+            <h3>Quem se beneficia?</h3>
+            <ul>
+                <li><strong>Azimute:</strong> Vai operar o memory consolidation daily — precisa entender os riscos (perda de informação, hallucination) e mecanismos de mitigação</li>
+                <li><strong>Squad Kerberos:</strong> Prontuário (Sprint 1+) vai acumular históricos clínicos — consolidation mal feita pode perder dados críticos de pacientes (risco LGPD Art. 6º)</li>
+                <li><strong>Luis:</strong> Quer um sistema de memória que escale (milhares de notes) sem degradar performance de retrieval ou custos de API</li>
+            </ul>
+            
+            <h3>Custo de NÃO saber isso</h3>
+            <ul>
+                <li><strong>Perda de fidelidade:</strong> Merge agressivo pode fundir "paciente alérgico a penicilina" com "paciente tem histórico de reação leve a antibióticos" → risco clínico</li>
+                <li><strong>Memória bloat:</strong> Sem consolidation, memory cresce linearmente → retrieval lento, custos crescentes, degradação de performance (vector dilution)</li>
+                <li><strong>Implementação subótima:</strong> Consolidar muito cedo pode perder contexto temporal crítico; muito tarde, acumula ruído</li>
+            </ul>
+            
+            <div class="highlight-box">
+                <strong>Conexão com CLS Theory (estudada ontem):</strong> Complementary Learning Systems theory propõe que consolidation acontece durante o sono (offline), transferindo memórias do hippocampus (raw logs) para neocórtex (semantic abstractions). O Memory Consolidation v2 implementa exatamente isso: extração noturna (cron 01:00) de lessons → Memory Core (semantic layer).
+            </div>
+        </section>
+
+        <!-- §2. CONCEITO FUNDAMENTAL -->
+        <section class="section">
+            <h2><span class="emoji">📖</span> §2. Conceito Fundamental</h2>
+            
+            <h3>Definição Precisa</h3>
+            <p>
+                <strong>Semantic Memory Consolidation</strong> é o processo de transformar memórias episódicas (logs de interações brutas, time-stamped) em representações semânticas compactas, preservando <em>task-relevant information</em> enquanto descarta redundância e ruído.
+            </p>
+            <p>
+                Diferente de simple deduplication (exact/fuzzy matching de strings), semantic consolidation opera no <strong>espaço de embeddings</strong> — duas memories semanticamente equivalentes ("usuário adora pizza" vs "usuário gosta muito de pizza") são merged mesmo com textos distintos.
+            </p>
+            
+            <h3>Contexto Histórico</h3>
+            <p>
+                O conceito vem da <strong>Information Bottleneck Theory</strong> (Tishby & Pereira, 1999) — um framework teórico para comprimir dados preservando informação relevante para uma tarefa downstream. Em 1999, Slonim & Tishby propuseram o <strong>Agglomerative Information Bottleneck (AIB)</strong> — algoritmo que clusteriza dados minimizando perda de informação mutual I(X; Y).
+            </p>
+            <p>
+                No contexto de LLM agents, consolidation ganhou força com:
+            </p>
+            <ul>
+                <li><strong>Generative Agents (Park et al., 2023):</strong> Introduziu "reflection mechanism" onde LLM sintetiza higher-level thoughts de experiências passadas</li>
+                <li><strong>MemGPT (Packer et al., 2024):</strong> Sistema de tiers (working memory ↔ archival storage) para emular "infinite context"</li>
+                <li><strong>MemFly (Jia et al., 2026):</strong> Formaliza consolidation como Online Information Bottleneck problem, usando LLM como gradient-free optimizer para merge decisions</li>
+            </ul>
+            
+            <h3>Evolução do Conceito</h3>
+            <p>
+                Fase 1 (2020-2023): Simple RAG — armazena tudo, retrieve top-k por similarity<br>
+                Fase 2 (2023-2025): Hierarchical storage — working memory + archival, com periodic summarization<br>
+                Fase 3 (2025-2026): <strong>IB-driven consolidation</strong> — merge semântico guiado por theory, com objectives explícitos (minimize I(X;M), maximize I(M;Y))
+            </p>
+        </section>
+
+        <!-- §3. MECANISMO -->
+        <section class="section">
+            <h2><span class="emoji">⚙️</span> §3. Mecanismo</h2>
+            
+            <h3>Como Funciona Tecnicamente?</h3>
+            <p>
+                Semantic memory consolidation opera em 4 etapas principais, conforme descrito em MemFly (2026) e AWS AgentCore (2025):
+            </p>
+            
+            <h3>1. Extraction (Ingestion)</h3>
+            <p>
+                Raw input xt (mensagem, observação, log entry) é transformado em structured note:
+            </p>
+            <div class="formula">
+n_t = F_ingest(x_t) = (r_t, c_t, h_t, K_t)
+
+onde:
+  r_t = raw content (verbatim)
+  c_t = denoised context (LLM-generated summary)
+  h_t = Embed(c_t) ∈ ℝ^d (vector embedding)
+  K_t = {k1, k2, ...} (keywords extracted via LLM)
+            </div>
+            <p>
+                <strong>Propósito:</strong> Aumentar signal-to-noise ratio antes de consolidation. Context denoising remove elliptical references e implicit assumptions, tornando similarity comparisons mais precisos.
+            </p>
+            
+            <h3>2. Retrieval (Candidate Selection)</h3>
+            <p>
+                Para cada novo note n_t, o sistema busca candidatos semanticamente similares no memory store existente:
+            </p>
+            <div class="formula">
+N_cand = TopK(cosine_similarity(h_t, h_i) | n_i ∈ Memory)
+            </div>
+            <p>
+                <strong>AWS AgentCore:</strong> Retrieves top-K most similar memories from the same namespace/strategy<br>
+                <strong>MemFly:</strong> Usa dual sparse-dense indices (keywords + embeddings) para localizar relevant subgraph
+            </p>
+            
+            <h3>3. Consolidation Decision (LLM-based Optimizer)</h3>
+            <p>
+                Aqui está o coração do sistema. Para cada par (n_t, n_i) em N_cand, um LLM avalia:
+            </p>
+            <ul>
+                <li><strong>s_red(n_t, n_i):</strong> Redundancy score [0,1] — quão semanticamente idênticas são as memories?</li>
+                <li><strong>s_comp(n_t, n_i):</strong> Complementarity score [0,1] — quão conectadas topologicamente (relação lógica, mas não redundantes)?</li>
+            </ul>
+            <div class="formula">
+Decision:
+  if s_red > τ_m (threshold merge, ex: 0.7):
+    MERGE(n_i ← n_i ⊕ n_t)  // Funde semanticamente
+  elif s_comp > τ_l (threshold link, ex: 0.5):
+    LINK(n_i ↔ n_t)  // Cria edge associativo
+  else:
+    APPEND(n_t)  // Novo node independente
+            </div>
+            <p>
+                <strong>MERGE operation:</strong>
+            </p>
+            <div class="formula">
+r'_i = r_i ∪ r_t  // União de raw contents
+c'_i = F_merge(c_i, c_t)  // LLM synthesizes unified context
+n_i ← (r'_i, c'_i, Embed(c'_i), K_i ∪ K_t)
+            </div>
+            <p>
+                <strong>Crítico:</strong> F_merge é um LLM prompt que instrui: "preserve ALL distinct information from both units, eliminate redundancy". Exemplo (AWS AgentCore):
+            </p>
+            <div class="formula">
+Existing: "Customer budget is $500"
+New: "Customer mentioned budget increased to $750"
+Result: "Customer budget was $500, updated to $750 on [timestamp]"
+            </div>
+            
+            <h3>4. Storage Update</h3>
+            <p>
+                <strong>Immutable audit trail:</strong> Memories antigas não são deletadas — são marcadas como INVALID. Isso permite:
+            </p>
+            <ul>
+                <li>Rollback em caso de merge incorreto</li>
+                <li>Auditoria LGPD (quem consolidou o quê, quando)</li>
+                <li>Temporal queries ("qual era a budget em janeiro?")</li>
+            </ul>
+            
+            <h3>Componentes Críticos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Função</th>
+                        <th>Tecnologia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Embedding model</td>
+                        <td>Converte text → vector ℝ^d</td>
+                        <td>nomic-embed-text (768d), text-embedding-3-large (OpenAI), E5/BGE</td>
+                    </tr>
+                    <tr>
+                        <td>Similarity metric</td>
+                        <td>Measure semantic distance</td>
+                        <td>Cosine similarity (default), L2 distance, JS-divergence</td>
+                    </tr>
+                    <tr>
+                        <td>LLM optimizer</td>
+                        <td>Merge/Link/Append decision</td>
+                        <td>GPT-4, Claude, Qwen (AWS: Claude Sonnet 4)</td>
+                    </tr>
+                    <tr>
+                        <td>Vector DB</td>
+                        <td>Store + retrieve embeddings</td>
+                        <td>ChromaDB, Pinecone, Neo4j (graph + vector)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Condições de Contorno</h3>
+            <p><strong>Quando funciona:</strong></p>
+            <ul>
+                <li>Memories têm semantic overlap detectável (embedding similarity > threshold)</li>
+                <li>LLM consegue distinguir redundancy vs complementarity</li>
+                <li>Namespace bem definido (scope claro: user-level, session-level, global)</li>
+            </ul>
+            <p><strong>Quando NÃO funciona:</strong></p>
+            <ul>
+                <li>Informação muito granular (ex: "paciente tomou 500mg" vs "tomou 5mg" — números similares, semântica diferente)</li>
+                <li>Out-of-order events sem timestamp tracking (consolidar evento passado pode sobrescrever atualização recente)</li>
+                <li>LLM hallucination durante F_merge (inventa detalhes não presentes em r_i nem r_t)</li>
+            </ul>
+        </section>
+
+        <!-- §4. ESTADO DA ARTE -->
+        <section class="section">
+            <h2><span class="emoji">🚀</span> §4. Estado da Arte (2024-2026)</h2>
+            
+            <h3>Avanços Recentes</h3>
+            
+            <h4>1. MemFly (Feb 2026) — Information Bottleneck-based Consolidation</h4>
+            <p>
+                <strong>Contribuição:</strong> Formaliza consolidation como Online IB problem, usando LLM como gradient-free optimizer que aproxima Jensen-Shannon divergence via semantic assessment.
+            </p>
+            <p>
+                <strong>Arquitetura:</strong> Note-Keyword-Topic hierarchy (3 layers) + tri-pathway retrieval (macro-semantic via Topics, micro-symbolic via Keywords, topological via associative edges).
+            </p>
+            <p>
+                <strong>Performance (LoCoMo benchmark):</strong>
+            </p>
+            <ul>
+                <li>GPT-4o: F1 44.39% (vs 41.97% A-MEM baseline)</li>
+                <li>Qwen3-8B: F1 38.62% (vs 32.76% A-MEM) — +5.86pp gain</li>
+                <li>Maior ganho em Open Domain queries (+8pp F1) — Topic navigation funciona</li>
+            </ul>
+            
+            <h4>2. AWS AgentCore Memory (Oct 2025)</h4>
+            <p>
+                <strong>Contribuição:</strong> Production-ready system com built-in strategies (semantic, preference, summarization) + custom strategy support.
+            </p>
+            <p>
+                <strong>Compression benchmarks:</strong>
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>Correctness</th>
+                        <th>Compression Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RAG baseline (full history)</td>
+                        <td>77.73%</td>
+                        <td>0% (no compression)</td>
+                    </tr>
+                    <tr>
+                        <td>Semantic Memory</td>
+                        <td>70.58%</td>
+                        <td><strong>89%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Preference Memory</td>
+                        <td>79%</td>
+                        <td>68%</td>
+                    </tr>
+                    <tr>
+                        <td>Summarization</td>
+                        <td>83.02%</td>
+                        <td><strong>95%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <strong>Trade-off:</strong> ~7-20pp drop in correctness, mas 68-95% compression → bounded context size, faster inference, lower token costs.
+            </p>
+            <p>
+                <strong>Latency:</strong> Extraction + consolidation: 20-40s async (não bloqueia agent). Retrieval: ~200ms.
+            </p>
+            
+            <h4>3. MEM1 (2025) — RL-based Memory + Reasoning</h4>
+            <p>
+                <strong>Contribuição:</strong> End-to-end RL framework que treina agents para operar com <strong>near-constant context size</strong> em long-horizon tasks.
+            </p>
+            <p>
+                <strong>Mecanismo:</strong> Compact shared internal state que integra prior memory + new observations, descartando irrelevant/redundant info via RL rollout trajectory truncation.
+            </p>
+            <p>
+                <strong>Performance:</strong> MEM1-7B melhora 3.5× em performance e reduz memory usage 3.7× vs Qwen2.5-14B-Instruct em augmented multi-hop QA (16 objectives/task).
+            </p>
+            
+            <h4>4. NVIDIA NeMo Semantic Deduplication (2024)</h4>
+            <p>
+                <strong>Contribuição:</strong> GPU-accelerated deduplication para large text datasets (training data cleaning, não agent memory).
+            </p>
+            <p>
+                <strong>Mecanismo:</strong>
+            </p>
+            <ol>
+                <li>Gera embeddings (transformer models, ex: sentence-transformers/all-MiniLM-L6-v2)</li>
+                <li>K-means clustering (n_clusters=100 default)</li>
+                <li>Pairwise cosine similarity within clusters</li>
+                <li>Identify duplicates (threshold eps, ex: 0.07)</li>
+                <li>Remove duplicates (keep 1 representative per group)</li>
+            </ol>
+            <p>
+                <strong>Threshold tuning:</strong> eps=0.001 (strict, less dedup) vs eps=0.1 (aggressive, more dedup). Não há "valor correto" — depende de data diversity tolerance.
+            </p>
+            
+            <h3>Implementações Práticas</h3>
+            <ul>
+                <li><strong>ChromaDB + LangChain:</strong> Multi-agent systems com long-term semantic memory (Medium tutorial, 2024)</li>
+                <li><strong>MemoryBank (Zhong et al., 2023):</strong> Ebbinghaus forgetting curve para time-based decay</li>
+                <li><strong>A-MEM (Xu et al., 2025):</strong> Associative memory com Zettelkasten-style linking</li>
+            </ul>
+        </section>
+
+        <!-- §5. DEBATES EXISTENTES -->
+        <section class="section">
+            <h2><span class="emoji">⚔️</span> §5. Debates Existentes</h2>
+            
+            <div class="debate-box">
+                <h3>Debate #1: QUANDO Consolidar?</h3>
+                <p><strong>Escola A (Offline/Nightly):</strong> Consolidate durante low-activity windows (ex: cron 01:00). Argumento: não interrompe agent flow, alinha com CLS theory (consolidation durante "sleep").</p>
+                <p><strong>Escola B (Online/Triggered):</strong> Consolidate imediatamente após cada interaction ou task completion. Argumento: memória sempre up-to-date, não acumula inconsistencies.</p>
+                <p><strong>Escola C (Threshold-based):</strong> Consolidate quando memory size > threshold OU retrieval latency > threshold. Argumento: adaptive, resource-driven.</p>
+                <p><strong>Evidência empírica:</strong> AWS AgentCore usa async extraction (20-40s latency) → offline vence em produção. MemFly usa online greedy strategy → melhor para research/benchmarks.</p>
+            </div>
+            
+            <div class="debate-box">
+                <h3>Debate #2: Trade-off Fidelity vs Compression</h3>
+                <p><strong>Posição A (Maximize Fidelity):</strong> Nunca merge memories com s_red < 0.95 (muito strict). Preserve nuance a todo custo. Usado em: medical records, legal documents.</p>
+                <p><strong>Posição B (Maximize Compression):</strong> Aggressive merge (s_red > 0.6) para bounded context. Argumento: LLMs têm limited context window (128k tokens max), compression é necessário para scale.</p>
+                <p><strong>Evidência empírica (AWS AgentCore):</strong> 89% compression with 70.58% correctness (vs 77.73% baseline) — <strong>7pp drop acceptable para 89% savings</strong>. Mas para preference memory (domain-specific), correctness sobe para 79% com 68% compression — domain matters.</p>
+            </div>
+            
+            <div class="debate-box">
+                <h3>Debate #3: LLM vs Rule-based Consolidation</h3>
+                <p><strong>LLM-driven (MemFly, AgentCore):</strong> Use LLM para merge decisions (F_merge prompt). Pros: Semantic understanding, context-aware. Cons: Hallucination risk, API cost, latency.</p>
+                <p><strong>Rule-based (NVIDIA NeMo):</strong> Use cosine similarity threshold + K-means clustering. Pros: Fast, deterministic, no hallucination. Cons: Misses semantic nuance (ex: "budget $500" vs "budget quinhentos dólares").</p>
+                <p><strong>Híbrido (minha implementação):</strong> Cosine similarity pré-filtra candidates (>0.8), depois LLM decide merge/link/append. Balanceia speed + accuracy.</p>
+            </div>
+            
+            <div class="debate-box">
+                <h3>Debate #4: Immutability vs Overwrite</h3>
+                <p><strong>Immutable audit trail (AWS):</strong> Mark old memories INVALID instead of deleting. Pros: Rollback, auditoria LGPD, temporal queries. Cons: Storage creep.</p>
+                <p><strong>Overwrite (tradicional RAG):</strong> Replace old memory with merged version. Pros: Storage efficiency. Cons: Perda de history, compliance risk.</p>
+                <p><strong>Consensus emergente:</strong> Immutability vence em regulated domains (healthcare, finance). Overwrite aceitável em casual chatbots.</p>
+            </div>
+        </section>
+
+        <!-- §6. PONTOS DE CRÍTICA -->
+        <section class="section">
+            <h2><span class="emoji">⚠️</span> §6. Pontos de Crítica</h2>
+            
+            <h3>Limitação #1: LLM Hallucination Durante Merge</h3>
+            <p><strong>Problema:</strong> F_merge pode inventar detalhes não presentes em r_i nem r_t.</p>
+            <p><strong>Exemplo:</strong></p>
+            <div class="formula">
+Memory A: "Paciente diabético tipo 2"
+Memory B: "Paciente em uso de metformina"
+LLM merge (ERRADO): "Paciente diabético tipo 2 há 5 anos, em uso de metformina 850mg 2x/dia"
+            </div>
+            <p><strong>Fonte:</strong> Não documentado explicitamente nos papers, mas conhecido risk em LLM-based systems (Hans et al., 2024 — "Goldfish Effect").</p>
+            <p><strong>Mitigação proposta (AWS):</strong> Preserve raw content r_i imutável. Merge apenas context c_i (summary layer). Se hallucination detectada, fallback para r_i.</p>
+            
+            <h3>Limitação #2: Vector Dilution em High-Dimensional Spaces</h3>
+            <p><strong>Problema:</strong> Embeddings de 768d (nomic) ou 1536d (OpenAI) sofrem "curse of dimensionality" — distâncias ficam uniformemente grandes, similarity scores convergem.</p>
+            <p><strong>Evidência empírica:</strong> Slonim & Tishby (2000) demonstraram que clustering direto em high-dim space é ill-posed. Solução: intermediate symbolic layer (Keywords em MemFly).</p>
+            <p><strong>Crítica:</strong> MemFly resolve isso com Keywords, mas sistemas baseados apenas em cosine similarity (ex: ChromaDB vanilla) sofrem degradation em >10k memories.</p>
+            
+            <h3>Limitação #3: Out-of-Order Events sem Timestamp Tracking</h3>
+            <p><strong>Problema:</strong> Se events chegam fora de ordem temporal, consolidation pode sobrescrever info mais recente com info antiga.</p>
+            <p><strong>Exemplo:</strong></p>
+            <div class="formula">
+t=100: "Budget $750" (chegou primeiro, consolidado)
+t=50: "Budget $500" (chegou atrasado, mas timestamp anterior)
+Merge naive: "Budget $500" sobrescreve "$750" ❌
+            </div>
+            <p><strong>Solução (AWS AgentCore):</strong> "Temporal order within sessions" + timestamp tracking. LLM prompt inclui: "prioritize recency" quando há conflict.</p>
+            <p><strong>Crítica:</strong> Não há consensus sobre como resolver multi-session out-of-order. MemFly não documenta tratamento explícito.</p>
+            
+            <h3>Limitação #4: Cost vs Latency Trade-off</h3>
+            <p><strong>Problema:</strong> LLM-based consolidation é caro (tokens) e lento (20-40s AWS).</p>
+            <p><strong>Evidência empírica (MemFly paper):</strong> "Prioritizes memory quality over construction speed, introducing moderate computational overhead."</p>
+            <p><strong>Números (estimativa):</strong></p>
+            <ul>
+                <li>100 daily notes × 500 tokens/note = 50k input tokens</li>
+                <li>GPT-4: $0.01/1k tokens input → $0.50/day = $15/mês só consolidation</li>
+                <li>Claude Sonnet 4: ~$3/million tokens → $0.15/day = $4.50/mês</li>
+            </ul>
+            <p><strong>Crítica:</strong> Escala mal para high-volume agents (ex: customer support bot com 10k daily interactions).</p>
+            
+            <h3>Limitação #5: Lack of Standardized Evaluation Benchmarks</h3>
+            <p><strong>Problema:</strong> Cada paper usa dataset diferente (LoCoMo, LongMemEval, PrefEval). Difícil comparar approaches.</p>
+            <p><strong>Evidência:</strong> MemFly usa LoCoMo. AWS AgentCore usa LoCoMo + LongMemEval + PrefEval + PolyBench-QA. MEM1 usa custom augmented multi-hop QA.</p>
+            <p><strong>Consequência:</strong> "State-of-the-art" é relativo ao benchmark escolhido. AgentCore claim "79% correctness on PrefEval" não é diretamente comparável com MemFly "44.39% F1 on LoCoMo".</p>
+        </section>
+
+        <!-- §7. INTERSECÇÃO COM ANIMA/KERBEROS -->
+        <section class="section">
+            <h2><span class="emoji">🧬</span> §7. Intersecção com Anima/Kerberos</h2>
+            
+            <div class="connection-box">
+                <h3>Paralelos Concretos com Memory Core</h3>
+                <p>
+                    O Memory Core atual (mc CLI + nomic-embed-text) já implementa <strong>extraction layer</strong> (capture command), mas não tem consolidation ativa. Memories são append-only → vector dilution risk em >1500 memories (status atual).
+                </p>
+                <p><strong>Gap identificado:</strong></p>
+                <ul>
+                    <li>Nenhum merge semântico — "Decisão: usar embeddings em inglês" e "Decision: PT text → EN embeddings for better quality" coexistem como 2 memories distintas</li>
+                    <li>Nenhum Link operation — memories relacionadas (ex: 9-Layers Theory + CLS Theory) não têm edges explícitos</li>
+                    <li>Nenhum pruning — memories antigas (90+ days) não decaem, mesmo se irrelevantes</li>
+                </ul>
+            </div>
+            
+            <h3>Proposta Acionável #1: Implementar Phase 2 do auto-consolidate</h3>
+            <p><strong>O que fazer:</strong></p>
+            <ol>
+                <li>Adicionar <code>--mode=live</code> ao <code>mc auto-consolidate</code> (hoje só dry-run funciona)</li>
+                <li>Integrar LLM decision logic (GPT-4 via API ou Claude via Bedrock)</li>
+                <li>Implementar MERGE operation com immutable audit trail (mark old as INVALID, preserve raw content)</li>
+                <li>Adicionar LINK operation (create edges no JSON memory structure ou migrar para Neo4j graph DB)</li>
+            </ol>
+            <p><strong>Threshold sugerido:</strong></p>
+            <ul>
+                <li>s_red > 0.85 (strict) → MERGE (evita hallucination, preserva nuance)</li>
+                <li>s_comp > 0.6 (moderate) → LINK (cria edges sem fundir)</li>
+                <li>Else → APPEND</li>
+            </ul>
+            <p><strong>ROI:</strong> Reduz memory bloat (~30-50% compression esperado, baseado em AWS benchmarks), melhora retrieval relevance (menos noise).</p>
+            
+            <h3>Proposta Acionável #2: Hierarquia Note-Keyword-Topic (MemFly-inspired)</h3>
+            <p><strong>Adaptação para Memory Core:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Memory Core Atual</th>
+                        <th>MemFly Equivalent</th>
+                        <th>O que adicionar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>L1: Notes</td>
+                        <td>Raw memories (JSON entries)</td>
+                        <td>n_i = (r_i, c_i, h_i, K_i)</td>
+                        <td>Adicionar keywords field (extract via LLM)</td>
+                    </tr>
+                    <tr>
+                        <td>L2: Keywords</td>
+                        <td>❌ Não existe</td>
+                        <td>Symbolic anchors (k_j, e_j)</td>
+                        <td>Criar keyword index (map keyword → memories)</td>
+                    </tr>
+                    <tr>
+                        <td>L3: Topics</td>
+                        <td>memory_type (decision/lesson/context)</td>
+                        <td>Clusters via Leiden algorithm</td>
+                        <td>Cluster keywords → topics, update periodically</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Benefício:</strong> Tri-pathway retrieval (macro via Topics, micro via Keywords, topological via Links) → better multi-hop reasoning.</p>
+            
+            <h3>Proposta Acionável #3: Consolidation Timing (CLS-inspired)</h3>
+            <p><strong>Problema atual:</strong> <code>mc sync-daily</code> roda às 01:00 (cron), mas apenas ingere — não consolida.</p>
+            <p><strong>Solução (alinhada com CLS):</strong></p>
+            <ol>
+                <li><strong>01:00 — Ingestion:</strong> Sync daily notes → Memory Core (hippocampus → neocortex transfer)</li>
+                <li><strong>02:00 — Consolidation:</strong> Run <code>mc auto-consolidate --mode=live</code> (semantic compression, sleep-phase)</li>
+                <li><strong>03:00 — Validation:</strong> Sistema Vivo valida memory health (check for hallucination, orphaned memories)</li>
+            </ol>
+            <p><strong>Justificativa teórica:</strong> CLS theory propõe consolidation durante slow-wave sleep (offline). Anima não dorme, mas low-activity window (01:00-04:00) é análogo funcional.</p>
+            
+            <h3>Proposta Acionável #4: Prontuário Integration (Sprint 1+)</h3>
+            <p><strong>Contexto:</strong> Prontuário vai acumular patient histories (consultations, exams, medications). Consolidation é CRÍTICO para:</p>
+            <ul>
+                <li>Evitar duplicatas ("alergia penicilina" capturada em 3 consultas distintas)</li>
+                <li>Merge temporal updates ("HbA1c 7.2%" em Jan → "HbA1c 6.8%" em Mar)</li>
+                <li>Compliance LGPD Art. 37 (audit trail de quem consolidou o quê)</li>
+            </ul>
+            <p><strong>Recomendação:</strong></p>
+            <ul>
+                <li><strong>Strategy:</strong> Semantic memory (facts) + Preference memory (patient preferences, ex: "prefere consultas matinais")</li>
+                <li><strong>Threshold:</strong> s_red > 0.9 (ultra-strict, medical context) + human-in-the-loop approval antes de merge</li>
+                <li><strong>Storage:</strong> Immutable audit trail obrigatório (LGPD compliance)</li>
+            </ul>
+        </section>
+
+        <!-- §8. REFERÊNCIAS CLASSIFICADAS -->
+        <section class="section">
+            <h2><span class="emoji">📚</span> §8. Referências Classificadas</h2>
+            
+            <div class="reference">
+                <span class="ref-tag ref-A">[A]</span>
+                <strong>MemFly: On-the-Fly Memory Optimization via Information Bottleneck</strong><br>
+                Xianzhang Jia, Zhiqin Yang, Zhenbo Song, Wei Xue, Sirui Han, Yike Guo (Feb 2026)<br>
+                <a href="https://arxiv.org/html/2602.07885v1" class="ref-url" target="_blank">https://arxiv.org/html/2602.07885v1</a><br>
+                <em>Contribuição:</em> Formaliza consolidation como Online IB problem, propõe LLM como gradient-free optimizer para merge decisions, Note-Keyword-Topic hierarchy, tri-pathway retrieval. SOTA em LoCoMo benchmark (44.39% F1 GPT-4o, 38.62% Qwen3-8B).
+            </div>
+            
+            <div class="reference">
+                <span class="ref-tag ref-T">[T]</span>
+                <strong>Building smarter AI agents: AgentCore long-term memory deep dive</strong><br>
+                Akarsha Sehwag, Jiarong Jiang, Jay Lopez-Braus, Dani Mitchell, Peng Shi — AWS Machine Learning Blog (Oct 2025)<br>
+                <a href="https://aws.amazon.com/blogs/machine-learning/building-smarter-ai-agents-agentcore-long-term-memory-deep-dive/" class="ref-url" target="_blank">https://aws.amazon.com/blogs/machine-learning/building-smarter-ai-agents-agentcore-long-term-memory-deep-dive/</a><br>
+                <em>Contribuição:</em> Production-ready system com extraction (semantic/preference/summarization strategies), consolidation (LLM-based merge/update/no-op), benchmarks (89% compression, 70.58% correctness LoCoMo), latency (20-40s consolidation, 200ms retrieval). Immutable audit trail design.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-tag ref-T">[T]</span>
+                <strong>Memory Consolidation and Summarization — Agentic LLM Memory Architectures</strong><br>
+                ApX Machine Learning (Course material, 2024-2025)<br>
+                <a href="https://apxml.com/courses/agentic-llm-memory-architectures/chapter-3-designing-memory-systems/memory-consolidation-summarization" class="ref-url" target="_blank">https://apxml.com/courses/agentic-llm-memory-architectures/chapter-3-designing-memory-systems/memory-consolidation-summarization</a><br>
+                <em>Contribuição:</em> Pedagogical overview de consolidation techniques (periodic reflection, abstraction/generalization, memory pruning/forgetting, hierarchical summarization), time-based decay formula, metadata enhancement, trade-offs (triggering, offline vs online, fidelity vs efficiency).
+            </div>
+            
+            <div class="reference">
+                <span class="ref-tag ref-T">[T]</span>
+                <strong>Semantic Deduplication — NeMo Curator</strong><br>
+                NVIDIA (Official documentation, 2024)<br>
+                <a href="https://docs.nvidia.com/nemo/curator/latest/curate-text/process-data/deduplication/semdedup.html" class="ref-url" target="_blank">https://docs.nvidia.com/nemo/curator/latest/curate-text/process-data/deduplication/semdedup.html</a><br>
+                <em>Contribuição:</em> GPU-accelerated semantic dedup para training data (não agent memory). Mecanismo: embeddings → K-means → pairwise cosine similarity → threshold-based removal. Threshold tuning (eps=0.001 strict vs 0.1 aggressive). Performance scaling (100K docs = 1-2h on RTX 3080).
+            </div>
+            
+            <div class="reference">
+                <span class="ref-tag ref-A">[A]</span>
+                <strong>MEM1: Learning to Synergize Memory and Reasoning for Efficient Long-Horizon Context</strong><br>
+                Zhou et al. — OpenReview (2025)<br>
+                <a href="https://openreview.net/forum?id=XY8AaxDSLb" class="ref-url" target="_blank">https://openreview.net/forum?id=XY8AaxDSLb</a><br>
+                <em>Contribuição:</em> RL-based framework para agents com near-constant context size. Compact shared internal state (memory + reasoning). MEM1-7B: 3.5× performance gain, 3.7× memory reduction vs Qwen2.5-14B on 16-objective multi-hop QA. Generalizes beyond training horizon.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-tag ref-A">[A]</span>
+                <strong>Agglomerative Information Bottleneck</strong><br>
+                Noam Slonim, Naftali Tishby — NIPS 1999<br>
+                <em>Contribuição:</em> Original AIB algorithm — clustering via JS-divergence minimization, fundacional para MemFly's theoretical framework. Double clustering principle (word clusters → document clusters) para mitigar curse of dimensionality.
+            </div>
+            
+            <div class="reference">
+                <span class="ref-tag ref-A">[A]</span>
+                <strong>Generative Agents: Interactive Simulacra of Human Behavior</strong><br>
+                Joon Sung Park et al. — arXiv:2304.03442 (2023)<br>
+                <em>Contribuição:</em> Introduziu "reflection mechanism" — LLM synthesizes higher-level thoughts from past experiences, pioneer work em memory consolidation for agents.
+            </div>
+        </section>
+        
+        <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-secondary);">
+            <p>Relatório gerado por Azimute — Sleep Study Phase (Quality-Controlled Research)</p>
+            <p style="margin-top: 0.5rem;">Framework: <a href="/home/centr/.openclaw/workspace-kerberos-chat/docs/research-quality-framework.md" class="ref-url">research-quality-framework.md</a></p>
+        </footer>
+    </div>

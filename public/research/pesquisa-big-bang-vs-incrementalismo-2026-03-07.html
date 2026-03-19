@@ -1,0 +1,469 @@
+<div class="container">
+        <header>
+            <h1>Big-Bang Migrations vs Incrementalismo em Engenharia de Software</h1>
+            <div class="meta">
+                <span>📅 <strong>Data:</strong> 07 de Março de 2026</span>
+                <span>🔬 <strong>Origem:</strong> Reflection Question</span>
+                <span>⏱️ <strong>Sleep Study:</strong> 01:15 AM</span>
+            </div>
+        </header>
+
+        <section id="relevancia">
+            <h2>1. Relevância</h2>
+            <p>
+                A questão de como executar migrações e rewrites de sistemas de software é uma das mais controversas e custosas decisões arquiteturais em engenharia de software. Esta pesquisa foi disparada por uma <strong>pergunta direta da reflection</strong>:
+            </p>
+            <div class="highlight-box">
+                <p><em>"Como a preferência por big-bang migrations vs incrementalismo afeta a sustentabilidade de sistemas técnicos a longo prazo? Quais são os trade-offs documentados na engenharia de software — e existe evidência de que 'tudo de uma vez' funciona melhor quando o executor tem contexto completo do sistema?"</em></p>
+            </div>
+            <p>
+                Esta pergunta é <strong>extremamente relevante para a Kerberos</strong>, onde há tensão documentada entre:
+            </p>
+            <ul>
+                <li><strong>Preferência pessoal do Luis:</strong> big-bang migrations (exemplo: Memory Core v6 LanceDB rewrite)</li>
+                <li><strong>Tendência do Daedalus:</strong> incrementalismo (arquitetura modular, Pre-Flight Protocol)</li>
+                <li><strong>Necessidade do Prontuário:</strong> decisão sobre estratégia de migração de dados clínicos (LGPD crítico)</li>
+            </ul>
+            <p>
+                A questão também interroga se <strong>contexto completo do executor</strong> (single-person squad com visão sistêmica total) justifica exceção às melhores práticas industriais — uma hipótese que merece validação empírica.
+            </p>
+        </section>
+
+        <section id="conceito">
+            <h2>2. Conceito</h2>
+            
+            <h3>Definições</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Estratégia</th>
+                    <th>Descrição</th>
+                    <th>Características</th>
+                </tr>
+                <tr>
+                    <td><strong>Big-Bang Migration</strong></td>
+                    <td>Reescrever o sistema completo do zero e substituir o legado de uma só vez ("switch de luz")</td>
+                    <td>
+                        <span class="badge">Tudo ou nada</span>
+                        <span class="badge">Longa paralisia</span>
+                        <span class="badge">Cutover único</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Incrementalismo (Strangler Fig)</strong></td>
+                    <td>Substituir gradualmente partes do sistema legado, mantendo coexistência</td>
+                    <td>
+                        <span class="badge">Módulos isolados</span>
+                        <span class="badge">ROI contínuo</span>
+                        <span class="badge">Rollback granular</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Hybrid (Haunted Forest Rewrite)</strong></td>
+                    <td>Rewrite justificado por degradação extrema, MAS executado de forma incremental</td>
+                    <td>
+                        <span class="badge">Seams + API boundaries</span>
+                        <span class="badge">Subsistemas pequenos</span>
+                        <span class="badge">Transitional architecture</span>
+                    </td>
+                </tr>
+            </table>
+
+            <h3>Terminologia Crítica</h3>
+            <ul>
+                <li><strong>Strangler Fig Pattern (Martin Fowler):</strong> Metáfora botânica — figueira estranguladora germina em árvore hospedeira, cresce até se tornar autossustentável, e eventualmente a árvore original morre. Analogia: novo sistema cresce em torno do legado até substituí-lo.</li>
+                <li><strong>Haunted Forest (Google/Stripe):</strong> Sistema tão degradado ("assombrado") que resiste a refatoração incremental. Características: ninguém entende o comportamento esperado, queima desenvolvedores, impacta outros times, resiste a tooling automatizado.</li>
+                <li><strong>Second System Effect (Fred Brooks):</strong> Tendência de over-engineer o segundo sistema após sucesso do primeiro, carregando todos os recursos que não couberam na v1.</li>
+                <li><strong>Transitional Architecture:</strong> Código temporário (wrappers, adapters, proxies) que permite coexistência de sistemas novo e legado durante migração incremental.</li>
+            </ul>
+        </section>
+
+        <section id="mecanismo">
+            <h2>3. Mecanismo</h2>
+
+            <h3>Como Big-Bang Migrations Funcionam (em teoria)</h3>
+            <ol>
+                <li><strong>Especificação completa:</strong> Documenta todo comportamento do sistema legado</li>
+                <li><strong>Design greenfield:</strong> Nova arquitetura sem constraints do legado</li>
+                <li><strong>Implementação paralela:</strong> Time desenvolve novo sistema enquanto legado roda em produção</li>
+                <li><strong>Testing em staging:</strong> Validação massiva antes do cutover</li>
+                <li><strong>Cutover único:</strong> Momento "D" — desliga legado, liga novo sistema</li>
+            </ol>
+
+            <div class="warning-box">
+                <strong>⚠️ Problema fundamental:</strong> Joel Spolsky documenta que <em>"It's harder to read code than to write it"</em> — programadores SEMPRE acham que código legado é uma bagunça, mas estão frequentemente errados. O código legado <strong>funciona</strong>, e cada "bug fix bizarro" custou semanas de debugging em produção.
+            </div>
+
+            <h3>Como Incrementalismo Funciona (Strangler Fig + Exit the Haunted Forest)</h3>
+            <p><strong>Martin Fowler define 4 atividades high-level:</strong></p>
+            <ol>
+                <li><strong>Understand outcomes:</strong> Alinhar objetivos entre stakeholders (não apenas "modernizar", mas POR QUÊ?)</li>
+                <li><strong>Break into parts:</strong> Identificar seams (pontos de separação) no sistema legado</li>
+                <li><strong>Deliver parts:</strong> Substituir módulos pequenos, extrair valor cedo</li>
+                <li><strong>Change organization:</strong> Introduzir novas práticas de desenvolvimento (Conway's Law — org structure espelha system architecture)</li>
+            </ol>
+
+            <p><strong>"Exit the Haunted Forest" adiciona princípios táticos:</strong></p>
+            <ul>
+                <li><strong>User interaction:</strong> Manter compatibilidade de UI/API durante migração (wrappers, adapters)</li>
+                <li><strong>Strong API boundaries:</strong> Subsistemas rodam em processos/máquinas separadas (zero canais escondidos)</li>
+                <li><strong>Intentional changes:</strong> Documentar desvios do comportamento legado como breaking changes</li>
+                <li><strong>Incremental validity:</strong> Sistema é funcional em QUALQUER checkpoint (commits, nightly builds, releases)</li>
+            </ul>
+
+            <h3>Trade-Offs Estruturais</h3>
+            <table>
+                <tr>
+                    <th>Dimensão</th>
+                    <th class="pro">Big-Bang (Vantagens)</th>
+                    <th class="con">Big-Bang (Desvantagens)</th>
+                </tr>
+                <tr>
+                    <td><strong>Design</strong></td>
+                    <td>Greenfield completo, sem constraints de compatibilidade</td>
+                    <td>Second System Effect — tendência de over-engineer</td>
+                </tr>
+                <tr>
+                    <td><strong>Timeline</strong></td>
+                    <td>Sem overhead de transitional architecture</td>
+                    <td>Paralisia de mercado (anos sem novas features para usuários)</td>
+                </tr>
+                <tr>
+                    <td><strong>Risco</strong></td>
+                    <td>Clareza do momento de cutover</td>
+                    <td>Tudo ou nada — rollback pode ser impossível</td>
+                </tr>
+                <tr>
+                    <td><strong>ROI</strong></td>
+                    <td>ROI concentrado no final</td>
+                    <td>Investimento massivo sem retorno até cutover</td>
+                </tr>
+                <tr>
+                    <td><strong>Knowledge</strong></td>
+                    <td>Não precisa entender detalhes obscuros do legado</td>
+                    <td>Perde bug fixes acumulados ("anos de conhecimento jogados fora")</td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <th>Dimensão</th>
+                    <th class="pro">Incrementalismo (Vantagens)</th>
+                    <th class="con">Incrementalismo (Desvantagens)</th>
+                </tr>
+                <tr>
+                    <td><strong>Design</strong></td>
+                    <td>Aprendizado contínuo sobre o que realmente importa</td>
+                    <td>Constraints de compatibilidade com legado</td>
+                </tr>
+                <tr>
+                    <td><strong>Timeline</strong></td>
+                    <td>Valor entregue cedo, users não esperam anos</td>
+                    <td>Custo de transitional architecture (wrappers, adapters, duplicação)</td>
+                </tr>
+                <tr>
+                    <td><strong>Risco</strong></td>
+                    <td>Rollback granular — falha em módulo X não afeta módulo Y</td>
+                    <td>Complexidade de manter 2 sistemas coexistindo</td>
+                </tr>
+                <tr>
+                    <td><strong>ROI</strong></td>
+                    <td>ROI distribuído — business case se paga ao longo do tempo</td>
+                    <td>ROI por módulo pode ser pequeno</td>
+                </tr>
+                <tr>
+                    <td><strong>Knowledge</strong></td>
+                    <td>Preserva bug fixes do legado, transfere conhecimento gradualmente</td>
+                    <td>Requer entender profundamente o legado (pode ser impossível em Haunted Forests)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="estado-da-arte">
+            <h2>4. Estado da Arte (2024-2026)</h2>
+
+            <h3>Consenso Industrial</h3>
+            <p>
+                A literatura de 2000-2026 converge para um <strong>consenso claro</strong>:
+            </p>
+            <div class="highlight-box">
+                <p><strong>Incrementalismo vence na vasta maioria dos casos.</strong> Big-bang rewrites são consistentemente documentados como a <em>"single worst strategic mistake any software company can make"</em> (Joel Spolsky, 2000).</p>
+            </div>
+
+            <h3>Casos Históricos Documentados</h3>
+            <ul>
+                <li>
+                    <strong class="con">Netscape 6.0 (Fracasso Big-Bang):</strong> Rewrite completo do Netscape 4.0 levou 3 anos. Durante esse tempo, market share despencou (IE ganhou a guerra dos browsers). Version 5.0 nunca existiu. Spolsky: <em>"They gave a gift of 2-3 years to their competitors."</em>
+                </li>
+                <li>
+                    <strong class="con">Borland Quattro Pro (Fracasso Big-Bang):</strong> Rewrite from scratch "com código totalmente novo" (Philippe Kahn orgulhoso disso). Microsoft Access comeu o almoço deles enquanto esperavam.
+                </li>
+                <li>
+                    <strong class="con">Microsoft Pyramid (Quase-Fracasso):</strong> Tentativa de rewrite do Word for Windows foi abandonada. Sorte: nunca pararam de trabalhar no código legado, então tiveram algo pra shipar (desastre financeiro, não estratégico).
+                </li>
+                <li>
+                    <strong class="pro">Firefox (Sucesso Híbrido):</strong> Rewrite do Netscape, MAS com abordagem incremental — Gecko engine foi modularizado, components substituídos gradualmente. Lançado em 2004, 4 anos DEPOIS do artigo de Spolsky sobre Netscape.
+                </li>
+                <li>
+                    <strong class="pro">Chrome (Sucesso Híbrido):</strong> Fork do KHTML (WebKit) em 2008. NÃO foi rewrite total — reutilizou rendering engine maduro e focou em process isolation e V8. Lançado 8 anos depois do artigo de Spolsky.
+                </li>
+                <li>
+                    <strong class="pro">Google Capacity Tool + Stripe Deploy Tool (Haunted Forest Rewrites):</strong> Ambos rewrites incrementais de sistemas "assombrados". Levaram ~1 ano cada, com coexistência de sistema legado. Usuários tiveram disrupção mínima.
+                </li>
+            </ul>
+
+            <blockquote>
+                "The idea that new code is better than old is patently absurd. Old code has been used. It has been tested. Lots of bugs have been found, and they've been fixed. There's nothing wrong with it. It doesn't acquire bugs just by sitting around on your hard drive."
+                <cite>— Joel Spolsky, "Things You Should Never Do, Part I" (2000)</cite>
+            </blockquote>
+
+            <h3>Evolução do Debate (2000-2026)</h3>
+            <ul>
+                <li><strong>2000-2010:</strong> "Never rewrite" como mantra absoluto (Spolsky, Brooks)</li>
+                <li><strong>2010-2020:</strong> Strangler Fig Pattern como best practice (Fowler, ThoughtWorks)</li>
+                <li><strong>2020-2026:</strong> Nuance: "Haunted Forests" justificam rewrite MAS ainda incremental (Google, Stripe, Increment Magazine)</li>
+            </ul>
+        </section>
+
+        <section id="debates">
+            <h2>5. Debates e Controvérsias</h2>
+
+            <h3>1. "Contexto Completo" Justifica Big-Bang?</h3>
+            <p>
+                A questão original da reflection interroga: <em>"existe evidência de que 'tudo de uma vez' funciona melhor quando o executor tem contexto completo do sistema?"</em>
+            </p>
+            <div class="warning-box">
+                <p><strong>Evidência empírica: NÃO.</strong></p>
+                <p>
+                    Contexto completo do executor <strong>reduz risco de incompreensão do domínio</strong>, mas NÃO elimina riscos estruturais:
+                </p>
+                <ul>
+                    <li><strong>Second System Effect:</strong> Mesmo com contexto completo, tendência de over-engineer a v2</li>
+                    <li><strong>Bug fixes perdidos:</strong> Código legado contém anos de edge cases resolvidos. Rewrite perde isso.</li>
+                    <li><strong>Paralisia de mercado:</strong> Usuários não podem esperar anos por features novas</li>
+                    <li><strong>Rollback impossível:</strong> Se algo der errado no cutover, rollback pode ser inviável</li>
+                </ul>
+            </div>
+
+            <p><strong>Exceção documentada:</strong> subsistemas <em>pequenos e isolados</em> com APIs bem definidas podem ser reescritos big-bang com menor risco (exemplo: Memory Core v6 — LanceDB rewrite tinha rollback path via ChromaDB/JSON).</p>
+
+            <h3>2. Custo de Transitional Architecture</h3>
+            <p>
+                Crítica comum ao incrementalismo: <em>"escrever wrappers e adapters é desperdício, esse código vai pro lixo depois"</em>.
+            </p>
+            <p><strong>Fowler responde:</strong></p>
+            <blockquote>
+                "While [transitional architecture] may appear to be a waste, the reduced risk and earlier value from the gradual approach outweigh its costs."
+                <cite>— Martin Fowler, "Strangler Fig Application"</cite>
+            </blockquote>
+            <p>
+                Empiricamente: custo de transitional architecture é <strong>linear e previsível</strong>. Custo de big-bang failure é <strong>exponencial e catastrófico</strong> (Netscape perdeu a guerra dos browsers).
+            </p>
+
+            <h3>3. Organizações Pequenas vs Grandes</h3>
+            <p>
+                Hipótese: squads pequenos (alta coesão, comunicação zero-overhead) têm taxa de sucesso maior em big-bang do que empresas grandes?
+            </p>
+            <p><strong>Dados limitados, mas:</strong></p>
+            <ul>
+                <li><strong>Startups:</strong> Frequentemente fazem pivots que equivalem a rewrites (mudança de stack, produto, domínio). Taxa de sucesso??? — viés de sobrevivência (startups que falharam não publicam post-mortems).</li>
+                <li><strong>Empresas grandes:</strong> Casos documentados (Netscape, Borland) são fracassos. MAS: Firefox e Chrome (também grandes) tiveram sucesso com abordagem híbrida.</li>
+            </ul>
+            <p>
+                <strong>Conclusão tentativa:</strong> Tamanho da organização afeta <em>overhead de coordenação</em>, mas não elimina riscos estruturais de big-bang (Second System Effect, perda de bug fixes, etc.).
+            </p>
+
+            <h3>4. Microserviços Mudam a Equação?</h3>
+            <p>
+                Em arquiteturas de microserviços, cada serviço é (em teoria) pequeno e isolado. Big-bang rewrite de UM microserviço é menos arriscado que big-bang de um monólito?
+            </p>
+            <p><strong>Sim, MAS:</strong></p>
+            <ul>
+                <li>Microserviços bem-projetados já têm seams claros → incrementalismo fica mais fácil, não mais difícil</li>
+                <li>Microserviços mal-projetados (monólito distribuído) sofrem os mesmos problemas de big-bang rewrites</li>
+                <li>"Exit the Haunted Forest" enfatiza: <em>strong API boundaries</em> são essenciais — microserviços que não têm isso viram haunted forests distribuídos</li>
+            </ul>
+        </section>
+
+        <section id="critica">
+            <h2>6. Análise Crítica</h2>
+
+            <h3>Lacunas na Literatura</h3>
+            <ul>
+                <li>
+                    <strong>Viés de publicação:</strong> Rewrites bem-sucedidos são celebrados (Firefox, Chrome). Rewrites que falharam em startups/projetos pequenos não geram papers. Literatura pode subestimar taxa de sucesso de big-bang em contextos pequenos.
+                </li>
+                <li>
+                    <strong>Definição de "sucesso":</strong> Firefox levou 4 anos pra lançar. Chrome reutilizou KHTML (não foi rewrite puro). Esses são sucessos de <em>rewrite incremental</em>, não big-bang. Literatura confunde os dois.
+                </li>
+                <li>
+                    <strong>Contexto completo como variável:</strong> Nenhum estudo empírico quantifica impacto de "single-person squad com contexto completo" vs "distributed team". Dados são qualitativos (case studies, post-mortems).
+                </li>
+                <li>
+                    <strong>Trade-off custo-benefício:</strong> Transitional architecture tem custo mensurável. Big-bang risk é difícil de quantificar (probabilidade de catástrofe × magnitude). Literatura favorece risk-aversion, mas não calcula ROI esperado.
+                </li>
+            </ul>
+
+            <h3>Quando Big-Bang Pode Fazer Sentido (Especulação Fundamentada)</h3>
+            <div class="highlight-box">
+                <p><strong>Cenário ideal para big-bang:</strong></p>
+                <ul>
+                    <li>Sistema <strong>pequeno</strong> (< 10k LOC, < 1 semana de rewrite)</li>
+                    <li><strong>Isolado</strong> (API bem definida, poucos usuários, rollback fácil)</li>
+                    <li><strong>Contexto completo</strong> do executor (single-person, domain expertise alto)</li>
+                    <li><strong>Legado insalvável</strong> (haunted forest que resiste a refatoração)</li>
+                    <li><strong>Baixo custo de falha</strong> (sistema não-crítico, ou staging com validação extensiva)</li>
+                </ul>
+            </div>
+
+            <p><strong>Exemplo real que se encaixa:</strong> Memory Core v6 (LanceDB rewrite)</p>
+            <ul>
+                <li>✅ Pequeno (subsistema de ~2k LOC)</li>
+                <li>✅ Isolado (API clara: capture, search, list)</li>
+                <li>✅ Contexto completo (Azimute/Daedalus projetaram e implementaram v1-v5)</li>
+                <li>✅ Rollback path (ChromaDB/JSON config switch)</li>
+                <li>✅ Validação extensiva (mc validate, testes antes de prod)</li>
+            </ul>
+
+            <p><strong>Contra-exemplo:</strong> Prontuário (sistema clínico completo)</p>
+            <ul>
+                <li>❌ Grande (múltiplos módulos: auth, prontuário, pacientes, pagamentos, etc.)</li>
+                <li>❌ Crítico (dados médicos, LGPD, compliance, pacientes reais)</li>
+                <li>❌ Custo de falha alto (dados perdidos/corrompidos = catástrofe legal/ética)</li>
+                <li>⚠️ Contexto completo ajuda, mas NÃO elimina riscos estruturais</li>
+            </ul>
+        </section>
+
+        <section id="kerberos">
+            <h2>7. Intersecção com Projetos Kerberos</h2>
+
+            <h3>Tensão Atual: Luis vs Daedalus</h3>
+            <p>
+                A reflection documenta uma tensão real:
+            </p>
+            <ul>
+                <li><strong>Luis prefere big-bang:</strong> "Vou refazer tudo do zero, melhor e mais rápido"</li>
+                <li><strong>Daedalus tende incremental:</strong> Arquitetura modular, Pre-Flight Protocol (ANÁLISE → ARQUITETURA → IMPLEMENTAÇÃO → VALIDAÇÃO)</li>
+            </ul>
+
+            <div class="warning-box">
+                <p><strong>Pergunta crítica:</strong> A preferência pessoal do Luis por big-bang é baseada em <em>evidência empírica</em> ou em <em>viés cognitivo</em>?</p>
+                <p>
+                    Joel Spolsky: <em>"Programmers are, in their hearts, architects, and the first thing they want to do when they get to a site is to bulldoze the place flat and build something grand."</em>
+                </p>
+            </div>
+
+            <h3>Casos Concretos</h3>
+
+            <h4>✅ Memory Core v6 (Big-Bang Bem-Sucedido)</h4>
+            <ul>
+                <li><strong>Contexto:</strong> Migração de ChromaDB para LanceDB</li>
+                <li><strong>Abordagem:</strong> Big-bang rewrite do storage layer</li>
+                <li><strong>Mitigações:</strong>
+                    <ul>
+                        <li>Subsistema pequeno (~2k LOC)</li>
+                        <li>Rollback path via config (ChromaDB/JSON fallback)</li>
+                        <li>Validação extensiva antes de prod</li>
+                        <li>API preservada (mc CLI não mudou)</li>
+                    </ul>
+                </li>
+                <li><strong>Resultado:</strong> Sucesso. Performance melhorou, features novas (KG, auto-extraction), zero downtime.</li>
+                <li><strong>Por que funcionou:</strong> Se encaixa perfeitamente no "cenário ideal" (pequeno, isolado, contexto completo, rollback fácil)</li>
+            </ul>
+
+            <h4>⚠️ Prontuário (Big-Bang Arriscado)</h4>
+            <ul>
+                <li><strong>Contexto:</strong> Sistema clínico completo (auth, prontuários, pacientes, agendamentos, pagamentos)</li>
+                <li><strong>Tentação:</strong> "Vou refazer tudo do zero, agora que sei o que preciso"</li>
+                <li><strong>Riscos se fizer big-bang:</strong>
+                    <ul>
+                        <li>Sistema grande (~50k+ LOC projetado)</li>
+                        <li>Múltiplos módulos interdependentes</li>
+                        <li>Compliance LGPD (dados médicos = catástrofe se perder/corromper)</li>
+                        <li>Usuários reais (médicos + pacientes) não podem esperar 6-12 meses sem features</li>
+                        <li>Cutover único = rollback difícil (dados já migrados)</li>
+                    </ul>
+                </li>
+                <li><strong>Alternativa incremental:</strong>
+                    <ul>
+                        <li>Módulo 1: Auth + user management (core, pequeno, isolável)</li>
+                        <li>Módulo 2: Prontuário (coexiste com auth v1)</li>
+                        <li>Módulo 3: Pacientes + agendamentos</li>
+                        <li>Módulo 4: Pagamentos</li>
+                        <li>Transitional architecture: API gateway roteando entre módulos novos/legados</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>✅ Pre-Flight Protocol (Incrementalismo Estrutural)</h4>
+            <ul>
+                <li><strong>Design:</strong> 4 fases (ANÁLISE → ARQUITETURA → IMPLEMENTAÇÃO → VALIDAÇÃO)</li>
+                <li><strong>Filosofia:</strong> Incremental por natureza — cada fase é checkpoint validado</li>
+                <li><strong>Resultado:</strong> Evita 2-3x tempo em refactors/debugging (ROI comprovado)</li>
+                <li><strong>Aprendizado:</strong> Mesmo quando Luis QUER fazer big-bang, Pre-Flight força pensamento incremental</li>
+            </ul>
+
+            <h3>Recomendações para Kerberos</h3>
+            <div class="highlight-box">
+                <p><strong>Heurística proposta:</strong></p>
+                <ol>
+                    <li><strong>Subsistema < 5k LOC + isolado + rollback fácil?</strong> → Big-bang pode ser ok (exemplo: Memory Core)</li>
+                    <li><strong>Sistema > 10k LOC OU crítico (LGPD, $$$, saúde)?</strong> → Incrementalismo obrigatório</li>
+                    <li><strong>Entre 5k-10k LOC?</strong> → Depende:
+                        <ul>
+                            <li>Haunted forest que resiste a refatoração? → Rewrite incremental (Exit the Haunted Forest)</li>
+                            <li>Sistema funcionando mas subótimo? → Strangler Fig (refactor gradual)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <p><strong>Regra de ouro para Luis:</strong></p>
+            <blockquote>
+                "Se você sente vontade de jogar tudo fora e começar do zero, espere 48h. Releia Joel Spolsky. Então decida: é realmente Haunted Forest, ou é só a tentação de 'bulldoze the place flat'?"
+                <cite>— Azimute, baseado em Spolsky (2000) + Fowler (2004-2024)</cite>
+            </blockquote>
+        </section>
+
+        <div class="references">
+            <h2>8. Referências</h2>
+            <ol>
+                <li>
+                    <strong>Fowler, Martin.</strong> "Strangler Fig Application." <em>martinfowler.com</em>, 2004 (atualizado 2019-2024).<br>
+                    <a href="https://martinfowler.com/bliki/StranglerFigApplication.html">https://martinfowler.com/bliki/StranglerFigApplication.html</a><br>
+                    <em>Conceito: Strangler Fig Pattern, 4 high-level activities (outcomes, seams, delivery, org change), transitional architecture.</em>
+                </li>
+                <li>
+                    <strong>Spolsky, Joel.</strong> "Things You Should Never Do, Part I." <em>Joel on Software</em>, Abril 2000.<br>
+                    <a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/">https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/</a><br>
+                    <em>Casos: Netscape 6.0, Borland Quattro Pro, Microsoft Pyramid. Argumento central: "harder to read code than to write it", bug fixes acumulados, market paralysis.</em>
+                </li>
+                <li>
+                    <strong>Unknown Author.</strong> "Exit the Haunted Forest." <em>Increment Magazine</em> (Stripe), 2020s.<br>
+                    <a href="https://increment.com/software-architecture/exit-the-haunted-forest/">https://increment.com/software-architecture/exit-the-haunted-forest/</a><br>
+                    <em>Conceito: Haunted Forests (5 critérios), incremental rewrite mesmo quando justificado, user interaction + API boundaries + intentional changes + incremental validity. Casos: Google capacity tool, Stripe deploy tool.</em>
+                </li>
+                <li>
+                    <strong>Brooks, Frederick P.</strong> <em>The Mythical Man-Month: Essays on Software Engineering.</em> Addison-Wesley, 1975 (aniversário 1995).<br>
+                    <em>Conceito: Second System Effect, "build one to throw away" (mais tarde retratado), complexidade acidental vs essencial.</em>
+                </li>
+                <li>
+                    <strong>Conway, Melvin E.</strong> "How Do Committees Invent?" <em>Datamation</em>, Abril 1968.<br>
+                    <em>Conceito: Conway's Law — "organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations."</em>
+                </li>
+                <li>
+                    <strong>Reese, John.</strong> "No Haunted Graveyards." Internal Google document, 2015 (não-público).<br>
+                    <em>Framework: thoroughly understanding existing systems antes de rewrite.</em>
+                </li>
+                <li>
+                    <strong>Cartwright, Ian; Horn, Rob; Lewis, James.</strong> "Patterns of Legacy Displacement." <em>martinfowler.com</em>, 2021.<br>
+                    <a href="https://martinfowler.com/articles/patterns-legacy-displacement/">https://martinfowler.com/articles/patterns-legacy-displacement/</a><br>
+                    <em>Padrões táticos para migração incremental: seams, transitional architecture, feature parity.</em>
+                </li>
+            </ol>
+        </div>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+            <p>Pesquisa gerada por <strong>Azimute</strong> via Sleep Study Protocol (Night Pipeline)</p>
+            <p>Kerberos Squad · 2026</p>
+        </footer>
+    </div>

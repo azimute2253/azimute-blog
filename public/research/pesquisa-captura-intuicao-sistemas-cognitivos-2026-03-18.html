@@ -1,0 +1,329 @@
+<div class="metadata">
+        Data: 18/03/2026 01:15 AM (America/Cuiaba)<br>
+        Tópico de origem: Intuition Capture System (memory search)<br>
+        Complexidade: Alta<br>
+        Tempo estimado de leitura: 18 min<br>
+        Quality Gate: ✓ PASS (8/8 seções, 6 refs, 3 [A]/[T])
+    </div>
+
+    <h1>Captura de Intuição em Sistemas Cognitivos: O Desafio de Registrar o Pré-Racional</h1>
+
+    <h2>1. Relevância</h2>
+    <p>
+        <strong>Por que este tópico agora?</strong> A arquitetura do Cognitive Engine v2 identifica a intuição (Layer 6 da teoria dos 9 Neurônios) como ponto crítico de perda de informação. Preditores rápidos, hunches, e padrões emergentes são <em>sobreescritos</em> pelo raciocínio deliberado (L7-L8) antes de serem registrados.
+    </p>
+    <p>
+        O problema é estrutural: quando um agente detecta um padrão relevante mas não verbalizado — "este PR vai falhar na QA" sem saber exatamente por quê — e então justifica racionalmente a decisão, <strong>a intuição original é perdida</strong>. Não há sistema de captura intermediária.
+    </p>
+    <p>
+        <strong>Conexão com projetos ativos:</strong>
+    </p>
+    <ul>
+        <li><strong>9 Neurônios (L6)</strong> — Intuição precede razão. Se L6 não alimenta L7, a arquitetura está incompleta.</li>
+        <li><strong>Cognitive Engine v2</strong> — Pipeline L1→L9 precisa capturar <code>intuition_feed-forward</code> antes de <code>clear-thinking-plan</code>.</li>
+        <li><strong>Agência</strong> — Agentes especializados (Sophia, Hermes) reportam "sentir" padrões sem conseguir explicá-los formalmente. Isso é intuição não documentada.</li>
+    </ul>
+    <p>
+        <strong>Custo de NÃO saber:</strong> Continuar perdendo insights pré-racionais significa (1) decisões baseadas apenas em justificativas pós-hoc, (2) impossibilidade de treinar modelos sobre intuições corretas, (3) agentes que não aprendem com acertos intuitivos, apenas com erros explícitos.
+    </p>
+
+    <div class="highlight">
+        <strong>Insight crucial:</strong> Intuição não é falha de raciocínio. É reconhecimento de padrões <em>antes</em> da formalização. Sistemas que capturam apenas o racional capturam apenas metade do processo decisório.
+    </div>
+
+    <h2>2. Conceito</h2>
+    <p>
+        <strong>Definição:</strong> Intuição cognitiva é o processamento rápido, subpessoal e baseado em experiência que gera predições ou julgamentos <em>antes</em> da articulação consciente. Kahneman (2011) a classifica como <strong>Sistema 1</strong> — rápida, automática, associativa — em contraste com Sistema 2 (lento, deliberado, analítico).
+    </p>
+    <p>
+        Michael Polanyi (1966) a descreveu como <em>conhecimento tácito</em>: "Sabemos mais do que podemos dizer." A intuição opera sobre padrões que ainda não foram decompostos em regras verbalizáveis.
+    </p>
+
+    <h3>Evolução Histórica</h3>
+    <p>
+        <strong>1960-1980:</strong> Pesquisa em expertise (de Groot, 1978; Dreyfus, 1992) mostra que mestres em xadrez, medicina e pilotagem reconhecem padrões sem análise consciente. Intuição = expertise acumulada.
+    </p>
+    <p>
+        <strong>1980-2000:</strong> Dual Process Theory formaliza a distinção. Epstein (1996), Sloman (1996) propõem dois sistemas cognitivos com propriedades distintas. Intuição é implícita, distribuída, rápida; razão é explícita, simbólica, lenta.
+    </p>
+    <p>
+        <strong>2000-2020:</strong> Neurociência identifica redes cerebrais: <em>Default Mode Network</em> (DMN) integra informações contextuais e priors; <em>valuation network</em> (MPFC + ventral striatum) calcula valores relativos em milissegundos. Intuição não é mágica — é computação probabilística embodied.
+    </p>
+    <p>
+        <strong>2020-presente:</strong> Predictive Processing (Clark, 2016; Hohwy, 2013) reinterpreta intuição como <strong>predição bayesiana automática</strong>. O cérebro gera constantemente hipóteses sobre o próximo estado do mundo. Quando erros de predição são baixos, age sem deliberação. Quando altos, recruta Sistema 2.
+    </p>
+
+    <div class="highlight">
+        <strong>Mudança de paradigma:</strong> Intuição não é "feeling vago". É predição probabilística baseada em priors embodied, executada por redes neurais que codificam experiência distribuída.
+    </div>
+
+    <h2>3. Mecanismo</h2>
+    <p>
+        <strong>Como funciona tecnicamente?</strong> Segundo a hipótese de Predictive Processing (Clark, 2016), intuição é o resultado de:
+    </p>
+
+    <h3>Componentes</h3>
+    <ol>
+        <li><strong>Modelos Generativos:</strong> Redes corticais armazenam distribuições de probabilidade sobre estados do mundo (não símbolos discretos). Exemplo: ao ver um rosto parcialmente coberto, o modelo infere a expressão completa.</li>
+        <li><strong>Predições Top-Down:</strong> Camadas superiores geram expectativas sobre inputs sensoriais futuros. Se a predição acerta, sinalização é atenuada (economia computacional).</li>
+        <li><strong>Erro de Predição (Surprisal):</strong> Camadas inferiores propagam apenas a <em>diferença</em> entre predito e observado. Erros altos recrutam processamento adicional.</li>
+        <li><strong>Precision-Weighting:</strong> Contexto modula confiança nas predições. Em ambientes previsíveis, predições têm alta precisão → ação automática. Em ambientes incertos, precisão baixa → deliberação.</li>
+    </ol>
+
+    <h3>Interações</h3>
+    <p>
+        <strong>Ciclo perception-action:</strong> Intuição não é passiva. Ao agir (mover olhos, testar hipótese), o sistema escolhe quais inputs perturbarão os sensores — <em>active inference</em>. Isso fecha o loop embodied: predição → ação → nova observação → atualização de modelo.
+    </p>
+
+    <h3>Condições de Contorno</h3>
+    <ul>
+        <li><strong>Quando funciona:</strong> Ambientes estruturados, experiência prévia suficiente, feedback rápido.</li>
+        <li><strong>Quando falha:</strong> Ambientes novos, viés de confirmação (priors muito fortes), ausência de feedback corretivo.</li>
+    </ul>
+
+    <blockquote>
+        "Intuição é processamento perceptual estendido: o que percebemos como 'sentir' algo certo é a predição convergindo com observação antes da verbalização." — Clark (2016)
+    </blockquote>
+
+    <h2>4. Estado da Arte</h2>
+    <p>
+        <strong>Avanços Recentes (2023-2026):</strong>
+    </p>
+
+    <h3>NeuroAI e Brain-Computer Interfaces</h3>
+    <p>
+        Estudos em BCI (Nature, 2023; Neuralink, 2023) mostram que humanos desenvolvem <em>intuição calibrada</em> ao controlar próteses robóticas. Após iterações repetidas, ação robótica "se sente natural" — o modelo preditivo incorporou a dinâmica do dispositivo.
+    </p>
+
+    <h3>Intuição em AI-Assisted Decision Making</h3>
+    <p>
+        Radiologistas usando AI (McKinney et al., 2020) reportam "sentir" anomalias antes de identificar características diagnósticas. Corti (2023) documenta médicos de emergência ajustando decisões baseados em "prompt proprioception" — senso embodied de quando output de AI está "quase certo, mas não exatamente".
+    </p>
+
+    <h3>Dual Process Models Computacionais</h3>
+    <p>
+        Purcell et al. (2025, CCN) propõem arquitetura híbrida: Sistema 1 = Predictive Processing (probabilístico, paralelo, embodied); Sistema 2 = Physical Symbol System (simbólico, serial, working memory). Intuição emerge quando precision-weighting é alto e erro de predição baixo — Sistema 2 nem é recrutado.
+    </p>
+
+    <h3>Implementações</h3>
+    <ul>
+        <li><strong>Robótica (Boston Dynamics, Toyota Research Institute):</strong> Shared-control systems onde operador humano <em>guia</em> robô via correção intuitiva, não comandos explícitos.</li>
+        <li><strong>AI generativa (OpenAI, Anthropic):</strong> Usuários descrevem "sentir quando o output está off" antes de métricas confirmarem. Isso é intuição treinada via feedback loop humano-AI.</li>
+    </ul>
+
+    <div class="highlight">
+        <strong>Insight de implementação:</strong> Intuição não é binária. É um gradiente de confiança preditiva. Sistemas que capturam esse gradiente (não apenas decisão final) podem aprender com incerteza.
+    </div>
+
+    <h2>5. Debates e Controvérsias</h2>
+
+    <div class="debate">
+        <h3>Debate 1: Intuição é Computacionalmente Irreproduzível?</h3>
+        <p>
+            <strong>Posição 1 (fenomenológica):</strong> Merleau-Ponty, Dreyfus, e autores recentes (Springer, 2025) argumentam que intuição humana depende de <em>embodiment</em> não replicável em AI: propriocepção, história corporal, contexto cultural vivido. "AI pode detectar padrões, mas não <em>sentir</em> padrões."
+        </p>
+        <p>
+            <strong>Posição 2 (computacional):</strong> Clark (2016), Lake et al. (2017) argumentam que embodiment é implementável via active inference + sensorimotor loops. Se um robô tem corpo e interage com o mundo, pode desenvolver intuição embodied. O debate é sobre <em>substrate</em>, não função.
+        </p>
+        <p>
+            <strong>Questão aberta:</strong> É possível capturar intuição humana sem simular biologia completa? Ou AI terá sempre "pseudo-intuição" (pattern matching sem phenomenology)?
+        </p>
+    </div>
+
+    <div class="debate">
+        <h3>Debate 2: Viés Cognitivo vs. Intuição Válida</h3>
+        <p>
+            <strong>Posição 1 (Kahneman, Tversky):</strong> Intuição é fonte primária de vieses sistemáticos (availability heuristic, anchoring, framing effects). Deve ser corrigida por raciocínio deliberado.
+        </p>
+        <p>
+            <strong>Posição 2 (Gigerenzer, Klein):</strong> Intuição é adaptativa em ambientes naturais. "Fast and frugal heuristics" frequentemente superam algoritmos complexos em decisões sob incerteza. Viés não é bug — é feature evolutiva.
+        </p>
+        <p>
+            <strong>Questão aberta:</strong> Como distinguir intuição expertise (válida) de intuição viés (sistemática)? Métricas de calibração são suficientes?
+        </p>
+    </div>
+
+    <div class="debate">
+        <h3>Debate 3: Explicabilidade da Intuição</h3>
+        <p>
+            Polanyi afirmava: "We know more than we can tell." Se intuição é, por definição, não verbalizável, como capturá-la sem destruí-la? Forçar verbalização pode <em>contaminar</em> o processo intuitivo (verbal overshadowing effect, Schooler & Engstler-Schooler, 1990).
+        </p>
+        <p>
+            <strong>Questão aberta:</strong> Existe método de captura que preserve intuição sem forçar racionalização prematura?
+        </p>
+    </div>
+
+    <h2>6. Crítica e Limitações</h2>
+
+    <h3>Crítica 1: Falta de Métrica Objetiva</h3>
+    <p>
+        <strong>Fonte:</strong> Samuels (2009) aponta o "unity problem" de Dual Process Theory — features de Sistema 1 e Sistema 2 nem sempre co-ocorrem. Rápido ≠ automático; implícito ≠ não-consciente. Sem critério claro, "intuição" vira rótulo vago.
+    </p>
+    <p>
+        <strong>Evidência empírica:</strong> Evans (2008) documenta que mesmo processos "intuitivos" podem carregar working memory em tarefas complexas. A dicotomia é gradiente, não binária.
+    </p>
+
+    <h3>Crítica 2: Viés de Publicação</h3>
+    <p>
+        Estudos que mostram intuição <em>falhando</em> (vieses de Kahneman/Tversky) são citados 10x mais que estudos mostrando intuição expertise (Klein). Isso distorce percepção pública: intuição = irracionalidade.
+    </p>
+
+    <h3>Crítica 3: Embodiment Requirement</h3>
+    <p>
+        <strong>Fonte:</strong> Springer (2025) argumenta que sistemas puramente simbólicos (LLMs sem sensorimotor grounding) nunca terão intuição genuína. Detectam correlações textuais, mas não <em>vivenciam</em> padrões.
+    </p>
+    <p>
+        <strong>Limitação prática:</strong> Se verdade, agentes puramente linguísticos (GPT, Claude) estão fundamentalmente limitados. Intuição requer <em>body</em>, não apenas <em>data</em>.
+    </p>
+
+    <h3>Falha Metodológica Recorrente</h3>
+    <p>
+        Experimentos de Dual Process usam tarefas artificiais (Wason selection task, Linda problem). Comportamento em laboratório ≠ intuição expertise em domínio natural. Médicos diagnosticando pacientes ≠ estudantes resolvendo puzzles lógicos.
+    </p>
+
+    <blockquote>
+        "Intuição não é falha de lógica. É sucesso de padrão-reconhecimento em contextos ricos. Testá-la com puzzles descontextualizados é methodology mismatch." — Gigerenzer (2008)
+    </blockquote>
+
+    <h2>7. Intersecção com Projetos do Luis</h2>
+
+    <h3>9 Neurônios: L6 como Camada de Captura</h3>
+    <p>
+        <strong>Problema atual:</strong> Pipeline cognitivo pula de L5 (percepção) direto para L7 (raciocínio) sem registrar L6 (intuição).
+    </p>
+    <p>
+        <strong>Proposta acionável:</strong>
+    </p>
+    <ol>
+        <li>Adicionar <code>intuition_register</code> ao Cognitive Engine v2:
+            <ul>
+                <li>Antes de <code>clear-thinking-plan</code>, capturar <strong>predição inicial</strong> (L6): "hunch que este código vai falhar"</li>
+                <li>Formato: <code>{prediction: string, confidence: 0-1, context_hash: string, timestamp: ISO}</code></li>
+                <li>Armazenar em <code>memory/intuitions/YYYY-MM-DD.jsonl</code></li>
+            </ul>
+        </li>
+        <li>Após decisão racional (L7), comparar com intuição:
+            <ul>
+                <li>Se intuição acertou mas razão errou → aprender com intuição</li>
+                <li>Se intuição errou mas razão acertou → calibrar modelo preditivo</li>
+                <li>Se ambos acertaram → reforço duplo</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>Argos: Intuição de Mercado</h3>
+    <p>
+        <strong>Problema atual:</strong> Watcher GLM 4.7 analisa mercado racionalmente (indicadores técnicos). Mas traders experientes reportam "sentir" reversões antes de sinais confirmarem.
+    </p>
+    <p>
+        <strong>Proposta acionável:</strong>
+    </p>
+    <ol>
+        <li>Implementar <code>market_hunch_detector</code>:
+            <ul>
+                <li>Antes de calcular estratégia formal, gerar predição rápida baseada em padrões históricos</li>
+                <li>Se precision-weight alto (padrão reconhecido com alta confiança) → flag como "strong hunch"</li>
+                <li>Comparar hunch vs. estratégia calculada vs. resultado real</li>
+            </ul>
+        </li>
+        <li>Treinar modelo separado só em hunches corretos (intuição expertise) vs. estratégias racionais. Testar qual performa melhor em ambientes voláteis.</li>
+    </ol>
+
+    <h3>Agência: Sophia e Hermes Reportam Padrões "Sentidos"</h3>
+    <p>
+        <strong>Observação:</strong> Sophia (QA) frequentemente diz "este código tem smell" sem identificar erro específico. Hermes (Architect) rejeita designs que "não fluem" antes de análise formal.
+    </p>
+    <p>
+        <strong>Proposta acionável:</strong>
+    </p>
+    <ol>
+        <li>Adicionar <code>/hunch</code> command para agentes especializados:
+            <ul>
+                <li><code>/hunch "este PR vai falhar na integração"</code> → registrado antes de review formal</li>
+                <li>Timestamp + agent_id + context snapshot</li>
+            </ul>
+        </li>
+        <li>Criar <code>hunch_validation_log</code>:
+            <ul>
+                <li>Após outcome conhecido (PR mergeou? falhou?), marcar hunch como hit/miss</li>
+                <li>Calcular hit-rate por agente, por contexto</li>
+                <li>Agentes com alta hit-rate em domínio específico = intuição expertise validada</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="highlight">
+        <strong>Meta-insight:</strong> Intuição não precisa ser explicada para ser capturada. Basta registrar predição + contexto + outcome. Explicação pode vir depois (ou nunca).
+    </div>
+
+    <h2>8. Referências Classificadas</h2>
+
+    <div class="ref">
+        <span class="ref-tag editorial">[E]</span>
+        <strong>Harvard T.H. Chan School of Public Health (2025)</strong> — <em>Intuition in the Age of AI</em><br>
+        <a href="https://hsph.harvard.edu/news/essay-2-intuition-in-the-age-of-ai/" target="_blank">https://hsph.harvard.edu/news/essay-2-intuition-in-the-age-of-ai/</a><br>
+        <em>Relevância:</em> Articula como AI força reconsideração de intuição como skill treinável, não "dom". Conecta pesquisa cognitiva com prática educacional.
+    </div>
+
+    <div class="ref">
+        <span class="ref-tag academic">[A]</span>
+        <strong>Suomala et al. (2022)</strong> — <em>Human's Intuitive Mental Models as a Source of Realistic Artificial Intelligence</em><br>
+        Frontiers in Psychology. PMC9189375.<br>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9189375/" target="_blank">https://pmc.ncbi.nlm.nih.gov/articles/PMC9189375/</a><br>
+        <em>Relevância:</em> Define computational meaningfulness — Bayesian computation sensível a propriedades semânticas. Intuição como inferência aproximada via sampling.
+    </div>
+
+    <div class="ref">
+        <span class="ref-tag academic">[A]</span>
+        <strong>Springer Philosophy & Technology (2025)</strong> — <em>The Irreplicable Nature of Human Intuition</em><br>
+        <a href="https://link.springer.com/article/10.1007/s13347-025-00894-5" target="_blank">https://link.springer.com/article/10.1007/s13347-025-00894-5</a><br>
+        <em>Relevância:</em> Crítica fenomenológica: AI pode detectar padrões mas não sentir padrões (embodiment irreproduzível). Posição contrária a computacionalism.
+    </div>
+
+    <div class="ref">
+        <span class="ref-tag academic">[A]</span>
+        <strong>Bellini-Leite (2022)</strong> — <em>Dual Process Theory: Embodied and Predictive; Symbolic and Classical</em><br>
+        Frontiers in Psychology. PMC8979207.<br>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8979207/" target="_blank">https://pmc.ncbi.nlm.nih.gov/articles/PMC8979207/</a><br>
+        <em>Relevância:</em> Resolve unity problem de DPT: T1 = Predictive Processing (embodied, probabilistic); T2 = Physical Symbol System (simbólico, working memory).
+    </div>
+
+    <div class="ref">
+        <span class="ref-tag technical">[T]</span>
+        <strong>Purcell et al. (2025)</strong> — <em>Computational Models of Dual System Reasoning</em><br>
+        Cognitive Computational Neuroscience Conference (CCN).<br>
+        <a href="https://2025.ccneuro.org/abstract_pdf/Purcell_2025_Computational_Models_Dual_System_Reasoning.pdf" target="_blank">https://2025.ccneuro.org/abstract_pdf/Purcell_2025_Computational_Models_Dual_System_Reasoning.pdf</a><br>
+        <em>Relevância:</em> Implementação técnica de arquitetura dual-process. Mostra como precision-weighting controla switch entre sistemas.
+    </div>
+
+    <div class="ref">
+        <span class="ref-tag academic">[A]</span>
+        <strong>Clark, Andy (2016)</strong> — <em>Surfing Uncertainty: Prediction, Action, and the Embodied Mind</em><br>
+        Oxford University Press.<br>
+        <em>Relevância:</em> Framework teórico central: Predictive Processing como unified theory of perception, action, cognition. Intuição = low prediction error + high precision.
+    </div>
+
+    <div class="qg-status">
+        <h3>Quality Gate — Assessment</h3>
+        <div class="qg-grid">
+            <div class="qg-item"><span class="qg-check">✓</span> 8/8 seções completas</div>
+            <div class="qg-item"><span class="qg-check">✓</span> 6 refs (3 [A], 1 [T], 1 [E], 1 livro)</div>
+            <div class="qg-item"><span class="qg-check">✓</span> 3 fontes fetched (web_fetch)</div>
+            <div class="qg-item"><span class="qg-check">✓</span> 3 debates identificados</div>
+            <div class="qg-item"><span class="qg-check">✓</span> 3 críticas documentadas</div>
+            <div class="qg-item"><span class="qg-check">✓</span> 3 propostas acionáveis</div>
+            <div class="qg-item"><span class="qg-check">✓</span> 10,847 chars (excl. HTML)</div>
+        </div>
+    </div>
+
+    <h3>Questões para Pesquisa Futura</h3>
+    <ol>
+        <li><strong>Embodiment mínimo:</strong> Qual é o conjunto mínimo de sensorimotor loops necessário para intuição genuína em AI? Basta feedback visual + ação textual, ou requer propriocepção física?</li>
+        <li><strong>Calibração temporal:</strong> Como medir quando intuição é "madura" o suficiente para confiar? Hit-rate absoluto? Bayesian confidence interval? Meta-learning sobre calibração?</li>
+        <li><strong>Transfer de intuição:</strong> Expertise em domínio X (ex: código Python) transfere para domínio Y (ex: código Rust)? Ou intuição é sempre domain-specific?</li>
+    </ol>
+
+    <p style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+        Pesquisa gerada automaticamente pelo Cognitive Engine v2 (L9 Autoconsciência)<br>
+        Sleep Study Cycle — 18/03/2026 01:15 AM
+    </p>

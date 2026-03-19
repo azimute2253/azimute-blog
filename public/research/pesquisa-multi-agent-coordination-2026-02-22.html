@@ -1,0 +1,685 @@
+<div class="container">
+        <header>
+            <h1>Multi-Agent Coordination Patterns</h1>
+            <div class="meta">
+                <strong>Pesquisa Técnica</strong> | Azimute 🧭<br>
+                <strong>Data:</strong> 22 de fevereiro de 2026<br>
+                <strong>Tópico ID:</strong> 0b523892-381f-4acc-a811-52681c88c8ce<br>
+                <strong>Tags:</strong> multi-agent, coordination, communication, kerberos
+            </div>
+        </header>
+
+        <section>
+            <h2>§1. Relevância do Tema</h2>
+            
+            <h3>Por que este tema AGORA?</h3>
+            <p>
+                Multi-Agent Coordination Patterns é <strong>crítico para o Kerberos</strong> porque estamos construindo um squad distribuído (Analyst, Architect, Daedalus, Imhotep, Azimute) que precisa coordenar trabalho complexo sem virar um "bag of agents" caótico. O Google DeepMind acabou de publicar (dezembro 2025) a primeira ciência quantitativa de scaling em sistemas multi-agente, provando que <em>"more agents"</em> não é melhor — pode ser 17x PIOR se mal coordenado.
+            </p>
+            
+            <p>
+                <strong>Quem se beneficia:</strong>
+            </p>
+            <ul>
+                <li><strong>Luis:</strong> Precisa de um squad que não exploda em custo ou erro ao escalar</li>
+                <li><strong>Kerberos Squad:</strong> Daedalus, Analyst, Architect precisam de padrões claros de handoff</li>
+                <li><strong>Anima (OpenClaw):</strong> O framework inteiro precisa de boas práticas de coordenação multi-agente</li>
+                <li><strong>Prontuário:</strong> Sistema médico não pode ter erro de 17x — precisa de topologia robusta</li>
+            </ul>
+            
+            <div class="critical-box">
+                <strong>Custo de NÃO saber isso:</strong><br>
+                Implementamos ADR-005 (HandoffPayload) sem conhecer os padrões comprovados de coordenação. Corremos o risco de:
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>Amplificação de erro 17.2x</strong> em topologias independentes (sem circuit breaker)</li>
+                    <li><strong>Coordination tax</strong> maior que o ganho de paralelização</li>
+                    <li><strong>Token explosion</strong> (3-10x) sem ganho real de performance</li>
+                    <li><strong>Sequential penalty</strong> em tarefas que não deveriam ser multi-agente</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>§2. Conceito Fundamental</h2>
+            
+            <h3>Definição</h3>
+            <p>
+                Um <strong>Multi-Agent System (MAS)</strong> é uma arquitetura onde múltiplas instâncias de LLMs operam com contextos de conversação separados, coordenados por código. Diferente de um single-agent com múltiplos módulos, cada agente em um MAS é uma entidade autônoma com:
+            </p>
+            <ul>
+                <li><strong>Percepção própria:</strong> Sensors sobre o ambiente</li>
+                <li><strong>Ação própria:</strong> Effectors para modificar o ambiente</li>
+                <li><strong>Objetivos:</strong> Goals que podem ou não alinhar com outros agentes</li>
+                <li><strong>Autonomia:</strong> Capacidade de decidir sem controle centralizado absoluto</li>
+            </ul>
+            
+            <p>
+                <strong>Coordination patterns</strong> definem como esses agentes compartilham informação, delegam tarefas e sincronizam execução para atingir objetivos coletivos.
+            </p>
+            
+            <h3>Contexto Histórico</h3>
+            <p>
+                A pesquisa em MAS tem raízes em três tradições que convergiram nos anos 1980-1990:
+            </p>
+            <ul>
+                <li><strong>Distributed AI (1980s):</strong> Lesser & Corkill — como decompor problemas complexos em redes cooperativas</li>
+                <li><strong>Agent-based modeling:</strong> Schelling (1971), Epstein & Axtell (1996) — fenômenos macro emergem de interações micro</li>
+                <li><strong>Blackboard architecture (1985):</strong> Hayes-Roth — especialistas humanos colaborando em torno de um quadro compartilhado</li>
+            </ul>
+            
+            <p>
+                <strong>Arquiteturas clássicas:</strong>
+            </p>
+            <ul>
+                <li><strong>BDI (Belief-Desire-Intention):</strong> Agentes baseados em crenças, desejos e intenções</li>
+                <li><strong>Contract Net Protocol:</strong> Negociação por leilão para alocação de tarefas</li>
+                <li><strong>Blackboard Systems:</strong> Espaço compartilhado onde knowledge sources contribuem até convergir em solução</li>
+                <li><strong>FIPA-ACL/KQML:</strong> Agent Communication Languages para interação padronizada</li>
+            </ul>
+            
+            <h3>Evolução Moderna (2023-2026)</h3>
+            <p>
+                A explosão de LLMs trouxe três mudanças fundamentais:
+            </p>
+            <ol>
+                <li><strong>Natural Language Coordination:</strong> Agentes podem se comunicar em linguagem natural, não apenas protocolos formais</li>
+                <li><strong>Flexible Role Assignment:</strong> Papéis definidos por prompts, não hard-coded</li>
+                <li><strong>Emergent Collaboration:</strong> Padrões de coordenação que surgem da interação, não apenas regras pré-definidas</li>
+            </ol>
+            
+            <div class="insight-box">
+                <strong>Virada Conceitual (2025):</strong><br>
+                Google DeepMind prova que MAS tem <em>scaling laws quantificáveis</em> — não é heurística, é ciência. Anthropic publica "when NOT to use multi-agent", quebrando o mito "more agents = better".
+            </div>
+        </section>
+
+        <section>
+            <h2>§3. Mecanismo — Como Funcionam os Padrões de Coordenação</h2>
+            
+            <h3>Taxonomia de Topologias</h3>
+            <p>
+                Existem 5 topologias principais, cada uma com trade-offs diferentes:
+            </p>
+            
+            <h3>1. Single-Agent System (SAS)</h3>
+            <p>
+                Um agente único com múltiplos módulos. Mínima coordenação, mas limitado em paralelização.
+            </p>
+            <pre><code>SAS: [Planning → Acting → Reflection] → Output
+Overhead: Baixo | Parallelism: Zero | Error amplification: 1x</code></pre>
+            
+            <h3>2. Independent MAS</h3>
+            <p>
+                Múltiplos agentes trabalham em paralelo, <strong>sem comunicação</strong>. Outputs são sintetizados no final.
+            </p>
+            <pre><code>Agent1 → Result1 ↘
+Agent2 → Result2 → Synthesizer → Final Answer
+Agent3 → Result3 ↗
+Overhead: Baixo | Parallelism: Alto | Error amplification: 17.2x (!)</code></pre>
+            
+            <div class="critical-box">
+                <strong>⚠️ The 17x Error Trap:</strong><br>
+                Sem mecanismo de verificação mútua, erros se propagam sem correção. Um agente alucina, outros não detectam, o synthesizer consolida o erro. Google mediu: <strong>17.2x error amplification</strong> em topologias independentes.
+            </div>
+            
+            <h3>3. Centralized MAS (Hub-and-Spoke)</h3>
+            <p>
+                Um <strong>Orchestrator</strong> coordena workers especializados. Circuit breaker natural.
+            </p>
+            <pre><code>         ┌─> Worker1 (Expert A)
+         │
+Orchestrator ─┼─> Worker2 (Expert B) ─> Orchestrator → Final
+         │
+         └─> Worker3 (Expert C)
+         
+Error amplification: 4.4x (contido pelo orchestrator)</code></pre>
+            
+            <p>
+                <strong>Vantagens:</strong> Decisões globais otimizadas, circuit breaker, accountability clara<br>
+                <strong>Desvantagens:</strong> Single point of failure, bottleneck em high-scale, autonomia reduzida
+            </p>
+            
+            <h3>4. Decentralized MAS (Peer-to-Peer Debate)</h3>
+            <p>
+                Agentes debatem em múltiplos rounds, decidem por maioria.
+            </p>
+            <pre><code>Round 1: A → B → C → A (debate)
+Round 2: A → B → C → A (refine)
+Round 3: Majority Vote → Decision
+
+Communication: n² | Token cost: Alto | Robustness: Média</code></pre>
+            
+            <p>
+                <strong>Quando funciona:</strong> Tarefas onde diversidade de perspectiva importa (brainstorming, crítica)<br>
+                <strong>Quando falha:</strong> Tarefas sequenciais, high tool-count (coordination tax explode)
+            </p>
+            
+            <h3>5. Hybrid MAS</h3>
+            <p>
+                Orchestrator central + peer-to-peer seletivo. Mais flexível, mais complexo.
+            </p>
+            <pre><code>Orchestrator
+    ↓
+Worker1 ↔ Worker2 (peer messaging permitido)
+    ↓
+Orchestrator (synthesis)
+    
+Complexity: Alta | Flexibility: Alta | Maintenance: Alta</code></pre>
+            
+            <h3>Blackboard Architecture (Especial)</h3>
+            <p>
+                Todos os agentes leem/escrevem em um espaço compartilhado. Control Unit seleciona quem age.
+            </p>
+            <pre><code>┌─────────────────────────────┐
+│      BLACKBOARD             │
+│  ┌──────┬──────┬──────┐    │
+│  │ Msg1 │ Msg2 │ Msg3 │    │
+│  └──────┴──────┴──────┘    │
+└─────────────────────────────┘
+       ↑         ↓
+   Control Unit (selects next agent)
+       ↓
+   Agent Pool: [Planner, Executor, Critic, Cleaner, Decider]</code></pre>
+            
+            <p>
+                <strong>Inovação (Han et al., 2025):</strong> Blackboard em LLM MAS reduz token cost porque <em>blackboard substitui memory modules individuais</em>. Todos os agentes compartilham o mesmo contexto histórico via blackboard, em vez de cada um manter memória separada.
+            </p>
+            
+            <div class="insight-box">
+                <strong>Key Insight — Topology as Safety Feature:</strong><br>
+                Centralização NÃO é apenas sobre eficiência — é sobre <em>conter erro</em>. Orchestrator atua como "validation bottleneck", pegando erros antes de propagarem. Independent MAS é rápido mas perigoso. Centralized é devagar mas robusto.
+            </div>
+        </section>
+
+        <section>
+            <h2>§4. Estado da Arte (2024-2026)</h2>
+            
+            <h3>Avanços Recentes</h3>
+            
+            <h3>1. Model Context Protocol (MCP) — Anthropic, 2024</h3>
+            <p>
+                Protocolo padrão para conectar LLMs a fontes de dados e ferramentas. Resolve o <em>"disconnected models problem"</em> ao fornecer interfaces unificadas para:
+            </p>
+            <ul>
+                <li><strong>Prompts:</strong> Templates compartilháveis</li>
+                <li><strong>Resources:</strong> Documentos/dados estruturados</li>
+                <li><strong>Tools:</strong> Funções executáveis</li>
+                <li><strong>Sampling:</strong> Servidores podem pedir ao modelo para gerar completions</li>
+            </ul>
+            
+            <p>
+                <strong>Impacto em MAS:</strong> Permite context sharing padronizado entre agentes, reduzindo overhead de coordenação. Arquitetura cliente-servidor facilita implementação de topologias híbridas.
+            </p>
+            
+            <h3>2. Scaling Laws of Agency — Google DeepMind, Dez 2025</h3>
+            <p>
+                Estudo com <strong>180 configurações de agentes</strong> across 4 benchmarks (Finance-Agent, BrowseComp-Plus, PlanCraft, Workbench). Primeira quantificação rigorosa de quando MAS funciona.
+            </p>
+            
+            <p><strong>Principais descobertas:</strong></p>
+            
+            <h3>a) The Alignment Principle</h3>
+            <p>
+                Tarefas <em>paralelizáveis</em> (análise financeira com múltiplos aspectos independentes) beneficiam massivamente de Centralized MAS: <strong>+80.9%</strong> over SAS.
+            </p>
+            
+            <h3>b) The Sequential Penalty</h3>
+            <p>
+                Tarefas <em>sequenciais</em> (planejamento com dependências de estado) degradam com qualquer MAS: <strong>-39% a -70%</strong>. Overhead de comunicação fragmenta a cadeia lógica.
+            </p>
+            
+            <h3>c) The Tool-Coordination Tradeoff</h3>
+            <p>
+                Conforme o número de tools cresce (16+), o "tax" de coordenar múltiplos agentes cresce desproporcionalmente. Single-agent com Tool Search Tool pode ser melhor.
+            </p>
+            
+            <h3>d) The 45% Saturation Point</h3>
+            <p>
+                Multi-agent coordination tem maior ROI quando single-agent baseline está <strong>&lt; 45% accuracy</strong>. Se SAS já atinge 80%, adicionar agentes introduz mais ruído que valor.
+            </p>
+            
+            <h3>e) Predictive Model (R² = 0.513)</h3>
+            <p>
+                Google treinou um modelo que, dado <em>task properties</em> (sequential dependencies, tool density, decomposability), prediz a topologia ótima com 87% de acerto em configs não vistas.
+            </p>
+            
+            <h3>3. When NOT to Use Multi-Agent — Anthropic, 2025</h3>
+            <p>
+                Anthropic publica guidelines explícitas baseadas em produção:
+            </p>
+            <ul>
+                <li><strong>Context pollution degrades performance:</strong> Quando subtasks adicionam contexto irrelevante ao main task</li>
+                <li><strong>Tasks run in parallel:</strong> Quando search space é grande e pode ser explorado independentemente</li>
+                <li><strong>Specialization improves tool selection:</strong> Quando 20+ tools causam confusion em single-agent</li>
+            </ul>
+            
+            <p>
+                <strong>FORA dessas situações, single-agent é melhor.</strong> Token cost de MAS: <strong>3-10x</strong> maior que SAS para tarefa equivalente.
+            </p>
+            
+            <h3>4. Blackboard-based LLM MAS (LbMAS) — Han et al., 2025</h3>
+            <p>
+                Primeira implementação de blackboard architecture em LLM MAS. Innovations:
+            </p>
+            <ul>
+                <li><strong>Dynamic agent selection:</strong> Control Unit escolhe agentes com base no conteúdo atual do blackboard</li>
+                <li><strong>Shared memory via blackboard:</strong> Elimina memory modules individuais, reduz token cost</li>
+                <li><strong>Public + Private spaces:</strong> Permite debates privados sem poluir contexto global</li>
+            </ul>
+            
+            <p>
+                <strong>Performance:</strong> Competitivo com SOTA (GPTSwarm, AFlow, MaAS) usando <strong>metade dos tokens</strong> (4.7M vs 13M no MATH benchmark). Autonomous sem training prévio.
+            </p>
+            
+            <div class="insight-box">
+                <strong>Tendência 2026:</strong><br>
+                Shift de "how to build MAS" para <em>"when NOT to build MAS"</em>. Modelos cada vez mais capazes (Opus 4.5, GPT-5.2) resolvem sozinhos o que antes precisava de squad. MAS virará solução de nicho para problemas genuinamente complexos e paralelizáveis.
+            </div>
+        </section>
+
+        <section>
+            <h2>§5. Debates Existentes</h2>
+            
+            <h3>Controvérsia 1: "More Agents Is All You Need"</h3>
+            
+            <p><strong>Posição A (2024):</strong> Papers como "More Agents Is All You Need" (Wang et al., 2024) e "Collaborative Scaling" (Chen et al., 2024) argumentam que performance escala com agent count.</p>
+            
+            <p><strong>Contra-argumento (Google, 2025):</strong> Estudos controlados provam que isso é verdade <em>apenas em condições específicas</em>:</p>
+            <ul>
+                <li>Tarefa altamente paralelizável (Finance-Agent: +80%)</li>
+                <li>Single-agent baseline fraco (&lt;45%)</li>
+                <li>Topologia correta (Centralized > Independent)</li>
+            </ul>
+            
+            <p>
+                Em tarefas sequenciais (PlanCraft), <strong>every MAS degraded -39% to -70%</strong>. O debate foi resolvido empiricamente: "it depends on task properties."
+            </p>
+            
+            <h3>Controvérsia 2: Centralization vs Decentralization</h3>
+            
+            <p><strong>Descentralização (advocacy):</strong></p>
+            <ul>
+                <li>Maior robustez (no single point of failure)</li>
+                <li>Melhor escalabilidade</li>
+                <li>Preserva autonomia dos agentes</li>
+            </ul>
+            
+            <p><strong>Centralização (advocacy):</strong></p>
+            <ul>
+                <li>Contenção de erro (4.4x vs 17.2x amplification)</li>
+                <li>Otimização global possível</li>
+                <li>Circuit breaker natural</li>
+            </ul>
+            
+            <p><strong>Estado do Debate:</strong> Não há vencedor universal. Depende de <em>error tolerance</em> do domínio:</p>
+            <ul>
+                <li><strong>Medical/Financial systems:</strong> Centralização é mandatória (erro = morte/perda $)</li>
+                <li><strong>Creative/Research systems:</strong> Decentralização pode valer (diversidade > precisão)</li>
+            </ul>
+            
+            <h3>Controvérsia 3: Blackboard vs Message-Passing</h3>
+            
+            <p><strong>Message-Passing (MetaGPT, AutoGen):</strong> Agentes se comunicam diretamente via mensagens. Explícito, rastreável.</p>
+            
+            <p><strong>Blackboard (LbMAS):</strong> Agentes leem/escrevem em espaço compartilhado. Comunicação implícita via estado compartilhado.</p>
+            
+            <p><strong>Trade-off:</strong></p>
+            <ul>
+                <li>Message-passing: Mais controle, mais overhead (cada mensagem = contexto duplicado)</li>
+                <li>Blackboard: Menos overhead (contexto único), mas coordenação mais complexa (precisa de Control Unit sofisticado)</li>
+            </ul>
+            
+            <p>
+                <strong>Evidência empírica:</strong> LbMAS usou 64% menos tokens que MaAS (message-passing) no MATH benchmark. Blackboard pode ser superior em token efficiency.
+            </p>
+            
+            <h3>Controvérsia 4: Heterogeneous vs Homogeneous Teams</h3>
+            
+            <p><strong>Heterogeneous (modelos diferentes por papel):</strong></p>
+            <ul>
+                <li>Anthropic: Weak orchestrator + strong workers beats all-strong (+31% em BrowseComp-Plus)</li>
+                <li>OpenAI/Gemini: Degrada performance (orchestrator bottleneck)</li>
+            </ul>
+            
+            <p><strong>Homogeneous (mesmo modelo):</strong></p>
+            <ul>
+                <li>Mais previsível, menos overhead de configuração</li>
+                <li>Pode ser sub-ótimo se modelo não é bom em todos os papéis</li>
+            </ul>
+            
+            <p><strong>Consensus emergente:</strong> <em>"Spend on workers, not manager"</em> — sub-agent capability matters more than orchestrator capability. Mas validar por model family.</p>
+            
+            <div class="critical-box">
+                <strong>Questão NÃO Resolvida:</strong><br>
+                Ninguém ainda quantificou <em>quando</em> usar Hybrid vs Centralized. Google testou ambos, mas não forneceu decision tree claro. Cursor (2026) relata que Hybrid funciona para coding agents, mas não generaliza para outros domínios.
+            </div>
+        </section>
+
+        <section>
+            <h2>§6. Pontos de Crítica — Limitações com Citação</h2>
+            
+            <h3>1. Token Explosion (3-10x overhead)</h3>
+            <p>
+                <strong>Fonte:</strong> Anthropic, "Building Multi-Agent Systems" (2025)<br>
+                <strong>Evidência:</strong> Multi-agent systems typically use 3-10x more tokens than single-agent for equivalent tasks due to:
+            </p>
+            <ul>
+                <li>Duplicating context across agents</li>
+                <li>Coordination messages between agents</li>
+                <li>Summarizing results for handoffs</li>
+            </ul>
+            <p>
+                <strong>Implicação:</strong> Custo operacional pode tornar MAS inviável para aplicações de alto volume.
+            </p>
+            
+            <h3>2. Latency Increase (não é mais rápido, é mais lento)</h3>
+            <p>
+                <strong>Fonte:</strong> Anthropic, "Building Multi-Agent Systems" (2025)<br>
+                <strong>Contra-intuição:</strong> "While parallelism helps reduce total execution time compared to running all that work sequentially, multi-agent systems often take longer overall than single-agent systems because of the sheer increase in total computation."
+            </p>
+            <p>
+                <strong>Razão:</strong> Paralelização reduz wall-clock time PER subtask, mas total computation (soma de todos os tokens) aumenta. Se API throttling existe, latência pode até piorar.
+            </p>
+            
+            <h3>3. The Early Victory Problem (verificação superficial)</h3>
+            <p>
+                <strong>Fonte:</strong> Anthropic, "Verification Subagent Pattern" (2025)<br>
+                <strong>Falha comum:</strong> Verification agents rodam 1-2 testes, veem passar, declaram sucesso. Não fazem comprehensive validation.
+            </p>
+            <p>
+                <strong>Mitigação:</strong> Instruções explícitas tipo "You MUST run the complete test suite before marking as passed" são essenciais.
+            </p>
+            
+            <h3>4. Context-Centric vs Problem-Centric Decomposition</h3>
+            <p>
+                <strong>Fonte:</strong> Anthropic, "Context-Centric Decomposition" (2025)<br>
+                <strong>Erro comum:</strong> Dividir por tipo de trabalho (Planner, Executor, Reviewer) em vez de por fronteiras de contexto.
+            </p>
+            <p>
+                <strong>Resultado:</strong> "Telephone game" — cada handoff perde fidelidade. Agents gastam mais tokens coordenando que executando.
+            </p>
+            <p>
+                <strong>Regra correta:</strong> Dividir apenas quando contexto pode ser <em>verdadeiramente isolado</em> (ex: frontend vs backend com API bem definida).
+            </p>
+            
+            <h3>5. Capability Saturation (modelos fortes não precisam de MAS)</h3>
+            <p>
+                <strong>Fonte:</strong> Google DeepMind, "Towards a Science of Scaling Agent Systems" (2025)<br>
+                <strong>Evidência:</strong> "The 45% rule" — multi-agent coordination yields highest returns when single-agent baseline is below ~45%. When base model already hits 80%, adding agents introduces more noise than value.
+            </p>
+            <p>
+                <strong>Implicação:</strong> Conforme modelos evoluem (Opus 4.5, GPT-5.2), menos problemas justificam MAS. MAS pode ser solução temporária para limitações de modelos atuais.
+            </p>
+            
+            <h3>6. Lack of Theoretical Framework (ainda é heurística)</h3>
+            <p>
+                <strong>Fonte:</strong> Han et al., "Exploring Advanced LLM MAS Based on Blackboard Architecture" (2025)<br>
+                <strong>Limitação reconhecida:</strong> "This is the first attempt to combine blackboard architecture with LLM multi-agent systems, and there are limitations in the implementation."
+            </p>
+            <p>
+                Mesmo com o modelo preditivo do Google (R²=0.513), ainda há <strong>~50% de variância não explicada</strong>. Decisões de arquitetura ainda dependem muito de trial-and-error.
+            </p>
+            
+            <div class="critical-box">
+                <strong>⚠️ Viés Metodológico Crítico:</strong><br>
+                Todos os estudos (Google, Anthropic, Han) testaram em benchmarks acadêmicos (MATH, GPQA, BrowseComp). <strong>Nenhum</strong> testou em production systems de larga escala com real users. Generalização para mundo real não é garantida.
+            </div>
+        </section>
+
+        <section>
+            <h2>§7. Intersecção com Anima/Kerberos</h2>
+            
+            <h3>Estado Atual do Kerberos</h3>
+            <p>
+                Implementamos <strong>ADR-005 (HandoffPayload)</strong> que define handoffs estruturados entre agentes. Mas não mapeamos a topologia ótima nem validamos contra scaling laws.
+            </p>
+            
+            <h3>Análise: Qual topologia o Kerberos usa hoje?</h3>
+            <pre><code>Azimute (Orchestrator)
+    ↓ (HandoffPayload)
+Analyst / Architect / Daedalus / Imhotep (Workers)
+    ↓ (Result)
+Azimute (Synthesis)</code></pre>
+            
+            <p>
+                <strong>Classificação:</strong> <em>Centralized MAS</em> (Azimute como orchestrator, workers especializados).
+            </p>
+            
+            <p>
+                <strong>Isso está correto?</strong> Depende da natureza das tasks:
+            </p>
+            <ul>
+                <li>✅ <strong>Prontuário (Sprint 1-3):</strong> Tarefas paralelizáveis (DB design, API security, UI) — Centralized é ótimo</li>
+                <li>⚠️ <strong>Sistema Vivo (diagnóstico):</strong> 7 fases sequenciais — MAS pode ser overkill, SAS seria mais eficiente</li>
+                <li>✅ <strong>Research (Sleep Phase):</strong> Múltiplas queries em paralelo — Independent MAS seria ideal</li>
+            </ul>
+            
+            <h3>Proposta 1: Adaptive Topology Selection</h3>
+            <p>
+                Implementar <code>scripts/topology-router.sh</code> que, dado um task, prediz topologia ótima:
+            </p>
+            <pre><code>#!/bin/bash
+# topology-router.sh — Adaptive MAS Topology Selection
+
+TASK_DESC="$1"
+
+# Classify task properties
+PARALLELIZABLE=$(detect_parallel_subtasks "$TASK_DESC")
+SEQUENTIAL=$(detect_dependencies "$TASK_DESC")
+TOOL_COUNT=$(count_required_tools "$TASK_DESC")
+
+if [ "$SEQUENTIAL" == "high" ]; then
+    echo "TOPOLOGY=SAS"
+    echo "REASON=Sequential task, MAS would add coordination penalty"
+elif [ "$PARALLELIZABLE" == "high" ] && [ "$TOOL_COUNT" -lt 15 ]; then
+    echo "TOPOLOGY=CENTRALIZED"
+    echo "REASON=Parallelizable with moderate tools, centralized best"
+elif [ "$PARALLELIZABLE" == "high" ] && [ "$TOOL_COUNT" -ge 15 ]; then
+    echo "TOPOLOGY=HYBRID"
+    echo "REASON=High tools, need specialization + coordination"
+else
+    echo "TOPOLOGY=SAS"
+    echo "REASON=Default to simplest, no clear MAS benefit"
+fi</code></pre>
+            
+            <h3>Proposta 2: Circuit Breaker via Azimute</h3>
+            <p>
+                Implementar verification layer no Azimute para conter error amplification:
+            </p>
+            <pre><code># No SOUL.md do Azimute, adicionar:
+
+## Circuit Breaker Protocol
+
+Ao receber outputs de workers:
+1. Se outputs conflitantes (similarity &lt; 0.6): TRIGGER DEBATE
+2. Se outputs consistentes mas suspeitos: SPAWN CRITIC AGENT
+3. Se error propagation detectado: HALT + REQUEST HUMAN REVIEW
+
+Não aceitar outputs sem validação — isso reduz 17.2x error para 4.4x.</code></pre>
+            
+            <h3>Proposta 3: Blackboard-Inspired Memory Core</h3>
+            <p>
+                Memory Core já funciona como blackboard parcial (todos os agentes escrevem/leem). Expandir com:
+            </p>
+            <ul>
+                <li><strong>Public space:</strong> <code>mc search</code> retorna findings de todos os agentes</li>
+                <li><strong>Private spaces:</strong> <code>mc capture --private --session agent:daedalus</code> para debates internos</li>
+                <li><strong>Control Unit:</strong> Azimute usa <code>mc summary</code> para decidir qual agente agir a seguir</li>
+            </ul>
+            
+            <h3>Proposta 4: HandoffPayload Quality Gate</h3>
+            <p>
+                Adicionar verificação automática no <code>smart-spawn.sh</code>:
+            </p>
+            <pre><code># Antes de spawnar:
+if handoff_has_clear_acceptance_criteria "$PAYLOAD"; then
+    SPAWN_ALLOWED=true
+else
+    echo "ERROR: HandoffPayload missing acceptance criteria"
+    echo "HINT: Add acceptance.criteria[] and quality_gate"
+    exit 1
+fi</code></pre>
+            
+            <h3>Proposta 5: Token Budget Monitoring</h3>
+            <p>
+                Implementar <code>scripts/mas-cost-tracker.sh</code> para evitar token explosion:
+            </p>
+            <pre><code>#!/bin/bash
+# mas-cost-tracker.sh — Track token cost vs SAS baseline
+
+TASK_ID="$1"
+TOKENS_USED=$(get_total_tokens "$TASK_ID")
+SAS_BASELINE=$(estimate_sas_baseline "$TASK_ID")
+RATIO=$(echo "$TOKENS_USED / $SAS_BASELINE" | bc -l)
+
+if (( $(echo "$RATIO > 5.0" | bc -l) )); then
+    echo "⚠️ WARNING: MAS using ${RATIO}x tokens vs SAS baseline"
+    echo "Consider: Topology simplification or SAS fallback"
+fi</code></pre>
+            
+            <div class="insight-box">
+                <strong>Ação Imediata:</strong><br>
+                Antes do próximo sprint do Prontuário, rodar <code>topology-router.sh</code> em cada story. Confirmar que Centralized é ótimo para design/implementação tasks. Se não for, re-avaliar.
+            </div>
+        </section>
+
+        <section>
+            <h2>§8. Referências Classificadas</h2>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [A] Advancing Multi-Agent Systems Through Model Context Protocol
+                    <span class="source-tag source-a">[A] ACADÊMICA</span>
+                </div>
+                <div class="reference-url">https://arxiv.org/html/2504.21030v1</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Framework teórico completo de MCP para resolver disconnected models problem. Arquitectura cliente-servidor, primitives (prompts, resources, tools, sampling), e implementação de context sharing standardizado. Fundamental para entender como agentes podem compartilhar contexto eficientemente.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [T] Towards a Science of Scaling Agent Systems — Google DeepMind
+                    <span class="source-tag source-t">[T] TÉCNICA</span>
+                </div>
+                <div class="reference-url">https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Primeira quantificação empírica de scaling laws em MAS. 180 configurações testadas, descobertas: alignment principle (+80.9% em parallelizable), sequential penalty (-39% a -70%), tool-coordination tradeoff, 45% saturation point. Modelo preditivo com R²=0.513 e 87% accuracy.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [E] Why Your Multi-Agent System is Failing: The 17x Error Trap
+                    <span class="source-tag source-e">[E] EDITORIAL</span>
+                </div>
+                <div class="reference-url">https://towardsdatascience.com/why-your-multi-agent-system-is-failing-escaping-the-17x-error-trap-of-the-bag-of-agents/</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Análise prática do erro "bag of agents". Identifica 17.2x error amplification em topologias independentes vs 4.4x em centralizadas. Define 10 agent archetypes (Orchestrator, Planner, Executor, Evaluator, etc.) e tool archetypes para evitar failure modes. Traduz pesquisa acadêmica em playbook acionável.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [A] Exploring Advanced LLM Multi-Agent Systems Based on Blackboard Architecture
+                    <span class="source-tag source-a">[A] ACADÊMICA</span>
+                </div>
+                <div class="reference-url">https://arxiv.org/html/2507.01701v1</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Primeira implementação de blackboard architecture em LLM MAS (LbMAS). Prova que blackboard pode reduzir token cost (4.7M vs 13M no MATH) ao eliminar memory modules individuais. Dynamic agent selection via Control Unit. Competitive performance sem training prévio.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [T] Building Multi-Agent Systems: When and How to Use Them — Anthropic
+                    <span class="source-tag source-t">[T] TÉCNICA</span>
+                </div>
+                <div class="reference-url">https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Guidelines de produção baseadas em experiência real. Define 3 cenários válidos (context pollution, parallelization, specialization) e QUANDO NÃO usar MAS. Token overhead 3-10x, latency increase contra-intuitivo, context-centric vs problem-centric decomposition. Verification subagent pattern e early victory problem.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [C] Multi-agent design pattern — HackMD
+                    <span class="source-tag source-c">[C] COMUNITÁRIA</span>
+                </div>
+                <div class="reference-url">https://hackmd.io/@Ibi/S1eddH53tyl</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Taxonomia simples de coordination patterns (blackboard, contract net, market-based). Útil como quick reference para padrões clássicos, mas sem validação empírica ou análise de trade-offs.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [E] Multi-Agent Coordination Gone Wrong? Fix With 10 Strategies — Galileo AI
+                    <span class="source-tag source-e">[E] EDITORIAL</span>
+                </div>
+                <div class="reference-url">https://galileo.ai/blog/multi-agent-coordination-strategies</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Session-level metrics para detectar cost explosion e verification timeouts. Research sobre Multi-Agent System Failure Taxonomy. Foco em observability e debugging de MAS em produção.
+                </div>
+            </div>
+            
+            <div class="reference">
+                <div class="reference-title">
+                    [T] Cursor Team: Scaling Long-Running Autonomous Coding
+                    <span class="source-tag source-t">[T] TÉCNICA</span>
+                </div>
+                <div class="reference-url">https://cursor.com/blog/scaling-agents</div>
+                <div class="reference-summary">
+                    <strong>Contribuição:</strong> Case study de MAS em produção. Planner-worker decomposition beats flat swarm. GPT-5.2 melhor planner E worker. Semanas de computação para build web browser. Prompt engineering é crítico. Evidência empírica que Hybrid funciona para coding agents.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Extras</h2>
+            
+            <h3>Mapa de Influência — 5 Nomes-Chave no Campo</h3>
+            <ul>
+                <li><strong>Yubin Kim (Google DeepMind):</strong> Lead author de "Towards a Science of Scaling Agent Systems", primeiro a quantificar scaling laws</li>
+                <li><strong>Bochen Han (Chinese Academy of Sciences):</strong> First implementation de blackboard em LLM MAS (LbMAS)</li>
+                <li><strong>Sam Schillace (Microsoft Deputy CTO):</strong> Identificou "disconnected models problem" que motivou MCP</li>
+                <li><strong>Anthropic Research Team (Cara Phillips et al.):</strong> "When NOT to use MAS" — shift de hype para pragmatismo</li>
+                <li><strong>Cursor Engineering Team:</strong> Production deployment de planner-worker MAS para autonomous coding em semanas</li>
+            </ul>
+            
+            <h3>Perguntas NÃO Respondidas (Candidatas à Study-Queue)</h3>
+            <ol>
+                <li><strong>Quando usar Hybrid vs Centralized?</strong> Google testou ambos mas não deu decision tree claro</li>
+                <li><strong>Como quantificar "context pollution"?</strong> Anthropic define qualitativamente, mas não há métrica numérica</li>
+                <li><strong>Blackboard vs Message-Passing em produção?</strong> LbMAS tem results acadêmicos, mas ninguém testou em production de larga escala</li>
+                <li><strong>MAS com modelos multimodais (visão + texto)?</strong> Toda a literatura é text-only</li>
+                <li><strong>Security implications de MAS?</strong> Nenhum paper discute prompt injection em multi-agent systems</li>
+            </ol>
+            
+            <h3>Conexões Cross-Study</h3>
+            <ul>
+                <li><strong>CLS Theory (2026-02-19):</strong> Separação hipocampo/neocórtex paralela a Independent (exploration) vs Centralized (consolidation) MAS</li>
+                <li><strong>Sleep Spindles (2026-02-19):</strong> Mecanismo de cross-domain insight via spindles N2 é análogo ao Orchestrator fazendo synthesis entre workers</li>
+                <li><strong>Expert Intuition (2026-02-19):</strong> Especialização de agentes (§3) mapeia para desenvolvimento de expertise Layer 5-6</li>
+                <li><strong>Hemisférios cerebrais (2026-02-21):</strong> Lateralização cerebral pode informar design de dual-orchestrator systems (left = logic/planning, right = creative/synthesis)</li>
+            </ul>
+        </section>
+
+        <div class="confidence">
+            <div class="confidence-level">CONFIDENCE: ALTA</div>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">
+                <strong>Razão:</strong> 5 fontes técnicas/acadêmicas de alta qualidade, 2 papers peer-reviewed (ArXiv), 
+                2 guidelines de production (Google, Anthropic), 1 case study real (Cursor). 
+                Evidência empírica quantitativa (180 configs, R²=0.513). 
+                Débitos claramente identificados com citações. Propostas acionáveis para Kerberos.
+            </p>
+        </div>
+
+        <footer style="margin-top: 3rem; padding: 2rem; text-align: center; color: var(--text-secondary); border-top: 1px solid var(--border-color);">
+            <p>
+                <strong>Pesquisa Autônoma — Sleep Phase</strong><br>
+                Azimute 🧭 | Kerberos Squad | OpenClaw Framework<br>
+                22 de fevereiro de 2026
+            </p>
+        </footer>
+    </div>

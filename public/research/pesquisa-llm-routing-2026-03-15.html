@@ -1,0 +1,379 @@
+<div class="metadata">
+    Data: 15 de março de 2026 | 01:15 AM (GMT-4)<br>
+    Origem: reflection-question (conexão com problema atual do Kerberos)<br>
+    Complexidade: alta | Domínio: AI Infrastructure + Cost Optimization<br>
+    Estimativa de leitura: 12 min
+</div>
+
+<h1>LLM Routing: Automatic Model Selection Based on Task Complexity</h1>
+
+<h2>1. Relevância</h2>
+<p>O problema de <strong>routing automático entre modelos</strong> é crítico para sistemas multi-agente como o Kerberos. A reflection identificou que "os agentes estão todos usando Opus" — um padrão de desperdício onde queries simples consomem o modelo mais caro/capaz desnecessariamente.</p>
+
+<div class="highlight">
+    <strong>Conexão direta:</strong> O Kerberos usa PE-Cascade (L1→L9) para classificar complexidade de tarefas, mas não implementa routing automático de modelos. A pesquisa revela que sistemas em produção economizam <strong>30-84% de custo</strong> sem perder qualidade quando roteiam dinamicamente queries para modelos apropriados.
+</div>
+
+<p>Segundo o survey arXiv de 2026 sobre Dynamic Model Routing, o problema fundamental é:</p>
+<blockquote style="border-left: 3px solid var(--accent-blue); padding-left: 1rem; margin: 1.5rem 0; color: var(--text-secondary); font-style: italic;">
+    "Production deployment of large language models faces a fundamental cost-performance dilemma. Queries vary substantially in complexity, from simple factual questions to complex multi-step reasoning problems. When a single model handles all requests, simple queries consume unnecessary resources when routed to powerful models, while complex queries may exceed the capabilities of smaller models."
+</blockquote>
+
+<h2>2. Conceito</h2>
+<p>LLM routing é a <strong>decisão lógica que direciona requests para modelos apropriados baseado nas características do request</strong>. Não é sobre o mecanismo de routing em si, mas sobre entender o trabalho bem o suficiente para categorizá-lo significativamente.</p>
+
+<h3>Tipos de Routing</h3>
+<ul>
+    <li><strong>Static Routing:</strong> UI components distintos para tarefas específicas (ex: interface de marketing vs análise de negócios). Simples, mas inflexível.</li>
+    <li><strong>Dynamic Routing:</strong> Layer de decisão intercepta requests e roteia para o modelo downstream mais adequado. Essencial para chatbots, assistentes virtuais, e sistemas multi-propósito.</li>
+</ul>
+
+<h3>Quando Routing é Necessário</h3>
+<p>Você precisa de routing quando tem um ou mais destes problemas:</p>
+<ol>
+    <li>Custos escalando mais rápido que receita (margens encolhendo)</li>
+    <li>Latência imprevisível afetando conversão</li>
+    <li>Casos de uso obviamente diferentes usando o mesmo modelo</li>
+    <li>Outage de provider derrubando o produto inteiro</li>
+    <li>Evitando features porque custo de LLM seria proibitivo</li>
+</ol>
+
+<div class="highlight">
+    <strong>Regra de ouro:</strong> Se você processa menos de 1000 requests/dia com custo < $300/mês, routing é desperdício de tempo. Seu tempo vale mais que a economia. Use um bom modelo e siga em frente.
+</div>
+
+<h2>3. Mecanismo</h2>
+
+<h3>Paradigmas de Routing (Survey arXiv 2026)</h3>
+<p>Existem <strong>6 paradigmas principais</strong> de routing, não mutuamente exclusivos:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Paradigma</th>
+            <th>Descrição</th>
+            <th>Exemplos</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Difficulty-Aware</strong></td>
+            <td>Roteia baseado em complexidade estimada da query</td>
+            <td>BEST-Route, vLLM Semantic Router, GraphRouter</td>
+        </tr>
+        <tr>
+            <td><strong>Preference-Aligned</strong></td>
+            <td>Usa dados de preferência humana para treinar routers</td>
+            <td>RouteLLM, Arch-Router, P2L, Eagle</td>
+        </tr>
+        <tr>
+            <td><strong>Clustering-Based</strong></td>
+            <td>Agrupa queries similares via aprendizado não-supervisionado</td>
+            <td>UniRoute, Avengers-Pro</td>
+        </tr>
+        <tr>
+            <td><strong>Reinforcement Learning</strong></td>
+            <td>Aprende políticas de routing via feedback online</td>
+            <td>Router-R1, R2-Reasoner, MetaLLM, MixLLM, PILOT</td>
+        </tr>
+        <tr>
+            <td><strong>Uncertainty-Based</strong></td>
+            <td>Roteia baseado em confiança do modelo</td>
+            <td>CP-Router, probe-based methods, LLM-as-judge</td>
+        </tr>
+        <tr>
+            <td><strong>Cascading</strong></td>
+            <td>Sequencialmente tenta modelo pequeno → escala se necessário</td>
+            <td>AutoMix, FrugalGPT, Self-REF, LM-Blender</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Fatores-Chave para Decisões de Routing</h3>
+
+<h4>1. Custo e Volume</h4>
+<p>Queries variam em valor de negócio. Um chatbot de suporte respondendo "Onde está meu pedido?" tem baixo valor por query (economia de $5 em ticket humano). Já um assistente de escrita criativa gerando copy para cliente enterprise ($500/mês) justifica modelos caros mesmo que custem 100× mais.</p>
+
+<p><strong>Lógica de routing:</strong> alto-volume + baixo-valor → modelo barato | baixo-volume + alto-valor → modelo caro</p>
+
+<h4>2. Latência e UX</h4>
+<ul>
+    <li><strong>Requests interativos</strong> (autocomplete, chat, inline code): precisam latência sub-segundo (< 300ms). Otimize para velocidade mesmo que custe mais ou tenha qualidade ligeiramente menor.</li>
+    <li><strong>Requests background</strong> (processamento de documentos, resumos noturnos): podem ser lentos. Otimize para custo e qualidade.</li>
+</ul>
+
+<h4>3. Complexidade da Tarefa</h4>
+<p>Proxies comuns para complexidade:</p>
+<ul>
+    <li><strong>Comprimento do input:</strong> inputs longos geralmente requerem modelos mais capazes</li>
+    <li><strong>Keywords:</strong> "analyze", "compare", "evaluate" → alta complexidade | "extract", "classify", "detect" → baixa complexidade</li>
+    <li><strong>Classifiers treinados:</strong> rotular historical requests como "simple" vs "complex" e treinar modelo leve para prever (80% de acurácia já economiza muito)</li>
+</ul>
+
+<h4>4. Privacy e Compliance</h4>
+<p>Dados sensíveis criam hard constraints que sobrescrevem custo/performance:</p>
+<ul>
+    <li>HIPAA → providers com Business Associate Agreements</li>
+    <li>Dados financeiros → providers que não treinam em inputs</li>
+    <li>Dados EU → data centers europeus</li>
+</ul>
+
+<h3>Padrões que Funcionam em Produção</h3>
+
+<h4>Rule-Based Routing (80% dos casos)</h4>
+<pre><code>if input_length &lt; 100:
+    route_to("gpt-3.5-turbo")
+elif user_tier == "free":
+    route_to("claude-haiku")
+elif region == "EU":
+    route_to("eu-hosted-model")
+else:
+    route_to("claude-opus")</code></pre>
+
+<p><strong>Vantagens:</strong> clareza (trace exato de decisões), manutenibilidade (centralizar regras em config), 80% das necessidades cobertas com 5-10 regras simples.</p>
+
+<h4>Confidence-Based Routing</h4>
+<p>Tenta modelo rápido primeiro. Se confiança baixa (< 95%), escala para modelo mais capaz.</p>
+<p><strong>Economia:</strong> Se 70% são resolvidos com confiança pelo modelo barato, reduz uso do modelo caro em 70% mantendo qualidade.</p>
+
+<h4>Fallback Chains</h4>
+<pre><code>primary_model → backup_model → tertiary_model → fail</code></pre>
+<p>Circuit breakers: se modelo está timing out na maioria dos requests, para de enviar traffic temporariamente.</p>
+
+<h2>4. Estado da Arte (2024-2026)</h2>
+
+<h3>Ferramentas Open-Source</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Ferramenta</th>
+            <th>Descrição</th>
+            <th>Melhor Para</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>LLMRouter</strong></td>
+            <td>16+ routers, data pipeline, ComfyUI interface</td>
+            <td>Experimentação rápida, prototipagem</td>
+        </tr>
+        <tr>
+            <td><strong>LiteLLM Proxy</strong></td>
+            <td>Self-hosted, YAML config, sem fees por request</td>
+            <td>Full control, self-hosting</td>
+        </tr>
+        <tr>
+            <td><strong>OctoRouter</strong></td>
+            <td>Semantic routing local (ONNX), circuit breakers, Redis state</td>
+            <td>Cost optimization, resilience</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Serviços Gerenciados</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Serviço</th>
+            <th>Latência</th>
+            <th>Custo</th>
+            <th>Controle</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Amazon Bedrock Intelligent Routing</strong></td>
+            <td>Baixa</td>
+            <td>30% redução</td>
+            <td>Limitado (dentro de model family)</td>
+        </tr>
+        <tr>
+            <td><strong>Martian</strong></td>
+            <td>+20-50ms</td>
+            <td>Volume-based</td>
+            <td>Médio (observability forte)</td>
+        </tr>
+        <tr>
+            <td><strong>Portkey</strong></td>
+            <td>+50-100ms</td>
+            <td>Gateway fees</td>
+            <td>Alto (full AI infrastructure)</td>
+        </tr>
+        <tr>
+            <td><strong>OpenRouter</strong></td>
+            <td>Baixa</td>
+            <td>+10-20% markup</td>
+            <td>Baixo (routing opaco)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Papers Recentes (2024-2026)</h3>
+<ul>
+    <li><strong>Dynamic Model Routing Survey (arXiv 2603.04445, 2026):</strong> primeiro survey sistemático dos 6 paradigmas</li>
+    <li><strong>RouteLLM (ICLR 2025):</strong> win prediction model usando Chatbot Arena data + synthetic preferences</li>
+    <li><strong>RouterDC (NeurIPS 2024):</strong> dual contrastive learning para query-based routing</li>
+    <li><strong>AutoMix (NeurIPS 2024):</strong> self-verification em few-shot sem fine-tuning</li>
+    <li><strong>Router-R1 (NeurIPS 2025):</strong> multi-round routing via RL (PPO), 84% cost savings</li>
+</ul>
+
+<h2>5. Debates e Controvérsias</h2>
+
+<h3>User Choice vs Automatic Routing</h3>
+<p>CodeRabbit argumenta que "choice is not always good" — usuários escolhendo modelos manualmente leva a:</p>
+<ul>
+    <li>Inconsistência (cada user com preferências diferentes)</li>
+    <li>Desperdício (users escolhendo modelos caros por padrão sem necessidade)</li>
+    <li>Complexidade cognitiva (usuários não são experts em trade-offs de modelo)</li>
+</ul>
+
+<p><strong>Posição majoritária:</strong> routing automático com override manual quando necessário (power users, debugging).</p>
+
+<h3>Pre-Generation vs Post-Generation Routing</h3>
+<ul>
+    <li><strong>Pre-generation:</strong> decide antes de gerar output (baseado em propriedades da query). Mais rápido, mas menos informado.</li>
+    <li><strong>Post-generation:</strong> gera resposta inicial, avalia qualidade/confiança, decide se re-roteia. Mais preciso, mas adiciona latência.</li>
+</ul>
+
+<p>AutoMix demonstra que self-verification (post-gen) via few-shot é confiável o suficiente para cascading, mas estudos anteriores (Huang 2024, Mahaut 2024) mostraram que self-verification falha para reparar outputs. <strong>Consenso:</strong> self-verification funciona para <em>routing</em>, não para <em>correction</em>.</p>
+
+<h3>Classifier LLM vs Embeddings</h3>
+<p><strong>LLM-assisted routing:</strong> usa LLM classificador (ex: Titan Text) para categorizar query → adiciona custo + latência, mas oferece fine-grained classification.</p>
+
+<p><strong>Semantic routing:</strong> usa embeddings (ex: Titan Embeddings V2) + similarity search em FAISS → mais rápido (100ms vs 500ms), mas coarse-grained.</p>
+
+<p>AWS blog mostra análise de custo real:</p>
+<table>
+    <thead>
+        <tr>
+            <th>Método</th>
+            <th>Custo/mês (100k queries)</th>
+            <th>Latência Média</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>LLM-assisted</td>
+            <td>$188.90</td>
+            <td>~600ms (classification 500ms + answer 100-2700ms)</td>
+        </tr>
+        <tr>
+            <td>Semantic</td>
+            <td>$107.90</td>
+            <td>~300ms (embedding 100ms + answer 200-2700ms)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Economia potencial:</strong> usar Claude Haiku ($618/mês) vs Claude Opus ($7425/mês) para 50% das queries economiza ~$3400/mês — custo de routing é desprezível comparado.</p>
+
+<h2>6. Crítica e Limitações</h2>
+
+<h3>1. Over-Engineering Prematuro</h3>
+<p>LogRocket adverte: "The first time your LLM bill crosses $10,000 in a month, you start paying attention." Routing em $500/mês é waste. Maioria das startups não precisa até atingir volume significativo.</p>
+
+<h3>2. Calibration de Thresholds</h3>
+<p>Confidence-based routing requer calibrar thresholds de confiança:</p>
+<ul>
+    <li>Threshold alto demais → over-routing para modelos caros</li>
+    <li>Threshold baixo demais → serve respostas ruins</li>
+</ul>
+<p>Requer experimentação iterativa + monitoring contínuo. <strong>Não há fórmula mágica.</strong></p>
+
+<h3>3. Generalização para Modelos Novos</h3>
+<p>Métodos como Zooter (reward-guided) e EmbedLLM (matrix factorization) treinam em LLMs fixos → não generalizam para novos modelos sem retraining.</p>
+
+<p><strong>Soluções:</strong></p>
+<ul>
+    <li>UniRoute: usa clustering + validation set, pode adicionar novos LLMs sem retrain (apenas evaluar em clusters existentes)</li>
+    <li>GraphRouter: GNN aprende patterns de node characteristics, não modelos específicos → inductivo para novos LLMs</li>
+</ul>
+
+<h3>4. Custo de Observability</h3>
+<p>Routing introduz novos modos de falha. Sem logs detalhados (routing decision, matched rules, latency breakdown), debugging é guesswork. Distributed tracing (OpenTelemetry) + cost tracking per route são essenciais mas adicionam overhead.</p>
+
+<h3>5. Cold Start em Semantic Routing</h3>
+<p>Reference prompt set precisa cobrir todos os casos de uso. Se não tem exemplos suficientes de determinado tipo de query, similarity search falha. Requer coleta contínua de prompts reais + iteração.</p>
+
+<h2>7. Intersecção com Kerberos e 9 Neurônios</h2>
+
+<h3>PE-Cascade como Routing Foundation</h3>
+<p>O Kerberos já implementa classificação de complexidade via PE-Cascade (L1→L9), mas <strong>não faz routing automático de modelos</strong>. Atualmente:</p>
+<ul>
+    <li>L1-L3 (simple input) → resolvido por sonnet mas poderia ser haiku</li>
+    <li>L4-L6 (genuine agency) → roteado para sonnet mas alguns casos requerem opus</li>
+    <li>L7-L9 (self-awareness) → sempre opus, mas nem todos L7+ precisam do modelo mais caro</li>
+</ul>
+
+<div class="highlight">
+    <strong>Oportunidade:</strong> Usar delegation tier do PE-Cascade como input para routing automático:
+    <ul style="margin-top: 0.5rem;">
+        <li>L1-L3 + curto (< 500 tokens) → haiku</li>
+        <li>L4-L6 + médio (500-2000 tokens) → sonnet</li>
+        <li>L7-L9 ou longo (> 2000 tokens) → opus</li>
+    </ul>
+</div>
+
+<h3>Squad Routing (Azimute → Squad Members)</h3>
+<p>Atualmente o orchestrator recebe tudo em opus. Poderia implementar rule-based routing:</p>
+<pre><code>if task_type == "PRD review":
+    route_to(azimute, model="sonnet")  # análise de docs
+elif task_type == "implement backend":
+    route_to(delta, model="opus")       # code generation complexo
+elif task_type == "QA validation":
+    route_to(sigma, model="haiku")      # checklist execution
+elif task_type == "ADR creation":
+    route_to(azimute, model="opus")     # architectural decisions</code></pre>
+
+<h3>Multimodal Routing para 9NN</h3>
+<p>A teoria dos 9 Neurônios postula camadas sensório-motoras (L1-L3) e cognitivas superiores (L4-L9). LLMRouter demonstra routing multimodal (Video/Image + Text) em Geometry3K, MathVista, Charades-Ego.</p>
+
+<p><strong>Aplicação futura:</strong> quando o modelo próprio 500B+ tiver capacidades multimodais, routing poderia distinguir:</p>
+<ul>
+    <li>Input visual simples (object detection) → módulo L1-L2 especializado</li>
+    <li>Input visual + reasoning (scene understanding) → L4-L6 integrado</li>
+    <li>Input multimodal + meta-cognição (avaliar própria percepção) → L7-L9 full</li>
+</ul>
+
+<h3>Autonomous Work Queue Integration</h3>
+<p>Work queue do Kerberos poderia incluir metadata de complexidade estimada. Quando agente faz <code>work_queue(action="pick")</code>, sistema poderia:</p>
+<ol>
+    <li>Estimar complexidade da task via embedding similarity com historical tasks</li>
+    <li>Rotear automaticamente para modelo apropriado</li>
+    <li>Checkpoints salvam tentativas com modelo mais fraco que falharam → escalação automática</li>
+</ol>
+
+<h2>8. Referências</h2>
+
+<div class="ref-list">
+    <ol>
+        <li>Moslem, Y. & Kelleher, J.D. (2026). <em>Dynamic Model Routing and Cascading for Efficient LLM Inference: A Survey.</em> arXiv:2603.04445. <a href="https://arxiv.org/html/2603.04445v1" target="_blank">https://arxiv.org/html/2603.04445v1</a></li>
+        
+        <li>Feng, T. et al. (2025). <em>LLMRouter: An Open-Source Library for LLM Routing.</em> GitHub: ulab-uiuc/LLMRouter. <a href="https://github.com/ulab-uiuc/LLMRouter" target="_blank">https://github.com/ulab-uiuc/LLMRouter</a></li>
+        
+        <li>Seifi, N. & Chugh, M. (2025). <em>Multi-LLM routing strategies for generative AI applications on AWS.</em> AWS Machine Learning Blog. <a href="https://aws.amazon.com/blogs/machine-learning/multi-llm-routing-strategies-for-generative-ai-applications-on-aws/" target="_blank">AWS Blog</a></li>
+        
+        <li>LogRocket (2025). <em>LLM routing in production: Choosing the right model for every request.</em> <a href="https://blog.logrocket.com/llm-routing-right-model-for-requests/" target="_blank">https://blog.logrocket.com/llm-routing-right-model-for-requests/</a></li>
+        
+        <li>Ong, I. et al. (2025). <em>RouteLLM: Learning to Route LLMs with Preference Data.</em> ICLR 2025.</li>
+        
+        <li>Aggarwal, P. et al. (2024). <em>AutoMix: Automatically Mixing Language Models.</em> NeurIPS 2024.</li>
+        
+        <li>Zhang, J. et al. (2025). <em>Router-R1: Teaching LLMs Multi-Round Routing and Aggregation via RL.</em> NeurIPS 2025.</li>
+        
+        <li>Jitkrittum, W. et al. (2026). <em>UniRoute: Universal Model Routing for Efficient LLM Inference.</em> OpenReview.</li>
+        
+        <li>Chen, L. et al. (2024). <em>FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance.</em></li>
+        
+        <li>Chuang, Y. et al. (2025). <em>Self-REF: Lightweight Fine-Tuning for Confidence-Aware LLM Routing.</em></li>
+    </ol>
+</div>
+
+<hr style="border: none; border-top: 1px solid var(--border); margin: 3rem 0;">
+
+<p style="text-align: center; color: var(--text-muted); font-size: 0.875rem;">
+    Pesquisa gerada em 15/03/2026 às 01:15 AM (GMT-4) | Azimute 🧭<br>
+    Night-study pipeline: reflection-question → web_search → web_fetch → HTML report
+</p>
