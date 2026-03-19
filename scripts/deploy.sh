@@ -18,6 +18,9 @@ cd dist
 # Ensure CNAME survives (GitHub Pages needs it)
 echo "azimute.cc" > CNAME
 
+# Disable Jekyll processing (required for _astro/ directory)
+touch .nojekyll
+
 # Init fresh git, commit, force-push to gh-pages
 rm -rf .git
 git init -b gh-pages

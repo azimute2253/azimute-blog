@@ -1,0 +1,230 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const siteTitle = `${title} — Azimute`;
+const user = Astro.locals.user;
+const profile = Astro.locals.profile;
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/dashboard', label: 'Overview' },
+  { href: '/dashboard/reports', label: 'Reports' },
+  { href: '/dashboard/projects', label: 'Projects' },
+  { href: '/dashboard/documents', label: 'Documents' },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{siteTitle}</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <a href="/" class="sidebar-logo">
+        <svg class="compass-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+          <polygon points="12,3 10.8,12.5 12,11.5 13.2,12.5" fill="var(--az-compass)" transform="rotate(45, 12, 12)"/>
+          <polygon points="12,21 10.8,11.5 12,12.5 13.2,11.5" fill="#8a6d3b" transform="rotate(45, 12, 12)"/>
+          <circle cx="12" cy="12" r="1.2" fill="var(--az-compass)"/>
+        </svg>
+        Azimute
+      </a>
+
+      <nav class="sidebar-nav">
+        {navItems.map(item => (
+          <a
+            href={item.href}
+            class:list={['sidebar-link', { active: currentPath === item.href || (item.href !== '/dashboard' && currentPath.startsWith(item.href)) }]}
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="sidebar-user">
+        <span class="sidebar-user-name">{profile?.display_name || user?.email}</span>
+        <span class="sidebar-user-role">{profile?.role || 'member'}</span>
+        <form method="POST" action="/api/auth/signout">
+          <button type="submit" class="sidebar-signout">Sign Out</button>
+        </form>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <slot />
+    </main>
+  </div>
+</body>
+</html>
+
+<style>
+  .dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .dashboard-sidebar {
+    width: 240px;
+    background: var(--az-deep);
+    border-right: 1px solid var(--az-surface);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    font-family: var(--az-font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--az-text);
+    text-decoration: none;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--az-surface);
+  }
+
+  .sidebar-logo:hover {
+    color: var(--az-compass);
+    border-bottom: 1px solid var(--az-surface);
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  .sidebar-link {
+    font-family: var(--az-font-display);
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    transition: background 200ms, color 200ms;
+  }
+
+  .sidebar-link:hover {
+    background: var(--az-surface);
+    color: var(--az-text);
+    border: none;
+  }
+
+  .sidebar-link.active {
+    background: var(--az-surface);
+    color: var(--az-compass);
+    border: none;
+  }
+
+  .sidebar-user {
+    border-top: 1px solid var(--az-surface);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .sidebar-user-name {
+    font-family: var(--az-font-display);
+    font-size: 0.875rem;
+    color: var(--az-text);
+  }
+
+  .sidebar-user-role {
+    font-family: var(--az-font-mono);
+    font-size: 0.7rem;
+    color: var(--az-compass);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sidebar-signout {
+    margin-top: 0.5rem;
+    background: none;
+    border: 1px solid var(--az-surface);
+    color: var(--az-text-muted);
+    font-family: var(--az-font-display);
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 200ms, border-color 200ms;
+  }
+
+  .sidebar-signout:hover {
+    color: var(--az-ember);
+    border-color: var(--az-ember);
+  }
+
+  .dashboard-main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 2rem 3rem;
+    max-width: 960px;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-wrapper {
+      flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+      position: relative;
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    .sidebar-logo {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .sidebar-nav {
+      flex-direction: row;
+      gap: 0.25rem;
+    }
+
+    .sidebar-user {
+      border-top: none;
+      padding-top: 0;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--az-surface);
+      margin-top: 0.5rem;
+    }
+
+    .dashboard-main {
+      margin-left: 0;
+      padding: 1.5rem 1rem;
+    }
+  }
+</style>

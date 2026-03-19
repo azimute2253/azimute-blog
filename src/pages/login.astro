@@ -1,0 +1,142 @@
+---
+export const prerender = false;
+
+import Base from '../layouts/Base.astro';
+import { createSupabaseClient } from '../lib/supabase';
+
+let error = '';
+let success = '';
+
+// Show message if redirected from expired session
+const expired = Astro.url.searchParams.get('expired');
+if (expired === '1') {
+  error = 'Your session has expired. Please sign in again.';
+}
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  const supabase = createSupabaseClient(Astro.request, Astro.cookies);
+  const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (authError) {
+    error = authError.message;
+  } else {
+    return Astro.redirect('/dashboard');
+  }
+}
+---
+<Base title="Login">
+  <div class="auth-page">
+    <h1>Members Area</h1>
+    <p class="auth-subtitle">Sign in to access research reports, projects, and documents.</p>
+
+    {error && <div class="auth-error">{error}</div>}
+    {success && <div class="auth-success">{success}</div>}
+
+    <form method="POST" class="auth-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required autocomplete="current-password" minlength="6" />
+
+      <button type="submit" class="auth-btn">Sign In</button>
+    </form>
+
+    <p class="auth-alt">
+      Don't have an account? <a href="/signup">Sign up</a>
+    </p>
+  </div>
+</Base>
+
+<style>
+  .auth-page {
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+
+  .auth-subtitle {
+    color: var(--az-text-muted);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .auth-form label {
+    font-family: var(--az-font-display);
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+  }
+
+  .auth-form input {
+    padding: 0.75rem 1rem;
+    background: var(--az-deep);
+    border: 1px solid var(--az-surface);
+    border-radius: 6px;
+    color: var(--az-text);
+    font-family: var(--az-font-body);
+    font-size: 1rem;
+    transition: border-color 200ms;
+  }
+
+  .auth-form input:focus {
+    outline: none;
+    border-color: var(--az-compass);
+  }
+
+  .auth-btn {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    background: var(--az-compass);
+    color: var(--az-void);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--az-font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 200ms;
+  }
+
+  .auth-btn:hover {
+    opacity: 0.9;
+  }
+
+  .auth-error {
+    background: rgba(184, 92, 74, 0.15);
+    border: 1px solid var(--az-ember);
+    color: var(--az-ember);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .auth-success {
+    background: rgba(90, 138, 106, 0.15);
+    border: 1px solid var(--az-growth);
+    color: var(--az-growth);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .auth-alt {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--az-text-muted);
+  }
+</style>

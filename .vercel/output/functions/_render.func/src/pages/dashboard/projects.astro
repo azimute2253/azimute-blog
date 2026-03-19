@@ -1,0 +1,312 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../layouts/Dashboard.astro';
+
+const supabase = Astro.locals.supabase;
+
+const { data: projects, error } = await supabase
+  .from('content_items')
+  .select('*')
+  .eq('type', 'project')
+  .order('published_at', { ascending: false });
+
+const allTags = [...new Set((projects || []).flatMap((r: any) => r.tags || []))].sort();
+---
+<Dashboard title="Projects">
+  <h1>Projects</h1>
+  <p class="section-desc">Ongoing research projects and initiatives.</p>
+
+  {error ? (
+    <div class="error-state">
+      <p>Failed to load projects. Please try again later.</p>
+    </div>
+  ) : (!projects || projects.length === 0) ? (
+    <div class="empty-state">
+      <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+      </svg>
+      <p>No projects available yet.</p>
+    </div>
+  ) : (
+    <>
+      {allTags.length > 0 && (
+        <div class="filter-bar" id="filter-bar">
+          <button class="filter-tag active" data-tag="all">All</button>
+          {allTags.map(tag => (
+            <button class="filter-tag" data-tag={tag}>{tag}</button>
+          ))}
+        </div>
+      )}
+
+      <div class="content-grid" id="content-grid">
+        {projects.map(item => (
+          <div class="content-card" data-tags={JSON.stringify(item.tags || [])}>
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <div class="card-header">
+                <h2 class="card-title">{item.title}</h2>
+                {item.min_role === 'premium' && (
+                  <span class="premium-badge">Premium</span>
+                )}
+              </div>
+              {item.description && <p class="card-desc">{item.description}</p>}
+              <div class="card-meta">
+                {item.tags?.length > 0 && (
+                  <span class="card-tags">
+                    {item.tags.map((tag: string) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </span>
+                )}
+                <span class="card-date">
+                  {new Date(item.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                </span>
+              </div>
+              {item.storage_path && (
+                <form method="POST" action={`/api/download?path=${encodeURIComponent(item.storage_path)}&bucket=documents`}>
+                  <button type="submit" class="download-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Download
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  )}
+</Dashboard>
+
+<script>
+  const filterBar = document.getElementById('filter-bar');
+  const grid = document.getElementById('content-grid');
+  if (filterBar && grid) {
+    filterBar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('.filter-tag') as HTMLElement;
+      if (!btn) return;
+      const tag = btn.dataset.tag;
+
+      filterBar.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      grid.querySelectorAll('.content-card').forEach(card => {
+        const el = card as HTMLElement;
+        if (tag === 'all') {
+          el.style.display = '';
+        } else {
+          const tags: string[] = JSON.parse(el.dataset.tags || '[]');
+          el.style.display = tags.includes(tag!) ? '' : 'none';
+        }
+      });
+    });
+  }
+</script>
+
+<style>
+  .section-desc {
+    color: var(--az-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .error-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--az-ember);
+    background: rgba(184, 92, 74, 0.08);
+    border-radius: 8px;
+    border: 1px solid rgba(184, 92, 74, 0.2);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--az-text-dim);
+    background: var(--az-deep);
+    border-radius: 8px;
+    border: 1px solid var(--az-surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .empty-icon {
+    opacity: 0.3;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-tag {
+    font-family: var(--az-font-mono);
+    font-size: 0.7rem;
+    color: var(--az-text-muted);
+    background: var(--az-deep);
+    border: 1px solid var(--az-surface);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 200ms;
+  }
+
+  .filter-tag:hover {
+    border-color: var(--az-compass);
+    color: var(--az-text);
+  }
+
+  .filter-tag.active {
+    background: rgba(200, 164, 110, 0.15);
+    border-color: var(--az-compass);
+    color: var(--az-compass);
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .content-card {
+    background: var(--az-deep);
+    border: 1px solid var(--az-surface);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    transition: border-color 200ms;
+  }
+
+  .content-card:hover {
+    border-color: var(--az-growth);
+  }
+
+  .card-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(90, 138, 106, 0.1);
+    border-radius: 8px;
+    color: var(--az-growth);
+  }
+
+  .card-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-title {
+    font-family: var(--az-font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--az-text);
+    margin: 0;
+  }
+
+  .premium-badge {
+    font-family: var(--az-font-mono);
+    font-size: 0.6rem;
+    color: var(--az-compass);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--az-compass);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .card-desc {
+    color: var(--az-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag {
+    font-family: var(--az-font-mono);
+    font-size: 0.65rem;
+    color: var(--az-signal);
+    background: rgba(91, 158, 166, 0.1);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+  }
+
+  .card-date {
+    font-family: var(--az-font-mono);
+    font-size: 0.7rem;
+    color: var(--az-text-dim);
+  }
+
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: 1px solid var(--az-compass);
+    color: var(--az-compass);
+    font-family: var(--az-font-display);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 200ms, color 200ms;
+    margin-top: 0.25rem;
+  }
+
+  .download-btn:hover {
+    background: var(--az-compass);
+    color: var(--az-void);
+  }
+
+  @media (max-width: 768px) {
+    .content-card {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .card-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+</style>

@@ -16,9 +16,13 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+# .env.local contains default local keys — safe to commit
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# Supabase local
+.supabase/

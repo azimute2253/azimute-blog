@@ -1,0 +1,125 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../layouts/Dashboard.astro';
+import { hasAccess } from '../../lib/roles';
+import type { UserRole } from '../../lib/roles';
+
+const user = Astro.locals.user!;
+const profile = Astro.locals.profile!;
+const supabase = Astro.locals.supabase;
+
+const role = (profile?.role || 'member') as UserRole;
+const isPremium = hasAccess(role, 'premium');
+
+// Fetch content counts
+const { count: reportCount } = await supabase
+  .from('content_items')
+  .select('*', { count: 'exact', head: true })
+  .eq('type', 'report');
+
+const { count: projectCount } = await supabase
+  .from('content_items')
+  .select('*', { count: 'exact', head: true })
+  .eq('type', 'project');
+
+const { count: documentCount } = await supabase
+  .from('content_items')
+  .select('*', { count: 'exact', head: true })
+  .eq('type', 'document');
+---
+<Dashboard title="Dashboard">
+  <h1>Welcome, {profile?.display_name || 'Member'}</h1>
+  <p class="dash-subtitle">Your access level: <strong class="role-badge">{role}</strong></p>
+
+  <div class="dash-grid">
+    <a href="/dashboard/reports" class="dash-card">
+      <span class="dash-card-count">{reportCount ?? 0}</span>
+      <span class="dash-card-label">Reports</span>
+    </a>
+    <a href="/dashboard/projects" class="dash-card">
+      <span class="dash-card-count">{projectCount ?? 0}</span>
+      <span class="dash-card-label">Projects</span>
+    </a>
+    <a href="/dashboard/documents" class="dash-card">
+      <span class="dash-card-count">{documentCount ?? 0}</span>
+      <span class="dash-card-label">Documents</span>
+    </a>
+  </div>
+
+  {!isPremium && (
+    <div class="upgrade-notice">
+      <p>You're on the <strong>member</strong> tier. Some content requires <strong>premium</strong> access.</p>
+    </div>
+  )}
+</Dashboard>
+
+<style>
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .dash-subtitle {
+    color: var(--az-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .role-badge {
+    color: var(--az-compass);
+    text-transform: uppercase;
+    font-family: var(--az-font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+
+  .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .dash-card {
+    background: var(--az-deep);
+    border: 1px solid var(--az-surface);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 200ms;
+  }
+
+  .dash-card:hover {
+    border-color: var(--az-compass);
+  }
+
+  .dash-card-count {
+    font-family: var(--az-font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--az-text);
+  }
+
+  .dash-card-label {
+    font-family: var(--az-font-mono);
+    font-size: 0.75rem;
+    color: var(--az-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .upgrade-notice {
+    background: rgba(200, 164, 110, 0.1);
+    border: 1px solid var(--az-compass);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--az-text-muted);
+  }
+
+  .upgrade-notice strong {
+    color: var(--az-compass);
+  }
+</style>
