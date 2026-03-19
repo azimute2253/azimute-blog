@@ -15,8 +15,9 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    return redirect("/login");
+    console.error('Auth callback error:', error);
+    return redirect("/login?error=confirmation_failed");
   }
 
-  return redirect("/dashboard");
+  return redirect("/email-confirmed");
 };
