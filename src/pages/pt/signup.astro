@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+
+Astro.cookies.set('lang', 'pt', {
+  path: '/',
+  maxAge: 31536000,
+  httpOnly: false,
+  sameSite: 'lax'
+});
+
+return Astro.redirect('/signup');
+---

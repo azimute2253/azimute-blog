@@ -1,0 +1,14 @@
+---
+// Redirect to /login with PT cookie
+export const prerender = false;
+
+// Set PT language cookie and redirect
+Astro.cookies.set('lang', 'pt', {
+  path: '/',
+  maxAge: 31536000, // 1 year
+  httpOnly: false,
+  sameSite: 'lax'
+});
+
+return Astro.redirect('/login');
+---
