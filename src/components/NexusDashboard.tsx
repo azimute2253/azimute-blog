@@ -51,21 +51,60 @@ export default function NexusDashboard() {
     fetchPerformance();
   }, []);
 
-  // Empty state
+  // Empty state - usando design system azimute.cc
   if (isEmpty && !isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
-        <div className="text-6xl">📊</div>
-        <h3 className="text-xl font-semibold text-gray-900">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1.5rem',
+          padding: '3rem',
+          border: '2px dashed var(--az-surface)',
+          borderRadius: '0.5rem',
+          background: 'var(--az-deep)',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '4rem' }}>📊</div>
+        <h3
+          style={{
+            fontSize: '1.5rem',
+            fontWeight: 600,
+            color: 'var(--az-text)',
+            fontFamily: 'var(--az-font-display)',
+          }}
+        >
           Nenhuma carteira ainda
         </h3>
-        <p className="max-w-md text-sm text-gray-600">
+        <p
+          style={{
+            maxWidth: '28rem',
+            fontSize: '0.875rem',
+            color: 'var(--az-text-muted)',
+            fontFamily: 'var(--az-font-body)',
+          }}
+        >
           Comece criando seus primeiros tipos de ativos, grupos e ativos para
           visualizar seu portfólio aqui.
         </p>
         <a
           href="/dashboard/types"
-          className="mt-4 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+          style={{
+            marginTop: '1rem',
+            padding: '0.75rem 1.5rem',
+            borderRadius: '0.5rem',
+            background: 'var(--az-compass)',
+            color: 'var(--az-void)',
+            fontWeight: 500,
+            fontFamily: 'var(--az-font-display)',
+            textDecoration: 'none',
+            transition: 'opacity 0.2s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
         >
           Criar Primeira Carteira
         </a>

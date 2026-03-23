@@ -1,0 +1,175 @@
+---
+export const prerender = false;
+
+import DashboardLayout from '../../layouts/Dashboard.astro';
+---
+<DashboardLayout title="Tipos de Ativos">
+  <div class="types-container">
+    <div class="header">
+      <h1>Tipos de Ativos</h1>
+      <p class="subtitle">Configure os tipos de ativos do seu portfólio</p>
+    </div>
+
+    <div class="placeholder-card">
+      <div class="icon">🚧</div>
+      <h3>Feature em Desenvolvimento</h3>
+      <p class="description">
+        A interface de gerenciamento de tipos de ativos está sendo desenvolvida.
+        Por enquanto, você pode inserir dados diretamente no Supabase.
+      </p>
+      <div class="actions">
+        <a href="https://supabase.com/dashboard/project/jyykieghjbopruobcmnt" target="_blank" class="btn-primary">
+          <span>Abrir Supabase</span>
+          <svg class="icon-external" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+        <a href="/dashboard/portfolio" class="btn-secondary">
+          Voltar ao Portfólio
+        </a>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h4>Tabelas do Banco de Dados:</h4>
+      <ul>
+        <li><code>asset_types</code> - Tipos de ativos (Ações, FIIs, Renda Fixa, etc.)</li>
+        <li><code>asset_groups</code> - Grupos dentro de cada tipo</li>
+        <li><code>assets</code> - Ativos individuais (tickers)</li>
+        <li><code>price_cache</code> - Cache de preços</li>
+      </ul>
+    </div>
+  </div>
+</DashboardLayout>
+
+<style>
+  .types-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--az-text);
+    font-family: var(--az-font-display);
+  }
+
+  .subtitle {
+    color: var(--az-text-muted);
+    font-family: var(--az-font-body);
+  }
+
+  .placeholder-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+    border: 2px dashed var(--az-surface);
+    border-radius: 0.5rem;
+    background: var(--az-deep);
+    text-align: center;
+  }
+
+  .icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .placeholder-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--az-text);
+    font-family: var(--az-font-display);
+    margin-bottom: 0.5rem;
+  }
+
+  .description {
+    max-width: 28rem;
+    margin: 0 auto 1.5rem;
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+    font-family: var(--az-font-body);
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: var(--az-font-display);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--az-compass);
+    color: var(--az-void);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn-secondary {
+    background: var(--az-surface);
+    color: var(--az-text);
+    border: 1px solid var(--az-text-dim);
+  }
+
+  .btn-secondary:hover {
+    background: var(--az-deep);
+  }
+
+  .icon-external {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .info-card {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--az-surface);
+    background: var(--az-deep);
+  }
+
+  .info-card h4 {
+    font-weight: 600;
+    color: var(--az-text);
+    font-family: var(--az-font-display);
+    margin-bottom: 1rem;
+  }
+
+  .info-card ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+    font-family: var(--az-font-body);
+    list-style: none;
+    padding: 0;
+  }
+
+  .info-card code {
+    background: var(--az-surface);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: var(--az-font-mono);
+    font-size: 0.8rem;
+    color: var(--az-compass);
+  }
+</style>
