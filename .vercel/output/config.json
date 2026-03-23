@@ -104,6 +104,10 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/papers/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/pt/about/?$",
 			"dest": "_render"
 		},
@@ -145,6 +149,10 @@
 		},
 		{
 			"src": "^/pt/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/research/([^/]+?)/?$",
 			"dest": "_render"
 		},
 		{

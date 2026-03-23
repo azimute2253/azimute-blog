@@ -3,7 +3,7 @@ import 'piccolore';
 import 'clsx';
 import { c as createSupabaseClient } from './chunks/supabase_BOQfOlQl.mjs';
 
-const PROTECTED_ROUTES = ["/dashboard", "/research"];
+const PROTECTED_ROUTES = ["/dashboard", "/research", "/papers"];
 const onRequest$1 = defineMiddleware(async (context, next) => {
   const isProtectedRoute = PROTECTED_ROUTES.some(
     (route) => context.url.pathname.startsWith(route)
