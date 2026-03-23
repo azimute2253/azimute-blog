@@ -358,19 +358,17 @@ const icons = {
     margin-left: 240px;
     padding: 2rem 3rem;
     max-width: 960px;
-    transition: margin-left 0.3s ease, max-width 0.3s ease, margin-right 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   .collapsed ~ .dashboard-main {
     margin-left: 70px;
-    max-width: min(960px, calc(100vw - 70px - 6rem));
-    margin-right: auto;
   }
 
-  /* When collapsed, center the content in available space */
-  @media (min-width: 1200px) {
+  /* Center content when sidebar is collapsed and there's enough space */
+  @media (min-width: calc(70px + 960px + 6rem + 100px)) {
     .collapsed ~ .dashboard-main {
-      margin-left: calc(70px + (100vw - 70px - 960px) / 2);
+      margin-left: calc(70px + (100vw - 70px - 960px - 6rem) / 2);
     }
   }
 
