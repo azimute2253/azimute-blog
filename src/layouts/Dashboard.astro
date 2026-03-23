@@ -14,13 +14,25 @@ const profile = Astro.locals.profile;
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { href: '/dashboard', label: t(lang, 'dashboard.overview') },
-  { href: '/dashboard/reports', label: t(lang, 'dashboard.reports') },
-  { href: '/dashboard/papers', label: t(lang, 'dashboard.papers') },
-  { href: '/dashboard/projects', label: t(lang, 'dashboard.projects') },
-  { href: '/dashboard/documents', label: t(lang, 'dashboard.documents') },
-  { href: '/dashboard/portfolio', label: t(lang, 'dashboard.portfolio') },
+  { href: '/dashboard', label: t(lang, 'dashboard.overview'), icon: 'grid' },
+  { href: '/dashboard/reports', label: t(lang, 'dashboard.reports'), icon: 'file-text' },
+  { href: '/dashboard/papers', label: t(lang, 'dashboard.papers'), icon: 'book-open' },
+  { href: '/dashboard/projects', label: t(lang, 'dashboard.projects'), icon: 'folder' },
+  { href: '/dashboard/documents', label: t(lang, 'dashboard.documents'), icon: 'file' },
+  { href: '/dashboard/portfolio', label: t(lang, 'dashboard.portfolio'), icon: 'trending-up' },
 ];
+
+// SVG icons
+const icons = {
+  'grid': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />',
+  'file-text': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />',
+  'book-open': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />',
+  'folder': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />',
+  'file': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />',
+  'trending-up': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />',
+  'chevron-left': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />',
+  'chevron-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />',
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -33,41 +45,80 @@ const navItems = [
 </head>
 <body>
   <div class="dashboard-wrapper">
-    <aside class="dashboard-sidebar">
-      <a href="/" class="sidebar-logo">
-        <svg class="compass-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-          <polygon points="12,3 10.8,12.5 12,11.5 13.2,12.5" fill="var(--az-compass)" transform="rotate(45, 12, 12)"/>
-          <polygon points="12,21 10.8,11.5 12,12.5 13.2,11.5" fill="#8a6d3b" transform="rotate(45, 12, 12)"/>
-          <circle cx="12" cy="12" r="1.2" fill="var(--az-compass)"/>
-        </svg>
-        Azimute
-      </a>
+    <aside class="dashboard-sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="/" class="sidebar-logo">
+          <svg class="compass-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+            <polygon points="12,3 10.8,12.5 12,11.5 13.2,12.5" fill="var(--az-compass)" transform="rotate(45, 12, 12)"/>
+            <polygon points="12,21 10.8,11.5 12,12.5 13.2,11.5" fill="#8a6d3b" transform="rotate(45, 12, 12)"/>
+            <circle cx="12" cy="12" r="1.2" fill="var(--az-compass)"/>
+          </svg>
+          <span class="sidebar-logo-text">Azimute</span>
+        </a>
+
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg class="toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <Fragment set:html={icons['chevron-left']} />
+          </svg>
+        </button>
+      </div>
 
       <nav class="sidebar-nav">
         {navItems.map(item => (
           <a
             href={item.href}
             class:list={['sidebar-link', { active: currentPath === item.href || (item.href !== '/dashboard' && currentPath.startsWith(item.href)) }]}
+            title={item.label}
           >
-            {item.label}
+            <svg class="link-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <Fragment set:html={icons[item.icon]} />
+            </svg>
+            <span class="link-text">{item.label}</span>
           </a>
         ))}
       </nav>
 
       <div class="sidebar-user">
-        <span class="sidebar-user-name">{profile?.display_name || user?.email}</span>
-        <span class="sidebar-user-role">{profile?.role || 'member'}</span>
+        <div class="user-info">
+          <span class="sidebar-user-name">{profile?.display_name || user?.email}</span>
+          <span class="sidebar-user-role">{profile?.role || 'member'}</span>
+        </div>
         <form method="POST" action="/api/auth/signout">
-          <button type="submit" class="sidebar-signout">{t(lang, 'dashboard.signout')}</button>
+          <button type="submit" class="sidebar-signout" title={t(lang, 'dashboard.signout')}>
+            <svg class="signout-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            <span class="signout-text">{t(lang, 'dashboard.signout')}</span>
+          </button>
         </form>
       </div>
     </aside>
 
-    <main class="dashboard-main">
+    <main class="dashboard-main" id="dashboardMain">
       <slot />
     </main>
   </div>
+
+  <script>
+    // Sidebar toggle functionality
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const main = document.getElementById('dashboardMain');
+    const STORAGE_KEY = 'azimute-sidebar-collapsed';
+
+    // Load saved state
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState === 'true') {
+      sidebar?.classList.add('collapsed');
+    }
+
+    // Toggle handler
+    toggleBtn?.addEventListener('click', () => {
+      const isCollapsed = sidebar?.classList.toggle('collapsed');
+      localStorage.setItem(STORAGE_KEY, isCollapsed ? 'true' : 'false');
+    });
+  </script>
 </body>
 </html>
 
@@ -89,6 +140,22 @@ const navItems = [
     left: 0;
     bottom: 0;
     overflow-y: auto;
+    transition: width 0.3s ease, padding 0.3s ease;
+  }
+
+  .dashboard-sidebar.collapsed {
+    width: 70px;
+    padding: 1.5rem 0.75rem;
+  }
+
+  /* Header with logo and toggle */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--az-surface);
   }
 
   .sidebar-logo {
@@ -101,16 +168,53 @@ const navItems = [
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--az-surface);
+    transition: color 0.2s;
   }
 
   .sidebar-logo:hover {
     color: var(--az-compass);
-    border-bottom: 1px solid var(--az-surface);
+    border-bottom: none;
   }
 
+  .sidebar-logo-text {
+    transition: opacity 0.3s ease;
+  }
+
+  .collapsed .sidebar-logo-text {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  /* Toggle button */
+  .sidebar-toggle {
+    background: none;
+    border: 1px solid var(--az-surface);
+    color: var(--az-text-muted);
+    padding: 0.35rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, border-color 0.2s, transform 0.3s;
+  }
+
+  .sidebar-toggle:hover {
+    color: var(--az-compass);
+    border-color: var(--az-compass);
+  }
+
+  .collapsed .sidebar-toggle .toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .collapsed .sidebar-toggle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Navigation */
   .sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -127,6 +231,29 @@ const navItems = [
     border-radius: 6px;
     border: none;
     transition: background 200ms, color 200ms;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .collapsed .sidebar-link {
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .link-icon {
+    flex-shrink: 0;
+  }
+
+  .link-text {
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .collapsed .link-text {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
   }
 
   .sidebar-link:hover {
@@ -141,18 +268,35 @@ const navItems = [
     border: none;
   }
 
+  /* User section */
   .sidebar-user {
     border-top: 1px solid var(--az-surface);
     padding-top: 1rem;
     display: flex;
     flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
     gap: 0.25rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .collapsed .user-info {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
   }
 
   .sidebar-user-name {
     font-family: var(--az-font-display);
     font-size: 0.875rem;
     color: var(--az-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .sidebar-user-role {
@@ -164,7 +308,6 @@ const navItems = [
   }
 
   .sidebar-signout {
-    margin-top: 0.5rem;
     background: none;
     border: 1px solid var(--az-surface);
     color: var(--az-text-muted);
@@ -174,6 +317,29 @@ const navItems = [
     border-radius: 4px;
     cursor: pointer;
     transition: color 200ms, border-color 200ms;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .collapsed .sidebar-signout {
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .signout-icon {
+    flex-shrink: 0;
+  }
+
+  .signout-text {
+    transition: opacity 0.3s ease;
+  }
+
+  .collapsed .signout-text {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
   }
 
   .sidebar-signout:hover {
@@ -181,11 +347,17 @@ const navItems = [
     border-color: var(--az-ember);
   }
 
+  /* Main content */
   .dashboard-main {
     flex: 1;
     margin-left: 240px;
     padding: 2rem 3rem;
     max-width: 960px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .collapsed ~ .dashboard-main {
+    margin-left: 70px;
   }
 
   @media (max-width: 768px) {
@@ -195,18 +367,31 @@ const navItems = [
 
     .dashboard-sidebar {
       position: relative;
-      width: 100%;
+      width: 100% !important;
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      padding: 1rem;
+      padding: 1rem !important;
       gap: 0.5rem;
     }
 
-    .sidebar-logo {
+    .sidebar-header {
       margin-bottom: 0;
       padding-bottom: 0;
       border-bottom: none;
+    }
+
+    .sidebar-toggle {
+      display: none;
+    }
+
+    .sidebar-logo-text,
+    .link-text,
+    .user-info,
+    .signout-text {
+      opacity: 1 !important;
+      width: auto !important;
+      overflow: visible !important;
     }
 
     .sidebar-nav {
@@ -227,7 +412,7 @@ const navItems = [
     }
 
     .dashboard-main {
-      margin-left: 0;
+      margin-left: 0 !important;
       padding: 1.5rem 1rem;
     }
   }
