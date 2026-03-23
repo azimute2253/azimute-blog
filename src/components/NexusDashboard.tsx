@@ -91,7 +91,7 @@ export default function NexusDashboard() {
           visualizar seu portfólio aqui.
         </p>
         <a
-          href="/dashboard/types"
+          href="/dashboard/assets/new"
           style={{
             marginTop: '1rem',
             padding: '0.75rem 1.5rem',
@@ -106,7 +106,7 @@ export default function NexusDashboard() {
           onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
         >
-          Criar Primeira Carteira
+          Cadastrar Ativo
         </a>
       </div>
     );

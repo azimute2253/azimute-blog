@@ -1,0 +1,36 @@
+---
+export const prerender = false;
+
+import DashboardLayout from '../../../layouts/Dashboard.astro';
+import AssetForm from '../../../components/AssetForm';
+---
+<DashboardLayout title="Cadastrar Ativo">
+  <div class="asset-form-container">
+    <div class="header">
+      <h1>Cadastrar Ativo</h1>
+      <p class="subtitle">Adicione um novo ativo ao seu portfólio</p>
+    </div>
+
+    <AssetForm client:load />
+  </div>
+</DashboardLayout>
+
+<style>
+  .asset-form-container {
+    max-width: 600px;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--az-text);
+    font-family: var(--az-font-display);
+  }
+
+  .subtitle {
+    color: var(--az-text-muted);
+    font-family: var(--az-font-body);
+    margin-bottom: 2rem;
+  }
+</style>
