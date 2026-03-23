@@ -1,4 +1,4 @@
-import { a6 as defineMiddleware, af as sequence } from './chunks/sequence_B7YpOH_f.mjs';
+import { a6 as defineMiddleware, af as sequence } from './chunks/sequence_CgQDxwp7.mjs';
 import 'piccolore';
 import 'clsx';
 import { c as createSupabaseClient } from './chunks/supabase_BOQfOlQl.mjs';

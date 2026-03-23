@@ -7,7 +7,7 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://azimute.cc',
-  output: 'static',
+  output: 'server',
   adapter: vercel(),
   integrations: [sitemap(), tailwind(), react()],
   build: { format: 'directory' },

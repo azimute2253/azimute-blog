@@ -96,11 +96,19 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/feed\\.xml$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/login/?$",
 			"dest": "_render"
 		},
 		{
 			"src": "^/papers/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/about/?$",
 			"dest": "_render"
 		},
 		{
@@ -140,6 +148,14 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/pt/wander/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/research/([^/]+?)/?$",
 			"dest": "_render"
 		},
@@ -153,6 +169,10 @@
 		},
 		{
 			"src": "^/update-password/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/wander/([^/]+?)/?$",
 			"dest": "_render"
 		},
 		{
