@@ -1,11 +1,22 @@
 import type { APIRoute } from 'astro';
 import { getPerformanceMetrics } from 'nexus-data';
-import { getNexusLocals } from '../../../lib/nexus/supabase';
+import { createSupabaseClient } from '../../../lib/supabase';
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ locals }) => {
-  const { supabase } = getNexusLocals(locals);
+export const GET: APIRoute = async ({ request, cookies }) => {
+  // Create Supabase client (API routes don't have locals.supabase)
+  const supabase = createSupabaseClient(request, cookies);
+
+  // Check auth
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  
+  if (!user || authError) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   const result = await getPerformanceMetrics(supabase);
 

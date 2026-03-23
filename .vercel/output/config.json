@@ -28,7 +28,15 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/api/debug-portfolio/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/api/download/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/migrate/?$",
 			"dest": "_render"
 		},
 		{
