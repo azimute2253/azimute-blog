@@ -366,9 +366,10 @@ const icons = {
   }
 
   /* Center content when sidebar is collapsed and there's enough space */
-  @media (min-width: calc(70px + 960px + 6rem + 100px)) {
+  @media (min-width: 1200px) {
     .collapsed ~ .dashboard-main {
-      margin-left: calc(70px + (100vw - 70px - 960px - 6rem) / 2);
+      margin-left: calc(50vw - 445px);
+      margin-right: auto;
     }
   }
 
