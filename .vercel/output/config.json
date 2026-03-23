@@ -36,6 +36,14 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/dashboard/papers/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/dashboard/portfolio/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/dashboard/projects/?$",
 			"dest": "_render"
 		},
@@ -48,11 +56,67 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/email-confirmed/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/login/?$",
 			"dest": "_render"
 		},
 		{
+			"src": "^/papers/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/dashboard/documents/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/dashboard/projects/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/dashboard/reports/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/dashboard/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/email-confirmed/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/login/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/reset-password/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/signup/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/pt/update-password/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/research/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/reset-password/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/signup/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/update-password/?$",
 			"dest": "_render"
 		},
 		{

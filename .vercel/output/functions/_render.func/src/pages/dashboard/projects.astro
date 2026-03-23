@@ -2,7 +2,9 @@
 export const prerender = false;
 
 import Dashboard from '../../layouts/Dashboard.astro';
+import { getLang, t } from '../../lib/i18n';
 
+const lang = getLang(Astro.cookies, Astro.url);
 const supabase = Astro.locals.supabase;
 
 const { data: projects, error } = await supabase
@@ -13,26 +15,26 @@ const { data: projects, error } = await supabase
 
 const allTags = [...new Set((projects || []).flatMap((r: any) => r.tags || []))].sort();
 ---
-<Dashboard title="Projects">
-  <h1>Projects</h1>
-  <p class="section-desc">Ongoing research projects and initiatives.</p>
+<Dashboard title={t(lang, 'dashboard.projects')}>
+  <h1>{t(lang, 'dashboard.projectsTitle')}</h1>
+  <p class="section-desc">{t(lang, 'dashboard.projectsDesc')}</p>
 
   {error ? (
     <div class="error-state">
-      <p>Failed to load projects. Please try again later.</p>
+      <p>{t(lang, 'dashboard.errorLoad').replace('{0}', lang === 'pt' ? 'projetos' : 'projects')}</p>
     </div>
   ) : (!projects || projects.length === 0) ? (
     <div class="empty-state">
       <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
       </svg>
-      <p>No projects available yet.</p>
+      <p>{t(lang, 'dashboard.noItemsYet').replace('{0}', lang === 'pt' ? 'projetos' : 'projects')}</p>
     </div>
   ) : (
     <>
       {allTags.length > 0 && (
         <div class="filter-bar" id="filter-bar">
-          <button class="filter-tag active" data-tag="all">All</button>
+          <button class="filter-tag active" data-tag="all">{t(lang, 'dashboard.all')}</button>
           {allTags.map(tag => (
             <button class="filter-tag" data-tag={tag}>{tag}</button>
           ))}
@@ -51,7 +53,7 @@ const allTags = [...new Set((projects || []).flatMap((r: any) => r.tags || []))]
               <div class="card-header">
                 <h2 class="card-title">{item.title}</h2>
                 {item.min_role === 'premium' && (
-                  <span class="premium-badge">Premium</span>
+                  <span class="premium-badge">{t(lang, 'dashboard.premium')}</span>
                 )}
               </div>
               {item.description && <p class="card-desc">{item.description}</p>}
@@ -64,7 +66,7 @@ const allTags = [...new Set((projects || []).flatMap((r: any) => r.tags || []))]
                   </span>
                 )}
                 <span class="card-date">
-                  {new Date(item.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  {new Date(item.published_at).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                 </span>
               </div>
               {item.storage_path && (
@@ -73,7 +75,7 @@ const allTags = [...new Set((projects || []).flatMap((r: any) => r.tags || []))]
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                     </svg>
-                    Download
+                    {t(lang, 'dashboard.download')}
                   </button>
                 </form>
               )}

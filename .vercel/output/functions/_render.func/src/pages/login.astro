@@ -3,6 +3,9 @@ export const prerender = false;
 
 import Base from '../layouts/Base.astro';
 import { createSupabaseClient } from '../lib/supabase';
+import { getLang, t } from '../lib/i18n';
+
+const lang = getLang(Astro.cookies, Astro.url);
 
 let error = '';
 let success = '';
@@ -10,7 +13,7 @@ let success = '';
 // Show message if redirected from expired session
 const expired = Astro.url.searchParams.get('expired');
 if (expired === '1') {
-  error = 'Your session has expired. Please sign in again.';
+  error = t(lang, 'auth.login.expired');
 }
 
 if (Astro.request.method === 'POST') {
@@ -28,26 +31,30 @@ if (Astro.request.method === 'POST') {
   }
 }
 ---
-<Base title="Login">
+<Base title={t(lang, 'auth.login.title')}>
   <div class="auth-page">
-    <h1>Members Area</h1>
-    <p class="auth-subtitle">Sign in to access research reports, projects, and documents.</p>
+    <h1>{t(lang, 'auth.login.title')}</h1>
+    <p class="auth-subtitle">{t(lang, 'auth.login.subtitle')}</p>
 
     {error && <div class="auth-error">{error}</div>}
     {success && <div class="auth-success">{success}</div>}
 
     <form method="POST" class="auth-form">
-      <label for="email">Email</label>
+      <label for="email">{t(lang, 'auth.login.email')}</label>
       <input type="email" id="email" name="email" required autocomplete="email" />
 
-      <label for="password">Password</label>
+      <label for="password">{t(lang, 'auth.login.password')}</label>
       <input type="password" id="password" name="password" required autocomplete="current-password" minlength="6" />
 
-      <button type="submit" class="auth-btn">Sign In</button>
+      <div class="forgot-password">
+        <a href="/reset-password">{t(lang, 'auth.login.forgotPassword')}</a>
+      </div>
+
+      <button type="submit" class="auth-btn">{t(lang, 'auth.login.submit')}</button>
     </form>
 
     <p class="auth-alt">
-      Don't have an account? <a href="/signup">Sign up</a>
+      {t(lang, 'auth.login.noAccount')} <a href="/signup">{t(lang, 'auth.login.signupLink')}</a>
     </p>
   </div>
 </Base>
@@ -93,6 +100,23 @@ if (Astro.request.method === 'POST') {
   .auth-form input:focus {
     outline: none;
     border-color: var(--az-compass);
+  }
+
+  .forgot-password {
+    text-align: right;
+    margin-top: -0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .forgot-password a {
+    font-size: 0.875rem;
+    color: var(--az-text-muted);
+    text-decoration: none;
+    transition: color 200ms;
+  }
+
+  .forgot-password a:hover {
+    color: var(--az-compass);
   }
 
   .auth-btn {
