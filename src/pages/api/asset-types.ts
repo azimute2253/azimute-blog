@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     });
   }
 
-  // Fetch asset types for this user
+  // Fetch asset types for this user (SELECT only — no auto-creation)
   const { data, error } = await supabase
     .from('asset_types')
     .select('id, name, target_pct, sort_order')
@@ -29,45 +29,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     });
   }
 
-  // If no types exist, create defaults
-  if (!data || data.length === 0) {
-    const defaultTypes = [
-      { name: 'Ações', target_pct: 40, sort_order: 1, user_id: user.id },
-      { name: 'FIIs', target_pct: 30, sort_order: 2, user_id: user.id },
-      { name: 'Renda Fixa', target_pct: 30, sort_order: 3, user_id: user.id },
-    ];
-
-    const { data: created, error: createError } = await supabase
-      .from('asset_types')
-      .insert(defaultTypes)
-      .select('id, name, target_pct, sort_order');
-
-    if (createError) {
-      return new Response(JSON.stringify({ error: createError.message }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Also create default groups for each type
-    if (created && created.length > 0) {
-      const defaultGroups = created.map((type) => ({
-        type_id: type.id,
-        name: 'Principal',
-        target_pct: 100,
-        user_id: user.id,
-      }));
-
-      await supabase.from('asset_groups').insert(defaultGroups);
-    }
-
-    return new Response(JSON.stringify(created || []), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  return new Response(JSON.stringify(data), {
+  return new Response(JSON.stringify(data ?? []), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
