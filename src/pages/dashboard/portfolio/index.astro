@@ -13,7 +13,7 @@ const { user } = getNexusLocals(Astro.locals);
     <p class="portfolio-user">Logged in as <strong>{user.email}</strong></p>
   </div>
 
-  <NexusDashboard client:load />
+  <NexusDashboard client:load userId={user.id} userEmail={user.email} />
 </DashboardLayout>
 
 <style>

@@ -1,13 +1,20 @@
 ---
-import { Dashboard } from 'nexus-data';
+import { NexusApp } from 'nexus-data';
+import { getNexusLocals } from '../lib/nexus/supabase';
+
+const { user } = getNexusLocals(Astro.locals);
 ---
 
-<div id="nexus-dashboard-container">
-  <Dashboard client:load />
+<div id="nexus-app-container">
+  <NexusApp
+    client:load
+    userId={user.id}
+    userEmail={user.email}
+  />
 </div>
 
 <style>
-  #nexus-dashboard-container {
+  #nexus-app-container {
     width: 100%;
     min-height: 600px;
   }
