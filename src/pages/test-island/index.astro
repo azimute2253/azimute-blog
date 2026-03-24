@@ -1,0 +1,28 @@
+---
+// Test page - client:only isolation
+import BaseLayout from '../../layouts/Base.astro';
+import NexusDashboard from '../../components/NexusDashboard';
+---
+<BaseLayout title="Island Test">
+  <h1>Testing client:only island</h1>
+  <div id="island-container">
+    <NexusDashboard client:only="react" userId="test-user-123" userEmail="test@test.com" />
+  </div>
+</BaseLayout>
+
+<script>
+  // Debug script
+  setTimeout(() => {
+    const island = document.querySelector('astro-island');
+    if (island) {
+      console.log('=== ISLAND DEBUG ===');
+      console.log('ssr attr:', island.hasAttribute('ssr'));
+      console.log('client attr:', island.getAttribute('client'));
+      console.log('innerHTML length:', island.innerHTML.length);
+      console.log('innerHTML preview:', island.innerHTML.substring(0, 200));
+      console.log('All attributes:', Array.from(island.attributes).map(a => `${a.name}=${a.value.substring(0,50)}`));
+    } else {
+      console.log('No astro-island found');
+    }
+  }, 1000);
+</script>
