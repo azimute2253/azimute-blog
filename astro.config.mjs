@@ -11,6 +11,10 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [sitemap(), tailwind(), react()],
   build: { format: 'directory' },
+  vite: {
+    // nexus-data ships raw .ts — Vite must transpile it for SSR
+    ssr: { noExternal: ['nexus-data'] },
+  },
   markdown: {
     shikiConfig: { theme: 'github-dark' }
   },
