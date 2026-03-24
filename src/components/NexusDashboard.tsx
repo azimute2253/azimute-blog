@@ -8,5 +8,12 @@ interface Props {
 }
 
 export default function NexusDashboard({ userId, userEmail }: Props) {
-  return <NexusApp userId={userId} userEmail={userEmail} />;
+  return (
+    <NexusApp
+      userId={userId}
+      userEmail={userEmail}
+      supabaseUrl={import.meta.env.PUBLIC_SUPABASE_URL}
+      supabaseAnonKey={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+    />
+  );
 }
