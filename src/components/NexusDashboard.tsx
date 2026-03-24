@@ -88,7 +88,7 @@ export default function NexusDashboard() {
           }}
         >
           Comece criando seus primeiros tipos de ativos, grupos e ativos para
-          visualizar seu portfólio aqui.
+          visualizar seus dados aqui.
         </p>
         <a
           href="/dashboard/assets/new"

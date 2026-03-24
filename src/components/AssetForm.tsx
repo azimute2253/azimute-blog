@@ -108,7 +108,7 @@ export default function AssetForm() {
       <div style={styles.successCard}>
         <div style={{ fontSize: '3rem' }}>✅</div>
         <h3 style={styles.successTitle}>Ativo cadastrado com sucesso!</h3>
-        <p style={styles.successText}>Redirecionando para o portfólio...</p>
+        <p style={styles.successText}>Redirecionando para o Nexus Data...</p>
       </div>
     );
   }
